@@ -1,0 +1,91 @@
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
+
+const Schema = mongoose.Schema;
+
+/**
+ * Business Schema
+ */
+
+const businessSchema = Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  shortDescription: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  phoneNumbers: [{
+    type: String,
+    required: true,
+  }],
+  categories: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
+  }],
+  branches: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Branch',
+    required: true,
+  }],
+  gallery: [{
+    path: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+    },
+  }],
+  workingHours: {
+    type: String,
+    required: true,
+  },
+  _deleted: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+/**
+ * Hash password before saving the document
+ */
+
+businessSchema.pre('save', (done) => {
+  if (!this.isModified('password')) {
+    done();
+  } else {
+    bcrypt.hash(this.password, null, null, (err, hashedPassword) => {
+      if (err) {
+        return done(err);
+      }
+
+      this.password = hashedPassword;
+      return done();
+    });
+  }
+});
+
+/**
+ * Check the password
+ */
+
+businessSchema.methods.checkPassword = (guess, done) => {
+  bcrypt.compare(guess, this.password, (err, matching) => {
+    done(err, matching);
+  });
+};
+
+module.exports = mongoose.model('Business', businessSchema);
