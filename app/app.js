@@ -1,17 +1,32 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const logger = require('morgan');
-const path = require('path');
 
 const app = express();
 
-require('dotenv')
-  .config();
+/**
+ * DEBUG MODE MIDDLEWARES
+ */
 
+if (process.env.DEBUG_MODE) {
+  app.use(logger('dev'));
+}
 
-app.get('/', function (req, res) {
+/**
+ * API ROUTES
+ */
 
+require('./routes/routes')(app);
+
+/**
+ * Generic Error Handling Middlewares.
+ */
+
+app.use((err, req, res, next) => {
+  res.status(500)
+    .json({
+      message: err.toString(),
+    });
 });
+
 
 module.exports = app;
