@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
  * Branch Schema
  */
 
-const branchSchema = mongoose.Schema({
+const branchSchema = Schema({
   _business: {
     type: Schema.Types.ObjectId,
     ref: 'Business',
