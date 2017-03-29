@@ -22,6 +22,10 @@ const categorySchema = Schema({
     type: String,
     required: false,
   },
+  _deleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model('Category', categorySchema);

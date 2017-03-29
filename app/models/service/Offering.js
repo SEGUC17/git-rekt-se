@@ -27,6 +27,10 @@ const offeringSchema = Schema({
     type: Date,
     required: true,
   },
+  _deleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model('Offering', offeringSchema);

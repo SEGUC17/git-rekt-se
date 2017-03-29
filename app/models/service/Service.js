@@ -44,6 +44,10 @@ const serviceSchema = Schema({
       type: String,
     },
   }],
+  _deleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model('Service', serviceSchema);
