@@ -3,9 +3,7 @@
 ### Code Style
 ---
 
-- Install ESLint and eslint VS Code plugin
-
-    `npm install -g eslint`
+- Install ESLint VS Code plugin
 
 - Airbnb Style Guide for ESlint
 
