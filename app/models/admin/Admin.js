@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 
+const Schema = mongoose.Schema;
+
 /**
  * Adminstrator Schema
  */
 
-const adminSchema = mongoose.Schema({
+const adminSchema = Schema({
   email: {
     type: String,
     required: true,
@@ -17,7 +19,7 @@ const adminSchema = mongoose.Schema({
 });
 
 /**
- * Hash password before saving the model
+ * Hash password before saving the document
  */
 
 adminSchema.pre('save', (done) => {
