@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --recursive test",
     "start": "node app/server.js",
-    "debug": "eslint . && nodemon app/server.js"
+    "debug": "./node_modules/.bin/eslint . && nodemon app/server.js"
   },
   "repository": {
     "type": "git",
@@ -21,10 +21,11 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "eslint": "^3.18.0",
-    "eslint-config-airbnb": "^14.1.0",
     "eslint-config-airbnb-base": "^11.1.2",
     "eslint-plugin-html": "^2.0.1",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "supertest": "^3.0.0"
