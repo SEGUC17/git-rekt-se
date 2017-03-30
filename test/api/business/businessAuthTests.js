@@ -84,35 +84,35 @@ describe('Verified Business Sign Up API', () => {
       });
   });
 
-  it('Should not allow sign up when password mismatch', () => {
+  it('Should not allow sign up when password mismatch', (done) => {
     req.send(testData[1])
       .expect('Content-Type', /json/)
       .expect(400, {
         error: 'Password mismatch',
-      });
+      }, done);
   });
 
-  it('Should not allow sign up when there are no categories', () => {
+  it('Should not allow sign up when there are no categories', (done) => {
     req.send(testData[2])
       .expect('Content-Type', /json/)
       .expect(400, {
         error: 'Must Include atleast 1 Category',
-      });
+      }, done);
   });
 
-  it('Should not allow sign up when there are no branches', () => {
+  it('Should not allow sign up when there are no branches', (done) => {
     req.send(testData[3])
       .expect('Content-Type', /json/)
       .expect(400, {
         error: 'Must Include atleast 1 Branch',
-      });
+      }, done);
   });
 
-  it('Should not allow sign up when there are no working hours', () => {
+  it('Should not allow sign up when there are no working hours', (done) => {
     req.send(testData[4])
       .expect('Content-Type', /json/)
       .expect(400, {
         error: 'Must Include working hours',
-      });
+      }, done);
   });
 });
