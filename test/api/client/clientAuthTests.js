@@ -9,7 +9,14 @@ const app = require('../../../app/app');
 const Client = require('../../../app/models/client/Client');
 const clients = require('../../../app/seed/client/clientSeed');
 
-mongoose.Promise = Promise;
+/**
+ * Database Connection
+ */
+
+require('dotenv')
+  .config();
+
+mongoose.connect(process.env.DB_URL);
 
 /**
  * Client Signup Suite
@@ -25,7 +32,7 @@ describe('Client Signup API', () => {
 
   beforeEach(() => {
     req = supertest(app)
-      .post('/api/v1/auth/signup');
+      .post('/api/v1/client/auth/signup');
   });
 
   /**
@@ -49,6 +56,7 @@ describe('Client Signup API', () => {
           Client.find({
             email: client1.email,
           }, (finderr, data) => {
+            console.log(1);
             if (finderr) {
               done(finderr);
             } else {
