@@ -4,7 +4,7 @@
   "description": "SE Course 2017",
   "main": "app/server.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --recursive test",
+    "test": "./node_modules/.bin/mocha --recursive test/api",
     "start": "node app/server.js",
     "debug": "./node_modules/.bin/eslint . && nodemon app/server.js"
   },
