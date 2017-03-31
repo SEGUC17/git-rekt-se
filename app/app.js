@@ -5,6 +5,13 @@ const mongoose = require('mongoose');
 const app = express();
 
 /**
+ * Load Enviroment variables from .env file
+ */
+
+require('dotenv')
+  .config();
+
+/**
  * DEBUG MODE MIDDLEWARES
  */
 

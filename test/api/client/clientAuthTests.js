@@ -2,7 +2,6 @@
  * API Testing Template
  */
 
-const mongoose = require('mongoose');
 const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
@@ -15,8 +14,6 @@ const clients = require('../../../app/seed/client/clientSeed');
 
 require('dotenv')
   .config();
-
-mongoose.connect(process.env.DB_URL);
 
 /**
  * Client Signup Suite
