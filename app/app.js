@@ -1,5 +1,6 @@
 const express = require('express');
 const logger = require('morgan');
+const mongoose = require('mongoose');
 
 const app = express();
 
@@ -10,6 +11,12 @@ const app = express();
 if (process.env.DEBUG_MODE) {
   app.use(logger('dev'));
 }
+
+/**
+ * Connect to DB
+ */
+
+mongoose.connect(process.env.DB_URL);
 
 /**
  * API ROUTES
@@ -24,7 +31,7 @@ require('./routes/routes')(app);
 app.use((err, req, res, next) => {
   res.status(500)
     .json({
-      message: err.toString(),
+      error: err.toString(),
     });
 });
 
