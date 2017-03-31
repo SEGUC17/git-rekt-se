@@ -61,7 +61,7 @@ router.post('/signup', (req, res, next) => {
               })
               .catch(e => next([e]));
           })
-          .catch(e => next([e]));
+          .catch(() => next(['User already exists.']));
       } else {
         next(result.array());
       }

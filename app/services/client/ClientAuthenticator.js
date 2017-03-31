@@ -9,6 +9,7 @@ mongoose.Promise = Promise;
 
 /**
  * Generate 1 Hour JWT token.
+ * @private
  * @param {*} payload the payload to inject in the token.
  */
 

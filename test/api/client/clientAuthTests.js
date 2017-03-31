@@ -65,10 +65,66 @@ describe('Client Signup API', () => {
       });
   });
 
-  it('should not allow same email for multiple users.', (done) => {
-    const client1 = clients[0];
+  it('should register a another client with different email.', (done) => {
+    const client1 = clients[1];
     req.send(client1)
       .expect('Content-Type', /json/)
-      .expect(400, done);
+      .expect(200)
+      .end((err, res) => {
+        /**
+         * Error happend with request, fail the test
+         * with the error message.
+         */
+
+        if (err) {
+          done(err);
+        } else {
+          Client.find({
+            email: client1.email,
+          }, (finderr, data) => {
+            if (finderr) {
+              done(finderr);
+            } else {
+              chai.expect(data.length)
+                .to.equal(1);
+              done();
+            }
+          });
+        }
+      });
+  });
+
+  it('should have two users in the database', (done) => {
+    Client.find()
+      .then((data) => {
+        chai.expect(data.length)
+          .to.equal(2);
+        done();
+      })
+      .catch(done);
+  });
+
+  it('should not allow duplicate emails at registration', (done) => {
+    const client1 = clients[1];
+    req.send(client1)
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: ['User already exists.'],
+      }, done);
+  });
+
+  it('should not allow registration with mis-matching passwords', (done) => {
+    const badClient = Object.assign({}, clients[0]);
+    badClient.confirmPassword = 'YEQmxoav4NK';
+
+    req.send(badClient)
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [{
+          param: 'confirmPassword',
+          msg: 'Password and Password Confirmation must match.',
+          value: 'YEQmxoav4NK',
+        }],
+      }, done);
   });
 });
