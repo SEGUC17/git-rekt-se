@@ -57,6 +57,11 @@ const businessSchema = Schema({
     type: Boolean,
     default: false,
   },
+  _status: {
+    type: String,
+    enum: ['un-verified', 'verified', 'removed'],
+    default: 'un-verified',
+  },
 });
 
 /**

@@ -78,6 +78,7 @@ describe('Verified Business Sign Up API', () => {
         if (err) {
           done(err);
         } else {
+          // TODO Change Parameter
           Business.find({}, (findErr, result) => {
             if (findErr) {
               done(findErr);
@@ -103,7 +104,7 @@ describe('Verified Business Sign Up API', () => {
     req.send(testData[2])
       .expect('Content-Type', /json/)
       .expect(400, {
-        error: 'Passwords mismatch.',
+        error: 'Password and Password Confirmation must match.',
       }, done);
   });
 
