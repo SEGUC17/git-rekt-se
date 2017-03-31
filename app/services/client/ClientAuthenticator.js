@@ -24,6 +24,7 @@ const generateToken = payload =>
 exports.generateConfirmationToken = (email) => {
   const token = generateToken({
     email,
+    type: 'ConfirmEmail',
     iat: Math.floor(Math.floor(Date.now() / 1000)),
   });
 
@@ -34,6 +35,9 @@ exports.generateConfirmationToken = (email) => {
       .then((userData) => {
         if (!userData) {
           reject('User not found.');
+        }
+        if (userData.status !== 'unconfirmed') {
+          reject('User email already confirmed.');
         }
         userData.confirmationTokenDate = Date.now();
         userData.save()
