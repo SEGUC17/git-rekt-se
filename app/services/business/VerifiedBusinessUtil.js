@@ -27,7 +27,7 @@ const addCategories = (categories) => {
 };
 
 /**
- * Utility Function Inserts Branches and returning a promise for all of them.
+ * Utility Function Inserting Branches and returning a promise for all of them.
  * @param {[String]} branches
  * @param {Business} business
  * @returns {Promise}
