@@ -4,6 +4,8 @@ const expressValidator = require('express-validator');
 
 const Business = require('../../../../models/business/Business');
 const businessValidator = require('../../../../services/businessValidator');
+const validatorErrors = require('../../../../services/shared/Constants')
+  .validatorErrors;
 
 const router = express.Router();
 
@@ -37,7 +39,7 @@ router.post('/confirm/:token', (req, res, next) => {
   req.checkBody('confirmPassword')
     .notEmpty()
     .equals(req.body.password)
-    .withMessage('Password and Password Confirmation must match.');
+    .withMessage(validatorErrors.passwordMismatch);
 
   const body = req.body;
   // TODO Change to token and verify
