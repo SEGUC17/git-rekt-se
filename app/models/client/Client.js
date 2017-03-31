@@ -31,6 +31,14 @@ const clientSchema = Schema({
   },
   birthdate: {
     type: Date,
+  },
+  status: {
+    type: String,
+    default: 'unconfirmed',
+    enums: ['unconfirmed', 'confirmed', 'banned'],
+  },
+  confirmationTokenDate: {
+    type: Date,
     default: Date.now,
   },
   _deleted: {
