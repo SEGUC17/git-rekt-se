@@ -12,9 +12,6 @@ const clients = require('../../../app/seed/client/clientSeed');
  * Database Connection
  */
 
-require('dotenv')
-  .config();
-
 /**
  * Client Signup Suite
  */

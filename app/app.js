@@ -25,12 +25,6 @@ if (process.env.DEBUG_MODE) {
 }
 
 /**
- * Connect to DB
- */
-
-mongoose.connect(process.env.DB_URL);
-
-/**
  * API ROUTES
  */
 
