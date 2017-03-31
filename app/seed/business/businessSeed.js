@@ -1,3 +1,5 @@
+const locations = require('../service/locations');
+
 module.exports = [{
   name: 'Balabizo',
   email: 'test@gmail.com',
@@ -8,7 +10,10 @@ module.exports = [{
   description: 'This is for testing the API',
   workingHours: 'Saturday To Thursday 8AM-5PM',
   categories: ['Language'],
-  branches: ['Nasr City'],
+  branches: [{
+    location: locations[0],
+    address: 'Some Address Here',
+  }],
 }, {
   name: 'Balabizo',
   email: 'test@gmail.com',
@@ -19,7 +24,10 @@ module.exports = [{
   description: 'This is for testing the API',
   workingHours: 'Saturday To Thursday 8AM-5PM',
   categories: ['Language'],
-  branches: ['Nasr City'],
+  branches: [{
+    location: locations[0],
+    address: 'Some Address Here',
+  }],
 }, {
   name: 'Balabizo',
   email: 'test@gmail.com',
@@ -30,7 +38,10 @@ module.exports = [{
   description: 'This is for testing the API',
   workingHours: 'Saturday To Thursday 10AM-3PM',
   categories: ['Balabizo'],
-  branches: ['New Cairo'],
+  branches: [{
+    location: locations[0],
+    address: 'Some Address Here',
+  }],
 }, {
   name: 'Balabizo',
   email: 'test@gmail.com',
@@ -41,7 +52,10 @@ module.exports = [{
   description: 'This is for testing the API',
   workingHours: 'Saturday To Thursday 10AM-4PM',
   categories: [],
-  branches: ['6th Of October'],
+  branches: [{
+    location: locations[1],
+    address: 'Some Address Here',
+  }],
 }, {
   name: 'Balabizo',
   email: 'test@gmail.com',
@@ -63,5 +77,8 @@ module.exports = [{
   description: 'This is for testing the API',
   workingHours: '',
   categories: ['Balabizo'],
-  branches: ['New Cairo'],
+  branches: [{
+    location: locations[1],
+    address: 'Some Address Here',
+  }],
 }];

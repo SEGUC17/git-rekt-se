@@ -2,10 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 
+const Category = require('../../../../models/service/Category');
+const Branch = require('../../../../models/service/Branch');
 const Business = require('../../../../models/business/Business');
-const businessValidator = require('../../../../services/businessValidator');
-const validatorErrors = require('../../../../services/shared/Constants')
-  .validatorErrors;
+const businessValidator = require('../../../../services/shared/validation')
+  .verifiedBusinessValidator;
+const validatorErrors = require('../../../../services/shared/Strings')
+  .bussinessValidationErrors;
 
 const router = express.Router();
 
@@ -47,6 +50,9 @@ router.post('/confirm/:token', (req, res, next) => {
     name: body.name,
   };
 
+  const categoryIds = [];
+  const branchIds = [];
+
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
@@ -58,8 +64,8 @@ router.post('/confirm/:token', (req, res, next) => {
             business.password = body.password;
             business.description = body.description;
             business.workingHours = body.workingHours;
-            business.categories.concat(body.categories);
-            business.branches.concat(body.branches);
+            business.categories.concat(categoryIds);
+            business.branches.concat(branchIds);
             business._status = 'verified';
             /* eslint-enable no-param-reassign, no-underscore-dangle */
             business.save()

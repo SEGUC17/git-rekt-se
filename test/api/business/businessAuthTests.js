@@ -7,8 +7,8 @@ const supertest = require('supertest');
 
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
-const errorMessages = require('../../../app/services/shared/Constants.js')
-  .validatorErrors;
+const errorMessages = require('../../../app/services/shared/Strings')
+  .bussinessValidationErrors;
 
 const testData = require('../../../app/seed/business/businessSeed');
 

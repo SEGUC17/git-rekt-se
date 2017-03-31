@@ -4,6 +4,9 @@
 const clientValidationErrors = require('./Strings')
   .clientValidationErrors;
 
+const businessValidationErrors = require('../shared/Strings')
+  .bussinessValidationErrors;
+
 const clientSignupValidation = {
   email: {
     notEmpty: {
@@ -73,9 +76,37 @@ const clientConfirmEmailValidation = {
   },
 };
 
+const verifiedBusinessValidator = {
+  password: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.passwordRequired,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: businessValidationErrors.passwordLength,
+    },
+  },
+  workingHours: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.workingHoursRequired,
+    },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.categoriesRequired,
+    },
+  },
+  branches: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.branchesRequired,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
+  verifiedBusinessValidator,
 };
 
 module.exports = validation;

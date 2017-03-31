@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const locations = require('../../seed/service/locations');
 
 const Schema = mongoose.Schema;
 
@@ -15,12 +14,9 @@ const categorySchema = Schema({
   },
   title: {
     type: String,
-    required: true,
-    enum: locations,
   },
   icon: {
     type: String,
-    required: false,
   },
   _deleted: {
     type: Boolean,
