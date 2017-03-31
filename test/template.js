@@ -4,7 +4,7 @@
 
 const chai = require('chai');
 const supertest = require('supertest');
-const app = require('../../app/app');
+const app = require('../app/app');
 
 /**
  * Test Suite

@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const clientSchema = Schema({
   email: {
     type: String,
+    unique: true,
     required: true,
   },
   password: {
@@ -31,6 +32,14 @@ const clientSchema = Schema({
   },
   birthdate: {
     type: Date,
+  },
+  status: {
+    type: String,
+    default: 'unconfirmed',
+    enums: ['unconfirmed', 'confirmed', 'banned'],
+  },
+  confirmationTokenDate: {
+    type: Date,
     default: Date.now,
   },
   _deleted: {
@@ -39,10 +48,18 @@ const clientSchema = Schema({
   },
 });
 
+/**
+ * Return the full name "Firstname lastname"
+ */
+
 clientSchema.virtual('fullName')
   .get(() => `${this.firstName} ${this.lastName}`);
 
-clientSchema.pre('save', (done) => {
+/**
+ * Hash the password before saving the model.
+ */
+
+clientSchema.pre('save', function preSave(done) {
   if (!this.isModified('password')) {
     done();
   } else {
@@ -56,6 +73,9 @@ clientSchema.pre('save', (done) => {
   }
 });
 
+/**
+ * Check If {guess} matches the user password.
+ */
 clientSchema.methods.checkPassword = (guess, done) => {
   bcrypt.compare(guess, this.password, (err, matching) => {
     done(err, matching);
