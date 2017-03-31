@@ -50,9 +50,6 @@ router.post('/confirm/:token', (req, res, next) => {
     name: body.name,
   };
 
-  const categoryIds = [];
-  const branchIds = [];
-
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
@@ -62,16 +59,14 @@ router.post('/confirm/:token', (req, res, next) => {
           .then((business) => {
             BusinessUtils.addCategories(body.categories)
               .then((categories) => { /* eslint-disable no-param-reassign, no-underscore-dangle */
-                categoryIds.concat(categories);
 
                 BusinessUtils.addBranches(body.branches, business)
                   .then((branches) => {
-                    branchIds.concat(branches);
                     business.password = body.password;
                     business.description = body.description;
                     business.workingHours = body.workingHours;
-                    business.categories.concat(categoryIds);
-                    business.branches.concat(branchIds);
+                    business.categories.concat(categories);
+                    business.branches.concat(branches);
                     business._status = 'verified';
 
                     /* eslint-enable no-param-reassign, no-underscore-dangle */
