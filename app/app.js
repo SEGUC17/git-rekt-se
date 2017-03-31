@@ -25,6 +25,12 @@ if (process.env.DEBUG_MODE) {
 }
 
 /**
+ * Connect to DB
+ */
+
+mongoose.connect(process.env.DB_URL);
+
+/**
  * API ROUTES
  */
 
@@ -37,7 +43,7 @@ require('./routes/routes')(app);
 app.use((err, req, res, next) => {
   res.status(500)
     .json({
-      message: err.toString(),
+      error: err.toString(),
     });
 });
 
