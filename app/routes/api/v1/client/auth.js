@@ -34,10 +34,10 @@ router.post('/signup', (req, res, next) => {
     birthdate: req.body.birthdate,
   };
 
-
   /**
    * Form Validation.
    */
+
   req.checkBody(validationSchemas.clientSignupValidation);
   req.checkBody('confirmPassword')
     .equals(req.body.password)
@@ -46,13 +46,18 @@ router.post('/signup', (req, res, next) => {
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        ClientAuthenticator.generateConfirmationToken(req.body.email)
-          .then((token) => {
-            Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
-              .then(() => {
-                res.json({
-                  message: 'Signup Successful, Please check your email for the email confirmation.',
-                });
+        new Client(userInfo)
+          .save()
+          .then(() => {
+            ClientAuthenticator.generateConfirmationToken(req.body.email)
+              .then((token) => {
+                Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
+                  .then(() => {
+                    res.json({
+                      message: 'Signup Successful, Please check your email for the email confirmation.',
+                    });
+                  })
+                  .catch(e => next([e]));
               })
               .catch(e => next([e]));
           })
@@ -68,7 +73,7 @@ router.post('/signup', (req, res, next) => {
  */
 
 router.use((err, req, res, next) => {
-  res.status(500)
+  res.status(400)
     .json({
       errors: err,
     });
