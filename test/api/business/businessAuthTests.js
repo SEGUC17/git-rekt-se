@@ -45,6 +45,9 @@ describe('Verified Business Sign Up API', () => {
 
   it('Should mark Business as verified', (done) => {
     const business = testData[0];
+    const emailObj = {
+      email: business.email,
+    };
     req.send(business)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -52,8 +55,8 @@ describe('Verified Business Sign Up API', () => {
         if (err) {
           done(err);
         } else {
-          // TODO Change Parameter
-          Business.find({}, (findErr, result) => {
+          // We can use email since it's unique
+          Business.find(emailObj, (findErr, result) => {
             if (findErr) {
               done(findErr);
             } else {
