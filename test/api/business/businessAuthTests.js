@@ -15,6 +15,13 @@ const testData = [{
   categories: ['Language'],
   branches: ['Nasr City'],
 }, {
+  password: '',
+  confirmPassword: 'blahblah',
+  description: 'This is for testing the API',
+  workingHours: 'Saturday To Thursday 8AM-5PM',
+  categories: ['Language'],
+  branches: ['Nasr City'],
+}, {
   password: 'blabizo',
   confirmPassword: 'blahblah',
   description: 'This is for testing the API',
@@ -84,35 +91,43 @@ describe('Verified Business Sign Up API', () => {
       });
   });
 
-  it('Should not allow sign up when password mismatch', (done) => {
+  it('Should not allow sign up when password is missing', (done) => {
     req.send(testData[1])
       .expect('Content-Type', /json/)
       .expect(400, {
-        error: 'Password mismatch',
+        error: 'Password is a required field.',
+      }, done);
+  });
+
+  it('Should not allow sign up when password mismatch', (done) => {
+    req.send(testData[2])
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        error: 'Passwords mismatch.',
       }, done);
   });
 
   it('Should not allow sign up when there are no categories', (done) => {
-    req.send(testData[2])
+    req.send(testData[3])
       .expect('Content-Type', /json/)
       .expect(400, {
-        error: 'Must Include atleast 1 Category',
+        error: 'Must Include atleast 1 Category.',
       }, done);
   });
 
   it('Should not allow sign up when there are no branches', (done) => {
-    req.send(testData[3])
+    req.send(testData[4])
       .expect('Content-Type', /json/)
       .expect(400, {
-        error: 'Must Include atleast 1 Branch',
+        error: 'Must Include atleast 1 Branch.',
       }, done);
   });
 
   it('Should not allow sign up when there are no working hours', (done) => {
-    req.send(testData[4])
+    req.send(testData[5])
       .expect('Content-Type', /json/)
       .expect(400, {
-        error: 'Must Include working hours',
+        error: 'Working Hours is a required field.',
       }, done);
   });
 });
