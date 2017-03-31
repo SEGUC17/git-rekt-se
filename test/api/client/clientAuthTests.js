@@ -23,8 +23,9 @@ describe('Client Signup API', () => {
   let req;
 
   before((done) => {
-    Client.collection.drop();
-    Client.ensureIndexes(done);
+    Client.collection.drop(() => {
+      Client.ensureIndexes(done);
+    });
   });
 
   beforeEach(() => {
