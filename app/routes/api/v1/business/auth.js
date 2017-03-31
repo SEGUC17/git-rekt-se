@@ -48,12 +48,14 @@ router.post('/confirm/signup', (req, res, next) => {
         Business.findOne({})
           .exec()
           .then((business) => {
+            /* eslint-disable no-param-reassign, no-underscore-dangle */
             business.password = body.password;
             business.description = body.description;
             business.workingHours = body.workingHours;
             business.categories.concat(body.categories);
             business.branches.concat(body.branches);
             business._status = 'verified';
+            /* eslint-enable no-param-reassign, no-underscore-dangle */
           })
           .catch(err => next([err]));
       } else {

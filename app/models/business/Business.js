@@ -18,7 +18,6 @@ const businessSchema = Schema({
   },
   password: {
     type: String,
-    required: true,
   },
   shortDescription: {
     type: String,
@@ -33,12 +32,10 @@ const businessSchema = Schema({
   categories: [{
     type: Schema.Types.ObjectId,
     ref: 'Category',
-    required: true,
   }],
   branches: [{
     type: Schema.Types.ObjectId,
     ref: 'Branch',
-    required: true,
   }],
   gallery: [{
     path: {
@@ -51,7 +48,6 @@ const businessSchema = Schema({
   }],
   workingHours: {
     type: String,
-    required: true,
   },
   _deleted: {
     type: Boolean,
