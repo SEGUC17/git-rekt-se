@@ -69,6 +69,41 @@ router.post('/signup', (req, res, next) => {
 });
 
 /**
+ * Send Confirmation Mail Route
+ * For resending a confirmation Mail to User
+ */
+
+router.post('/confirmation/send', (req, res, next) => {
+  req.checkBody(validationSchemas.clientConfirmEmailValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        ClientAuthenticator.generateConfirmationToken(req.body.email)
+          .then((token) => {
+            Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
+              .then(() => {
+                res.json({
+                  message: 'Please check your email for the email confirmation.',
+                });
+              })
+              .catch(e => next([e]));
+          })
+          .catch(e => next([e]));
+      } else {
+        next(result.array());
+      }
+    });
+});
+
+/**
+ * Confirm Email Route
+ */
+
+router.post('/confirmation/:token/confirm', (req, res, next) => {
+
+});
+
+/**
  *  Error Handling Middlewares.
  */
 

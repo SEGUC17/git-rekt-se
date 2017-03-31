@@ -59,8 +59,20 @@ const clientSignupValidation = {
   },
 };
 
+const clientConfirmEmailValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: 'Email is a required field.',
+    },
+    isEmail: {
+      errorMessage: 'Invalid Email.',
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
+  clientConfirmEmailValidation,
 };
 
 module.exports = validation;
