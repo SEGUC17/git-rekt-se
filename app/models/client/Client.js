@@ -50,7 +50,7 @@ const clientSchema = Schema({
 clientSchema.virtual('fullName')
   .get(() => `${this.firstName} ${this.lastName}`);
 
-clientSchema.pre('save', (done) => {
+clientSchema.pre('save', function isDone(done) {
   if (!this.isModified('password')) {
     done();
   } else {

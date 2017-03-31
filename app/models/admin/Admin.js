@@ -22,7 +22,7 @@ const adminSchema = Schema({
  * Hash password before saving the document
  */
 
-adminSchema.pre('save', (done) => {
+adminSchema.pre('save', function isDone(done) {
   if (!this.isModified('password')) {
     done();
   } else {
