@@ -51,4 +51,4 @@ const addBranches = (branches, business) => {
 module.exports = {
   addCategories,
   addBranches,
-}
+};

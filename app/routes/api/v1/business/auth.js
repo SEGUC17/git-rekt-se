@@ -59,7 +59,6 @@ router.post('/confirm/:token', (req, res, next) => {
           .then((business) => {
             BusinessUtils.addCategories(body.categories)
               .then((categories) => { /* eslint-disable no-param-reassign, no-underscore-dangle */
-
                 BusinessUtils.addBranches(body.branches, business)
                   .then((branches) => {
                     business.password = body.password;
