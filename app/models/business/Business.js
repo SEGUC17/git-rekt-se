@@ -64,7 +64,7 @@ const businessSchema = Schema({
  * Hash password before saving the document
  */
 
-businessSchema.pre('save', (done) => {
+businessSchema.pre('save', function preSave(done) {
   if (!this.isModified('password')) {
     done();
   } else {
@@ -83,7 +83,7 @@ businessSchema.pre('save', (done) => {
  * Check the password
  */
 
-businessSchema.methods.checkPassword = (guess, done) => {
+businessSchema.methods.checkPassword = function checkPassword(guess, done) {
   bcrypt.compare(guess, this.password, (err, matching) => {
     done(err, matching);
   });

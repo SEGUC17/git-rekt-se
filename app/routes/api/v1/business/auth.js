@@ -28,7 +28,7 @@ router.post('/signup', (req, res) => {
  * Verified Business Signup
  */
 // TODO will most probably change route
-router.post('/confirm/signup', (req, res, next) => {
+router.post('/confirm/:token', (req, res, next) => {
   /**
    * Form Validation
    */
@@ -40,12 +40,16 @@ router.post('/confirm/signup', (req, res, next) => {
     .withMessage('Password and Password Confirmation must match.');
 
   const body = req.body;
+  // TODO Change to token and verify
+  const dbQuery = {
+    name: body.name,
+  };
 
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
         // TODO Change Parameter
-        Business.findOne({})
+        Business.findOne(dbQuery)
           .exec()
           .then((business) => {
             /* eslint-disable no-param-reassign, no-underscore-dangle */
@@ -56,6 +60,11 @@ router.post('/confirm/signup', (req, res, next) => {
             business.branches.concat(body.branches);
             business._status = 'verified';
             /* eslint-enable no-param-reassign, no-underscore-dangle */
+            business.save()
+              .then(() => res.json({
+                message: 'Verification Completed Successfully',
+              }))
+              .catch(err => next([err]));
           })
           .catch(err => next([err]));
       } else {

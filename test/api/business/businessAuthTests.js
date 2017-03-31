@@ -4,52 +4,13 @@
 
 const chai = require('chai');
 const supertest = require('supertest');
+
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
+const errorMessages = require('../../../app/services/shared/Constants.js')
+  .validatorErrors;
 
-const testData = [{
-  password: 'blahblah',
-  confirmPassword: 'blahblah',
-  description: 'This is for testing the API',
-  workingHours: 'Saturday To Thursday 8AM-5PM',
-  categories: ['Language'],
-  branches: ['Nasr City'],
-}, {
-  password: '',
-  confirmPassword: 'blahblah',
-  description: 'This is for testing the API',
-  workingHours: 'Saturday To Thursday 8AM-5PM',
-  categories: ['Language'],
-  branches: ['Nasr City'],
-}, {
-  password: 'blabizo',
-  confirmPassword: 'blahblah',
-  description: 'This is for testing the API',
-  workingHours: 'Saturday To Thursday 10AM-3PM',
-  categories: ['Balabizo'],
-  branches: ['New Cairo'],
-}, {
-  password: 'blahblah',
-  confirmPassword: 'blahblah',
-  description: 'This is for testing the API',
-  workingHours: 'Saturday To Thursday 10AM-4PM',
-  categories: [],
-  branches: ['6th Of October'],
-}, {
-  password: 'blahblah',
-  confirmPassword: 'blahblah',
-  description: 'This is for testing the API',
-  workingHours: 'Saturday To Thursday 10AM-3PM',
-  categories: ['Balabizo'],
-  branches: [],
-}, {
-  password: 'blahblah',
-  confirmPassword: 'blahblah',
-  description: 'This is for testing the API',
-  workingHours: '',
-  categories: ['Balabizo'],
-  branches: ['New Cairo'],
-}];
+const testData = require('../../../app/seed/business/businessSeed');
 
 /**
  * Verified Business Sign Up Suite
@@ -60,13 +21,26 @@ describe('Verified Business Sign Up API', () => {
 
   before((done) => {
     Business.collection.drop(() => {
-      Business.ensureIndexes(done);
+      Business.ensureIndexes(() => {
+        const data = testData[0];
+        const businessData = {
+          name: data.name,
+          email: data.email,
+          description: data.description,
+          phoneNumbers: data.phoneNumbers,
+        };
+        /* eslint-disable no-new */
+        new Business(businessData)
+          .save()
+          .then(() => done())
+          .catch(done);
+      });
     });
   });
 
   beforeEach(() => {
     req = supertest(app)
-      .post('/api/v1/business/auth/signup');
+      .post('/api/v1/business/auth/confirm/123');
   });
 
   it('Should mark Business as verified', (done) => {
@@ -83,8 +57,9 @@ describe('Verified Business Sign Up API', () => {
             if (findErr) {
               done(findErr);
             } else {
-              chai.expect(result[0].verified)
-                .to.equal(true);
+              /* eslint-disable no-underscore-dangle */
+              chai.expect(result[0]._status)
+                .to.equal('verified');
               done();
             }
           });
@@ -95,40 +70,95 @@ describe('Verified Business Sign Up API', () => {
   it('Should not allow sign up when password is missing', (done) => {
     req.send(testData[1])
       .expect('Content-Type', /json/)
-      .expect(400, {
-        error: 'Password is a required field.',
-      }, done);
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          const errors = res.body.errors;
+          const finalErr = errors.filter(er => er.msg === errorMessages.passwordRequired);
+          if (finalErr.length === 0) {
+            done(new Error('Password is missing but an error is not sent!'));
+          } else {
+            done();
+          }
+        }
+      });
   });
 
   it('Should not allow sign up when password mismatch', (done) => {
     req.send(testData[2])
       .expect('Content-Type', /json/)
-      .expect(400, {
-        error: 'Password and Password Confirmation must match.',
-      }, done);
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          const errors = res.body.errors;
+          const finalErr = errors.filter(er => er.msg === errorMessages.passwordMismatch);
+          if (finalErr.length === 0) {
+            done(new Error('Passwords mismatch but an error is not sent!'));
+          } else {
+            done();
+          }
+        }
+      });
   });
 
   it('Should not allow sign up when there are no categories', (done) => {
     req.send(testData[3])
       .expect('Content-Type', /json/)
-      .expect(400, {
-        error: 'Must Include atleast 1 Category.',
-      }, done);
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          const errors = res.body.errors;
+          const finalErr = errors.filter(er => er.msg === errorMessages.categoriesRequired);
+          if (finalErr.length === 0) {
+            done(new Error('Missing Categories but an error is not sent'));
+          } else {
+            done();
+          }
+        }
+      });
   });
 
   it('Should not allow sign up when there are no branches', (done) => {
     req.send(testData[4])
       .expect('Content-Type', /json/)
-      .expect(400, {
-        error: 'Must Include atleast 1 Branch.',
-      }, done);
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          const errors = res.body.errors;
+          const finalErr = errors.filter(er => er.msg === errorMessages.branchesRequired);
+          if (finalErr.length === 0) {
+            done(new Error('Missing Branches but an error is not sent'));
+          } else {
+            done();
+          }
+        }
+      });
   });
 
   it('Should not allow sign up when there are no working hours', (done) => {
     req.send(testData[5])
       .expect('Content-Type', /json/)
-      .expect(400, {
-        error: 'Working Hours is a required field.',
-      }, done);
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          const errors = res.body.errors;
+          const finalErr = errors.filter(er => er.msg === errorMessages.workingHoursRequired);
+          if (finalErr.length === 0) {
+            done(new Error('Missing Working Hours but an error is not sent'));
+          } else {
+            done();
+          }
+        }
+      });
   });
 });
