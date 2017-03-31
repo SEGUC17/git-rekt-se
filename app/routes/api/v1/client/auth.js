@@ -5,6 +5,7 @@ const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
 const Client = require('../../../../models/client/Client');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
+const Strings = require('../../../../services/shared/Strings');
 
 const router = express.Router();
 
@@ -41,7 +42,7 @@ router.post('/signup', (req, res, next) => {
   req.checkBody(validationSchemas.clientSignupValidation);
   req.checkBody('confirmPassword')
     .equals(req.body.password)
-    .withMessage('Password and Password Confirmation must match.');
+    .withMessage(Strings.clientValidationErrors.passwordMismatch);
 
   req.getValidationResult()
     .then((result) => {
@@ -54,14 +55,14 @@ router.post('/signup', (req, res, next) => {
                 Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
                   .then(() => {
                     res.json({
-                      message: 'Signup Successful, Please check your email for the email confirmation.',
+                      message: Strings.clientSuccess.signup,
                     });
                   })
                   .catch(e => next([e]));
               })
               .catch(e => next([e]));
           })
-          .catch(() => next(['User already exists.']));
+          .catch(() => next([Strings.clientValidationErrors.userExists]));
       } else {
         next(result.array());
       }
@@ -83,7 +84,7 @@ router.post('/confirmation/send', (req, res, next) => {
             Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
               .then(() => {
                 res.json({
-                  message: 'Please check your email for the email confirmation.',
+                  message: Strings.clientSuccess.emailConfirmation,
                 });
               })
               .catch(e => next([e]));

@@ -1,60 +1,63 @@
 /**
  * Express validator schema
  */
+const clientValidationErrors = require('./Strings')
+  .clientValidationErrors;
 
 const clientSignupValidation = {
   email: {
     notEmpty: {
-      errorMessage: 'Email is a required field.',
+      errorMessage: clientValidationErrors.emailEmpty,
     },
     isEmail: {
-      errorMessage: 'Invalid Email.',
+      errorMessage: clientValidationErrors.invalidEmail,
     },
   },
   password: {
     notEmpty: {
-      errorMessage: 'Password is a required field.',
+      errorMessage: clientValidationErrors.emptyPassword,
     },
     matches: {
       options: [/^(?=.*\d).{8,15}$/],
-      errorMessage: 'Password length must be between 8 and 15 and contains at least one number.',
+      errorMessage: clientValidationErrors.emptyPassword,
     },
   },
   confirmPassword: {
     notEmpty: {
-      errorMessage: 'Password Confirmation is a required field.',
+      errorMessage: clientValidationErrors.emptyConfirmation,
     },
   },
   firstName: {
     notEmpty: {
-      errorMessage: 'Firstname is a required field.',
+      errorMessage: clientValidationErrors.emptyFirstName,
     },
   },
   lastName: {
     notEmpty: {
-      errorMessage: 'Firstname is a required field.',
+      errorMessage: clientValidationErrors.emptyLastName,
     },
   },
   mobile: {
     notEmpty: {
-      errorMessage: 'Mobile number is a required field.',
+      errorMessage: clientValidationErrors.emptyMobile,
     },
     matches: {
       options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
-      errorMessage: 'Invalid Mobile Number.',
+      errorMessage: clientValidationErrors.invalidMobile,
     },
   },
   gender: {
     notEmpty: {
-      errorMessage: 'Gender is a required field.',
+      errorMessage: clientValidationErrors.emptyGender,
     },
     matches: {
       options: [/^(Male|Female)$/],
+      errorMessage: clientValidationErrors.invalidGender,
     },
   },
   birthdate: {
     isDate: {
-      errorMessage: 'Invalid birthdate',
+      errorMessage: clientValidationErrors.invalidBirthdate,
     },
   },
 };
@@ -62,10 +65,10 @@ const clientSignupValidation = {
 const clientConfirmEmailValidation = {
   email: {
     notEmpty: {
-      errorMessage: 'Email is a required field.',
+      errorMessage: clientValidationErrors.emailEmpty,
     },
     isEmail: {
-      errorMessage: 'Invalid Email.',
+      errorMessage: clientValidationErrors.invalidEmail,
     },
   },
 };
