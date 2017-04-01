@@ -103,3 +103,5 @@ router.post('/addServiceImage/:id', upload.any(), (req, res, next) => { // ensur
       }
     });
 });
+
+module.exports = router;

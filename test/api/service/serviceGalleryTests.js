@@ -186,5 +186,4 @@ describe('Service Gallery Creation Tests', () => {
         }
       });
   });
-
 });
