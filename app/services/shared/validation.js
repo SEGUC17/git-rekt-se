@@ -1,8 +1,10 @@
 /**
  * Express validator schema
  */
-const clientValidationErrors = require('./Strings')
-  .clientValidationErrors;
+const Strings = require('./Strings');
+
+const clientValidationErrors = Strings.clientValidationErrors;
+const bussinessValidationErrors = Strings.bussinessValidationErrors;
 
 const clientSignupValidation = {
   email: {
@@ -73,8 +75,39 @@ const clientConfirmEmailValidation = {
   },
 };
 
+const businessSignupValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emailEmpty,
+    },
+    isEmail: {
+      errorMessage: bussinessValidationErrors.invalidEmail,
+    },
+  },
+  name: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyName,
+    },
+  },
+  mobile: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyMobile,
+    },
+    matches: {
+      options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
+      errorMessage: bussinessValidationErrors.invalidMobile,
+    },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyDescription,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
+  businessSignupValidation,
   clientConfirmEmailValidation,
 };
 
