@@ -1,47 +1,51 @@
 const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
-const Client = require('../../../app/models/client/Client');
-const clients = require('../../../app/seed/client/clientSeed');
+const Business = require('../../../app/models/business/Business');
+const Admin = require('../../../app/models/admin/Admin');
+const unverifiedBussiness = require('../../../app/seed/business/unverifiedBusinessSeed');
 
 /**
- * Client Signup Suite
+ * Business Signup Suite
  */
 
-describe('Client Signup API', () => {
+describe('Unverified Business Signup API', () => {
   let req;
 
   before((done) => {
-    Client.collection.drop(() => {
-      Client.ensureIndexes(done);
-    });
+    supertest(app)
+      .post('/api/v1/admin/auth/create')
+      .end((request, res) => {
+        Business.collection.drop(() => {
+          Business.ensureIndexes(done);
+        });
+      });
   });
 
   beforeEach(() => {
     req = supertest(app)
-      .post('/api/v1/client/auth/signup');
+      .post('/api/v1/business/auth/unverified/signup');
   });
 
   /**
-   * Register a new client
+   * Register a new Business
    */
 
-  it('should register a new client', (done) => {
-    const client1 = clients[0];
-    req.send(client1)
+  it('should add a new business', (done) => {
+    const business1 = unverifiedBussiness[0];
+    req.send(business1)
       .expect('Content-Type', /json/)
-      .expect(200)
+      // .expect(200)
       .end((err, res) => {
         /**
          * Error happend with request, fail the test
          * with the error message.
          */
-
         if (err) {
           done(err);
         } else {
-          Client.find({
-            email: client1.email,
+          Business.find({
+            email: business1.email,
           }, (finderr, data) => {
             if (finderr) {
               done(finderr);
@@ -55,9 +59,9 @@ describe('Client Signup API', () => {
       });
   });
 
-  it('should register a another client with different email.', (done) => {
-    const client2 = clients[1];
-    req.send(client2)
+  it('should register add another business with different email.', (done) => {
+    const business2 = unverifiedBussiness[1];
+    req.send(business2)
       .expect('Content-Type', /json/)
       .expect(200)
       .end((err, res) => {
@@ -65,12 +69,11 @@ describe('Client Signup API', () => {
          * Error happend with request, fail the test
          * with the error message.
          */
-
         if (err) {
           done(err);
         } else {
-          Client.find({
-            email: client2.email,
+          Business.find({
+            email: business2.email,
           }, (finderr, data) => {
             if (finderr) {
               done(finderr);
@@ -84,8 +87,8 @@ describe('Client Signup API', () => {
       });
   });
 
-  it('should have two users in the database', (done) => {
-    Client.find()
+  it('should have two unverified businesses in the database', (done) => {
+    Business.find()
       .then((data) => {
         chai.expect(data.length)
           .to.equal(2);
@@ -95,26 +98,32 @@ describe('Client Signup API', () => {
   });
 
   it('should not allow duplicate emails at registration', (done) => {
-    const client1 = clients[1];
-    req.send(client1)
+    const business1 = unverifiedBussiness[1];
+    req.send(business1)
       .expect('Content-Type', /json/)
       .expect(400, {
-        errors: ['User already exists.'],
+        errors: ['Business already exists.'],
       }, done);
   });
 
-  it('should not allow registration with mis-matching passwords', (done) => {
-    const badClient = Object.assign({}, clients[0]);
-    badClient.confirmPassword = 'YEQmxoav4NK';
+  it('should not allow registration with wrong information.', (done) => {
+    const badBusiness = Object.assign({}, unverifiedBussiness[0]);
+    badBusiness.mobile = '98172323212323';
 
-    req.send(badClient)
+    req.send(badBusiness)
       .expect('Content-Type', /json/)
       .expect(400, {
         errors: [{
-          param: 'confirmPassword',
-          msg: 'Password and Password Confirmation must match.',
-          value: 'YEQmxoav4NK',
+          param: 'mobile',
+          msg: 'Mobile must be in this format 01xxxxxxxxx',
+          value: '98172323212323',
         }],
       }, done);
+  });
+
+  after((done) => {
+    Admin.collection.drop(() => {
+      Admin.ensureIndexes(done);
+    });
   });
 });

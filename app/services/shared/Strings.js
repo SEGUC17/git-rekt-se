@@ -2,13 +2,29 @@
  * Constant Strings
  */
 
+const generalErrors = {
+  mailerError: 'An issue occured while send the email.',
+};
+
 const bussinessValidationErrors = {
+  emptyEmail: 'Email is a required field.',
+  invalidEmail: 'Invalid Email.',
+  emptyName: 'Name is a required field.',
+  emptyMobile: 'Mobile is a required field.',
+  emptyDescription: 'Description is a required field.',
+  invalidMobile: 'Mobile must be in this format 01xxxxxxxxx',
   passwordRequired: 'Password is a required field.',
   passwordLength: 'Password length must be between 8 and 15 and contains at least one number.',
   passwordMismatch: 'Password and Password Confirmation must match.',
   workingHoursRequired: 'Working Hours is a required field.',
   categoriesRequired: 'Must Include atleast 1 category.',
   branchesRequired: 'Must Include aleast 1 branch.',
+  businessExists: 'Business already exists.',
+};
+
+const businessSuccess = {
+  unverifiedSignup: 'Signup Successful, A representative will contact you soon.',
+  emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
 const clientValidationErrors = {
@@ -18,7 +34,7 @@ const clientValidationErrors = {
   invalidPassword: 'Password length must be between 8 and 15 and contains at least one number.',
   emptyConfirmation: 'Password Confirmation is a required field.',
   passwordMismatch: 'Password and Password Confirmation must match.',
-  emptyFirstName: 'Firstname is a required fielD.',
+  emptyFirstName: 'Firstname is a required field.',
   emptyLastName: 'Lastname is a required field.',
   emptyMobile: 'Mobile is a required field.',
   invalidMobile: 'Mobile must be in this format 01xxxxxxxxx',
@@ -34,7 +50,9 @@ const clientSuccess = {
 };
 
 module.exports = {
+  generalErrors,
   clientValidationErrors,
   clientSuccess,
   bussinessValidationErrors,
+  businessSuccess,
 };
