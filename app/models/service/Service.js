@@ -47,6 +47,10 @@ const serviceSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: 'Review',
   }],
+  categories: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
+  }],
   gallery: [{
     path: {
       type: String,
