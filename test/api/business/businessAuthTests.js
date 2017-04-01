@@ -2,6 +2,7 @@ const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
+const Admin = require('../../../app/models/admin/Admin');
 const unverifiedBussiness = require('../../../app/seed/business/unverifiedBusinessSeed');
 
 /**
@@ -12,9 +13,13 @@ describe('Unverified Business Signup API', () => {
   let req;
 
   before((done) => {
-    Business.collection.drop(() => {
-      Business.ensureIndexes(done);
-    });
+    supertest(app)
+      .post('/api/v1/admin/auth/create')
+      .end((request, res) => {
+        Business.collection.drop(() => {
+          Business.ensureIndexes(done);
+        });
+      });
   });
 
   beforeEach(() => {
@@ -114,5 +119,11 @@ describe('Unverified Business Signup API', () => {
           value: '98172323212323',
         }],
       }, done);
+  });
+
+  after((done) => {
+    Admin.collection.drop(() => {
+      Admin.ensureIndexes(done);
+    });
   });
 });

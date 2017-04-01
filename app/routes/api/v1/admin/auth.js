@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const Admin = require('../../../../models/admin/Admin.js');
+const Admin = require('../../../../models/admin/Admin');
 
 const router = express.Router();
 
@@ -16,7 +16,6 @@ router.use(bodyParser.json());
  */
 
 router.post('/create', (req, res) => {
-  console.log(1);
   new Admin({
     email: 'mohamedelzarei@gmail.com',
     password: 'helloworld',

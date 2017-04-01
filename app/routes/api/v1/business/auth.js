@@ -56,7 +56,7 @@ router.post('/unverified/signup', (req, res, next) => {
                   message: Strings.businessSuccess.unverifiedSignup,
                 });
               })
-              .catch(() => next(Strings.generalErrors.mailerError));
+              .catch(() => next([Strings.generalErrors.mailerError]));
           })
           .catch(() => next([Strings.bussinessValidationErrors.businessExists]));
       } else {
