@@ -4,6 +4,7 @@
 
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
+const Admin = require('../../models/admin/Admin');
 
 /**
  * Mailer Configuration
@@ -28,7 +29,7 @@ exports.clientConfirmEmail = (email, host, resetToken) => {
   const emailContent = {
     to: [email],
     from: info.from,
-    subject: 'Gi Rekt Confirm Email',
+    subject: 'Git Rekt Confirm Email',
     html: `
             Hello,
             Thanks for registering on our ${emailTemplateVars.title}, to confirm your email click
@@ -48,4 +49,37 @@ exports.clientConfirmEmail = (email, host, resetToken) => {
       return resolve(information);
     });
   });
+};
+
+exports.notifyAdminOfNewBusinessSignup = () => {
+  const emailContent = {
+    from: info.from,
+    subject: '[Git-Rekt] New Business Signup',
+    html: `
+            Hello, <br />
+            A new business has requested to signup and be listed on the directory waiting for approval.
+            --------------------------------- <br/>
+            This is an automated message.
+      `,
+    text: `
+       Hello,
+       A new business has requested to signup and be listed on the directory waiting for approval.
+      `,
+  };
+
+  Admin.findOne()
+    .then(((adminInfo) => {
+      emailContent.to = [adminInfo.email];
+      return new Promise((resolve, reject) => {
+        mailer.sendMail(emailContent, (err, information) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(information);
+        });
+      });
+    }))
+    .catch((err) => {
+      throw err; // TODO: Handle in a better way
+    });
 };
