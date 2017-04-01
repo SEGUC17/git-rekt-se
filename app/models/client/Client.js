@@ -80,9 +80,15 @@ clientSchema.pre('save', function preSave(done) {
 /**
  * Check If {guess} matches the user password.
  */
-clientSchema.methods.checkPassword = (guess, done) => {
-  bcrypt.compare(guess, this.password, (err, matching) => {
-    done(err, matching);
+
+clientSchema.methods.checkPassword = function checkPassword(guess) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(guess, this.password, (err, matching) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(matching);
+    });
   });
 };
 
