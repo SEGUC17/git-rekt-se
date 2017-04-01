@@ -38,7 +38,6 @@ const serviceSchema = Schema({
   gallery: [{
     path: {
       type: String,
-      required: true,
     },
     description: {
       type: String,

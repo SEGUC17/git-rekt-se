@@ -1,13 +1,13 @@
 const clientAuthAPI = require('./api/v1/client/auth');
 const businessAuthAPI = require('./api/v1/business/auth');
 const adminAuthAPI = require('./api/v1/admin/auth');
-const visitorAPI = require('./api/v1/visitor/index');
+const ServiceAPI = require('./api/v1/visitor/serviceRoutes');
 
 module.exports = (app) => {
   /**
    * Visitor Routes
    */
-  app.use('api/v1/visitor', visitorAPI);
+  app.use('/api/v1/visitor', ServiceAPI);
   /**
    * Client Routes
    */
