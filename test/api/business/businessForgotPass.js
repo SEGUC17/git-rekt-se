@@ -6,7 +6,7 @@ const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
-const businesses = require('../../../app/seed/business/business');
+const businesses = require('../../../app/seed/business/businessForgotPassword');
 const Strings = require('../../../app/services/shared/Strings');
 /**
  * Test Suite
@@ -15,7 +15,7 @@ const Strings = require('../../../app/services/shared/Strings');
 describe('Business forgot password API', () => {
   let req;
 
-   before((done) => {
+  before((done) => {
     Business.collection.drop(() => {
       Business.ensureIndexes(() => {
         const data = businesses[0];
@@ -25,17 +25,18 @@ describe('Business forgot password API', () => {
           description: data.description,
           phoneNumbers: data.phoneNumbers,
         };
+
         /* eslint-disable no-new */
+
         new Business(businessData)
           .save()
           .then(() => done())
           .catch(done);
       });
     });
-});
+  });
 
   beforeEach(() => {
-    console.log('I run before every it block');
     req = supertest(app)
       .post('/api/v1/business/auth/forgot');
   });
@@ -44,38 +45,9 @@ describe('Business forgot password API', () => {
   //    * Failing Test
   //    */
 
-  //   it('should do something modular, meaningful and fail', (done) => {
-  //     req.expect(404)
-  //       .end((err, res) => {
-  //         /**
-  //          * Error happend with request, fail the test
-  //          * with the error message.
-  //          */
-  //         if (err) {
-  //           return done(err);
-  //         }
-
-  //         /**
-  //          * Do something with the response
-  //          */
-
-  //         const doSomethingMeaningFul = res.body.message === 'Working' ? 1 : 0;
-
-  //         chai.expect(doSomethingMeaningFul)
-  //           .to.equal(1);
-
-  //         return done();
-  //       });
-  //   });
-
-
-  /**
-   * Passing test
-   */
-
-  it('should do something modular, meaningful and pass', (done) => {
-    var mail1 = {
-      "email": "hadyyasser23@gmail.com"
+  it('should not send an email but tell the user to check their email regardless', (done) => {
+    const mail1 = {
+      email: 'hadyyasser2@gmail.com',
     };
     req.send(mail1)
       .expect('Content-Type', /json/)
@@ -94,9 +66,46 @@ describe('Business forgot password API', () => {
          * Do something with the response
          */
 
-        const doSomethingMeaningFul = res.body.message === Strings.CHECK_YOU_EMAIL ? 1 : 0;
+        const eq = res.body.message === Strings.businessForgotPassword.CHECK_YOU_EMAIL ? 1 : 0;
+        const chckMsg = eq;
 
-        chai.expect(doSomethingMeaningFul)
+        chai.expect(chckMsg)
+          .to.equal(1);
+
+        return done();
+      });
+  });
+
+
+  /**
+   * Passing test
+   */
+
+  it('should send an email to a valid Business that is in the database', (done) => {
+    const mail1 = {
+      email: 'hadyyasser23@gmail.com',
+    };
+    req.send(mail1)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        /**
+         * Error happend with request, fail the test
+         * with the error message.
+         */
+
+        if (err) {
+          return done(err);
+        }
+
+        /**
+         * Do something with the response
+         */
+
+        const eq = res.body.message === Strings.businessForgotPassword.CHECK_YOU_EMAIL ? 1 : 0;
+        const chckMsg = eq;
+
+        chai.expect(chckMsg)
           .to.equal(1);
 
         return done();
