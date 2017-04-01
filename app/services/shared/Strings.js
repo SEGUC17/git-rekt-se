@@ -49,10 +49,16 @@ const clientSuccess = {
   emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
+const businessForgotPassword = {
+  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
+  INVALID_RESET_TOKEN: 'Invalid reset token.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
   bussinessValidationErrors,
   businessSuccess,
+  businessForgotPassword,
 };
