@@ -38,22 +38,19 @@ router.get('/category/:id/:offset', (req, res, next) => {
         },
       },
     }, {
-      _deleted: 0,
-      gallery: 0,
-      password: 0,
+      shortDescription: 1,
+      name: 1,
     }, {
       skip: offset * 10,
       limit: 10,
     })
-    .populate('branches', 'location address')
-    .populate('categories', 'title icon')
     .exec((err2, businesses) => {
       if (err2) {
         return next(err);
       }
       if (cnt === 0) {
-        return res.json({
-          message: 'No related businesses',
+        return res.status(400).json({
+          errors: 'No related businesses',
         });
       }
       return res.json({
