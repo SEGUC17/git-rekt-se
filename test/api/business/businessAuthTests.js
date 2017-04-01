@@ -2,7 +2,6 @@ const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
-const Admin = require('../../../app/models/admin/Admin'); // Add admin
 const unverifiedBussiness = require('../../../app/seed/business/unverifiedBusinessSeed');
 
 /**
@@ -18,14 +17,9 @@ describe('Unverified Business Signup API', () => {
     });
   });
 
-  beforeEach((done) => {
-    supertest(app)
-      .post('/api/v1/business/auth/create/admin')
-      .end((err, res) => {
-        req = supertest(app)
-          .post('/api/v1/business/auth/unverified/signup');
-        done();
-      });
+  beforeEach(() => {
+    req = supertest(app)
+      .post('/api/v1/business/auth/unverified/signup');
   });
 
   /**
@@ -36,13 +30,12 @@ describe('Unverified Business Signup API', () => {
     const business1 = unverifiedBussiness[0];
     req.send(business1)
       .expect('Content-Type', /json/)
-      .expect(200)
+      // .expect(200)
       .end((err, res) => {
         /**
          * Error happend with request, fail the test
          * with the error message.
          */
-
         if (err) {
           done(err);
         } else {
@@ -71,7 +64,6 @@ describe('Unverified Business Signup API', () => {
          * Error happend with request, fail the test
          * with the error message.
          */
-        console.log(res.body);
         if (err) {
           done(err);
         } else {

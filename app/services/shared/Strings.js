@@ -2,6 +2,10 @@
  * Constant Strings
  */
 
+const generalErrors = {
+  mailerError: 'An issue occured while send the email.',
+};
+
 const bussinessValidationErrors = {
   emptyEmail: 'Email is a required field.',
   invalidEmail: 'Invalid Email.',
@@ -46,6 +50,7 @@ const clientSuccess = {
 };
 
 module.exports = {
+  generalErrors,
   clientValidationErrors,
   clientSuccess,
   bussinessValidationErrors,

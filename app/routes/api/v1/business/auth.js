@@ -5,7 +5,6 @@ const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
-const Admin = require('../../../../models/admin/Admin');
 const mongoose = require('mongoose');
 
 const router = express.Router();
@@ -21,15 +20,6 @@ router.use(expressValidator({}));
 /**
  * Business signup route
  */
-
-router.post('/create/admin', (req, res) => {
-  new Admin({
-    email: 'mohamedelzarei@gmail.com',
-    password: 'helloworld',
-  })
-    .save()
-    .then(() => res.json('Added'));
-});
 
 router.post('/unverified/signup', (req, res, next) => {
   /**
@@ -66,7 +56,7 @@ router.post('/unverified/signup', (req, res, next) => {
                   message: Strings.businessSuccess.unverifiedSignup,
                 });
               })
-              .catch(e => next([e]));
+              .catch(() => next(Strings.generalErrors.mailerError));
           })
           .catch(() => next([Strings.bussinessValidationErrors.businessExists]));
       } else {
