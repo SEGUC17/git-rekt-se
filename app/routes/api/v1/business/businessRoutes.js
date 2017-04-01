@@ -31,7 +31,7 @@ router.get('/:id', (req, res, next) => {
       gallery: business.gallery,
       description: business.description,
       workingHours: business.workingHours,
-      _id : business._id,
+      id: business.id,
     };
     res.json(returnedBusiness);
     return returnedBusiness;
