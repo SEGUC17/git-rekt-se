@@ -51,6 +51,11 @@ router.get('/category/:id/:offset', (req, res, next) => {
       if (err2) {
         return next(err);
       }
+      if (cnt === 0) {
+        return res.json({
+          message: 'No related businesses',
+        });
+      }
       return res.json({
         count: cnt,
         results: businesses,
