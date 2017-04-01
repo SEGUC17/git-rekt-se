@@ -13,54 +13,6 @@ const router = express.Router();
 router.use(bodyParser.json());
 
 /**
- * Inserting dummy data for testing
- */
-
-router.get('/insert', (req, res, next) => {
-  const newBranch = new Branch({
-    location: 'Nasr City',
-    address: '123 nasr street',
-  });
-
-  newBranch.save((err, newbran) => {
-    if (err) {
-      console.log(err);
-    }
-  });
-
-  const newCategory = new Category({
-    type: 'Service',
-    title: 'Nasr City',
-  });
-
-  newCategory.save((err, newcat) => {
-    if (err) {
-      console.log(err);
-    }
-  });
-
-  const newBusiness = new Business({
-    name: 'hobala25',
-    email: 'test@gmail.com',
-    shortDescription: 'This item is for testing the Business SignUp API',
-    phoneNumbers: ['12345677', '22222222', '32414553'],
-    password: 'blahblah1',
-    confirmPassword: 'blahblah1',
-    description: 'This is for testing the API',
-    workingHours: 'Saturday To Thursday 8AM-5PM',
-  });
-  newBusiness.branches.push(newBranch.id);
-  newBusiness.categories.push(newCategory.id);
-  newBusiness.save((err, newBuss) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send('hob');
-    }
-  });
-});
-
-/**
  * View business page
  */
 router.get('/:id', (req, res, next) => {
