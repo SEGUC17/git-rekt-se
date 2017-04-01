@@ -6,9 +6,17 @@ const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+
 
 const router = express.Router();
 mongoose.Promise = Promise;
+
+require('dotenv')
+  .config();
+
+const JWT_KEY = process.env.JWT_KEY;
+
 
 /**
  * Parsing Middleware(s)
@@ -66,6 +74,41 @@ router.post('/unverified/signup', (req, res, next) => {
 });
 
 /**
+ * Business forgot password
+ */
+
+router.post('/forgot', (req, res, next) => {
+  const email = req.body.email;
+  const iat = Math.floor(Date.now() / 1000);
+  const resetToken = jwt.sign({
+    email,
+    iat,
+  }, JWT_KEY, {
+    expiresIn: '1h',
+  });
+
+  Business.findOne({
+    email: req.body.email,
+  }).exec().then((business) => {
+    if (!business) { // Business not found, Invalid mail
+      // Not using middleware due to status
+
+      res.json({
+        message: Strings.CHECK_YOU_EMAIL,
+      });
+    }
+
+    business.passwordResetTokenDate = iat * 1000;
+
+    business.save().then(() => {
+      Mailer.forgotPassword(email, req.headers.host, resetToken)
+        .then(() => res.json('working'))
+        .catch(() => res.json('err'));
+    });
+  }).catch(err => next([err]));
+});
+
+/**
  *  Error Handling Middlewares.
  */
 
@@ -77,3 +120,4 @@ router.use((err, req, res, next) => {
 });
 
 module.exports = router;
+
