@@ -62,6 +62,11 @@ router.post('/addServiceImage/:id', upload.any(), (req, res, next) => { // ensur
             message: 'This service does not belong to your business!',
           });
         }
+      } else {
+        res.json({
+          message: 'Invalid service!',
+        });
+        next(err);
       }
     });
 });
