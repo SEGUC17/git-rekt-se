@@ -79,7 +79,7 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
                 expiresIn: '10d',
               });
               resolve({
-                message: 'Client Login Sucess.',
+                message: 'Client Login Success.',
                 id: user._id,
                 email: user.email,
                 token,

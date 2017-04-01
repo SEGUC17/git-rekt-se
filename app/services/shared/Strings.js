@@ -30,7 +30,7 @@ const businessSuccess = {
 const clientValidationErrors = {
   emptyEmail: 'Email is a required field.',
   invalidEmail: 'Invalid Email.',
-  emptyPassword: 'Email is a required field.',
+  emptyPassword: 'Password is a required field.',
   invalidPassword: 'Password length must be between 8 and 15 and contains at least one number.',
   emptyConfirmation: 'Password Confirmation is a required field.',
   passwordMismatch: 'Password and Password Confirmation must match.',

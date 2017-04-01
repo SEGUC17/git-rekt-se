@@ -84,7 +84,7 @@ const clientConfirmEmailValidation = {
 const clientLoginValidation = {
   email: {
     notEmpty: {
-      errorMessage: clientValidationErrors.emailEmpty,
+      errorMessage: clientValidationErrors.emptyEmail,
     },
     isEmail: {
       errorMessage: clientValidationErrors.invalidEmail,
@@ -108,7 +108,7 @@ const clientLoginValidation = {
 const businessSignupValidation = {
   email: {
     notEmpty: {
-      errorMessage: bussinessValidationErrors.emailEmpty,
+      errorMessage: bussinessValidationErrors.emptyEmail,
     },
     isEmail: {
       errorMessage: bussinessValidationErrors.invalidEmail,
