@@ -2,7 +2,7 @@ const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Client = require('../../../app/models/client/Client');
-const clients = require('../../../app/seed/client/clientSeed');
+const clients = require('../../../app/seed/client/clientForgotPasswordSeed');
 
 /**
  * Client Signup Suite
