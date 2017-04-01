@@ -14,7 +14,7 @@ router.use(bodyParser.json);
  * View Related Business route
  */
 
-router.get('business/category/:id/:offset', (req, res, next) => {
+router.get('/category/:id/:offset', (req, res, next) => {
   const categoryId = req.params.id;
   const offset = req.params.offset;
   Business.count({ categories: {
