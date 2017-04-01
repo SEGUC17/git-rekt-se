@@ -101,7 +101,7 @@ router.post('/forgot', (req, res, next) => {
     business.passwordResetTokenDate = iat * 1000;
 
     business.save().then(() => {
-      Mailer.forgotPassword(email, req.headers.host, resetToken)
+      Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
         .then(() => res.json('working'))
         .catch(() => res.json('err'));
     });
