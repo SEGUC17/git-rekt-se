@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
   },
   filename(req, file, cb) {
     const buf = crypto.randomBytes(16);
-    const path = Date.now() + buf.toString('hex') + '../../../../public/uploads/service' + file.originalname;
+    const path = `${Date.now() + buf.toString('hex')}../../../../public/uploads/service${file.originalname}`;
     cb(null, path);
   },
 });
@@ -36,25 +36,32 @@ router.post('/addServiceImage/:id', upload.any(), (req, res, next) => { // ensur
     path: req.files[0],
     description: req.body.description,
   });
-/* match logged in business to service._businesss
- to check whether logged in business matches the service provider.*/
   Service.findOne({
     _id: req.params.id,
   })
     .exec((err, service) => {
       if (service) {
-        service.gallery.push(image);
-        Service.save((err2) => {
-          if (err) {
-            return next(err);
-          }
-          if (err2) {
-            return next(err2);
-          }
-          return res.json({
-            message: 'Image added succesfully!',
+         /* match logged in business to service._businesss
+          to check whether logged in business matches the service provider.*/
+        if (Service._business === req.user._id) {
+          service.gallery.push(image);
+          Service.save((err2) => {
+            if (err) {
+              next(err);
+            } else
+            if (err2) {
+              next(err2);
+            } else {
+              res.json({
+                message: 'Image added succesfully!',
+              });
+            }
           });
-        });
+        } else {
+          res.json({
+            message: 'This service does not belong to your business!',
+          });
+        }
       }
     });
 });
