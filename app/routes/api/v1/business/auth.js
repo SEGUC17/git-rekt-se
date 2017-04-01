@@ -92,17 +92,15 @@ router.post('/forgot', (req, res, next) => {
   }).exec().then((business) => {
     if (!business) { // Business not found, Invalid mail
       // Not using middleware due to status
-
-      res.json({
-        message: Strings.CHECK_YOU_EMAIL,
+      return res.json({
+        message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
       });
     }
-
     business.passwordResetTokenDate = iat * 1000;
 
-    business.save().then(() => {
+    return business.save().then(() => {
       Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
-        .then(() => res.json('working'))
+        .then(() => res.json({ message: Strings.businessForgotPassword.CHECK_YOU_EMAIL }))
         .catch(() => res.json('err'));
     });
   }).catch(err => next([err]));
