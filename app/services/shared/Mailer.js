@@ -78,6 +78,6 @@ exports.notifyAdminOfNewBusinessSignup = () => {
           return resolve(information);
         });
       })
-      .catch(err => reject(err));
+      .catch(reject);
   });
 };
