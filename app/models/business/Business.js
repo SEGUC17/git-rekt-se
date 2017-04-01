@@ -18,7 +18,7 @@ const businessSchema = Schema({
   },
   password: {
     type: String,
-    required: true,
+
   },
   shortDescription: {
     type: String,
@@ -33,12 +33,12 @@ const businessSchema = Schema({
   categories: [{
     type: Schema.Types.ObjectId,
     ref: 'Category',
-    required: true,
+
   }],
   branches: [{
     type: Schema.Types.ObjectId,
     ref: 'Branch',
-    required: true,
+
   }],
   gallery: [{
     path: {
@@ -51,11 +51,15 @@ const businessSchema = Schema({
   }],
   workingHours: {
     type: String,
-    required: true,
   },
   _deleted: {
     type: Boolean,
     default: false,
+  },
+  _status: {
+    type: String,
+    enum: ['un-verified', 'verified', 'removed'],
+    default: 'un-verified',
   },
 });
 
@@ -63,7 +67,7 @@ const businessSchema = Schema({
  * Hash password before saving the document
  */
 
-businessSchema.pre('save', (done) => {
+businessSchema.pre('save', function preSave(done) {
   if (!this.isModified('password')) {
     done();
   } else {
@@ -82,7 +86,7 @@ businessSchema.pre('save', (done) => {
  * Check the password
  */
 
-businessSchema.methods.checkPassword = (guess, done) => {
+businessSchema.methods.checkPassword = function checkPassword(guess, done) {
   bcrypt.compare(guess, this.password, (err, matching) => {
     done(err, matching);
   });
