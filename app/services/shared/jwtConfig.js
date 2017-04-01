@@ -77,7 +77,7 @@ const clientStrategy = new JWTStrategy(JWTOptions, (req, payload, done) => {
  */
 
 const clientAuthMiddleware = (req, res, next) => {
-  passport.authenticate('jwt', {
+  passport.authenticate('jwt_client', {
     session: false,
   }, (err, user, info) => {
     if (err) {
