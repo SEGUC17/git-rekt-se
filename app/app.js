@@ -38,7 +38,7 @@ require('./routes/routes')(app);
 app.use((err, req, res, next) => {
   res.status(500)
     .json({
-      message: err.toString(),
+      error: err.toString(),
     });
 });
 

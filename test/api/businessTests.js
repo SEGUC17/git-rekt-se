@@ -73,7 +73,7 @@ describe('Businesses Tests', () => {
             .get('/api/v1/business/' + 4)
             .end((err, res) => {
                 res.body.should.be.a('object');
-                res.body.should.have.property('message');
+                res.body.should.have.property('error');
                 done();
             });
     });

@@ -67,7 +67,7 @@ const businessSchema = Schema({
  * Hash password before saving the document
  */
 
-businessSchema.pre('save', function preSave(done) {
+businessSchema.pre('save', function isDone(done) {
   if (!this.isModified('password')) {
     done();
   } else {
