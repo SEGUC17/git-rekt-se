@@ -24,23 +24,11 @@ describe('Service Gallery Creation Tests', () => {
       address: '123 nasr street',
     });
 
-    newBranch.save((err, newbran) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-
     const newOffering = new Offering({
       branch: newBranch.id,
       price: 1000,
       startDate: '1/1/2017',
       endDate: '1/1/2018',
-    });
-
-    newOffering.save((err, newoff) => {
-      if (err) {
-        console.log(err);
-      }
     });
 
     const newBusiness = new Business({
@@ -52,13 +40,6 @@ describe('Service Gallery Creation Tests', () => {
       confirmPassword: 'blahblah1',
       description: 'This is for testing the API',
       workingHours: 'Saturday To Thursday 8AM-5PM',
-    });
-    newBusiness.branches.push(newBranch.id);
-
-    newBusiness.save((err, newbus) => {
-      if (err) {
-        console.log(err);
-      }
     });
 
     const newService = new Service({
@@ -72,36 +53,61 @@ describe('Service Gallery Creation Tests', () => {
       gallery: {},
     });
 
-    newService.save((err, newser) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-
     const newImage = ({
       path: 'sampleImagePath',
       description: 'sample Image Description',
     });
 
 
-    req = supertest(app)
-      .post(`/api/v1/service//addServiceImage/:${newService._id}`);
-    req.send(newImage)
-      .expect(200, {
-        message: 'Image added succesfully!',
-      })
-      .end((err, res) => {
-        done(err);
-        if (err) {
-          done(err);
-        } else {
-          chai.expect(Service.find({
-            id: newService._id,
-          })
-            .gallery.length)
-            .to.equal(1);
-        }
-      });
+    newBranch.save((err, newbran) => {
+      if (err) {
+        console.log(err);
+      } else {
+        newOffering.save((err2, newoff) => {
+          if (err) {
+            console.log(err);
+          } else {
+            newBusiness.branches.push(newBranch.id);
+            newBusiness.save((err3, newbus) => {
+              if (err) {
+                console.log(err);
+              } else {
+                newService.save((err4, newser) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    req = supertest(app)
+                      .post(`/api/v1/service//addServiceImage/:${newService._id}`);
+                    req.send(newImage)
+                      .expect(200, {
+                        message: 'Image added succesfully!',
+                      })
+                      .end((err5, res) => {
+                        if (err) {
+                          done(err);
+                        } else {
+                          Service.findOne({
+                            _id: newService._id,
+                          }, (finderr, data) => {
+                            if (finderr) {
+                              done(finderr);
+                            } else {
+                              console.log(newService);
+                              chai.expect(data.length)
+                                .to.equal(1);
+                              done();
+                            }
+                          });
+                        }
+                      });
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    });
   });
 
   it('it should not Create an Image if an invalid id is given', (done) => {
@@ -174,14 +180,13 @@ describe('Service Gallery Creation Tests', () => {
         message: 'Invalid service!',
       })
       .end((err, res) => {
-        done(err);
         if (err) {
           done(err);
         } else {
           chai.expect(Service.find({
-            id: newService._id,
-          })
-            .gallery.length)
+                id: newService._id,
+              })
+              .gallery.length)
             .to.equal(0);
         }
       });

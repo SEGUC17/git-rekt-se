@@ -104,4 +104,15 @@ router.post('/addServiceImage/:id', upload.any(), (req, res, next) => { // ensur
     });
 });
 
+/*
+Error handling middleware
+*/
+router.use((err, req, res, next) => {
+  res.status(400)
+    .json({
+      error: err.toString(),
+    });
+});
+
+
 module.exports = router;
