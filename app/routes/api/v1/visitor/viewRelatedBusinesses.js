@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const Business = require('../../../../models/business');
+const Business = require('../../../../models/business/Business');
 
 const router = express.Router();
 
