@@ -83,14 +83,6 @@ exports.notifyAdminOfNewBusinessSignup = () => {
 };
 
 exports.forgotPasswordEmail = (email, host, resetToken) => {
-  const smtpTransport = nodemailer.createTransport({
-    service: 'SendGrid',
-    auth: {
-      user: 'apikey',
-      pass: 'SG.zLYJ3FvvQrGovLdJjGe_rQ.j1D5LbI6oz4nx_J5nvkHIenpkjS8MonOJQ7XJYxtJbU',
-    },
-  });
-
   const mailOptions = {
     to: email,
     from: 'passwordreset@demo.com',
@@ -104,6 +96,7 @@ exports.forgotPasswordEmail = (email, host, resetToken) => {
   return new Promise((resolve, reject) => {
     mailer.sendMail(mailOptions, (err, information) => {
       if (err) {
+        console.log(err);
         return reject(err);
       }
       return resolve(information);
