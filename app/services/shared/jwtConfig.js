@@ -6,6 +6,9 @@ const Client = require('../../models/client/Client');
 const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
 
+require('dotenv')
+  .config();
+
 /**
  * JWT Configuration
  */

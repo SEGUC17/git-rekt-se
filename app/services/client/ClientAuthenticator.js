@@ -1,6 +1,7 @@
 /**
  * Helper Module For Client Authentication
  */
+
 const jwt = require('jsonwebtoken');
 const Client = require('../../models/client/Client');
 const mongoose = require('mongoose');
@@ -48,3 +49,45 @@ exports.generateConfirmationToken = (email) => {
       .catch(err => reject(err));
   });
 };
+
+
+/**
+ * Login Client
+ */
+
+exports.loginClient = (email, password) => new Promise((resolve, reject) => {
+  Client.findOne({
+    email,
+    _deleted: false,
+  })
+    .then((user) => {
+      if (!user) {
+        reject('Invalid Credentials.');
+      } else if (user.status === 'unconfirmed') {
+        reject('Please confirm your email.');
+      } else if (user.status === 'banned') {
+        reject('This user has been banned.');
+      } else {
+        user.checkPassword(password)
+          .then((matching) => {
+            if (!matching) {
+              reject('Invalid Credentials.');
+            } else {
+              const token = jwt.sign({
+                id: user._id,
+              }, process.env.JWT_KEY, {
+                expiresIn: '10d',
+              });
+              resolve({
+                message: 'Client Login Sucess.',
+                id: user._id,
+                email: user.email,
+                token,
+              });
+            }
+          })
+          .catch(reject);
+      }
+    })
+    .catch(reject);
+});
