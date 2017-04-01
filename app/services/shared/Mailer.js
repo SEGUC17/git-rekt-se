@@ -57,8 +57,8 @@ exports.notifyAdminOfNewBusinessSignup = () => {
     subject: '[Git-Rekt] New Business Signup',
     html: `
             Hello, <br />
-            A new business has requested to signup and be listed on the directory waiting for approval.
-            --------------------------------- <br/>
+            A new business has requested to signup and be listed on the directory waiting for approval.<br />
+            --------------------------------- <br />
             This is an automated message.
       `,
     text: `
@@ -67,19 +67,17 @@ exports.notifyAdminOfNewBusinessSignup = () => {
       `,
   };
 
-  Admin.findOne()
-    .then(((adminInfo) => {
-      emailContent.to = [adminInfo.email];
-      return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
+    Admin.findOne({})
+      .then((userInfo) => {
+        emailContent.to = [userInfo.email];
         mailer.sendMail(emailContent, (err, information) => {
           if (err) {
             return reject(err);
           }
           return resolve(information);
         });
-      });
-    }))
-    .catch((err) => {
-      throw err; // TODO: Handle in a better way
-    });
+      })
+      .catch(err => reject(err));
+  });
 };

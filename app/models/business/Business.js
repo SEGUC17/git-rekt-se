@@ -15,12 +15,14 @@ const businessSchema = Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
   },
   shortDescription: {
     type: String,
+    required: true,
   },
   description: {
     type: String,

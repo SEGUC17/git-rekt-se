@@ -5,7 +5,7 @@
 const bussinessValidationErrors = {
   emptyEmail: 'Email is a required field.',
   invalidEmail: 'Invalid Email.',
-  emptyName: 'Name is a required fielD.',
+  emptyName: 'Name is a required field.',
   emptyMobile: 'Mobile is a required field.',
   emptyDescription: 'Description is a required field.',
   invalidMobile: 'Mobile must be in this format 01xxxxxxxxx',
@@ -15,6 +15,12 @@ const bussinessValidationErrors = {
   workingHoursRequired: 'Working Hours is a required field.',
   categoriesRequired: 'Must Include atleast 1 category.',
   branchesRequired: 'Must Include aleast 1 branch.',
+  businessExists: 'User already exists.',
+};
+
+const businessSuccess = {
+  unverifiedSignup: 'Signup Successful, A representative will contact you soon.',
+  emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
 const clientValidationErrors = {
@@ -24,7 +30,7 @@ const clientValidationErrors = {
   invalidPassword: 'Password length must be between 8 and 15 and contains at least one number.',
   emptyConfirmation: 'Password Confirmation is a required field.',
   passwordMismatch: 'Password and Password Confirmation must match.',
-  emptyFirstName: 'Firstname is a required fielD.',
+  emptyFirstName: 'Firstname is a required field.',
   emptyLastName: 'Lastname is a required field.',
   emptyMobile: 'Mobile is a required field.',
   invalidMobile: 'Mobile must be in this format 01xxxxxxxxx',
@@ -43,4 +49,5 @@ module.exports = {
   clientValidationErrors,
   clientSuccess,
   bussinessValidationErrors,
+  businessSuccess,
 };
