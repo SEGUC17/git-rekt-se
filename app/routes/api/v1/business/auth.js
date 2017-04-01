@@ -68,7 +68,7 @@ router.post('/unverified/signup', (req, res, next) => {
               })
               .catch(e => next([e]));
           })
-          .catch(() => next(Strings.bussinessValidationErrors.businessExists));
+          .catch(() => next([Strings.bussinessValidationErrors.businessExists]));
       } else {
         next(result.array());
       }

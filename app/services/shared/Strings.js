@@ -15,7 +15,7 @@ const bussinessValidationErrors = {
   workingHoursRequired: 'Working Hours is a required field.',
   categoriesRequired: 'Must Include atleast 1 category.',
   branchesRequired: 'Must Include aleast 1 branch.',
-  businessExists: 'User already exists.',
+  businessExists: 'Business already exists.',
 };
 
 const businessSuccess = {
