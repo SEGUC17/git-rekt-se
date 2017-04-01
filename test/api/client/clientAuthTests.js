@@ -1,19 +1,8 @@
-/**
- * API Testing Template
- */
-
 const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Client = require('../../../app/models/client/Client');
 const clients = require('../../../app/seed/client/clientSeed');
-
-/**
- * Database Connection
- */
-
-require('dotenv')
-  .config();
 
 /**
  * Client Signup Suite
@@ -67,8 +56,8 @@ describe('Client Signup API', () => {
   });
 
   it('should register a another client with different email.', (done) => {
-    const client1 = clients[1];
-    req.send(client1)
+    const client2 = clients[1];
+    req.send(client2)
       .expect('Content-Type', /json/)
       .expect(200)
       .end((err, res) => {
@@ -81,7 +70,7 @@ describe('Client Signup API', () => {
           done(err);
         } else {
           Client.find({
-            email: client1.email,
+            email: client2.email,
           }, (finderr, data) => {
             if (finderr) {
               done(finderr);
