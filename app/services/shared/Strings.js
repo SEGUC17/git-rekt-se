@@ -91,7 +91,7 @@ const clientConfirmation = {
 
 const adminLoginMessages = {
   invalidCreds: 'Invalid Credentials.',
-  loginSuccess: 'Client Login Success.',
+  loginSuccess: 'Admin Login Success.',
   invalidToken: 'Invalid Token',
 };
 
