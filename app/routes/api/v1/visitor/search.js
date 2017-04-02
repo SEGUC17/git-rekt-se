@@ -17,6 +17,7 @@ router.get('/search', (req, res, next) => {
   const mongooseQuery = {
     _deleted: false,
   };
+  const mongooseQuery2 = {};
   if (inputQuery.name) {
     mongooseQuery.push({
       name: new RegExp(inputQuery.name, 'i'),
@@ -31,36 +32,37 @@ router.get('/search', (req, res, next) => {
   }
   // Check if query needs to check the offerings of the service
   if (inputQuery.min || inputQuery.max || inputQuery.location) {
-    mongooseQuery.push({
+    mongooseQuery2.push({
       offerings: {
         $elemMatch: {},
       },
     });
   }
   if (inputQuery.min || inputQuery.max) {
-    mongooseQuery.offerings.$elemMatch.push({
+    mongooseQuery2.offerings.$elemMatch.push({
       price: {},
     });
   }
   if (inputQuery.min) {
-    mongooseQuery.offerings.$elemMatch.price.push({
+    mongooseQuery2.offerings.$elemMatch.price.push({
       $gte: inputQuery.min,
     });
   }
   if (inputQuery.max) {
-    mongooseQuery.offerings.$elemMatch.price.push({
+    mongooseQuery2.offerings.$elemMatch.price.push({
       $lte: inputQuery.max,
     });
   }
   if (inputQuery.location) {
-    mongooseQuery.offerings.$elemMatch.push({
-      business: {
+    mongooseQuery2.offerings.$elemMatch.push({
+      branch: {
         location: inputQuery.location,
       },
     });
   }
   // Query to execute
   const fullQuery = Service
+    .find(mongooseQuery)
     .populate({
       path: 'offerings',
       match: {
@@ -73,7 +75,7 @@ router.get('/search', (req, res, next) => {
         },
       },
     })
-    .find(mongooseQuery);
+    .find(mongooseQuery2);
   // Executing
   fullQuery.count()
     .exec()
@@ -95,7 +97,9 @@ router.get('/search', (req, res, next) => {
         results: services,
       });
     })
-    .catch((err) => { next([err]); });
+    .catch((err) => {
+      next([err]);
+    });
 });
 
 
