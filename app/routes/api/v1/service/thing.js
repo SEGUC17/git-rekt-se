@@ -147,6 +147,44 @@ router.post('/editServiceImage/:ser_id/:im_id', (req, res, next) => { // ensurea
       }
     });
 });
+
+/*
+Service Image Update
+*/
+router.post('/deleteServiceImage/:ser_id/:im_id', (req, res, next) => { // ensureauthenticated
+  Service.findOne({
+    _id: req.params.ser_id,
+  })
+    .exec((err, service) => {
+      console.log('-----------------service(findone)------------------');
+      console.log(service);
+      if (service) {
+        const newGallery = service.gallery.filter(element => `${element._id}` !== req.params.im_id);
+        if (!newGallery) {
+          console.log('_____________no image returned_______');
+          next(err);
+        } else {
+          service.gallery = newGallery;
+          service.save((err3) => {
+            if (err3) {
+              next(err3);
+            } else {
+              console.log(service);
+              res.json({
+                message: 'Image deleted succesfully!',
+              });
+            }
+          });
+        }
+      } else {
+        res.json({
+          message: 'Invalid service!',
+        });
+        next(err);
+      }
+    });
+});
+
 /*
 Error handling middleware
 */
