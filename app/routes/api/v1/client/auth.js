@@ -135,7 +135,9 @@ router.post('/reset', (req, res, next) => {
   //   next(Strings.INVALID_PASSWORD);
   // }
 
-  jwt.verify(resetToken, JWT_KEY, (payload) => {
+  jwt.verify(resetToken, JWT_KEY, (err, payload) => {
+    console.log(err);
+    console.log(payload);
     const email = payload.email;
     const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
 
@@ -147,18 +149,18 @@ router.post('/reset', (req, res, next) => {
     }, (client) => {
       if (!client) {
         console.log(1);
-        next(Strings.INVALID_RESET_TOKEN);
+        return next(Strings.INVALID_RESET_TOKEN);
       }
 
       client.passwordResetTokenDate = undefined; // Disable the token
       client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
       client.password = password; // Reset password
 
-      client.save().exec().then(() => res.json({
+      return client.save().exec().then(() => res.json({
         message: Strings.PASSWORD_RESET_SUCCESS,
       }));
-    }).catch(err => next([err]));
-  }).catch(err => next([Strings.INVALID_RESET_TOKEN, err]));
+    }).catch(e => next([e]));
+  });
 });
 
 
