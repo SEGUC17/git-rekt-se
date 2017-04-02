@@ -10,7 +10,7 @@ const Business = require('../../../app/models/business/Business');
 const Category = require('../../../app/models/service/Category');
 
 const categories = require('../../../app/seed/service/categoriesSeed');
-const businesses = require('../../../app/seed/business/verifiedBusiness');
+const businesses = require('../../../app/seed/business/verifiedBusinessSeed');
 
 const Strings = require('../../../app/services/shared/Strings');
 
