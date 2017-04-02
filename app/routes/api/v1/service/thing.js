@@ -6,6 +6,7 @@ const Service = require('../../../../models/service/Service');
 const path = require('path');
 
 const router = express.Router();
+/* eslint-disable no-underscore-dangle */
 
 /*
     Multer Config.
@@ -107,6 +108,45 @@ router.post('/addServiceImage/:id', upload.single('file'), (req, res, next) => {
     });
 });
 
+
+/*
+Service Image Update
+*/
+router.post('/editServiceImage/:ser_id/:im_id', (req, res, next) => { // ensureauthenticated
+  const newDescr = req.body.description;
+  console.log(newDescr);
+  Service.findOne({
+    _id: req.params.ser_id,
+  })
+    .exec((err, service) => {
+      console.log('-----------------service(findone)------------------');
+      console.log(service);
+      console.log(req.params.im_id);
+      if (service) {
+        const image = service.gallery.find(element => `${element._id}` === req.params.im_id);
+        if (!image) {
+          console.log('_____________no image returned_______');
+          next(err);
+        } else {
+          image.description = newDescr;
+          service.save((err3) => {
+            if (err3) {
+              next(err3);
+            } else {
+              res.json({
+                message: 'Image description updated succesfully!',
+              });
+            }
+          });
+        }
+      } else {
+        res.json({
+          message: 'Invalid service!',
+        });
+        next(err);
+      }
+    });
+});
 /*
 Error handling middleware
 */
