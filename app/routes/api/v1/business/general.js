@@ -54,7 +54,6 @@ router.get('/category/:id/:offset', (req, res, next) => {
     .catch(err => next([err]));
 });
 
-
 /**
  * Error handling Middlewares
  */
