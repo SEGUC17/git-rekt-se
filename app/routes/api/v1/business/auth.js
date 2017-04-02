@@ -7,6 +7,7 @@ const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
+const authMiddleWare = require('../../../../services/shared/jwtConfig'); 
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -83,6 +84,14 @@ router.post('/verified/login', (req, res, next) => {
         next(result.array());
       }
     });
+});
+
+/**
+ * Business update data
+ */
+
+router.post('/update', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
+
 });
 
 /**
