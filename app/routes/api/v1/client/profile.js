@@ -22,6 +22,9 @@ router.use(expressValidator({}));
  */
 
 router.post('/:id/edit', (req, res, next) => {
+  /**
+   * The new data
+   */
   const userInfo = {
     email: req.body.email,
     password: req.body.password,
@@ -53,6 +56,9 @@ router.post('/:id/edit', (req, res, next) => {
       req.getValidationResult()
         .then((result) => {
           if (result.isEmpty()) {
+            /**
+             * Editing existing information
+             */
             client.firstName = userInfo.firstName;
             client.lastName = userInfo.lastName;
             client.mobile = userInfo.mobile;
@@ -69,7 +75,7 @@ router.post('/:id/edit', (req, res, next) => {
                     Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
                       .then(() => {
                         res.json({
-                          message: 'Your information has been updated successfully. Please confirm your mail',
+                          message: Strings.clientSuccess.editInformationWithEmail,
                         });
                       })
                       .catch((e) => {
@@ -81,7 +87,7 @@ router.post('/:id/edit', (req, res, next) => {
                   });
               } else {
                 res.json({
-                  message: 'Your information has been updated successfully',
+                  message: Strings.clientSuccess.editInformation,
                 });
               }
             });

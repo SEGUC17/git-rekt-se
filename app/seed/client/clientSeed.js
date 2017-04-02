@@ -3,7 +3,7 @@
  */
 
 const clients = [{
-  email: 'atherkhalid158@gmail.com',
+  email: 'atherkhalid44@hotmail.com',
   password: 'YEQmxoav4NqK',
   confirmPassword: 'YEQmxoav4NqK',
   firstName: 'Mohamed',

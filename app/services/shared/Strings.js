@@ -47,6 +47,8 @@ const clientValidationErrors = {
 const clientSuccess = {
   signup: 'Signup Successful, Please check your email for the email confirmation.',
   emailConfirmation: 'Please check your email for the email confirmation.',
+  editInformation: 'Your information has been updated successfully.',
+  editInformationWithEmail: 'Your information has been updated successfully. An email has been sent to your new email for the email confirmation',
 };
 
 const clientLoginMessages = {
