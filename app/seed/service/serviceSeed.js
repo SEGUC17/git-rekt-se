@@ -9,11 +9,17 @@ const Services = [{
   categories: null,
   coverimage: 'notcourses.jpg',
 }, {
-  name: 'Enhance Personal Effectiveness Course',
+  name: 'GUC english course',
+  shortDescription: 'RPW',
+  _business: null,
+  categories: null,
+  coverimage: 'guc.jpg',
+}, {
+  name: 'GUC german course',
   shortDescription: '',
   _business: null,
   categories: null,
-  coverimage: 'enhance.jpg',
+  coverimage: 'guc.jpg',
 }];
 
 module.exports = Services;

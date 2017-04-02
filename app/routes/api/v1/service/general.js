@@ -33,7 +33,7 @@ router.get('/category/:id/:offset', (req, res, next) => {
         next(finderr);
       }
       if (services.length === 0) {
-        return next(Strings.visitorErrors.NoRelatedServices);
+        return next([Strings.visitorErrors.NoRelatedServices]);
       }
       return res.json({
         count: services.length,
