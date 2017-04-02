@@ -105,7 +105,25 @@ const businessSignupValidation = {
   },
 };
 
+const clientResetPasswordValidation = {
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
+    },
+  },
+};
+
 const validation = {
+  clientResetPasswordValidation,
   clientSignupValidation,
   businessSignupValidation,
   clientConfirmEmailValidation,
