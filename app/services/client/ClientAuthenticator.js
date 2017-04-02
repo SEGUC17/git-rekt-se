@@ -5,6 +5,7 @@
 const jwt = require('jsonwebtoken');
 const Client = require('../../models/client/Client');
 const mongoose = require('mongoose');
+const Strings = require('../shared/Strings');
 
 mongoose.Promise = Promise;
 
@@ -36,10 +37,10 @@ exports.generateConfirmationToken = (email) => {
     })
       .then((userData) => {
         if (!userData) {
-          reject('User not found.');
+          reject(Strings.clientConfirmation.notFound);
         }
         if (userData.status !== 'unconfirmed') {
-          reject('User email already confirmed.');
+          reject(Strings.clientConfirmation.emailAlreadyConfirmed);
         }
         userData.confirmationTokenDate = Date.now();
         userData.save()
@@ -62,16 +63,16 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
   })
     .then((user) => {
       if (!user) {
-        reject('Invalid Credentials.');
+        reject(Strings.clientLoginMessages.invalidCreds);
       } else if (user.status === 'unconfirmed') {
-        reject('Please confirm your email.');
+        reject(Strings.clientLoginMessages.invalidCreds);
       } else if (user.status === 'banned') {
-        reject('This user has been banned.');
+        reject(Strings.clientLoginMessages.bannedClient);
       } else {
         user.checkPassword(password)
           .then((matching) => {
             if (!matching) {
-              reject('Invalid Credentials.');
+              reject(Strings.clientLoginMessages.invalidCreds);
             } else {
               const token = jwt.sign({
                 id: user._id,
@@ -79,7 +80,7 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
                 expiresIn: '10d',
               });
               resolve({
-                message: 'Client Login Success.',
+                message: Strings.clientLoginMessages.loginSuccess,
                 id: user._id,
                 email: user.email,
                 token,

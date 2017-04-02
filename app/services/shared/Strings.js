@@ -49,10 +49,24 @@ const clientSuccess = {
   emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
+const clientLoginMessages = {
+  invalidCreds: 'Invalid Credentials.',
+  loginSuccess: 'Client Login Success.',
+  confirmEmail: 'Please confirm your email.',
+  bannedClient: 'This user has been banned.',
+};
+
+const clientConfirmation = {
+  emailAlreadyConfirmed: 'User email already confirmed.',
+  notFound: 'User not found.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
+  clientLoginMessages,
+  clientConfirmation,
   bussinessValidationErrors,
   businessSuccess,
 };
