@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const Business = require('../../../../models/business/Business.js');
+const Business = require('../../../../models/business/Business');
 const Branch = require('../../../../models/service/Branch');
-const Category = require('../../../../models/service/Category.js');
+const Category = require('../../../../models/service/Category');
 
 
 mongoose.Promise = Promise;
@@ -28,7 +28,7 @@ router.get('/:id', (req, res, next) => {
       res.json(business);
     })
     .catch((err) => {
-      res.json({ errors: 'The specified business was not found' });
+      next(err);
     });
 });
 

@@ -2,8 +2,8 @@ const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../app/app');
 const Business = require('../../app/models/business/Business');
-const Branch = require('../../app/models/service/Branch.js');
-const Category = require('../../app/models/service/Category.js');
+const Branch = require('../../app/models/service/Branch');
+const Category = require('../../app/models/service/Category');
 
 
 /**
