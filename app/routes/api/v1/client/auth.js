@@ -136,23 +136,21 @@ router.post('/reset', (req, res, next) => {
   // }
 
   jwt.verify(resetToken, JWT_KEY, (err, payload) => {
-    console.log(err);
-    console.log(payload);
     const email = payload.email;
     const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
 
     Client.findOne({
       email,
-      passwordResetTokenDate: {
+      passwordChangeDate: {
         $lte: creationDate,
       },
     })
       .exec()
       .then((client) => {
         if (!client) {
+          console.log('works');
           return next(Strings.INVALID_RESET_TOKEN);
         }
-        console.log('works');
         client.passwordResetTokenDate = undefined; // Disable the token
         client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
         client.password = password; // Reset password
