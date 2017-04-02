@@ -46,6 +46,11 @@ const businessLoginMessages = {
   invalidToken: 'Invalid Token',
 };
 
+const businessMessages = {
+  allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
+  editSuccess: 'Edited Successfully!',
+};
+
 /**
  * Client Strings
  */
@@ -95,4 +100,5 @@ module.exports = {
   bussinessValidationErrors,
   businessSuccess,
   businessLoginMessages,
+  businessMessages,
 };
