@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const Business = require('../../../../models/business/Business');
+const Strings = require('../../../../services/shared/Strings');
 
 const router = express.Router();
 
@@ -48,7 +49,7 @@ router.get('/category/:id/:offset', (req, res, next) => {
       if (filteredBusinesses.length === 0) {
         return res.status(400)
           .json({
-            errors: 'No related businesses',
+            errors: Strings.visitorErrors.NoRelatedBusinesses,
           });
       }
       /**

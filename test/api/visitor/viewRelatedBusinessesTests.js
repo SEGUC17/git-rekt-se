@@ -12,6 +12,8 @@ const Category = require('../../../app/models/service/Category');
 const categories = require('../../../app/seed/service/categoriesSeed');
 const businesses = require('../../../app/seed/business/verifiedBusiness');
 
+const Strings = require('../../../app/services/shared/Strings');
+
 /**
  * Database Connection
  */
@@ -135,7 +137,7 @@ describe('View Related Businesses API', () => {
   it('should return no related businesses in a requested category', (done) => {
     req.expect('Content-Type', /json/)
       .expect(400, {
-        errors: 'No related businesses',
+        errors: Strings.visitorErrors.NoRelatedBusinesses,
       }, done);
   });
 });
