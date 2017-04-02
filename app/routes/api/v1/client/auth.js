@@ -130,11 +130,10 @@ router.post('/reset', (req, res, next) => {
   //  and a special character.
   // http://stackoverflow.com/questions/19605150/
 
-  // const passwordRegex = [/^(?=.*\d).{8,15}$/];
-  // if (!passwordRegex.test(password)) {
-  //   console.log('why?------------');
-  //   return next(Strings.clientValidationErrors.invalidPassword);
-  // }
+  req.checkBody(validationSchemas.clientResetPasswordValidation);
+  req.checkBody('confirmPassword')
+    .equals(req.body.password)
+.withMessage(Strings.clientValidationErrors.passwordMismatch);
 
   return jwt.verify(resetToken, JWT_KEY, (err, payload) => {
     const email = payload.email;
