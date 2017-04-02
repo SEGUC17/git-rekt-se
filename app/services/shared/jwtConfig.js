@@ -26,7 +26,7 @@ const JWTOptionsBusiness = Object.assign({}, JWTOptionsClient);
 JWTOptionsBusiness.secretOrKey = process.env.JWT_KEY_BUSSINES;
 
 const JWTOptionsAdmins = Object.assign({}, JWTOptionsClient);
-JWTOptionsAdmins.secretOrKey = process.env.JWT_KEY_ADMINISTRATORS;
+JWTOptionsAdmins.secretOrKey = process.env.JWT_KEY_ADMINISTRATOR;
 
 /**
  * Extract JWT Token from the header.
