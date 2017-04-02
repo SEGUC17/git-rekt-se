@@ -148,15 +148,14 @@ router.post('/forgot', (req, res, next) => {
     email: req.body.email,
   }).exec().then((client) => {
     if (!client) { // Client not found, Invalid mail
-      // Not using middleware due to status
       return res.json({
         message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
       });
     }
-    client.passwordResetTokenDate = iat * 1000;
+    client.passwordResetTokenDate = Date.now();
 
     return client.save().then(() => {
-      Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
+      Mailer.forgotPasswordEmail(email, req.hostname, resetToken)
         .then(() => res.json({ message: Strings.clientForgotPassword.CHECK_YOU_EMAIL }))
         .catch(() => res.json('err'));
     });

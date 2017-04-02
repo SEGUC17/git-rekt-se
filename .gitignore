@@ -38,3 +38,6 @@ jspm_packages
 
 # ENV 
 .env
+
+# VS code seetings
+.vscode/

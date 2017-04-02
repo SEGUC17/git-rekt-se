@@ -22,7 +22,7 @@ const businessSchema = Schema({
   },
   shortDescription: {
     type: String,
-    required: false,
+    required: true,
   },
   description: {
     type: String,
@@ -50,18 +50,6 @@ const businessSchema = Schema({
   }],
   workingHours: {
     type: String,
-  },
-  passwordChangeDate: {
-    type: Date,
-    default: Date.now,
-  },
-  confirmationTokenDate: {
-    type: Date,
-    default: Date.now,
-  },
-  passwordChangeDate: {
-    type: Date,
-    default: Date.now,
   },
   _status: {
     type: String,

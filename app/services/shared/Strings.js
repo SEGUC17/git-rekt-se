@@ -73,12 +73,6 @@ const clientSuccess = {
 };
 
 
-const businessForgotPassword = {
-  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
-  INVALID_RESET_TOKEN: 'Invalid reset token.',
-  PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
-};
-
 const clientForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
   INVALID_RESET_TOKEN: 'Invalid reset token.',
@@ -107,7 +101,6 @@ module.exports = {
 
   bussinessValidationErrors,
   businessSuccess,
-  businessForgotPassword,
   clientForgotPassword,
   businessLoginMessages,
 };
