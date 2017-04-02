@@ -136,27 +136,12 @@ router.post('/reset', (req, res, next) => {
   const confirmPassword = req.body.confirmPassword;
 
 
-  // Check If any required field are missing
-  if (!(password && confirmPassword && resetToken)) {
-    next(Strings.INCOMPLETE_INFORMATION);
-  }
+  req.checkBody(validationSchemas.clientResetPasswordValidation);
+  req.checkBody('confirmPassword')
+    .equals(req.body.password)
+.withMessage(Strings.clientValidationErrors.passwordMismatch);
 
-  // Check if password and confirmation mismatch
-  if (password !== confirmPassword) {
-    return next(Strings.PASSWORD_MISMATCH);
-  }
-
-  // Check that password satisfies password conditions
-  // The password must be at least 8 characters and includes at least a digit
-  //  and a special character.
-  // http://stackoverflow.com/questions/19605150/
-
-  // const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?.&])[A-Za-z\d$@$!%*#?.&]{8,}$/;
-  // if (!passwordRegex.test(password)) {
-  //   next(Strings.INVALID_PASSWORD);
-  // }
-
-  return jwt.verify(resetToken, JWT_KEY, (err, payload) => {
+  jwt.verify(resetToken, JWT_KEY, (err, payload) => {
     const email = payload.email;
     const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
 
