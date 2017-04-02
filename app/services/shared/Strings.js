@@ -8,7 +8,7 @@
  */
 
 const generalErrors = {
-  mailerError: 'An issue occured while send the email.',
+  mailerError: 'An issue occured while sending the email.',
 };
 
 /**
