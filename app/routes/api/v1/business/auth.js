@@ -7,7 +7,7 @@ const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-
+const authHelper = require('../../../../services/shared/jwtConfig');
 
 const router = express.Router();
 mongoose.Promise = Promise;
