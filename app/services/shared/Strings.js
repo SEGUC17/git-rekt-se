@@ -89,7 +89,6 @@ const visitorErrors = {
   NoRelatedBusinesses: 'No related businesses',
 };
 
-
 module.exports = {
   generalErrors,
   clientValidationErrors,
