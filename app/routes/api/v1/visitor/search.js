@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const Service = require('../../../../models/service/Service');
+const Strings = require('../../../../services/shared/Strings');
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -84,10 +85,7 @@ router.get('/search', (req, res, next) => {
         .exec()
         .then((services) => {
           if (cnt === 0) {
-            res.status(400);
-            return res.json({
-              Error: 'No search results match the query.',
-            });
+            return next([Strings.searchErrors.emptySearchResult]);
           }
           return res.json({
             count: cnt,
@@ -95,6 +93,17 @@ router.get('/search', (req, res, next) => {
           });
         })
         .catch(err => next([err]));
+    });
+});
+
+/**
+ *  Error Handling Middlewares.
+ */
+
+router.use((err, req, res, next) => {
+  res.status(400)
+    .json({
+      errors: err,
     });
 });
 

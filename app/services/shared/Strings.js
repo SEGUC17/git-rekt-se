@@ -49,10 +49,15 @@ const clientSuccess = {
   emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
+const searchErrors = {
+  emptySearchResult: 'No search results match the query.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
   bussinessValidationErrors,
   businessSuccess,
+  searchErrors,
 };
