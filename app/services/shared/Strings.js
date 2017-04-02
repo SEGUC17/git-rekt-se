@@ -43,6 +43,7 @@ const businessLoginMessages = {
   loginSuccess: 'Business Login Success.',
   pendingVerification: 'You have not been confirmed by the admin.',
   removeBusiness: 'This business has been removed.',
+  invalidToken: 'Invalid Token',
 };
 
 /**
@@ -76,6 +77,7 @@ const clientLoginMessages = {
   loginSuccess: 'Client Login Success.',
   confirmEmail: 'Please confirm your email.',
   bannedClient: 'This user has been banned.',
+  invalidToken: 'Invalid Token',
 };
 
 const clientConfirmation = {
