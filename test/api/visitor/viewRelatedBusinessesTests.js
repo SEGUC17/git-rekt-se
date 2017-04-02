@@ -4,7 +4,10 @@
 
 const chai = require('chai');
 const supertest = require('supertest');
+const mongoose = require('mongoose');
 const app = require('../../../app/app');
+
+mongoose.Promise = Promise;
 
 const Business = require('../../../app/models/business/Business');
 const Category = require('../../../app/models/service/Category');
@@ -40,45 +43,40 @@ describe('View Related Businesses API', () => {
       Business.ensureIndexes(() => {
         Category.collection.drop(() => {
           Category.ensureIndexes(() => {
-            Category.insertMany(categories, (inserterr1, docs1) => {
-              if (inserterr1) {
-                done(inserterr1);
-              }
-              Category.findOne({
-                title: 'Language Courses',
-              }, (finderr1, category1) => {
-                if (finderr1) {
-                  done(finderr1);
-                }
+            Category.insertMany(categories)
+              .then((docs1) => {
                 Category.findOne({
-                  title: 'Self-Managment Courses',
-                }, (finderr2, category2) => {
-                  if (finderr2) {
-                    done(finderr2);
-                  }
-                  category1ID = category1._id;
-                  category2ID = category2._id;
-                  businesses[0].categories = [category2ID];
-                  businesses[1].categories = [category1ID];
-                  businesses[2].categories = [category1ID];
-
-                  Business.insertMany(businesses, (inserterr2, docs2) => {
-                    if (inserterr2) {
-                      done(inserterr2);
-                    }
+                  title: 'Language Courses',
+                })
+                  .then((category1) => {
                     Category.findOne({
-                      title: 'Team Management Courses',
-                    }, (finderr3, category3) => {
-                      if (finderr3) {
-                        done(finderr3);
-                      }
-                      category3ID = category3._id;
-                      done();
-                    });
-                  });
-                });
-              });
-            });
+                      title: 'Self-Managment Courses',
+                    })
+                      .then((category2) => {
+                        Category.findOne({
+                          title: 'Team Management Courses',
+                        })
+                          .then((category3) => {
+                            category1ID = category1._id;
+                            category2ID = category2._id;
+                            category3ID = category3._id;
+                            businesses[0].categories = [category2ID];
+                            businesses[1].categories = [category1ID];
+                            businesses[2].categories = [category1ID];
+
+                            Business.insertMany(businesses)
+                              .then((docs2) => {
+                                done();
+                              })
+                              .catch(e => done([e]));
+                          })
+                          .catch(e => done([e]));
+                      })
+                      .catch(e => done([e]));
+                  })
+                  .catch(e => done([e]));
+              })
+              .catch(e => done([e]));
           });
         });
       });
