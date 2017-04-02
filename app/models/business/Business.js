@@ -55,6 +55,14 @@ const businessSchema = Schema({
     type: Boolean,
     default: false,
   },
+  confirmationTokenDate: {
+    type: Date,
+    default: Date.now,
+  },
+  passwordChangeDate: {
+    type: Date,
+    default: Date.now,
+  },
   _status: {
     type: String,
     enum: ['unverified', 'verified', 'removed'],
