@@ -97,42 +97,6 @@ const clientAuthMiddleware = (req, res, next) => {
   })(req, res, next);
 };
 
-/**
- * Business Authentication Strategy.
- */
-
-const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done) => {
-  Business.findOne({
-    _id: payload.id,
-  })
-    .then((user) => {
-      if (!user) {
-        done(null, false, Strings.businessLoginMessages.invalidCreds);
-      } else {
-        const tokenCreationTime = new Date(parseInt(payload.iat, 10) * 1000);
-        const lastPasswordChangeTime = user.passwordChangeDate;
-        const reqToken = parseAuthHeader(req.headers.authorization)
-          .value;
-
-        InvalidToken.findOne({
-          token: reqToken,
-        })
-          .then((token) => {
-            if (token) {
-              return done(null, false, Strings.businessLoginMessages.invalidToken);
-            }
-
-            if (tokenCreationTime.getTime() < lastPasswordChangeTime.getTime()) {
-              return done(null, false, Strings.businessLoginMessages.invalidToken);
-            }
-
-            return done(null, user);
-          })
-          .catch(done);
-      }
-    })
-    .catch(done);
-});
 
 const businessAuthMiddleware = (req, res, next) => {
   passport.authenticate('jwt_bussiness', {
@@ -152,7 +116,6 @@ const businessAuthMiddleware = (req, res, next) => {
 module.exports = {
   clientStrategy,
   clientAuthMiddleware,
-  businessStrategy,
   businessAuthMiddleware,
 };
 
