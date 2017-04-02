@@ -6,6 +6,8 @@ const Business = require('../../../../models/business/Business');
 const BusinessUtils = require('../../../../services/business/businessUtils');
 const businessMessages = require('../../../../services/shared/Strings')
   .businessMessages;
+const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
+  .businessAuthMiddleware;
 
 mongoose.Promise = Promise;
 
@@ -13,7 +15,7 @@ const router = express.Router();
 
 router.use(bodyParser.json());
 
-router.put('/:id/edit', (req, res, next) => {
+router.put('/:id/edit', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
   const body = req.body;
   const searchID = {

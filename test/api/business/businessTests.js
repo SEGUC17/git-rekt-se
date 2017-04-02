@@ -4,7 +4,7 @@ const app = require('../../../app/app');
 
 const Category = require('../../../app/models/service/Category');
 const Business = require('../../../app/models/business/Business');
-const businessSeed = require('../../../app/seed/business/unverifiedBusinessSeed');
+const businessSeed = require('../../../app/seed/business/businessSeed');
 const businessMessages = require('../../../app/services/shared/Strings')
   .businessMessages;
 
@@ -16,12 +16,19 @@ describe('Should Edit Info Correctly', () => {
   let req;
   let id;
   let searchID;
+  let token;
 
   const businessData = {
     name: businessSeed[0].name,
     email: businessSeed[0].email,
+    password: businessSeed[0].password,
     shortDescription: businessSeed[0].shortDescription,
-    phoneNumbers: [businessSeed[0].mobile],
+    phoneNumbers: businessSeed[0].phoneNumbers,
+  };
+
+  const businessLogin = {
+    email: businessData.email,
+    password: businessData.password,
   };
 
   before((done) => {
@@ -42,7 +49,17 @@ describe('Should Edit Info Correctly', () => {
                   searchID = {
                     _id: id,
                   };
-                  done();
+                  req = supertest(app)
+                    .post('/api/v1/business/auth/verified/login')
+                    .send(businessLogin)
+                    .end((postErr, res) => {
+                      if (err) {
+                        done(err);
+                      } else {
+                        token = res.body.token;
+                        done();
+                      }
+                    });
                 })
                 .catch(done);
             }
@@ -62,6 +79,7 @@ describe('Should Edit Info Correctly', () => {
       workingHours: 'Not Open!',
     };
     req.send(editInfo)
+      .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
       .expect(200, {
         message: businessMessages.editSuccess,
@@ -83,6 +101,7 @@ describe('Should Edit Info Correctly', () => {
       categories: ['Machine Learning', 'Big Data'],
     };
     req.send(editInfo)
+      .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
       .expect(200, {
         message: businessMessages.editSuccess,
@@ -104,6 +123,7 @@ describe('Should Edit Info Correctly', () => {
       description: 'This is a new description',
     };
     req.send(editInfo)
+      .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
       .expect(200, {
         message: businessMessages.editSuccess,
@@ -120,12 +140,25 @@ describe('Should Edit Info Correctly', () => {
       });
   });
 
-  // TODO Edit test to check on body
   it('should not allow all data to be empty', (done) => {
     req.send({})
+      .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
       .expect(400, {
         errors: [businessMessages.allFieldsEmpty],
       }, done);
+  });
+
+  it('should not allow un-authenticated business from editing', (done) => {
+    const editInfo = {
+      description: 'This is a new description',
+    };
+    req.send(editInfo)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        console.log(res.body);
+        done();
+      });
   });
 });

@@ -4,6 +4,11 @@
 
 const Category = require('../../models/service/Category');
 
+/**
+ * Utility Function For Inserting Categories and returning a promise for all of them.
+ * @param {[String]} categories 
+ * @returns {Promise}
+ */
 const addCategories = (categories) => {
   const resultCategories = categories.map((category) => {
     const categoryData = {
