@@ -115,20 +115,20 @@ router.post('/reset', (req, res, next) => {
   const confirmPassword = req.body.confirmPassword;
 
 
-    // Check If any required field are missing
+  // Check If any required field are missing
   if (!(password && confirmPassword && resetToken)) {
     next(Strings.INCOMPLETE_INFORMATION);
   }
 
-    // Check if password and confirmation mismatch
+  // Check if password and confirmation mismatch
   // if (password !== confirmPassword) {
   //   next(Strings.PASSWORD_MISMATCH);
   // }
 
-    // Check that password satisfies password conditions
-    // The password must be at least 8 characters and includes at least a digit
-    //  and a special character.
-    // http://stackoverflow.com/questions/19605150/
+  // Check that password satisfies password conditions
+  // The password must be at least 8 characters and includes at least a digit
+  //  and a special character.
+  // http://stackoverflow.com/questions/19605150/
 
   // const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?.&])[A-Za-z\d$@$!%*#?.&]{8,}$/;
   // if (!passwordRegex.test(password)) {
@@ -146,20 +146,23 @@ router.post('/reset', (req, res, next) => {
       passwordResetTokenDate: {
         $lte: creationDate,
       },
-    }, (client) => {
-      if (!client) {
-        console.log(1);
-        return next(Strings.INVALID_RESET_TOKEN);
-      }
+    })
+      .exec()
+      .then((client) => {
+        if (!client) {
+          return next(Strings.INVALID_RESET_TOKEN);
+        }
+        console.log('works');
+        client.passwordResetTokenDate = undefined; // Disable the token
+        client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
+        client.password = password; // Reset password
 
-      client.passwordResetTokenDate = undefined; // Disable the token
-      client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
-      client.password = password; // Reset password
-
-      return client.save().exec().then(() => res.json({
-        message: Strings.PASSWORD_RESET_SUCCESS,
-      }));
-    }).catch(e => next([e]));
+        return client.save()
+          .then(() => res.json({
+            message: Strings.PASSWORD_RESET_SUCCESS,
+          }));
+      })
+      .catch(e => next([e]));
   });
 });
 
