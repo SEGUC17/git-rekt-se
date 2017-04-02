@@ -1,16 +1,9 @@
-/**
- * API Testing Template
- */
-
 const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Client = require('../../../app/models/client/Client');
 const clients = require('../../../app/seed/client/clientForgotPasswordSeed');
 const Strings = require('../../../app/services/shared/Strings');
-/**
- * Test Suite
- */
 
 describe('Client forgot password API', () => {
   let req;
@@ -29,8 +22,6 @@ describe('Client forgot password API', () => {
           email: data.email,
         };
 
-        /* eslint-disable no-new */
-
         new Client(clientData)
           .save()
           .then(() => done())
@@ -44,30 +35,22 @@ describe('Client forgot password API', () => {
       .post('/api/v1/client/auth/forgot');
   });
 
-  //   /**
-  //    * Failing Test
-  //    */
 
   it('should not send an email but tell the user to check their email regardless', (done) => {
+    // initialize mail that does not matches one in seed
     const mail1 = {
       email: 'hadyyasser2@gmail.com',
     };
+    // post a forgot password request
     req.send(mail1)
       .expect('Content-Type', /json/)
       .expect(200)
       .end((err, res) => {
-        /**
-         * Error happend with request, fail the test
-         * with the error message.
-         */
-
         if (err) {
           return done(err);
         }
 
-        /**
-         * Do something with the response
-         */
+        // check if the message matches the one expected to be returned
 
         const eq = res.body.message === Strings.clientForgotPassword.CHECK_YOU_EMAIL ? 1 : 0;
         const chckMsg = eq;
@@ -80,11 +63,8 @@ describe('Client forgot password API', () => {
   });
 
 
-  /**
-   * Passing test
-   */
-
   it('should send an email to a valid client that is in the database', (done) => {
+     // initialize mail that matches one in seed
     const mail1 = {
       email: 'hadyyasser23@gmail.com',
     };
@@ -92,18 +72,11 @@ describe('Client forgot password API', () => {
       .expect('Content-Type', /json/)
       .expect(200)
       .end((err, res) => {
-        /**
-         * Error happend with request, fail the test
-         * with the error message.
-         */
-
         if (err) {
           return done(err);
         }
 
-        /**
-         * Do something with the response
-         */
+      // check if the message matches the one expected to be returned
 
         const eq = res.body.message === Strings.clientForgotPassword.CHECK_YOU_EMAIL ? 1 : 0;
         const chckMsg = eq;
