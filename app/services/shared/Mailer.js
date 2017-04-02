@@ -96,7 +96,6 @@ exports.forgotPasswordEmail = (email, host, resetToken) => {
   return new Promise((resolve, reject) => {
     mailer.sendMail(mailOptions, (err, information) => {
       if (err) {
-        console.log(err);
         return reject(err);
       }
       return resolve(information);
