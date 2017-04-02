@@ -114,28 +114,12 @@ router.post('/reset', (req, res, next) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
 
-
-  // Check If any required field are missing
-  if (!(password && confirmPassword && resetToken)) {
-    next(Strings.INCOMPLETE_INFORMATION);
-  }
-
-  // Check if password and confirmation mismatch
-  if (password !== confirmPassword) {
-    return next(Strings.PASSWORD_MISMATCH);
-  }
-
-  // Check that password satisfies password conditions
-  // The password must be at least 8 characters and includes at least a digit
-  //  and a special character.
-  // http://stackoverflow.com/questions/19605150/
-
   req.checkBody(validationSchemas.clientResetPasswordValidation);
   req.checkBody('confirmPassword')
     .equals(req.body.password)
 .withMessage(Strings.clientValidationErrors.passwordMismatch);
 
-  return jwt.verify(resetToken, JWT_KEY, (err, payload) => {
+  jwt.verify(resetToken, JWT_KEY, (err, payload) => {
     if (!payload) {
       next(Strings.businessForgotPassword.INva);
     } else {
