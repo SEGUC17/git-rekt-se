@@ -2,13 +2,24 @@
  * Constant Strings
  */
 
+
+/**
+ *  General Strings
+ */
+
 const generalErrors = {
   mailerError: 'An issue occured while send the email.',
 };
 
+/**
+ * Business Strings
+ */
+
 const bussinessValidationErrors = {
   emptyEmail: 'Email is a required field.',
   invalidEmail: 'Invalid Email.',
+  emptyPassword: 'Password is a required field.',
+  invalidPassword: 'Password length must be between 8 and 15 and contains at least one number.',
   emptyName: 'Name is a required field.',
   emptyMobile: 'Mobile is a required field.',
   emptyDescription: 'Description is a required field.',
@@ -26,6 +37,18 @@ const businessSuccess = {
   unverifiedSignup: 'Signup Successful, A representative will contact you soon.',
   emailConfirmation: 'Please check your email for the email confirmation.',
 };
+
+const businessLoginMessages = {
+  invalidCreds: 'Invalid Credentials.',
+  loginSuccess: 'Business Login Success.',
+  pendingVerification: 'You have not been confirmed by the admin.',
+  removeBusiness: 'This business has been removed.',
+  invalidToken: 'Invalid Token',
+};
+
+/**
+ * Client Strings
+ */
 
 const clientValidationErrors = {
   emptyEmail: 'Email is a required field.',
@@ -54,6 +77,7 @@ const clientLoginMessages = {
   loginSuccess: 'Client Login Success.',
   confirmEmail: 'Please confirm your email.',
   bannedClient: 'This user has been banned.',
+  invalidToken: 'Invalid Token',
 };
 
 const clientConfirmation = {
@@ -83,6 +107,10 @@ module.exports = {
   clientConfirmation,
   bussinessValidationErrors,
   businessSuccess,
+<<<<<<< HEAD
+=======
+  businessLoginMessages,
   reviewErrors,
   reviewSuccess,
+>>>>>>> 233bb1e7c49c72f0f6a809a4c7075409fb82917b
 };
