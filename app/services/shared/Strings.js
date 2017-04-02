@@ -54,6 +54,12 @@ const businessForgotPassword = {
   INVALID_RESET_TOKEN: 'Invalid reset token.',
 };
 
+const clientForgotPassword = {
+  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
+  INVALID_RESET_TOKEN: 'Invalid reset token.',
+  PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
@@ -61,4 +67,5 @@ module.exports = {
   bussinessValidationErrors,
   businessSuccess,
   businessForgotPassword,
+  clientForgotPassword,
 };
