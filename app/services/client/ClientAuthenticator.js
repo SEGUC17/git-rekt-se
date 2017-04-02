@@ -16,7 +16,7 @@ mongoose.Promise = Promise;
  */
 
 const generateToken = payload =>
-  jwt.sign(payload, process.env.JWT_KEY, {
+  jwt.sign(payload, process.env.JWT_KEY_CLIENT, {
     expiresIn: '1h',
   });
 
