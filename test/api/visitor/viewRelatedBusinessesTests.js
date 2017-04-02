@@ -118,8 +118,6 @@ describe('View Related Businesses API', () => {
         /**
          * Checking the content of the response
          */
-        console.log(category1Id);
-        console.log(res.body);
         chai.expect(res.body.count)
           .to.equal(1);
         chai.expect(res.body.results)

@@ -31,6 +31,10 @@ router.get('/category/:id/:offset', (req, res, next) => {
       if (finderr) {
         next(finderr);
       }
+      /**
+       * Filtering Businesses the only relate to the category in the params of the request
+       */
+
       const filteredBusinesses = businesses.filter((business) => {
         let hascategory = false;
         business.categories.forEach((category) => {
@@ -42,13 +46,25 @@ router.get('/category/:id/:offset', (req, res, next) => {
         return hascategory;
       });
       if (filteredBusinesses.length === 0) {
-        return res.status(400).json({
-          errors: 'No related businesses',
-        });
+        return res.status(400)
+          .json({
+            errors: 'No related businesses',
+          });
       }
+      /**
+       * Removing the categories array from the json object using map method
+       */
+      const businessesResults = filteredBusinesses.map(business => ({
+        name: business.name,
+        shortDescription: business.shortDescription,
+      }));
+
+      /**
+       * JSON response sent including the list of the businesses along with their count
+       */
       return res.json({
-        count: filteredBusinesses.length,
-        results: filteredBusinesses,
+        count: businessesResults.length,
+        results: businessesResults,
       });
     });
 });
