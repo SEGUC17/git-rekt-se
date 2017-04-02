@@ -205,8 +205,6 @@ const adminAuthMiddleware = (req, res, next) => {
   })(req, res, next);
 };
 
-
-
 module.exports = {
   clientStrategy,
   clientAuthMiddleware,
