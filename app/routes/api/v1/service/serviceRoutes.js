@@ -4,14 +4,9 @@ const Business = require('../../../../models/business/Business');
 const Service = require('../../../../models/service/Service');
 const Branch = require('../../../../models/service/Branch');
 const Offering = require('../../../../models/service/Offering');
+const Strings = require('../../../../services/shared/Strings');
 
 const router = express.Router();
-
-/**
- * Body Parser Middleware
- */
-
-router.use(bodyParser.json());
 
 /**
  * View a service route
@@ -27,7 +22,18 @@ router.get('/:id', (req, res, next) => {
       res.json(service);
     })
     .catch((err) => {
-      res.json({ errors: 'The specified Service was not found' });
+      res.json({ message: Strings.serviceFailure.serviceNotFound });
+    });
+});
+
+/**
+ *  Error Handling Middlewares.
+ */
+
+router.use((err, req, res, next) => {
+  res.status(400)
+    .json({
+      errors: err,
     });
 });
 

@@ -33,8 +33,13 @@ const clientSuccess = {
   emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
+const serviceFailure = {
+  serviceNotFound: 'The specified service was not found.',
+};
+
 module.exports = {
   clientValidationErrors,
   clientSuccess,
   bussinessValidationErrors,
+  serviceFailure,
 };
