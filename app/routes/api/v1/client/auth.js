@@ -121,9 +121,9 @@ router.post('/reset', (req, res, next) => {
   }
 
     // Check if password and confirmation mismatch
-  if (password !== confirmPassword) {
-    next(Strings.PASSWORD_MISMATCH);
-  }
+  // if (password !== confirmPassword) {
+  //   next(Strings.PASSWORD_MISMATCH);
+  // }
 
     // Check that password satisfies password conditions
     // The password must be at least 8 characters and includes at least a digit
