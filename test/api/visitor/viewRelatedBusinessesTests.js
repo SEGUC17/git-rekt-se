@@ -30,7 +30,7 @@ describe('View Related Businesses API', () => {
   let category1ID;
   let category2ID;
   let category3ID;
-  let testID = 0;
+
   /**
    * Inserting Business Categories and getting their object IDs
    */
@@ -56,13 +56,11 @@ describe('View Related Businesses API', () => {
                   if (finderr2) {
                     done(finderr2);
                   }
-                  /* eslint-disable no-underscore-dangle */
                   category1ID = category1._id;
                   category2ID = category2._id;
                   businesses[0].categories = [category2ID];
                   businesses[1].categories = [category1ID];
                   businesses[2].categories = [category1ID];
-
 
                   Business.insertMany(businesses, (inserterr2, docs2) => {
                     if (inserterr2) {
@@ -87,28 +85,13 @@ describe('View Related Businesses API', () => {
     });
   });
 
-
-  beforeEach(() => {
-    let categoryID = -1;
-    if (testID === 0) {
-      categoryID = category1ID;
-    } else if (testID === 1) {
-      categoryID = category2ID;
-    } else {
-      categoryID = category3ID;
-    }
-
-    req = supertest(app)
-      .get(`/api/v1/business/category/${categoryID}/1`);
-
-    testID += 1;
-  });
-
   /**
    * Passing Test: Only 2 businesses of the same category appears
    */
 
   it('should return only the businesses of the category requested', (done) => {
+    req = supertest(app)
+      .get(`/api/v1/business/category/${category1ID}/1`);
     req
       .expect('Content-Type', /json/)
       .expect(200)
@@ -117,12 +100,15 @@ describe('View Related Businesses API', () => {
          * Error happend with request, fail the test
          * with the error message.
          */
+
         if (err) {
           done(err);
         }
+
         /**
          * Checking the content of the response
          */
+
         chai.expect(res.body.count)
           .to.equal(2);
         chai.expect(res.body.results)
@@ -140,6 +126,8 @@ describe('View Related Businesses API', () => {
    */
 
   it('should return only the businesses of the category requested', (done) => {
+    req = supertest(app)
+      .get(`/api/v1/business/category/${category2ID}/1`);
     req
       .expect('Content-Type', /json/)
       .expect(200)
@@ -148,12 +136,15 @@ describe('View Related Businesses API', () => {
          * Error happend with request, fail the test
          * with the error message.
          */
+
         if (err) {
           done(err);
         }
+
         /**
          * Checking the content of the response
          */
+
         chai.expect(res.body.count)
           .to.equal(1);
         chai.expect(res.body.results)
@@ -169,9 +160,11 @@ describe('View Related Businesses API', () => {
    */
 
   it('should return no related businesses in a requested category', (done) => {
+    req = supertest(app)
+      .get(`/api/v1/business/category/${category3ID}/1`);
     req.expect('Content-Type', /json/)
       .expect(400, {
-        errors: Strings.visitorErrors.NoRelatedBusinesses,
+        errors: [Strings.visitorErrors.NoRelatedBusinesses],
       }, done);
   });
 });

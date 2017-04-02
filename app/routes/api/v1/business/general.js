@@ -41,7 +41,7 @@ router.get('/category/:id/:offset', (req, res, next) => {
        */
 
       if (businesses.length === 0) {
-        return next(Strings.visitorErrors.NoRelatedBusinesses);
+        return next([Strings.visitorErrors.NoRelatedBusinesses]);
       }
 
       /**
