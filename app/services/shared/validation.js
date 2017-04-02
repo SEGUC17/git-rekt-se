@@ -148,8 +148,8 @@ const clientResetPasswordValidation = {
   confirmPassword: {
     notEmpty: {
       errorMessage: clientValidationErrors.emptyConfirmation,
-    }
-  }
+    },
+  },
 };
 
 const businessLoginValidation = {
