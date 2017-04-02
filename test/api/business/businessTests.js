@@ -24,6 +24,7 @@ describe('Should Edit Info Correctly', () => {
     password: businessSeed[0].password,
     shortDescription: businessSeed[0].shortDescription,
     phoneNumbers: businessSeed[0].phoneNumbers,
+    _status: 'verified',
   };
 
   const businessLogin = {
