@@ -135,12 +135,32 @@ const businessSignupValidation = {
   },
 };
 
+const businessLoginValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyEmail,
+    },
+    isEmail: {
+      errorMessage: bussinessValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
+};
 
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
   businessSignupValidation,
+  businessLoginValidation,
 };
 
 module.exports = validation;

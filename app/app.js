@@ -2,7 +2,11 @@ const express = require('express');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
+<<<<<<< HEAD
 const jwtConfig = require('./services/shared/jwtConfig.js');
+=======
+const jwtConfig = require('./services/shared/jwtConfig');
+>>>>>>> 233bb1e7c49c72f0f6a809a4c7075409fb82917b
 
 const app = express();
 
@@ -32,6 +36,7 @@ mongoose.connect(process.env.DB_URL);
  */
 
 passport.use('jwt_client', jwtConfig.clientStrategy);
+passport.use('jwt_bussiness', jwtConfig.businessStrategy);
 app.use(passport.initialize());
 
 /**
