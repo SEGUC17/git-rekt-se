@@ -54,8 +54,8 @@ describe('Should Edit Info Correctly', () => {
                     .post('/api/v1/business/auth/verified/login')
                     .send(businessLogin)
                     .end((postErr, res) => {
-                      if (err) {
-                        done(err);
+                      if (postErr) {
+                        done(postErr);
                       } else {
                         token = res.body.token;
                         done();
