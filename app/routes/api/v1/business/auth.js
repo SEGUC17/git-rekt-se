@@ -93,12 +93,27 @@ router.post('/verified/login', (req, res, next) => {
 router.post('/update', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
   const businessInfo = {
     name: req.body.name,
-    email: req.body.email,
     password: req.body.password,
-    confirmPassword: req.body.confirmPassword,
     shortDescription: req.body.shortDescription,
-    mobile: req.body.mobile, // Add to phone numbers array
+    phoneNumbers: req.body.phoneNumbers, // Add to phone numbers array
   };
+  req.checkBody(validationSchemas.businessUpdateValidation);
+
+  Business.findOne({ email: businessInfo.email })
+    .exec()
+    .then((business) => {
+      business.name = businessInfo.name;
+      business.password = businessInfo.password;
+      business.shortDescription = businessInfo.shortDescription;
+      business.phoneNumbers = businessInfo.phoneNumbers;
+
+      return business.save().then(() => {
+        res.json({
+          message: Strings.businessInformationChanged,
+        });
+      });
+    })
+    .catch(err => next([err]));
 });
 
 /**

@@ -92,15 +92,19 @@ const clientConfirmation = {
   notFound: 'User not found.',
 };
 
+const businessInformationChanged = {
+  UPDATE_SUCCESSFULL: 'Information successfully updated',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
-
   bussinessValidationErrors,
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
+  businessInformationChanged,
 };
