@@ -116,50 +116,52 @@ router.post('/reset', (req, res, next) => {
   const confirmPassword = req.body.confirmPassword;
 
 
-    // Check If any required field are missing
+  // Check If any required field are missing
   if (!(password && confirmPassword && resetToken)) {
     next(Strings.INCOMPLETE_INFORMATION);
   }
 
-    // Check if password and confirmation mismatch
+  // Check if password and confirmation mismatch
   if (password !== confirmPassword) {
-    next(Strings.PASSWORD_MISMATCH);
+    return next(Strings.PASSWORD_MISMATCH);
   }
 
-    // Check that password satisfies password conditions
-    // The password must be at least 8 characters and includes at least a digit
-    //  and a special character.
-    // http://stackoverflow.com/questions/19605150/
+  // Check that password satisfies password conditions
+  // The password must be at least 8 characters and includes at least a digit
+  //  and a special character.
+  // http://stackoverflow.com/questions/19605150/
 
-  const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?.&])[A-Za-z\d$@$!%*#?.&]{8,}$/;
-  if (!passwordRegex.test(password)) {
-    next(Strings.INVALID_PASSWORD);
-  }
+  // const passwordRegex = /(?=.*\d)(?=.*[$@$!%*#?.&])[A-Za-z\d$@$!%*#?.&]{8,}$/;
+  // if (!passwordRegex.test(password)) {
+  //   next(Strings.INVALID_PASSWORD);
+  // }
 
-  jwt.verify(resetToken, JWT_KEY, (payload) => {
+  return jwt.verify(resetToken, JWT_KEY, (err, payload) => {
     const email = payload.email;
     const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
 
     Business.findOne({
       email,
-      passwordResetTokenDate: {
+      passwordChangeDate: {
         $lte: creationDate,
       },
-    }, (user) => {
-      if (!user) {
-        console.log(1);
-        next(Strings.INVALID_RESET_TOKEN);
-      }
+    })
+      .exec()
+      .then((business) => {
+        if (!business) {
+          return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
+        }
+        business.passwordResetTokenDate = undefined; // Disable the token
+        business.passwordChangeDate = Date.now(); // Invalidate Login Tokens
+        business.password = password; // Reset password
 
-      user.passwordResetTokenDate = undefined; // Disable the token
-      user.passwordChangeDate = Date.now(); // Invalidate Login Tokens
-      user.password = password; // Reset password
-
-      user.save().exec().then(() => res.json({
-        message: Strings.PASSWORD_RESET_SUCCESS,
-      }));
-    }).catch(err => next([err]));
-  }).catch(err => next([Strings.INVALID_RESET_TOKEN, err]));
+        return business.save()
+          .then(() => res.json({
+            message: 'password changed successfuly',
+          }));
+      })
+      .catch(e => next([e]));
+  });
 });
 
 /**
