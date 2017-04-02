@@ -75,17 +75,16 @@ router.post('/addServiceImage/:id', upload.any(), (req, res, next) => { // ensur
 });
 */
 router.post('/addServiceImage/:id', upload.single('file'), (req, res, next) => { // ensureauthenticated
-  const image = ({
-    path: req.file.filename,
-    description: req.body.description,
-  });
+
   Service.findOne({
     _id: req.params.id,
   })
     .exec((err, service) => {
-      console.log('-----------------service(findone)------------------');
-      console.log(service);
       if (service) {
+        const image = ({
+          path: req.file.filename,
+          description: req.body.description,
+        });
         service.gallery.push(image);
         service.save((err2) => {
           if (err) {

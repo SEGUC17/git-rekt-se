@@ -10,6 +10,8 @@ const Offering = require('../../../app/models/service/Offering');
 const should = chai.should();
 chai.use(chaiHttp);
 
+/* eslint-disable no-underscore-dangle */
+
 describe('Service Gallery Creation Tests', () => {
   let req;
   beforeEach((done) => {
@@ -18,7 +20,7 @@ describe('Service Gallery Creation Tests', () => {
     });
   });
 
-  it('it should Create an Image and get a confirmation message', (done) => {
+  it('it should create an image, and return a confirmation message: Image added succesfully!', (done) => {
     const newBranch = new Branch({
       location: 'Nasr City',
       address: '123 nasr street',
@@ -26,8 +28,6 @@ describe('Service Gallery Creation Tests', () => {
 
 
     newBranch.save((err, newbran) => {
-      console.log("-----------------branch------------------");
-      console.log(newbran);
       if (err) {
         console.log(err);
       } else {
@@ -38,8 +38,6 @@ describe('Service Gallery Creation Tests', () => {
           endDate: '1/1/2018',
         });
         newOffering.save((err2, newoff) => {
-          console.log("-----------------newoff------------------");
-          console.log(newoff);
           if (err2) {
             console.log(err2);
           } else {
@@ -55,8 +53,6 @@ describe('Service Gallery Creation Tests', () => {
             });
             newBusiness.branches.push(newbran.id);
             newBusiness.save((err3, newbus) => {
-              console.log("-----------------newbuss------------------");
-              console.log(newbus);
               if (err3) {
                 console.log(err3);
               } else {
@@ -71,8 +67,6 @@ describe('Service Gallery Creation Tests', () => {
                   gallery: [],
                 });
                 newService.save((err4, newser) => {
-                  console.log("-----------------newser------------------");
-                  console.log(newser);
                   if (err4) {
                     console.log(err4);
                   } else {
@@ -84,19 +78,16 @@ describe('Service Gallery Creation Tests', () => {
                       .post(`/api/v1/service/addServiceImage/${newser._id}`);
                     req.send(newImage)
                       .end((err5, res) => {
-                          console.log(res.body);
                         if (err5) {
                           done(err5);
                         } else {
                           Service.findOne({
                             _id: newser._id,
                           }, (finderr, data) => {
-                            console.log(data);
                             if (finderr) {
                               done(finderr);
                             } else {
-                              console.log(newService);
-                              chai.expect(data.length)
+                              chai.expect(data.gallery.length)
                                 .to.equal(1);
                               done();
                             }
@@ -113,85 +104,86 @@ describe('Service Gallery Creation Tests', () => {
     });
   });
 
-  //   it('it should not Create an Image if an invalid id is given', (done) => {
-  //     const newBranch = new Branch({
-  //       location: 'Nasr City',
-  //       address: '123 nasr street',
-  //     });
-
-  //     newBranch.save((err, newbran) => {
-  //       if (err) {
-  //         console.log(err);
-  //       }
-  //     });
-
-  //     const newOffering = new Offering({
-  //       branch: newBranch.id,
-  //       price: 1000,
-  //       startDate: '1/1/2017',
-  //       endDate: '1/1/2018',
-  //     });
-
-  //     newOffering.save((err, newoff) => {
-  //       if (err) {
-  //         console.log(err);
-  //       }
-  //     });
-
-  //     const newBusiness = new Business({
-  //       name: 'hobala25',
-  //       email: 'test@gmail.com',
-  //       shortDescription: 'This item is for testing Gallery image Creation API',
-  //       phoneNumbers: ['12345677', '22222222', '32414553'],
-  //       password: 'blahblah1',
-  //       confirmPassword: 'blahblah1',
-  //       description: 'This is for testing the API',
-  //       workingHours: 'Saturday To Thursday 8AM-5PM',
-  //     });
-  //     newBusiness.branches.push(newBranch.id);
-
-  //     newBusiness.save((err, newbus) => {
-  //       if (err) {
-  //         console.log(err);
-  //       }
-  //     });
-  //     const newService = new Service({
-  //       name: 'Service',
-  //       shortDescription: 'Service short description',
-  //       description: 'Description2',
-  //       _business: newBusiness.id,
-  //       branches: newBranch.id,
-  //       offerings: newOffering.id,
-  //       reviews: [],
-  //       gallery: {},
-  //     });
-
-  //     newService.save((err, newser) => {
-  //       if (err) {
-  //         console.log(err);
-  //       }
-  //     });
-  //     const newImage = ({
-  //       path: 'sampleImagePath',
-  //       description: 'sample Image Description',
-  //     });
-
-  //     req = supertest(app)
-  //       .post('/api/v1/service//addServiceImage/:900000000');
-  //     req.send(newImage)
-  //       .expect(400, {
-  //         message: 'Invalid service!',
-  //       })
-  //       .end((err, res) => {
-  //         if (err) {
-  //           done(err);
-  //         } else {
-  //           chai.expect(Service.find({
-  //             id: newService._id,
-  //           })
-  //             .gallery.length)
-  //             .to.equal(0);
-  //         }
-  //       });
-  //   });
+  it('it should not create an image if an invalid id is given, and return error message: Invalid service!', (done) => {
+    const newBranch = new Branch({
+      location: 'Nasr City',
+      address: '123 nasr street',
+    });
+    newBranch.save((err, newbran) => {
+      if (err) {
+        console.log(err);
+      } else {
+        const newOffering = new Offering({
+          branch: newbran._id,
+          price: 1000,
+          startDate: '1/1/2017',
+          endDate: '1/1/2018',
+        });
+        newOffering.save((err2, newoff) => {
+          if (err2) {
+            console.log(err2);
+          } else {
+            const newBusiness = new Business({
+              name: 'hobala25',
+              email: 'test@gmail.com',
+              shortDescription: 'This item is for testing Gallery Image Creation API',
+              phoneNumbers: ['12345677', '22222222', '32414553'],
+              password: 'blahblah1',
+              confirmPassword: 'blahblah1',
+              description: 'This is for testing the API',
+              workingHours: 'Saturday To Thursday 8AM-5PM',
+            });
+            newBusiness.branches.push(newbran.id);
+            newBusiness.save((err3, newbus) => {
+              if (err3) {
+                console.log(err3);
+              } else {
+                const newService = new Service({
+                  name: 'Service1',
+                  shortDescription: 'Service 1 short description',
+                  description: 'Description',
+                  _business: newbus._id,
+                  branches: newbran._id,
+                  offerings: newoff._id,
+                  reviews: [],
+                  gallery: [],
+                });
+                newService.save((err4, newser) => {
+                  if (err4) {
+                    console.log(err4);
+                  } else {
+                    const newImage = ({
+                      path: 'sampleImagePath',
+                      description: 'sample Image Description',
+                    });
+                    req = supertest(app)
+                      .post('/api/v1/service/addServiceImage/4');
+                    req.send(newImage)
+                      .end((err5, res) => {
+                        if (err5) {
+                          done(err5);
+                        } else {
+                          chai.expect(res.body.message).to.equal('Invalid service!');
+                          Service.findOne({
+                            _id: newser._id,
+                          }, (finderr, data) => {
+                            if (finderr) {
+                              done(finderr);
+                            } else {
+                              chai.expect(data.gallery.length)
+                                .to.equal(0);
+                              done();
+                            }
+                          });
+                        }
+                      });
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  });
 });
