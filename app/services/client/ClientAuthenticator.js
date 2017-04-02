@@ -1,9 +1,11 @@
 /**
  * Helper Module For Client Authentication
  */
+
 const jwt = require('jsonwebtoken');
 const Client = require('../../models/client/Client');
 const mongoose = require('mongoose');
+const Strings = require('../shared/Strings');
 
 mongoose.Promise = Promise;
 
@@ -35,10 +37,10 @@ exports.generateConfirmationToken = (email) => {
     })
       .then((userData) => {
         if (!userData) {
-          reject('User not found.');
+          reject(Strings.clientConfirmation.notFound);
         }
         if (userData.status !== 'unconfirmed') {
-          reject('User email already confirmed.');
+          reject(Strings.clientConfirmation.emailAlreadyConfirmed);
         }
         userData.confirmationTokenDate = Date.now();
         userData.save()
@@ -48,3 +50,45 @@ exports.generateConfirmationToken = (email) => {
       .catch(err => reject(err));
   });
 };
+
+
+/**
+ * Login Client
+ */
+
+exports.loginClient = (email, password) => new Promise((resolve, reject) => {
+  Client.findOne({
+    email,
+    _deleted: false,
+  })
+    .then((user) => {
+      if (!user) {
+        reject(Strings.clientLoginMessages.invalidCreds);
+      } else if (user.status === 'unconfirmed') {
+        reject(Strings.clientLoginMessages.invalidCreds);
+      } else if (user.status === 'banned') {
+        reject(Strings.clientLoginMessages.bannedClient);
+      } else {
+        user.checkPassword(password)
+          .then((matching) => {
+            if (!matching) {
+              reject(Strings.clientLoginMessages.invalidCreds);
+            } else {
+              const token = jwt.sign({
+                id: user._id,
+              }, process.env.JWT_KEY, {
+                expiresIn: '10d',
+              });
+              resolve({
+                message: Strings.clientLoginMessages.loginSuccess,
+                id: user._id,
+                email: user.email,
+                token,
+              });
+            }
+          })
+          .catch(reject);
+      }
+    })
+    .catch(reject);
+});
