@@ -136,15 +136,18 @@ router.post('/reset', (req, res, next) => {
 .withMessage(Strings.clientValidationErrors.passwordMismatch);
 
   return jwt.verify(resetToken, JWT_KEY, (err, payload) => {
-    const email = payload.email;
-    const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
+    if (!payload) {
+      next(Strings.businessForgotPassword.INva);
+    } else {
+      const email = payload.email;
+      const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
 
-    Client.findOne({
-      email,
-      passwordChangeDate: {
-        $lte: creationDate,
-      },
-    })
+      Client.findOne({
+        email,
+        passwordChangeDate: {
+          $lte: creationDate,
+        },
+      })
       .exec()
       .then((client) => {
         if (!client) {
@@ -160,6 +163,7 @@ router.post('/reset', (req, res, next) => {
           }));
       })
       .catch(e => next([e]));
+    }
   });
 });
 
