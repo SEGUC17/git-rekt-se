@@ -5,6 +5,7 @@ const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
+const reviewErrors = Strings.reviewErrors;
 
 
 /**
@@ -135,12 +136,23 @@ const businessSignupValidation = {
   },
 };
 
+/* Review Validation */
+
+const reviewValidation = {
+  rating: {
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
+    },
+  },
+};
+
 
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
   businessSignupValidation,
+  reviewValidation,
 };
 
 module.exports = validation;

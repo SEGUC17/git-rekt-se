@@ -61,6 +61,20 @@ const clientConfirmation = {
   notFound: 'User not found.',
 };
 
+const reviewErrors = {
+  invalidService: 'The service you are trying to review does not exist.',
+  emptyRating: 'You must provide a rating in your review.',
+  alreadyReviewedService: 'You have already reviewed this service.',
+  invalidReview: 'This review does not exist.',
+  userMismatch: 'You did not create the review that you are trying to edit.',
+};
+
+const reviewSuccess = {
+  createSuccess: 'Review added successfully.',
+  updateSuccess: 'Review updated successfully.',
+  deleteSuccess: 'Review deleted successfully.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
@@ -69,4 +83,6 @@ module.exports = {
   clientConfirmation,
   bussinessValidationErrors,
   businessSuccess,
+  reviewErrors,
+  reviewSuccess,
 };
