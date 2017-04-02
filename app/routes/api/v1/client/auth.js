@@ -156,7 +156,7 @@ router.post('/reset', (req, res, next) => {
 
         return client.save()
           .then(() => res.json({
-            message: `password changed successfuly${password}`,
+            message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
           }));
       })
       .catch(e => next([e]));
