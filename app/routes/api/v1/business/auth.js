@@ -15,7 +15,7 @@ mongoose.Promise = Promise;
 require('dotenv')
   .config();
 
-const JWT_KEY = process.env.JWT_KEY;
+const JWT_KEY = process.env.JWT_KEY_CLIENT;
 
 
 /**
