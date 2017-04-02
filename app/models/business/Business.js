@@ -22,7 +22,7 @@ const businessSchema = Schema({
   },
   shortDescription: {
     type: String,
-    required: false,
+    required: true,
   },
   description: {
     type: String,
