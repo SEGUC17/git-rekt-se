@@ -17,7 +17,7 @@ module.exports = (app) => {
    * Business Routes
    */
   app.use('/api/v1/business/auth', businessAuthAPI);
-  app.use('/api/v1/business/edit/', businessAPI);
+  app.use('/api/v1/business', businessAPI);
 
   /**
    * Admin Routes

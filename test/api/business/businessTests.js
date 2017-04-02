@@ -91,8 +91,8 @@ describe('Should Edit Info Correctly', () => {
         Business.findOne(searchID)
           .exec()
           .then((business) => {
-            chai.expect(business.categories)
-              .length.to.equal(2);
+            chai.expect(business.categories.length)
+              .to.equal(2);
             done();
           })
           .catch(done);

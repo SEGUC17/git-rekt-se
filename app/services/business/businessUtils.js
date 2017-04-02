@@ -2,7 +2,7 @@
  * Utility Functions
  */
 
-const Category = require('../../models/business/Business');
+const Category = require('../../models/service/Category');
 
 const addCategories = (categories) => {
   const resultCategories = categories.map((category) => {

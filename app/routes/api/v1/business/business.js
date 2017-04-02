@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.use(bodyParser.json());
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id/edit', (req, res, next) => {
   const id = req.params.id;
   const body = req.body;
   const searchID = {
@@ -35,7 +35,7 @@ router.put('/:id', (req, res, next) => {
         if (body.categories && body.categories.length > 0) {
           BusinessUtils.addCategories(body.categories)
             .then((allCategories) => {
-              business.categories.concat(allCategories);
+              business.categories = business.categories.concat(allCategories);
               business.save()
                 .then(() => res.json({
                   message: businessMessages.editSuccess,
