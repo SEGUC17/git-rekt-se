@@ -65,9 +65,6 @@ const serviceSchema = Schema({
       type: String,
       required: true,
     },
-    description: {
-      type: String,
-    },
   },
   _deleted: {
     type: Boolean,
