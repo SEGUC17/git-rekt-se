@@ -149,7 +149,7 @@ router.post('/reset', (req, res, next) => {
       .then((client) => {
         if (!client) {
           console.log('works');
-          return next(Strings.INVALID_RESET_TOKEN);
+          return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
         }
         client.passwordResetTokenDate = undefined; // Disable the token
         client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
@@ -157,7 +157,7 @@ router.post('/reset', (req, res, next) => {
 
         return client.save()
           .then(() => res.json({
-            message: Strings.PASSWORD_RESET_SUCCESS,
+            message: `password changed successfuly${password}`,
           }));
       })
       .catch(e => next([e]));
