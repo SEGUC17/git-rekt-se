@@ -94,39 +94,6 @@ router.post('/verified/login', (req, res, next) => {
 });
 
 /**
- * Business forgot password
- */
-
-router.post('/forgot', (req, res, next) => {
-  const email = req.body.email;
-  const iat = Math.floor(Date.now() / 1000);
-  const resetToken = jwt.sign({
-    email,
-    iat,
-  }, JWT_KEY, {
-    expiresIn: '1h',
-  });
-
-  Business.findOne({
-    email: req.body.email,
-  }).exec().then((business) => {
-    if (!business) { // Business not found, Invalid mail
-      // Not using middleware due to status
-      return res.json({
-        message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
-      });
-    }
-    business.passwordResetTokenDate = iat * 1000;
-
-    return business.save().then(() => {
-      Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
-        .then(() => res.json({ message: Strings.businessForgotPassword.CHECK_YOU_EMAIL }))
-        .catch(() => res.json('err'));
-    });
-  }).catch(err => next([err]));
-});
-
-/**
  * Business reset password
  */
 
