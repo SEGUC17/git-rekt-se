@@ -91,7 +91,14 @@ router.post('/verified/login', (req, res, next) => {
  */
 
 router.post('/update', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
-  const businessData = req.body;
+  const businessInfo = {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword,
+    shortDescription: req.body.shortDescription,
+    mobile: req.body.mobile, // Add to phone numbers array
+  };
 });
 
 /**
