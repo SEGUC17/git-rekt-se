@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const Business = require('../../../../models/business/Business');
 const Strings = require('../../../../services/shared/Strings');
+
+mongoose.Promise = Promise;
 
 const router = express.Router();
 
@@ -30,12 +33,8 @@ router.get('/category/:id/:offset', (req, res, next) => {
   }, {
     skip: (offset - 1) * 10,
     limit: 10,
-  })
-    .exec((finderr, businesses) => {
-      if (finderr) {
-        next(finderr);
-      }
-
+  }).exec()
+    .then((businesses) => {
       /**
        * In case of No related businesses in the category specified in the params
        */
@@ -51,7 +50,8 @@ router.get('/category/:id/:offset', (req, res, next) => {
         count: businesses.length,
         results: businesses,
       });
-    });
+    })
+    .catch(err => next([err]));
 });
 
 
