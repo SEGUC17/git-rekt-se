@@ -121,9 +121,9 @@ router.post('/reset', (req, res, next) => {
   }
 
   // Check if password and confirmation mismatch
-  // if (password !== confirmPassword) {
-  //   next(Strings.PASSWORD_MISMATCH);
-  // }
+  if (password !== confirmPassword) {
+    return next(Strings.PASSWORD_MISMATCH);
+  }
 
   // Check that password satisfies password conditions
   // The password must be at least 8 characters and includes at least a digit
@@ -135,7 +135,7 @@ router.post('/reset', (req, res, next) => {
   //   next(Strings.INVALID_PASSWORD);
   // }
 
-  jwt.verify(resetToken, JWT_KEY, (err, payload) => {
+  return jwt.verify(resetToken, JWT_KEY, (err, payload) => {
     const email = payload.email;
     const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
 
@@ -148,7 +148,6 @@ router.post('/reset', (req, res, next) => {
       .exec()
       .then((client) => {
         if (!client) {
-          console.log('works');
           return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
         }
         client.passwordResetTokenDate = undefined; // Disable the token
