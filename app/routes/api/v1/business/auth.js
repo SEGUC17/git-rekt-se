@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
@@ -5,9 +6,9 @@ const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const authHelper = require('../../../../services/shared/jwtConfig');
+const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -19,19 +20,19 @@ const JWT_KEY = process.env.JWT_KEY;
 
 
 /**
- * Parsing Middleware(s)
+ * Parsing Middleware(s).
  */
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Business signup route
+ * Business signup route.
  */
 
 router.post('/unverified/signup', (req, res, next) => {
   /**
-   * Body Inputs
+   * Body Inputs.
    */
 
   const userInfo = {
@@ -67,6 +68,25 @@ router.post('/unverified/signup', (req, res, next) => {
               .catch(() => next([Strings.generalErrors.mailerError]));
           })
           .catch(() => next([Strings.bussinessValidationErrors.businessExists]));
+      } else {
+        next(result.array());
+      }
+    });
+});
+
+
+/**
+ * Business login route.
+ */
+
+router.post('/verified/login', (req, res, next) => {
+  req.checkBody(validationSchemas.businessLoginValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        BusinessAuthenticator.loginBusiness(req.body.email, req.body.password)
+          .then(info => res.json(info))
+          .catch(err => next([err]));
       } else {
         next(result.array());
       }

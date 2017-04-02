@@ -51,9 +51,9 @@ const businessSchema = Schema({
   workingHours: {
     type: String,
   },
-  _deleted: {
-    type: Boolean,
-    default: false,
+  passwordChangeDate: {
+    type: Date,
+    default: Date.now,
   },
   confirmationTokenDate: {
     type: Date,
@@ -67,6 +67,10 @@ const businessSchema = Schema({
     type: String,
     enum: ['unverified', 'verified', 'removed'],
     default: 'unverified',
+  },
+  _deleted: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -93,9 +97,14 @@ businessSchema.pre('save', function preSave(done) {
  * Check the password
  */
 
-businessSchema.methods.checkPassword = function checkPassword(guess, done) {
-  bcrypt.compare(guess, this.password, (err, matching) => {
-    done(err, matching);
+businessSchema.methods.checkPassword = function checkPassword(guess) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(guess, this.password, (err, matching) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(matching);
+    });
   });
 };
 

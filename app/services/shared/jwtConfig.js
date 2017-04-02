@@ -2,6 +2,8 @@ const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const InvalidToken = require('../../models/shared/InvalidToken');
 const Client = require('../../models/client/Client');
+const Business = require('../../models/business/Business');
+const Strings = require('../../services/shared/Strings');
 
 const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
@@ -13,13 +15,14 @@ require('dotenv')
  * JWT Configuration
  */
 
-const JWT_KEY = process.env.JWT_KEY;
-const JWTOptions = {
+const JWTOptionsClient = {
   jwtFromRequest: ExtractJWT.fromAuthHeader(),
-  secretOrKey: JWT_KEY,
+  secretOrKey: process.env.JWT_KEY_CLIENT,
   passReqToCallback: true,
 };
 
+const JWTOptionsBusiness = Object.assign({}, JWTOptionsClient);
+JWTOptionsBusiness.secretOrKey = process.env.JWT_KEY_BUSSINES;
 
 /**
  * Extract JWT Token from the header.
@@ -42,13 +45,13 @@ const parseAuthHeader = (hdrValue) => {
  * Client Authentication Strategy.
  */
 
-const clientStrategy = new JWTStrategy(JWTOptions, (req, payload, done) => {
+const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) => {
   Client.findOne({
     _id: payload.id,
   })
     .then((user) => {
       if (!user) {
-        done(null, false, 'Invalid Credentatials.');
+        done(null, false, Strings.clientLoginMessages.invalidCreds);
       } else {
         const tokenCreationTime = new Date(parseInt(payload.iat, 10) * 1000);
         const lastPasswordChangeTime = user.passwordChangeDate;
@@ -60,11 +63,11 @@ const clientStrategy = new JWTStrategy(JWTOptions, (req, payload, done) => {
         })
           .then((token) => {
             if (token) {
-              return done(null, false, 'Invalid Token.');
+              return done(null, false, Strings.clientLoginMessages.invalidToken);
             }
 
             if (tokenCreationTime.getTime() < lastPasswordChangeTime.getTime()) {
-              return done(null, false, 'Invalid Token.');
+              return done(null, false, Strings.clientLoginMessages.invalidToken);
             }
 
             return done(null, user);
@@ -76,7 +79,7 @@ const clientStrategy = new JWTStrategy(JWTOptions, (req, payload, done) => {
 });
 
 /**
- * Client Authentication Middleware
+ * Client Authentication Middleware.
  */
 
 const clientAuthMiddleware = (req, res, next) => {
@@ -94,8 +97,62 @@ const clientAuthMiddleware = (req, res, next) => {
   })(req, res, next);
 };
 
+/**
+ * Business Authentication Strategy.
+ */
+
+const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done) => {
+  Business.findOne({
+    _id: payload.id,
+  })
+    .then((user) => {
+      if (!user) {
+        done(null, false, Strings.businessLoginMessages.invalidCreds);
+      } else {
+        const tokenCreationTime = new Date(parseInt(payload.iat, 10) * 1000);
+        const lastPasswordChangeTime = user.passwordChangeDate;
+        const reqToken = parseAuthHeader(req.headers.authorization)
+          .value;
+
+        InvalidToken.findOne({
+          token: reqToken,
+        })
+          .then((token) => {
+            if (token) {
+              return done(null, false, Strings.businessLoginMessages.invalidToken);
+            }
+
+            if (tokenCreationTime.getTime() < lastPasswordChangeTime.getTime()) {
+              return done(null, false, Strings.businessLoginMessages.invalidToken);
+            }
+
+            return done(null, user);
+          })
+          .catch(done);
+      }
+    })
+    .catch(done);
+});
+
+const businessAuthMiddleware = (req, res, next) => {
+  passport.authenticate('jwt_bussiness', {
+    session: false,
+  }, (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return next(info);
+    }
+    req.user = user;
+    return next();
+  })(req, res, next);
+};
+
 module.exports = {
   clientStrategy,
   clientAuthMiddleware,
+  businessStrategy,
+  businessAuthMiddleware,
 };
 
