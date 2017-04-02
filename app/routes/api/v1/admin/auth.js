@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+const validationSchemas = require('../../../../services/shared/validation');
 const Admin = require('../../../../models/admin/Admin');
+const AdminAuthenticator = require('../../../../services/admin/AdminAuthenticator');
 
 const router = express.Router();
 
@@ -9,6 +12,7 @@ const router = express.Router();
  */
 
 router.use(bodyParser.json());
+router.use(expressValidator({}));
 
 /**
  * Dummy admin registeration route
@@ -24,6 +28,23 @@ router.post('/create', (req, res) => {
     .then(() => res.json({
       message: 'Dummy admin added.',
     }));
+});
+
+/*
+  * Admin Login
+  */
+router.post('/login', (req, res, next) => {
+  req.checkBody(validationSchemas.administratorLoginValidation);
+  req.getValidationResult()
+     .then((result) => {
+       if (result.isEmpty()) {
+         AdminAuthenticator.loginAdmin(req.body.email, req.body.password)
+           .then(info => res.json(info))
+           .catch(err => next([err]));
+       } else {
+         next(result.array());
+       }
+     });
 });
 
 /**

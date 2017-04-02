@@ -33,6 +33,7 @@ mongoose.connect(process.env.DB_URL);
 
 passport.use('jwt_client', jwtConfig.clientStrategy);
 passport.use('jwt_bussiness', jwtConfig.businessStrategy);
+passport.use('jwt_administrator', jwtConfig.adminStrategy);
 app.use(passport.initialize());
 
 /**
