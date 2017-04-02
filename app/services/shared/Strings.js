@@ -33,8 +33,21 @@ const clientSuccess = {
   emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
+const serviceSuccess = {
+  imageAdd: 'Image added succesfully!',
+  imageEdit: 'Description updated succesfully!',
+  imageDelete: 'Image deleted succesfully!',
+};
+
+const serviceFail = {
+  invalidService: 'Service not found!',
+  invalidImage: 'Image not found!',
+};
+
 module.exports = {
   clientValidationErrors,
   clientSuccess,
   bussinessValidationErrors,
+  serviceSuccess,
+  serviceFail,
 };
