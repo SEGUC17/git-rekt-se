@@ -3,14 +3,38 @@ const chaiHttp = require('chai-http');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
-const Branch = require('../../../app/models/service/Branch.js');
-const Service = require('../../../app/models/service/Service.js');
+const Branch = require('../../../app/models/service/Branch');
+const Service = require('../../../app/models/service/Service');
 const Offering = require('../../../app/models/service/Offering');
 
-const should = chai.should();
-chai.use(chaiHttp);
+/**
+ * Database Connection
+ */
 
-describe('Services Tests', () => {
+require('dotenv')
+  .config();
+
+describe('View Services Tests', () => {
+  let req;
+
+  before((done) => {
+    Business.collection.drop(() => {
+      Business.ensureIndexes();
+    });
+    Service.collection.drop(() => {
+      Service.ensureIndexes();
+    });
+    Offering.collection.drop(() => {
+      Offering.ensureIndexes();
+    });
+    Branch.collection.drop(() => {
+      Branch.ensureIndexes(done);
+    });
+  });
+
+  beforeEach(() => {
+    req = supertest(app);
+  });
   it('it should GET a Service by the given id', (done) => {
     const newBranch = new Branch({
       location: 'Nasr City',
@@ -62,37 +86,31 @@ describe('Services Tests', () => {
       branches: newBranch.id,
       offerings: newOffering.id,
       reviews: [],
-      gallery: {},
+      gallery: null,
     });
 
     newService.save((newSer) => {
-      const route = '/api/v1/visitor/'.concat(newService.id);
-      chai.request(app)
-        .get(route)
+      const route = '/api/v1/service/'.concat(newService.id);
+      req.get(route)
         .send(newService)
         .end((err, res) => {
-          res.body.should.be.a('object');
-          res.body.should.have.property('name');
-          res.body.should.have.property('shortDescription');
-          res.body.should.have.property('description');
-          res.body.should.have.property('_business');
-          res.body.should.have.property('branches');
-          res.body.should.have.property('reviews');
-          res.body.should.have.property('offerings');
-          res.body.should.have.property('gallery');
-          res.body.should.have.property('_id').eql(newService.id);
+          chai.expect(res.body).to.have.property('name');
+          chai.expect(res.body).to.have.property(('shortDescription'));
+          chai.expect(res.body).to.have.property(('description'));
+          chai.expect(res.body).to.have.property(('branches'));
+          chai.expect(res.body).to.have.property(('workingHours'));
+          chai.expect(res.body).to.have.property(('offerings'));
+          chai.expect(res.body).to.have.property(('reviews'));
           done();
         });
     });
   });
 
   it('it should not GET a Service by the non existence id', (done) => {
-    const route = '/api/v1/visitor/'.concat(4);
-    chai.request(app)
-      .get(route)
+    const route = '/api/v1/service/'.concat(4);
+    req.get(route)
       .end((err, res) => {
-        res.body.should.be.a('object');
-        res.body.should.have.property('error');
+        chai.expect(res.body).to.have.property('errors');
         done();
       });
   });
