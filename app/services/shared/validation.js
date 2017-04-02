@@ -6,6 +6,11 @@ const Strings = require('./Strings');
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
 
+
+/**
+ * Client validation
+ */
+
 const clientSignupValidation = {
   email: {
     notEmpty: {
@@ -21,7 +26,7 @@ const clientSignupValidation = {
     },
     matches: {
       options: [/^(?=.*\d).{8,15}$/],
-      errorMessage: clientValidationErrors.emptyPassword,
+      errorMessage: clientValidationErrors.invalidPassword,
     },
   },
   confirmPassword: {
@@ -75,10 +80,35 @@ const clientConfirmEmailValidation = {
   },
 };
 
+
+const clientLoginValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyEmail,
+    },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.invalidPassword,
+    },
+  },
+};
+
+/**
+ * Business validation
+ */
+
 const businessSignupValidation = {
   email: {
     notEmpty: {
-      errorMessage: bussinessValidationErrors.emailEmpty,
+      errorMessage: bussinessValidationErrors.emptyEmail,
     },
     isEmail: {
       errorMessage: bussinessValidationErrors.invalidEmail,
@@ -125,8 +155,9 @@ const clientResetPasswordValidation = {
 const validation = {
   clientResetPasswordValidation,
   clientSignupValidation,
-  businessSignupValidation,
   clientConfirmEmailValidation,
+  clientLoginValidation,
+  businessSignupValidation,
 };
 
 module.exports = validation;
