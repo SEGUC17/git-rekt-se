@@ -167,18 +167,14 @@ const businessLoginValidation = {
     },
   },
 };
->>>>>>> 233bb1e7c49c72f0f6a809a4c7075409fb82917b
 
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
   businessSignupValidation,
-<<<<<<< HEAD
-=======
   businessLoginValidation,
   reviewValidation,
->>>>>>> 233bb1e7c49c72f0f6a809a4c7075409fb82917b
 };
 
 module.exports = validation;

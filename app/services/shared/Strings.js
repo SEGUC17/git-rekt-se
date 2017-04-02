@@ -107,10 +107,6 @@ module.exports = {
   clientConfirmation,
   bussinessValidationErrors,
   businessSuccess,
-<<<<<<< HEAD
-=======
-  businessLoginMessages,
   reviewErrors,
   reviewSuccess,
->>>>>>> 233bb1e7c49c72f0f6a809a4c7075409fb82917b
 };
