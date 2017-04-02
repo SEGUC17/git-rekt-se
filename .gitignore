@@ -42,5 +42,9 @@ jspm_packages
 # DS store
 .DS_Store
 
-# vs code
-.vscode/
+# VS code seetings
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
