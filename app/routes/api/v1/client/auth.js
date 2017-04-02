@@ -111,6 +111,25 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
 
 });
 
+
+/**
+ * Client Login
+ */
+
+router.post('/login', (req, res, next) => {
+  req.checkBody(validationSchemas.clientLoginValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        ClientAuthenticator.loginClient(req.body.email, req.body.password)
+          .then(info => res.json(info))
+          .catch(err => next([err]));
+      } else {
+        next(result.array());
+      }
+    });
+});
+
 /**
  * Client forgot password
  */

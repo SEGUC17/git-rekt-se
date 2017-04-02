@@ -118,3 +118,172 @@ describe('Client Signup API', () => {
       }, done);
   });
 });
+
+
+/**
+ * Client Login Suite
+ */
+
+describe('Client Login API', () => {
+  let req;
+  before((done) => {
+    Client.collection.drop(() => {
+      Client.ensureIndexes(done);
+    });
+  });
+
+  beforeEach(() => {
+    req = supertest(app)
+      .post('/api/v1/client/auth/login');
+  });
+
+  it('should login using email and password', (done) => {
+    /**
+     * Add a dummy client to DB.
+     */
+    const newClient = Object.assign({}, clients[0]);
+    newClient.status = 'confirmed';
+
+    new Client(newClient)
+      .save()
+      .then(() => {
+        req
+          .send({
+            email: clients[0].email,
+            password: clients[0].password,
+          })
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end((err, res) => {
+            if (err) {
+              done(err);
+            } else {
+              done();
+            }
+          });
+      })
+      .catch(done);
+  });
+
+  it('should include JWT token after login', (done) => {
+    req.send({
+      email: clients[0].email,
+      password: clients[0].password,
+    })
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        const JWTtoken = res.body.token;
+        const JWS_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/;
+
+        chai.expect(JWTtoken)
+          .to.match(JWS_REGEX);
+
+        chai.expect(res.body.message)
+          .to.equal('Client Login Success.');
+
+        chai.expect(res.body.email)
+          .to.equal(clients[0].email);
+
+        done();
+      });
+  });
+
+  it('should not login with wrong email', (done) => {
+    const newClient = Object.assign({}, clients[0]);
+    newClient.email = 'slim.abdelnadder@gmail.com';
+
+    req.send({
+      email: newClient.email,
+      password: newClient.password,
+    })
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: ['Invalid Credentials.'],
+      }, done);
+  });
+
+  it('should not login with wrong password', (done) => {
+    const newClient = Object.assign({}, clients[0]);
+    newClient.password = 'youcantbeatme0';
+
+    req.send({
+      email: newClient.email,
+      password: newClient.password,
+    })
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: ['Invalid Credentials.'],
+      }, done);
+  });
+
+  it('should not login with wrong email and wrong password', (done) => {
+    const newClient = Object.assign({}, clients[0]);
+    newClient.email = 'helloworld@gmail.com';
+    newClient.password = 'youcantbeatme0';
+
+    req.send({
+      email: newClient.email,
+      password: newClient.password,
+    })
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: ['Invalid Credentials.'],
+      }, done);
+  });
+
+  it('should not login with an empty email', (done) => {
+    const newClient = Object.assign({}, clients[0]);
+    newClient.email = '';
+
+    req.send({
+      email: newClient.email,
+      password: newClient.password,
+    })
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [{
+          param: 'email',
+          msg: 'Email is a required field.',
+          value: '',
+        },
+        {
+          param: 'email',
+          msg: 'Invalid Email.',
+          value: '',
+        },
+        ],
+      }, done);
+  });
+
+
+  it('should not login with an empty password', (done) => {
+    const newClient = Object.assign({}, clients[0]);
+    newClient.password = '';
+
+    req.send({
+      email: newClient.email,
+      password: newClient.password,
+    })
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [{
+          param: 'password',
+          msg: 'Password is a required field.',
+          value: '',
+        },
+        {
+          param: 'password',
+          msg: 'Password length must be between 8 and 15 and contains at least one number.',
+          value: '',
+        },
+        ],
+      }, done);
+  });
+
+  after((done) => {
+    Client.collection.drop(() => {
+      Client.ensureIndexes(done);
+    });
+  });
+});

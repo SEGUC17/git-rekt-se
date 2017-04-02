@@ -30,7 +30,7 @@ const businessSuccess = {
 const clientValidationErrors = {
   emptyEmail: 'Email is a required field.',
   invalidEmail: 'Invalid Email.',
-  emptyPassword: 'Email is a required field.',
+  emptyPassword: 'Password is a required field.',
   invalidPassword: 'Password length must be between 8 and 15 and contains at least one number.',
   emptyConfirmation: 'Password Confirmation is a required field.',
   passwordMismatch: 'Password and Password Confirmation must match.',
@@ -49,6 +49,7 @@ const clientSuccess = {
   emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
+
 const businessForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
   INVALID_RESET_TOKEN: 'Invalid reset token.',
@@ -61,10 +62,24 @@ const clientForgotPassword = {
   PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
 };
 
+const clientLoginMessages = {
+  invalidCreds: 'Invalid Credentials.',
+  loginSuccess: 'Client Login Success.',
+  confirmEmail: 'Please confirm your email.',
+  bannedClient: 'This user has been banned.',
+};
+
+const clientConfirmation = {
+  emailAlreadyConfirmed: 'User email already confirmed.',
+  notFound: 'User not found.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
+  clientLoginMessages,
+  clientConfirmation,
   bussinessValidationErrors,
   businessSuccess,
   businessForgotPassword,
