@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
 const Business = require('../../../../models/business/Business');
 
 const router = express.Router();
@@ -8,57 +9,48 @@ const router = express.Router();
  * Body-Parser Middleware
  */
 
-router.use(bodyParser.json);
+router.use(bodyParser.json());
 
 /**
  * View Related Business route
  */
 
 router.get('/category/:id/:offset', (req, res, next) => {
-  const categoryId = req.params.id;
   const offset = req.params.offset;
-  Business.count({ categories: {
-    $not: {
-      $size: 0,
-    },
-    $in: {
-      categoryId,
-    },
-  } }, (err, cnt) => {
-    if (err) {
-      next(err);
-    }
-    Business.find({
-      categories: {
-        $not: {
-          $size: 0,
-        },
-        $in: {
-          categoryId,
-        },
-      },
-    }, {
-      shortDescription: 1,
-      name: 1,
-    }, {
-      skip: offset * 10,
-      limit: 10,
-    })
-    .exec((err2, businesses) => {
-      if (err2) {
-        return next(err);
+
+  Business.find(null, {
+    shortDescription: true,
+    name: true,
+    categories: true,
+    _id: false,
+  }, {
+    skip: (offset - 1) * 10,
+    limit: 10,
+  })
+    .exec((finderr, businesses) => {
+      if (finderr) {
+        next(finderr);
       }
-      if (cnt === 0) {
+      const filteredBusinesses = businesses.filter((business) => {
+        let hascategory = false;
+        business.categories.forEach((category) => {
+          /* eslint-disable no-underscore-dangle */
+          if (`${category}` === req.params.id) {
+            hascategory = true;
+          }
+        });
+        return hascategory;
+      });
+      if (filteredBusinesses.length === 0) {
         return res.status(400).json({
           errors: 'No related businesses',
         });
       }
       return res.json({
-        count: cnt,
-        results: businesses,
+        count: filteredBusinesses.length,
+        results: filteredBusinesses,
       });
     });
-  });
 });
 
 
@@ -66,7 +58,7 @@ router.get('/category/:id/:offset', (req, res, next) => {
  * Error handling Middlewares
  */
 
-router.use((err, req, res, next) => {
+router.use((err, req, res) => {
   res.status(400)
     .json({
       errors: err,

@@ -18,4 +18,4 @@ const Businesses = [{
 },
 ];
 
-module.export = Businesses;
+module.exports = Businesses;
