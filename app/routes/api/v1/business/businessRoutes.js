@@ -1,9 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const Business = require('../../../../models/business/Business.js');
-const Branch = require('../../../../models/service/Branch.js');
+const Branch = require('../../../../models/service/Branch');
 const Category = require('../../../../models/service/Category.js');
 
+
+mongoose.Promise = Promise;
 const router = express.Router();
 
 /**
@@ -16,25 +19,27 @@ router.use(bodyParser.json());
  * View business page
  */
 router.get('/:id', (req, res, next) => {
-  Business.findOne({ _id: req.params.id }).populate('branches categories').exec((err, business) => {
-    if (err) {
-      return next(err);
-    }
+  Business.findOne({
+    _id: req.params.id,
+  })
+    .populate('branches categories')
+    .exec()
+    .then((business) => {
+      res.json(business);
+    })
+    .catch((err) => {
+      res.json({ errors: 'The specified business was not found' });
+    });
+});
 
-    const returnedBusiness = {
-      name: business.name,
-      email: business.email,
-      shortDescription: business.shortDescription,
-      phoneNumbers: business.phoneNumbers,
-      categories: business.categories,
-      branches: business.branches,
-      gallery: business.gallery,
-      description: business.description,
-      workingHours: business.workingHours,
-      id: business.id,
-    };
-    res.json(returnedBusiness);
-    return returnedBusiness;
-  });
+/**
+ *  Error Handling Middlewares.
+ */
+
+router.use((err, req, res, next) => {
+  res.status(400)
+    .json({
+      errors: err,
+    });
 });
 module.exports = router;
