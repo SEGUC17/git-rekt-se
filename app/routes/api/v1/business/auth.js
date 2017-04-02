@@ -6,13 +6,8 @@ const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
-<<<<<<< HEAD
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-
-=======
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
->>>>>>> 233bb1e7c49c72f0f6a809a4c7075409fb82917b
 
 const router = express.Router();
 mongoose.Promise = Promise;
