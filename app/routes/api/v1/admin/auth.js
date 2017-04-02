@@ -31,10 +31,10 @@ router.post('/create', (req, res) => {
 });
 
 /*
-  * Admin Login
+  * Admin Login route
   */
 router.post('/login', (req, res, next) => {
-  req.checkBody(validationSchemas.administratorLoginValidation);
+  req.checkBody(validationSchemas.adminLoginValidation);
   req.getValidationResult()
      .then((result) => {
        if (result.isEmpty()) {
@@ -47,14 +47,16 @@ router.post('/login', (req, res, next) => {
      });
 });
 
+
 /**
- * Admin login route
+ *  Error Handling Middlewares.
  */
 
-router.post('/login', (req, res) => {
-  res.send({
-    message: 'This should be fun.',
-  });
+router.use((err, req, res, next) => {
+  res.status(400)
+    .json({
+      errors: err,
+    });
 });
 
 module.exports = router;

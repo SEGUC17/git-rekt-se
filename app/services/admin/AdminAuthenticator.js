@@ -29,7 +29,7 @@ exports.loginAdmin = (email, password) => new Promise((resolve, reject) => {
             } else {
               const token = jwt.sign({
                 id: user._id,
-              }, process.env.JWT_KEY, {
+              }, process.env.JWT_KEY_ADMINISTRATOR, {
                 expiresIn: '10d',
               });
               resolve({
