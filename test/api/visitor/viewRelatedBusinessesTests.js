@@ -25,14 +25,6 @@ require('dotenv')
  * View Related Business Suite
  */
 
-/**
- * Testing the following:-
- * 1 businesses in the same category only appears,
- * 2 only the name and short description appears,
- * 3 no businesses in this category appears,
- */
-
-
 describe('View Related Businesses API', () => {
   let req;
   let category1Id;
@@ -69,6 +61,7 @@ describe('View Related Businesses API', () => {
                   category2Id = category2._id;
                   businesses[0].categories = [category2Id];
                   businesses[1].categories = [category1Id];
+                  businesses[2].categories = [category1Id];
 
 
                   Business.insertMany(businesses, (inserterr2, docs2) => {
