@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const crypto = require('crypto');
 const Service = require('../../../../models/service/Service');
+const path = require('path');
 
 const router = express.Router();
 
@@ -10,12 +12,11 @@ const router = express.Router();
  */
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, './public/uploads/service');
+    cb(null, '/home/abdelrahman-a-elshabrawy/Desktop/W/Sem 6/CSEN603 SE/Term Project/git-rekt-se/app/public');
   },
   filename(req, file, cb) {
     const buf = crypto.randomBytes(16);
-    const path = `${Date.now() + buf.toString('hex')}../../../../public/uploads/service${file.originalname}`;
-    cb(null, path);
+    cb(null, 'abc.png');
   },
 });
 
@@ -72,18 +73,20 @@ router.post('/addServiceImage/:id', upload.any(), (req, res, next) => { // ensur
     });
 });
 */
-router.post('/addServiceImage/:id', upload.any(), (req, res, next) => { // ensureauthenticated
+router.post('/addServiceImage/:id', upload.single('file'), (req, res, next) => { // ensureauthenticated
   const image = ({
-    path: req.files[0],
+    path: req.file.filename,
     description: req.body.description,
   });
   Service.findOne({
     _id: req.params.id,
   })
     .exec((err, service) => {
+      console.log('-----------------service(findone)------------------');
+      console.log(service);
       if (service) {
         service.gallery.push(image);
-        Service.save((err2) => {
+        service.save((err2) => {
           if (err) {
             next(err);
           } else
