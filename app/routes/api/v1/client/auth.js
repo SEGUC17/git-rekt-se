@@ -8,19 +8,11 @@ const Mailer = require('../../../../services/shared/Mailer');
 const Client = require('../../../../models/client/Client');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const Strings = require('../../../../services/shared/Strings');
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
 
 
 mongoose.Promise = Promise;
 
 const router = express.Router();
-mongoose.Promise = Promise;
-
-require('dotenv')
-  .config();
-
-const JWT_KEY = process.env.JWT_KEY_CLIENT;
 
 require('dotenv')
   .config();
@@ -121,7 +113,6 @@ router.post('/confirmation/send', (req, res, next) => {
 router.post('/reset', (req, res, next) => {
   const resetToken = req.body.token;
   const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
 
   req.checkBody(validationSchemas.clientResetPasswordValidation);
   req.checkBody('confirmPassword')
