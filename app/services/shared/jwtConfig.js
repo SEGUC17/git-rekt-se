@@ -47,26 +47,26 @@ const parseAuthHeader = (hdrValue) => {
 
 const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) => {
   Client.findOne({
-    _id: payload.id,
-  })
+      _id: payload.id,
+    })
     .then((user) => {
       if (!user) {
         done(null, false, Strings.clientLoginMessages.invalidCreds);
       } else {
-        const tokenCreationTime = new Date(parseInt(payload.iat, 10) * 1000);
-        const lastPasswordChangeTime = user.passwordChangeDate;
+        const tokenCreationTime = parseInt(payload.iat, 10);
+        const lastPasswordChangeTime = Math.floor(user.passwordChangeDate.getTime() / 1000);
         const reqToken = parseAuthHeader(req.headers.authorization)
           .value;
 
         InvalidToken.findOne({
-          token: reqToken,
-        })
+            token: reqToken,
+          })
           .then((token) => {
             if (token) {
               return done(null, false, Strings.clientLoginMessages.invalidToken);
             }
 
-            if (tokenCreationTime.getTime() < lastPasswordChangeTime.getTime()) {
+            if (tokenCreationTime < lastPasswordChangeTime) {
               return done(null, false, Strings.clientLoginMessages.invalidToken);
             }
 
@@ -103,26 +103,26 @@ const clientAuthMiddleware = (req, res, next) => {
 
 const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done) => {
   Business.findOne({
-    _id: payload.id,
-  })
+      _id: payload.id,
+    })
     .then((user) => {
       if (!user) {
         done(null, false, Strings.businessLoginMessages.invalidCreds);
       } else {
-        const tokenCreationTime = new Date(parseInt(payload.iat, 10) * 1000);
-        const lastPasswordChangeTime = user.passwordChangeDate;
+        const tokenCreationTime = parseInt(payload.iat, 10);
+        const lastPasswordChangeTime = Math.floor(user.passwordChangeDate.getTime() / 1000);
         const reqToken = parseAuthHeader(req.headers.authorization)
           .value;
 
         InvalidToken.findOne({
-          token: reqToken,
-        })
+            token: reqToken,
+          })
           .then((token) => {
             if (token) {
               return done(null, false, Strings.businessLoginMessages.invalidToken);
             }
 
-            if (tokenCreationTime.getTime() < lastPasswordChangeTime.getTime()) {
+            if (tokenCreationTime < lastPasswordChangeTime) {
               return done(null, false, Strings.businessLoginMessages.invalidToken);
             }
 

@@ -15,12 +15,13 @@ const router = express.Router();
 
 router.use(bodyParser.json());
 
-router.put('/:id/edit', businessAuthMiddleware, (req, res, next) => {
+router.put('/:id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
   const body = req.body;
   const searchID = {
     _id: id,
   };
+  // TODO filter other keys ?
   const keys = Object.keys(body);
   if (keys.length === 0) {
     next([businessMessages.allFieldsEmpty]);
@@ -28,29 +29,33 @@ router.put('/:id/edit', businessAuthMiddleware, (req, res, next) => {
     Business.findOne(searchID)
       .exec()
       .then((business) => {
-        if (body.workingHours && body.workingHours.length > 0) {
-          business.workingHours = body.workingHours;
-        }
-        if (body.description && body.description.length > 0) {
-          business.description = body.description;
-        }
-        if (body.categories && body.categories.length > 0) {
-          BusinessUtils.addCategories(body.categories)
-            .then((allCategories) => {
-              business.categories = business.categories.concat(allCategories);
-              business.save()
-                .then(() => res.json({
-                  message: businessMessages.editSuccess,
-                }))
-                .catch(err => next([err]));
-            })
-            .catch(err => next([err]));
+        if (!business) {
+          next([businessMessages.doesntExist]);
         } else {
-          business.save()
-            .then(() => res.json({
-              message: businessMessages.editSuccess,
-            }))
-            .catch(err => next([err]));
+          if (body.workingHours && body.workingHours.length > 0) {
+            business.workingHours = body.workingHours;
+          }
+          if (body.description && body.description.length > 0) {
+            business.description = body.description;
+          }
+          if (body.categories && body.categories.length > 0) {
+            BusinessUtils.addCategories(body.categories)
+              .then((allCategories) => {
+                business.categories = business.categories.concat(allCategories);
+                business.save()
+                  .then(() => res.json({
+                    message: businessMessages.editSuccess,
+                  }))
+                  .catch(err => next([err]));
+              })
+              .catch(err => next([err]));
+          } else {
+            business.save()
+              .then(() => res.json({
+                message: businessMessages.editSuccess,
+              }))
+              .catch(err => next([err]));
+          }
         }
       })
       .catch(err => next([err]));

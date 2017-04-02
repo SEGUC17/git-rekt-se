@@ -71,7 +71,7 @@ describe('Should Edit Info Correctly', () => {
 
   beforeEach(() => {
     req = supertest(app)
-      .put(`/api/v1/business/${id}/edit`);
+      .put(`/api/v1/business/edit/${id}`);
   });
 
   it('should edit working hours correctly', (done) => {
@@ -155,10 +155,6 @@ describe('Should Edit Info Correctly', () => {
     };
     req.send(editInfo)
       .expect('Content-Type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        console.log(res.body);
-        done();
-      });
+      .expect(400, done);
   });
 });

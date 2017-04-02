@@ -6,7 +6,7 @@ const Category = require('../../models/service/Category');
 
 /**
  * Utility Function For Inserting Categories and returning a promise for all of them.
- * @param {[String]} categories 
+ * @param {[String]} categories
  * @returns {Promise}
  */
 const addCategories = (categories) => {
@@ -16,7 +16,8 @@ const addCategories = (categories) => {
       title: category,
     };
     return new Promise((resolve, reject) => {
-      Category.create(categoryData)
+      new Category(categoryData)
+        .save()
         .then(resultCategory => resolve(resultCategory._id))
         .catch(reject);
     });
