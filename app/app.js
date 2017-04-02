@@ -1,6 +1,8 @@
 const express = require('express');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const jwtConfig = require('./services/shared/jwtConfig');
 
 const app = express();
 
@@ -24,6 +26,14 @@ if (process.env.DEBUG_MODE) {
  */
 
 mongoose.connect(process.env.DB_URL);
+
+/**
+ * Passport Initialization
+ */
+
+passport.use('jwt_client', jwtConfig.clientStrategy);
+passport.use('jwt_bussiness', jwtConfig.businessStrategy);
+app.use(passport.initialize());
 
 /**
  * API ROUTES
