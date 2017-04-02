@@ -72,6 +72,13 @@ const clientSuccess = {
   emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
+
+const clientForgotPassword = {
+  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
+  INVALID_RESET_TOKEN: 'Invalid reset token.',
+  PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
+};
+
 const clientLoginMessages = {
   invalidCreds: 'Invalid Credentials.',
   loginSuccess: 'Client Login Success.',
@@ -94,5 +101,6 @@ module.exports = {
 
   bussinessValidationErrors,
   businessSuccess,
+  clientForgotPassword,
   businessLoginMessages,
 };
