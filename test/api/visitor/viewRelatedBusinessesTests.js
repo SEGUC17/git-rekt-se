@@ -7,7 +7,7 @@ const supertest = require('supertest');
 const app = require('../../../app/app');
 
 const Business = require('../../../app/models/business/Business');
-const Categories = require('../../../app/models/service/Category');
+const Category = require('../../../app/models/service/Category');
 
 const categories = require('../../../app/seed/service/categoriesSeed');
 const businesses = require('../../../app/seed/business/verifiedBusiness');
@@ -33,54 +33,70 @@ require('dotenv')
 
 describe('View Related Businesses API', () => {
   let req;
-
-  before((done) => {
-    Business.collection.drop(() => {
-      Business.ensureIndexes(done);
-    });
-    Categories.collection.drop(() => {
-      Categories.ensureIndexes(done);
-    });
-  });
-
+  let category1Id;
+  let category2Id;
+  let category3Id;
+  let testID = 0;
   /**
    * Inserting Business Categories and getting their object IDs
    */
 
-  Categories.insertMany(categories, null, (done) => {
-    done();
-  });
-  const category1Id = Categories.findOne({
-    title: 'Language Courses',
-  }, {
-    returnKey: 1,
-  }, (done) => {
-    done();
-  });
+  before((done) => {
+    Business.collection.drop(() => {
+      Business.ensureIndexes(() => {
+        Category.collection.drop(() => {
+          Category.ensureIndexes(() => {
+            Category.insertMany(categories, (inserterr1, docs1) => {
+              if (inserterr1) {
+                done(inserterr1);
+              }
+              Category.findOne({
+                title: 'Language Courses',
+              }, (finderr1, category1) => {
+                if (finderr1) {
+                  done(finderr1);
+                }
+                Category.findOne({
+                  title: 'Self-Managment Courses',
+                }, (finderr2, category2) => {
+                  if (finderr2) {
+                    done(finderr2);
+                  }
+                  /* eslint-disable no-underscore-dangle */
+                  category1Id = category1._id;
+                  category2Id = category2._id;
+                  businesses[0].categories = [category2Id];
+                  businesses[1].categories = [category1Id];
 
-  const category2Id = Categories.findOne({
-    title: 'Self-Managment Courses',
-  }, {
-    returnKey: 1,
-  }, (done) => {
-    done();
-  });
 
-  /**
-   * Inserting Businesses after updating their categories
-   */
-
-  businesses[0].categories = [category2Id];
-  businesses[1].categories = [category1Id];
-
-  Business.insertMany(businesses, null, (done) => {
-    done();
+                  Business.insertMany(businesses, (inserterr2, docs2) => {
+                    if (inserterr2) {
+                      done(inserterr2);
+                    }
+                    Category.findOne({
+                      title: 'Team Management Courses',
+                    }, (finderr3, category3) => {
+                      if (finderr3) {
+                        done(finderr3);
+                      }
+                      category3Id = category3._id;
+                      done();
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
   });
 
 
   beforeEach(() => {
     req = supertest(app)
-      .get('/api/v1/business/category/:id/:offset');
+      .get(`/api/v1/business/category/${testID === 0 ? category1Id : category3Id}/1`);
+    testID += 1;
   });
 
   /**
@@ -88,11 +104,7 @@ describe('View Related Businesses API', () => {
    */
 
   it('should return only the businesses of the category requested', (done) => {
-    const body = {
-      offset: 1,
-      category: category1Id,
-    };
-    req.sned(body)
+    req
       .expect('Content-Type', /json/)
       .expect(200)
       .end((err, res) => {
@@ -106,11 +118,14 @@ describe('View Related Businesses API', () => {
         /**
          * Checking the content of the response
          */
+        console.log(category1Id);
+        console.log(res.body);
         chai.expect(res.body.count)
           .to.equal(1);
         chai.expect(res.body.results)
           .to.have.lengthOf(1);
-        chai.expect(res.body.results[0].name).to.equal('Not Courses');
+        chai.expect(res.body.results[0].name)
+          .to.equal('Not Courses');
         done();
       });
   });
@@ -120,20 +135,7 @@ describe('View Related Businesses API', () => {
    */
 
   it('should return no related businesses in a requested category', (done) => {
-    const category3Id = Categories.findOne({
-      title: 'Team Management Courses',
-    }, {
-      returnKey: 1,
-    }, (finddone) => {
-      finddone();
-    });
-
-    const body = {
-      offset: 1,
-      category: category3Id,
-    };
-    req.sned(body)
-      .expect('Content-Type', /json/)
+    req.expect('Content-Type', /json/)
       .expect(400, {
         errors: 'No related businesses',
       }, done);
