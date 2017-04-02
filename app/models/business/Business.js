@@ -51,6 +51,18 @@ const businessSchema = Schema({
   workingHours: {
     type: String,
   },
+  passwordResetTokenDate: {
+    type: Date,
+    default: Date.now,
+  },
+  confirmationTokenDate: {
+    type: Date,
+    default: Date.now,
+  },
+  passwordChangeDate: {
+    type: Date,
+    default: Date.now,
+  },
   _deleted: {
     type: Boolean,
     default: false,
