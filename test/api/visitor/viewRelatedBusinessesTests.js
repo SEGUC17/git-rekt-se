@@ -27,9 +27,9 @@ require('dotenv')
 
 describe('View Related Businesses API', () => {
   let req;
-  let category1Id;
-  let category2Id;
-  let category3Id;
+  let category1ID;
+  let category2ID;
+  let category3ID;
   let testID = 0;
   /**
    * Inserting Business Categories and getting their object IDs
@@ -57,11 +57,11 @@ describe('View Related Businesses API', () => {
                     done(finderr2);
                   }
                   /* eslint-disable no-underscore-dangle */
-                  category1Id = category1._id;
-                  category2Id = category2._id;
-                  businesses[0].categories = [category2Id];
-                  businesses[1].categories = [category1Id];
-                  businesses[2].categories = [category1Id];
+                  category1ID = category1._id;
+                  category2ID = category2._id;
+                  businesses[0].categories = [category2ID];
+                  businesses[1].categories = [category1ID];
+                  businesses[2].categories = [category1ID];
 
 
                   Business.insertMany(businesses, (inserterr2, docs2) => {
@@ -74,7 +74,7 @@ describe('View Related Businesses API', () => {
                       if (finderr3) {
                         done(finderr3);
                       }
-                      category3Id = category3._id;
+                      category3ID = category3._id;
                       done();
                     });
                   });
@@ -89,13 +89,54 @@ describe('View Related Businesses API', () => {
 
 
   beforeEach(() => {
+    let categoryID = -1;
+    if (testID === 0) {
+      categoryID = category1ID;
+    } else if (testID === 1) {
+      categoryID = category2ID;
+    } else {
+      categoryID = category3ID;
+    }
+
     req = supertest(app)
-      .get(`/api/v1/business/category/${testID === 0 ? category1Id : category3Id}/1`);
+      .get(`/api/v1/business/category/${categoryID}/1`);
+
     testID += 1;
   });
 
   /**
-   * Passing Test: Only businesses of the same category appears
+   * Passing Test: Only 2 businesses of the same category appears
+   */
+
+  it('should return only the businesses of the category requested', (done) => {
+    req
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        /**
+         * Error happend with request, fail the test
+         * with the error message.
+         */
+        if (err) {
+          done(err);
+        }
+        /**
+         * Checking the content of the response
+         */
+        chai.expect(res.body.count)
+          .to.equal(2);
+        chai.expect(res.body.results)
+          .to.have.lengthOf(2);
+        chai.expect(res.body.results[0].name)
+          .to.equal('Not Courses');
+        chai.expect(res.body.results[1].name)
+          .to.equal('GUC german center');
+        done();
+      });
+  });
+
+  /**
+   * Passing Test: Only 1 businesse of the same category appears
    */
 
   it('should return only the businesses of the category requested', (done) => {
@@ -118,7 +159,7 @@ describe('View Related Businesses API', () => {
         chai.expect(res.body.results)
           .to.have.lengthOf(1);
         chai.expect(res.body.results[0].name)
-          .to.equal('Not Courses');
+          .to.equal('Enhance');
         done();
       });
   });
