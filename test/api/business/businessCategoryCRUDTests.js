@@ -11,7 +11,7 @@ const Category = require('../../../app/models/service/Category');
  * Test Suite
  */
 
-describe('Descriptive Test Suite', () => {
+describe('Category CRUD Test Suite', () => {
   let req;
 
   before(() => {
@@ -31,9 +31,12 @@ describe('Descriptive Test Suite', () => {
       icon: 'sampleImagePath',
     });
     req = supertest(app)
-      .post('/api/v1/admin/Category/addCategory');
-    req.send(newCategory)
+      .post('/api/v1/admin/Category/addCategory')
+      .field('type', 'Business')
+      .field('title', 'Sample Title')
+      .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
       .end((err2, res) => {
+        console.log(res.body);
         if (err2) {
           done(err2);
         } else {
@@ -78,31 +81,35 @@ describe('Descriptive Test Suite', () => {
         }
       });
   });
-  /**
-   * Passing test
-   */
-
-  //   it('should do something modular, meaningful and pass', (done) => {
-  //     req.expect(404)
-  //       .end((err, res) => {
-  //         /**
-  //          * Error happend with request, fail the test
-  //          * with the error message.
-  //          */
-  //         if (err) {
-  //           return done(err);
-  //         }
-
-  //         /**
-  //          * Do something with the response
-  //          */
-
-  //         const doSomethingMeaningFul = res.body.message === 'Working' ? 1 : 0;
-
-  //         chai.expect(doSomethingMeaningFul)
-  //           .to.equal(0);
-
-  //         return done();
-  //       });
-  //   });
+  it('shouldedit a category and return a confirmation message', (done) => {
+    const newCategory = new Category({
+      type: 'Business',
+      title: 'Sample Title',
+      icon: 'sampleimagePath',
+    });
+    newCategory.save((err, newcat) => {
+      if (err) {
+        console.log(err);
+      } else {
+        req = supertest(app)
+          .post(`/api/v1/admin/category/addCategory/${newCategory._id}`);
+        req.send({
+            type: 'Business',
+            title: '3ala2',
+            icon: 'sampleimagePath',
+          })
+          .end((err2, res) => {
+            if (err2) {
+              done(err2);
+            } else {
+              console.log(3);
+              const chaiCategory = Category.find(element => `${element._id}` === `${newCategory._id}`);
+              chai.expect(chaiCategory.title)
+                .to.equal('3ala2');
+              done();
+            }
+          });
+      }
+    });
+  });
 });
