@@ -48,23 +48,37 @@ router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensu
 
 router.post('/editCategory/:id', upload.single('icon'), (req, res, next) => { // ensureauthenticated
   //  console.log(req.file);
-  Category.findByIdAndUpdate(req.params.id, {
-    $set: {
-      type: req.body.type,
-      title: req.body.title,
-      icon: req.file.filename,
-    },
-  }, {
-    new: true,
-  }, (err, category) => {
-    if (err) {
-      return next(err);
-    }
-   // console.log(category);
-    return res.json({
-      message: 'Category edited succesfully!',
+  // if (req.body.type && req.by.title && req.file.filename) {
+  if (req.body.type === 'Business' || req.body.type === 'Service') {
+    // console.log(req.body.type);
+    Category.findByIdAndUpdate(req.params.id, {
+      $set: {
+        type: req.body.type,
+        title: req.body.title,
+        icon: req.file.filename,
+      },
+    }, {
+      new: true,
+    }, (err, category) => {
+      if (err) {
+        console.log(1);
+        return next(err);
+      }
+      // console.log(category);
+      console.log(2);
+      return res.json({
+        message: 'Category edited succesfully!',
+      });
     });
-  });
+    // }
+  } else {
+    return next('Invalid values');
+    // console.log('error');
+  }
+  // } else {
+  //   return next(['Missing values']);
+  // //  console.log('error');
+  // }
   // co //nsole.log(2);
 });
 
