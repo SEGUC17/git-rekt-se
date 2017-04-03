@@ -1,14 +1,13 @@
-const mongoose = require('mongoose');
 const express = require('express');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
-const jwt = require('jsonwebtoken');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
-
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -17,7 +16,6 @@ require('dotenv')
   .config();
 
 const JWT_KEY = process.env.JWT_KEY_BUSSINES;
-
 
 /**
  * Parsing Middleware(s).
@@ -109,21 +107,27 @@ router.post('/forgot', (req, res, next) => {
 
   Business.findOne({
     email: req.body.email,
-  }).exec().then((business) => {
-    if (!business) { // Business not found, Invalid mail
-      // Not using middleware due to status
-      return res.json({
-        message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
-      });
-    }
-    business.passwordResetTokenDate = iat * 1000;
+  })
+    .exec()
+    .then((business) => {
+      if (!business) { // Business not found, Invalid mail
+        // Not using middleware due to status
+        return res.json({
+          message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
+        });
+      }
+      business.passwordResetTokenDate = iat * 1000;
 
-    return business.save().then(() => {
-      Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
-        .then(() => res.json({ message: Strings.businessForgotPassword.CHECK_YOU_EMAIL }))
-        .catch(() => res.json('err'));
-    });
-  }).catch(err => next([err]));
+      return business.save()
+        .then(() => {
+          Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
+            .then(() => res.json({
+              message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
+            }))
+            .catch(() => res.json('err'));
+        });
+    })
+    .catch(err => next([err]));
 });
 
 /**
@@ -133,13 +137,11 @@ router.post('/forgot', (req, res, next) => {
 router.post('/reset', (req, res, next) => {
   const resetToken = req.body.token;
   const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
-
 
   req.checkBody(validationSchemas.clientResetPasswordValidation);
   req.checkBody('confirmPassword')
     .equals(req.body.password)
-.withMessage(Strings.clientValidationErrors.passwordMismatch);
+    .withMessage(Strings.clientValidationErrors.passwordMismatch);
 
   jwt.verify(resetToken, JWT_KEY, (err, payload) => {
     const email = payload.email;
@@ -182,4 +184,3 @@ router.use((err, req, res, next) => {
 
 
 module.exports = router;
-

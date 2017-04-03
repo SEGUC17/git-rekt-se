@@ -38,3 +38,10 @@ jspm_packages
 
 # ENV 
 .env
+
+# VS code seetings
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
