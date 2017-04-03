@@ -149,20 +149,26 @@ router.post('/forgot', (req, res, next) => {
 
   Client.findOne({
     email: req.body.email,
-  }).exec().then((client) => {
-    if (!client) { // Client not found, Invalid mail
-      return res.json({
-        message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
-      });
-    }
-    client.passwordResetTokenDate = currentDate;
+  })
+    .exec()
+    .then((client) => {
+      if (!client) { // Client not found, Invalid mail
+        return res.json({
+          message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
+        });
+      }
+      client.passwordResetTokenDate = currentDate;
 
-    return client.save().then(() => {
-      Mailer.forgotPasswordEmail(email, req.hostname, resetToken)
-        .then(() => res.json({ message: Strings.clientForgotPassword.CHECK_YOU_EMAIL }))
-        .catch(err => next([err]));
-    });
-  }).catch(err => next([err]));
+      return client.save()
+        .then(() => {
+          Mailer.forgotPasswordEmail(email, req.hostname, resetToken)
+            .then(() => res.json({
+              message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
+            }))
+            .catch(err => next([err]));
+        });
+    })
+    .catch(err => next([err]));
 });
 
 /**

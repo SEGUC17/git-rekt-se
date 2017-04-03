@@ -64,7 +64,7 @@ describe('Client forgot password API', () => {
 
 
   it('should send an email to a valid client that is in the database', (done) => {
-     // initialize mail that matches one in seed
+    // initialize mail that matches one in seed
     const mail1 = {
       email: 'hadyyasser23@gmail.com',
     };
@@ -76,7 +76,7 @@ describe('Client forgot password API', () => {
           return done(err);
         }
 
-      // check if the message matches the one expected to be returned
+        // check if the message matches the one expected to be returned
 
         const eq = res.body.message === Strings.clientForgotPassword.CHECK_YOU_EMAIL ? 1 : 0;
         const chckMsg = eq;

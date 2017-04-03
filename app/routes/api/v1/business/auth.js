@@ -89,20 +89,26 @@ router.post('/forgot', (req, res, next) => {
 
   Business.findOne({
     email: req.body.email,
-  }).exec().then((business) => {
-    if (!business) { // Business not found, Invalid mail
-      return res.json({
-        message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
-      });
-    }
-    business.passwordResetTokenDate = currentDate;
+  })
+    .exec()
+    .then((business) => {
+      if (!business) { // Business not found, Invalid mail
+        return res.json({
+          message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
+        });
+      }
+      business.passwordResetTokenDate = currentDate;
 
-    return business.save().then(() => {
-      Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
-        .then(() => res.json({ message: Strings.businessForgotPassword.CHECK_YOU_EMAIL }))
-        .catch(err => next([err]));
-    });
-  }).catch(err => next([err]));
+      return business.save()
+        .then(() => {
+          Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
+            .then(() => res.json({
+              message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
+            }))
+            .catch(err => next([err]));
+        });
+    })
+    .catch(err => next([err]));
 });
 
 /**
