@@ -100,23 +100,27 @@ router.post('/reset', (req, res, next) => {
   const resetToken = req.body.token;
   const password = req.body.password;
 
-  req.checkBody(validationSchemas.clientResetPasswordValidation);
-  req.checkBody('confirmPassword')
-    .equals(req.body.password)
-    .withMessage(Strings.clientValidationErrors.passwordMismatch);
+//   req.checkBody(validationSchemas.clientResetPasswordValidation);
+//   req.checkBody('confirmPassword')
+//     .equals(req.body.password)
+// .withMessage(Strings.clientValidationErrors.passwordMismatch);
 
   jwt.verify(resetToken, JWT_KEY, (err, payload) => {
-    const email = payload.email;
-    const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
+    if (!payload) {
+      next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
+    } else {
+      const email = payload.email;
+      const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
 
-    Business.findOne({
-      email,
-      passwordChangeDate: {
-        $lte: creationDate,
-      },
-    })
+      Business.findOne({
+        email,
+        passwordChangeDate: {
+          $lte: creationDate,
+        },
+      })
       .exec()
       .then((business) => {
+        console.log('test');
         if (!business) {
           return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
         }
@@ -126,10 +130,11 @@ router.post('/reset', (req, res, next) => {
 
         return business.save()
           .then(() => res.json({
-            message: 'password changed successfuly',
+            message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
           }));
       })
       .catch(e => next([e]));
+    }
   });
 });
 
