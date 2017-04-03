@@ -100,10 +100,10 @@ router.post('/reset', (req, res, next) => {
   const resetToken = req.body.token;
   const password = req.body.password;
 
-//   req.checkBody(validationSchemas.clientResetPasswordValidation);
-//   req.checkBody('confirmPassword')
-//     .equals(req.body.password)
-// .withMessage(Strings.clientValidationErrors.passwordMismatch);
+  req.checkBody(validationSchemas.businessResetPasswordValidation);
+  req.checkBody('confirmPassword')
+    .equals(req.body.password)
+.withMessage(Strings.bussinessValidationErrors.passwordMismatch);
 
   jwt.verify(resetToken, JWT_KEY, (err, payload) => {
     if (!payload) {
@@ -120,7 +120,6 @@ router.post('/reset', (req, res, next) => {
       })
       .exec()
       .then((business) => {
-        console.log('test');
         if (!business) {
           return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
         }
