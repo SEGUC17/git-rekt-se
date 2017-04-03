@@ -53,28 +53,12 @@ describe('Should create, update and delete reviews correctly', () => {
 
   const review1 = new Review(reviews[0]);
 
-  const review2 = reviews[1];
+  const review2 = new Review(reviews[1]);
 
-  const review3 = reviews[2];
+  const review3 = new Review(reviews[2]);
+
 
   before((done) => {
-    Client.collection.drop(() => {
-      Client.ensureIndexes();
-    });
-    Business.collection.drop(() => {
-      Business.ensureIndexes();
-    });
-    Branch.collection.drop(() => {
-      Branch.ensureIndexes();
-    });
-    Service.collection.drop(() => {
-      Service.ensureIndexes();
-    });
-    done();
-  });
-
-
-  beforeEach((done) => {
     client1.save()
       .then((savedClient) => {
         clientID = `${savedClient._id}`;
@@ -92,13 +76,38 @@ describe('Should create, update and delete reviews correctly', () => {
       })
       .then((savedService) => {
         serviceID = `${savedService._id}`;
-        supertest(app)
-          .post('/api/v1/client/auth/login')
-          .send(client1Login)
-          .end((err, res) => {
-            token = res.body.token;
-            done();
-          });
+        done();
+      })
+      .catch({});
+  });
+
+  after((done) => {
+    Client.collection.drop(() => {
+      Client.ensureIndexes();
+    });
+    Business.collection.drop(() => {
+      Business.ensureIndexes();
+    });
+    Branch.collection.drop(() => {
+      Branch.ensureIndexes();
+    });
+    Service.collection.drop(() => {
+      Service.ensureIndexes();
+    });
+    Review.collection.drop(() => {
+      Service.ensureIndexes();
+    });
+    done();
+  });
+
+
+  beforeEach((done) => {
+    supertest(app)
+      .post('/api/v1/client/auth/login')
+      .send(client1Login)
+      .end((err, res) => {
+        token = res.body.token;
+        done();
       });
   });
 
@@ -118,10 +127,89 @@ describe('Should create, update and delete reviews correctly', () => {
          */
         if (err) {
           done(err);
+        } else {
+          chai.expect(res.body.message)
+            .to.equal(Strings.reviewSuccess.createSuccess);
+          Service.find()
+            .populate('reviews')
+            .exec()
+            .then((testServices) => {
+              const serviceToCheck = testServices[0];
+              chai.expect(`${serviceToCheck.reviews[0]._client}`)
+                .to.equal(clientID);
+              chai.expect(serviceToCheck._totalRating)
+                .to.equal(2);
+              chai.expect(serviceToCheck._reviewCount)
+                .to.equal(1);
+              chai.expect(serviceToCheck._avgRating)
+                .to.equal(2);
+              done();
+            })
+            .catch(err2 => done(err2));
         }
-        chai.expect(res.body.message)
-          .to.equal(Strings.reviewSuccess.createSuccess);
-        done();
+      });
+  });
+
+  // Passing test
+
+  it('should update the rating average correctly', (done) => {
+    client2.save()
+      .then(() => {
+        supertest(app)
+          .post('/api/v1/client/auth/login')
+          .send(client2Login)
+          .end((err2, res) => {
+            token = res.body.token;
+            req = supertest(app)
+              .post(`/api/v1/service/${serviceID}/review`);
+            req.set('Authorization', `JWT ${token}`);
+            req.send(review2)
+              .end((err3) => {
+                if (err3) {
+                  done(err3);
+                } else {
+                  Service.find()
+                    .populate('reviews')
+                    .exec()
+                    .then((testServices) => {
+                      const serviceToCheck = testServices[0];
+                      chai.expect(serviceToCheck._totalRating)
+                        .to.equal(5);
+                      chai.expect(serviceToCheck._reviewCount)
+                        .to.equal(2);
+                      chai.expect(serviceToCheck._avgRating)
+                        .to.equal(2.5);
+                      done();
+                    })
+                    .catch(err4 => done(err4));
+                }
+              });
+          });
+      });
+  });
+
+  // Failing test
+
+  it('should not create a review if I have already reviewed the same service', (done) => {
+    req = supertest(app)
+      .post(`/api/v1/service/${serviceID}/review`);
+    req.set('Authorization', `JWT ${token}`);
+    req.send(review1)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        /**
+         * Error happend with request, fail the test
+         * with the error message.
+         */
+        if (err) {
+          done(err);
+        } else {
+          console.log(res.body);
+          chai.expect(res.body.errors[0].error)
+            .to.equal(Strings.reviewErrors.alreadyReviewedService);
+          done();
+        }
       });
   });
 });

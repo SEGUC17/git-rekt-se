@@ -45,16 +45,17 @@ router.post('/:id/review', clientAuthMiddleware, (req, res, next) => {
               throw new Error(Strings.reviewErrors.invalidService);
             }
             return service
-              .execPopulate({
+              .populate({
                 path: 'reviews',
                 match: {
                   _deleted: false,
                 },
-              });
+              }).execPopulate();
           })
           .then((populatedService) => {
-            const oldReview = populatedService.reviews.find(review => `${review._client}` === req.user._id);
+            const oldReview = populatedService.reviews.find(review => `${review._client}` === `${req.user._id}`);
             if (oldReview) {
+              console.log('Yes');
               throw new Error(Strings.reviewErrors.alreadyReviewedService);
             }
             const newReview = new Review({
@@ -105,19 +106,19 @@ router.post('/:id/review/:review_id/edit', clientAuthMiddleware, (req, res, next
               throw new Error(Strings.reviewErrors.invalidService);
             }
             return service
-              .execPopulate({
+              .populate({
                 path: 'reviews',
                 match: {
                   _deleted: false,
                 },
-              });
+              }).execPopulate();
           })
           .then((populatedService) => {
             const review = populatedService.reviews.find(element => `${element._id}` === reviewId);
             if (!review) {
               throw new Error(Strings.reviewErrors.invalidReview);
             }
-            if (review._client !== req.user._id) {
+            if (`${review._client}` !== `${req.user._id}`) {
               throw new Error(Strings.reviewErrors.userMismatch);
             }
             populatedService._totalRating -= review.rating;
@@ -158,12 +159,12 @@ router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, ne
         throw new Error(Strings.reviewErrors.invalidService);
       }
       return service
-        .execPopulate({
+        .populate({
           path: 'reviews',
           match: {
             _deleted: false,
           },
-        });
+        }).execPopulate();
     })
     .then((populatedService) => {
       const review = populatedService.reviews.find(element => `${element._id}` === reviewId);
@@ -191,7 +192,7 @@ router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, ne
     .catch(err => next([err]));
 });
 
-router.use((err, req, res) => {
+router.use((err, req, res, next) => {
   res.status(400)
     .json({
       errors: err,
