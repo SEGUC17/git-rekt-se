@@ -17,10 +17,8 @@ describe('Category CRUD Test Suite', () => {
   before(() => {
     console.log('I run before the first it block.');
   });
-  let x = 0;
+
   beforeEach((done) => {
-    x += 1;
-    console.log(x);
     Category.collection.drop(() => {
       Category.ensureIndexes(done);
     });
@@ -51,7 +49,7 @@ describe('Category CRUD Test Suite', () => {
       .field('type', 'bla')
       .field('title', 'Sample Title')
       .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
-      // .expect(400)
+      .expect(400)
       .end((err2, res2) => {
         // console.log(res2.body);
         if (err2) {
@@ -60,13 +58,14 @@ describe('Category CRUD Test Suite', () => {
         } else {
           //  console.log(res2.error);
           // console.log('error not found');
-          console.log(res2.body.error);
-          chai.expect(res2.body.error)
-            .to.equal('ValidationError: `bla` is not a valid enum value for path `type`.');
+          // console.log(res2.body);
+          chai.expect(res2.body.errors.message)
+            .to.equal('Category validation failed');
           done();
         }
       });
   });
+
   it('should edit a category and return a confirmation message', (done) => {
     const newCategory = new Category({
       type: 'Business',
@@ -83,15 +82,28 @@ describe('Category CRUD Test Suite', () => {
           .field('title', '3ala2')
           .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
           .end((err2, res) => {
-            // console.log(res.body);
+           // console.log(res.body);
             if (err2) {
               done(err2);
             } else {
               // console.log(3);
-              const chaiCategory = Category.find(element => `${element._id}` === `${newcat._id}`);
-              chai.expect(chaiCategory.title)
-                .to.equal('3ala2');
-              done();
+              chai.expect(res.body.message)
+                .to.equal('Category edited succesfully!'); // const chaiCategory = Category.findbyId(element => `${element._id}` === `${newcat._id}`);
+              Category.findOne({
+                _id: `${newcat._id}`,
+              }, (err3, category) => {
+                if (err3) {
+                //  console.log('errr', err3);
+                  // return done(err, null);
+                } else {
+                //  console.log(category);
+                //  console.log('yaaaaaaaaay');
+                  chai.expect(category.title)
+                    .to.equal('3ala2');
+                  done();
+                }
+              });
+              // console.log(chaiCategory);
             }
           });
       }
