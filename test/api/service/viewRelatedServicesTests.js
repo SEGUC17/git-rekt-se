@@ -129,7 +129,6 @@ describe('Client Signup API', () => {
         /**
          * Checking the content of the response
          */
-        console.log(res.body);
         chai.expect(res.body.count)
           .to.equal(2);
         chai.expect(res.body.results)
@@ -142,7 +141,7 @@ describe('Client Signup API', () => {
 
         chai.expect(res.body.results[1]._business.name)
           .to.equal('GUC language center');
-        chai.expect(res.body.results[0].name)
+        chai.expect(res.body.results[1].name)
           .to.equal('GUC german course');
 
         done();
@@ -170,7 +169,7 @@ describe('Client Signup API', () => {
         /**
          * Checking the content of the response
          */
-        console.log(res.body);
+
         chai.expect(res.body.count)
           .to.equal(2);
         chai.expect(res.body.results)
@@ -183,7 +182,7 @@ describe('Client Signup API', () => {
 
         chai.expect(res.body.results[1]._business.name)
           .to.equal('GUC language center');
-        chai.expect(res.body.results[0].name)
+        chai.expect(res.body.results[1].name)
           .to.equal('GUC english course');
 
         done();

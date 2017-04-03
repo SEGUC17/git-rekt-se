@@ -22,12 +22,20 @@ router.get('/category/:id/:offset', (req, res, next) => {
     categories: {
       $in: [req.params.id],
     },
-  }, null, {
+  }, {
+    name: true,
+    shortDescription: true,
+    coverImage: true,
+    _business: true,
+    _id: false,
+  }, {
     skip: (offset - 1) * 10,
     limit: 10,
   })
-    .populate('_business')
-    .select('name shortDescription coverImage _business.name -_id')
+    .populate({
+      path: '_business',
+      select: 'name -_id',
+    })
     .exec()
     .then((services) => {
       if (services.length === 0) {
