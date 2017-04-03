@@ -17,7 +17,7 @@ const Businesses = [{
 },
 {
   name: 'hobala26',
-  email: 'test@gmail.com',
+  email: 'test1@gmail.com',
   shortDescription: 'This item is for testing the Business SignUp API',
   phoneNumbers: ['12345677', '22222222', '32414553'],
   password: 'blahblah1',
@@ -29,4 +29,4 @@ const Businesses = [{
 },
 ];
 
-module.export = Businesses;
+module.exports = Businesses;

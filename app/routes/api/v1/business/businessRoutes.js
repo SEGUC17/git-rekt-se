@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Business = require('../../../../models/business/Business');
 const Branch = require('../../../../models/service/Branch');
 const Category = require('../../../../models/service/Category');
+const Service = require('../../../../models/service/Service');
 
 
 mongoose.Promise = Promise;
@@ -21,11 +22,30 @@ router.use(bodyParser.json());
 router.get('/:id', (req, res, next) => {
   Business.findOne({
     _id: req.params.id,
+  }, {
+    password: false,
+    deleted: false,
   })
     .populate('branches categories')
     .exec()
     .then((business) => {
-      res.json(business);
+      Service.find({ business }).populate('branches offerings reviews').exec()
+      .then((businessServices) => {
+        const returnedBusiness = {
+          _id: business.id,
+          name: business.name,
+          email: business.email,
+          shortDescription: business.shortDescription,
+          phoneNumbers: business.phoneNumbers,
+          description: business.description,
+          workingHours: business.workingHours,
+          categories: business.categories,
+          branches: business.branches,
+          services: businessServices,
+        };
+        res.json(returnedBusiness);
+      })
+      .catch(e => next(e));
     })
     .catch((err) => {
       next(err);

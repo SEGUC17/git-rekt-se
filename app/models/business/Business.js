@@ -15,13 +15,14 @@ const businessSchema = Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
-
   },
   shortDescription: {
     type: String,
+    required: true,
   },
   description: {
     type: String,
@@ -33,12 +34,10 @@ const businessSchema = Schema({
   categories: [{
     type: Schema.Types.ObjectId,
     ref: 'Category',
-
   }],
   branches: [{
     type: Schema.Types.ObjectId,
     ref: 'Branch',
-
   }],
   gallery: [{
     path: {
@@ -52,14 +51,14 @@ const businessSchema = Schema({
   workingHours: {
     type: String,
   },
+  _status: {
+    type: String,
+    enum: ['unverified', 'verified', 'removed'],
+    default: 'unverified',
+  },
   _deleted: {
     type: Boolean,
     default: false,
-  },
-  _status: {
-    type: String,
-    enum: ['un-verified', 'verified', 'removed'],
-    default: 'un-verified',
   },
 });
 
@@ -67,7 +66,7 @@ const businessSchema = Schema({
  * Hash password before saving the document
  */
 
-businessSchema.pre('save', function isDone(done) {
+businessSchema.pre('save', function preSave(done) {
   if (!this.isModified('password')) {
     done();
   } else {
@@ -86,9 +85,14 @@ businessSchema.pre('save', function isDone(done) {
  * Check the password
  */
 
-businessSchema.methods.checkPassword = function checkPassword(guess, done) {
-  bcrypt.compare(guess, this.password, (err, matching) => {
-    done(err, matching);
+businessSchema.methods.checkPassword = function checkPassword(guess) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(guess, this.password, (err, matching) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(matching);
+    });
   });
 };
 
