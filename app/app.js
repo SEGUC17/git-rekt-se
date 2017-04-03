@@ -3,6 +3,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const jwtConfig = require('./services/shared/jwtConfig');
+const fbConfig = require('./services/shared/fbConfig');
 
 const app = express();
 
@@ -33,7 +34,7 @@ mongoose.connect(process.env.DB_URL);
 
 passport.use('jwt_client', jwtConfig.clientStrategy);
 passport.use('jwt_bussiness', jwtConfig.businessStrategy);
-passport.use('facebook_strategy', jwtConfig.facebookStrategy);
+passport.use('facebook_strategy', fbConfig.facebookStrategy);
 
 app.use(passport.initialize());
 
