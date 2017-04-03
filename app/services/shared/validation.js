@@ -136,7 +136,6 @@ const businessSignupValidation = {
   },
 };
 
-<<<<<<< HEAD
 /* Review Validation */
 
 const reviewValidation = {
@@ -147,7 +146,6 @@ const reviewValidation = {
   },
 };
 
-=======
 const businessLoginValidation = {
   email: {
     notEmpty: {

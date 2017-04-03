@@ -7,6 +7,8 @@ const validationSchemas = require('../../../../services/shared/validation');
 const Service = require('../../../../models/service/Service');
 const Review = require('../../../../models/service/Review');
 const Strings = require('../../../../services/shared/Strings');
+const clientAuthMiddleware = require('../../../../services/shared/jwtConfig')
+  .clientAuthMiddleware;
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -27,7 +29,7 @@ router.use(expressValidator({}));
  * Create Review route
  */
 
-router.post('/service/:id/review', /* ensureClientAuthentication,*/ (req, res, next) => {
+router.post('/:id/review', clientAuthMiddleware, (req, res, next) => {
   // Validate form
   req.checkBody(validationSchemas.reviewValidation);
   req.getValidationResult()
@@ -51,7 +53,7 @@ router.post('/service/:id/review', /* ensureClientAuthentication,*/ (req, res, n
               });
           })
           .then((populatedService) => {
-            const oldReview = populatedService.reviews.find(review => `${review._client}` === req.client._id);
+            const oldReview = populatedService.reviews.find(review => `${review._client}` === req.user._id);
             if (oldReview) {
               throw new Error(Strings.reviewErrors.alreadyReviewedService);
             }
@@ -86,7 +88,7 @@ router.post('/service/:id/review', /* ensureClientAuthentication,*/ (req, res, n
  * Update Review route
  */
 
-router.post('/service/:id/review/:review_id/edit', /* ensureClientAuthentication,*/ (req, res, next) => {
+router.post('/:id/review/:review_id/edit', clientAuthMiddleware, (req, res, next) => {
   // Validate form
   req.checkBody(validationSchemas.reviewValidation);
   req.getValidationResult()
@@ -115,7 +117,7 @@ router.post('/service/:id/review/:review_id/edit', /* ensureClientAuthentication
             if (!review) {
               throw new Error(Strings.reviewErrors.invalidReview);
             }
-            if (review._client !== req.client._id) {
+            if (review._client !== req.user._id) {
               throw new Error(Strings.reviewErrors.userMismatch);
             }
             populatedService._totalRating -= review.rating;
@@ -144,7 +146,7 @@ router.post('/service/:id/review/:review_id/edit', /* ensureClientAuthentication
 /**
  * Delete Review route
  */
-router.post('/service/:id/review/:review_id/delete', /* ensureClientAuthentication,*/ (req, res, next) => {
+router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, next) => {
   const serviceId = req.params.id;
   const reviewId = req.params.review_id;
   Service.findOne({
@@ -171,6 +173,7 @@ router.post('/service/:id/review/:review_id/delete', /* ensureClientAuthenticati
       if (review._client !== req.client._id) {
         throw new Error(Strings.reviewErrors.userMismatch);
       }
+      review._deleted = true;
       review.save()
         .then((savedReview) => {
           populatedService._totalRating -= savedReview.rating;
