@@ -29,7 +29,7 @@ router.use(bodyParser.json());
 
 
 router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensureauthenticated
- // console.log(req.file);
+  // console.log(req.file);
   const Servicecategory = new Category({
     type: req.body.type,
     title: req.body.title,
@@ -38,17 +38,16 @@ router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensu
   // console.log(2);
   Servicecategory.save((err) => {
     if (err) {
-      next(err);
+      return next(err);
     }
     return res.json({
       message: 'Category added succesfully!',
     });
   });
-
 });
 
 router.post('/editCategory/:id', upload.single('icon'), (req, res, next) => { // ensureauthenticated
-  console.log(req.file);
+  //  console.log(req.file);
   Category.findByIdAndUpdate(req.params.id, {
     $set: {
       type: req.body.type,
@@ -59,29 +58,37 @@ router.post('/editCategory/:id', upload.single('icon'), (req, res, next) => { //
     new: true,
   }, (err, category) => {
     if (err) {
-      next(err);
-    } else {
-      console.log(category);
-      res.json({
-        message: 'Category edited succesfully!',
-      });
+      return next(err);
     }
+   // console.log(category);
+    return res.json({
+      message: 'Category edited succesfully!',
+    });
   });
-  console.log(2);
+  // co //nsole.log(2);
 });
 
 router.post('/deleteCategory/:id', (req, res, next) => { // ensureauthenticated
-  console.log(req.file);
+  //  console.log(req.file);
   Category.findByIdAndRemove(req.params.id, (err) => {
     if (err) {
-      next(err);
-    } else {
-      res.json({
-        message: 'Category deleted succesfully!',
-      });
+      return next(err);
     }
-    console.log(2);
+    return res.json({
+      message: 'Category deleted succesfully!',
+    });
+    //  console.log(2);
   });
 });
 
+/**
+ *  Error Handling Middlewares.
+ */
+
+router.use((err, req, res, next) => {
+  res.status(400)
+    .json({
+      errors: err,
+    });
+});
 module.exports = router;
