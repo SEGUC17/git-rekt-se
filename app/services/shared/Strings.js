@@ -81,6 +81,8 @@ const serviceSuccess = {
 const serviceFail = {
   invalidService: 'Service not found!',
   invalidImage: 'Image not found!',
+  notYourService: 'Can not modify a service that is not owned by your business!',
+  missingField: 'Missing Field(s)!',
 };
 
 const clientForgotPassword = {
