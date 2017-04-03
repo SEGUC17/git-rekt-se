@@ -28,6 +28,24 @@ const upload = multer({
 router.use(bodyParser.json());
 
 
+// router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensureauthenticated
+//   // console.log(req.file);
+//   const Servicecategory = new Category({
+//     type: req.body.type,
+//     title: req.body.title,
+//     icon: req.file.filename,
+//   });
+//   // console.log(2);
+//   Servicecategory.save((err) => {
+//     if (err) {
+//       return next(err);
+//     }
+//     return res.json({
+//       message: 'Category added succesfully!',
+//     });
+//   });
+// });
+
 router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensureauthenticated
   // console.log(req.file);
   const Servicecategory = new Category({
@@ -35,15 +53,12 @@ router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensu
     title: req.body.title,
     icon: req.file.filename,
   });
-  // console.log(2);
-  Servicecategory.save((err) => {
-    if (err) {
-      return next(err);
-    }
-    return res.json({
+  const promise = Servicecategory.save();
+  promise.then(Servicecategory.save())
+    .then(res.json({
       message: 'Category added succesfully!',
-    });
-  });
+    }))
+    .catch(err => next(err));
 });
 
 router.post('/editCategory/:id', upload.single('icon'), (req, res, next) => { // ensureauthenticated
