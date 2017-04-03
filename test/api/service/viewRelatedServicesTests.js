@@ -34,9 +34,9 @@ describe('Client Signup API', () => {
   let category3ID;
 
   /**
- * Dropping Category, Business, Service collections
- * populating database with some dummy values
- */
+   * Dropping Category, Business, Service collections
+   * populating database with some dummy values
+   */
 
   before((done) => {
     Service.collection.drop(() => {
@@ -45,60 +45,62 @@ describe('Client Signup API', () => {
           Business.ensureIndexes(() => {
             Category.collection.drop(() => {
               Category.ensureIndexes(() => {
-                Category.insertMany(categories, (inserterr1, docs1) => {
-                  if (inserterr1) {
-                    done(inserterr1);
-                  }
-                  Category.findOne({ title: 'Language Courses' }, (finderr1, category1) => {
-                    if (finderr1) {
-                      done(finderr1);
-                    }
-                    Category.findOne({ title: 'English Courses' }, (finderr2, category2) => {
-                      if (finderr2) {
-                        done(finderr2);
-                      }
-                      Category.findOne({ title: 'Principles of Self Management' }, (finderr3, category3) => {
-                        if (finderr3) {
-                          done(finderr3);
-                        }
-                        Business.insertMany(businesses, (inserterr2, docs2) => {
-                          if (inserterr2) {
-                            done(inserterr2);
-                          }
-                          Business.findOne({ name: 'Not Courses' }, (finderr4, business1) => {
-                            if (finderr4) {
-                              done(finderr4);
-                            }
-                            Business.findOne({ name: 'GUC language center' }, (finderr5, business2) => {
-                              if (finderr5) {
-                                done(finderr5);
-                              }
-                              category1ID = category1._id;
-                              category2ID = category2._id;
-                              category3ID = category3._id;
+                Category.insertMany(categories)
+                  .then((docs1) => {
+                    Category.findOne({
+                      title: 'Language Courses',
+                    })
+                      .then((category1) => {
+                        Category.findOne({
+                          title: 'English Courses',
+                        })
+                          .then((category2) => {
+                            Category.findOne({
+                              title: 'Principles of Self Management',
+                            })
+                              .then((category3) => {
+                                Business.insertMany(businesses)
+                                  .then((docs2) => {
+                                    Business.findOne({
+                                      name: 'Not Courses',
+                                    })
+                                      .then((business1) => {
+                                        Business.findOne({
+                                          name: 'GUC language center',
+                                        })
+                                          .then((business2) => {
+                                            category1ID = category1._id;
+                                            category2ID = category2._id;
+                                            category3ID = category3._id;
 
-                              services[0].categories = [category2ID];
-                              services[0]._business = [business1._id];
+                                            services[0].categories = [category2ID];
+                                            services[0]._business = business1._id;
 
-                              services[1].categories = [category2ID, category1ID];
-                              services[1]._business = [business2._id];
+                                            services[1].categories = [category2ID, category1ID];
+                                            services[1]._business = business2._id;
 
-                              services[2].categories = [category1ID];
-                              services[2]._business = [business2._id];
+                                            services[2].categories = [category1ID];
+                                            services[2]._business = business2._id;
 
-                              Service.insertMany(services, (inserterr3, docs3) => {
-                                if (inserterr3) {
-                                  done(inserterr3);
-                                }
-                                done();
-                              });
-                            });
-                          });
-                        });
-                      });
-                    });
-                  });
-                });
+                                            Service.insertMany(services)
+                                              .then((docs3) => {
+                                                done();
+                                              })
+                                              .catch(err => done([err]));
+                                          })
+                                          .catch(err => done([err]));
+                                      })
+                                      .catch(err => done([err]));
+                                  })
+                                  .catch(err => done([err]));
+                              })
+                              .catch(err => done([err]));
+                          })
+                          .catch(err => done([err]));
+                      })
+                      .catch(err => done([err]));
+                  })
+                  .catch(err => done([err]));
               });
             });
           });
@@ -107,7 +109,7 @@ describe('Client Signup API', () => {
     });
   });
 
- /**
+  /**
    * Passing Test1: returning services of the same categories and same offering business
    */
   it('should return the services of the same category from the same businesses', (done) => {
@@ -147,7 +149,7 @@ describe('Client Signup API', () => {
       });
   });
 
-   /**
+  /**
    * Passing Test2: returning services of the same categories and differnet offering business
    */
 
@@ -188,7 +190,7 @@ describe('Client Signup API', () => {
       });
   });
 
-/**
+  /**
    * Failing Test: No related services in the category requested
    */
 
@@ -197,7 +199,7 @@ describe('Client Signup API', () => {
       .get(`/api/v1/service/category/${category3ID}/1`);
     req.expect('Content-Type', /json/)
       .expect(400, {
-        errors: [Strings.visitorErrors.NoRelatedservices],
+        errors: [Strings.visitorErrors.NoRelatedServices],
       }, done);
   });
 });

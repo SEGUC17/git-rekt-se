@@ -7,19 +7,19 @@ const Services = [{
   shortDescription: 'We teach you English from scratch',
   _business: null,
   categories: null,
-  coverimage: 'notcourses.jpg',
+  coverImage: 'notcourses.jpg',
 }, {
   name: 'GUC english course',
   shortDescription: 'RPW',
   _business: null,
   categories: null,
-  coverimage: 'guc.jpg',
+  coverImage: 'guc.jpg',
 }, {
   name: 'GUC german course',
-  shortDescription: '',
+  shortDescription: 'FRAU',
   _business: null,
   categories: null,
-  coverimage: 'guc.jpg',
+  coverImage: 'guc.jpg',
 }];
 
 module.exports = Services;

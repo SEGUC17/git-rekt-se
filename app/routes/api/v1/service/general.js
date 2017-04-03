@@ -28,10 +28,8 @@ router.get('/category/:id/:offset', (req, res, next) => {
   })
     .populate('_business')
     .select('name shortDescription coverImage _business.name -_id')
-    .exec((finderr, services) => {
-      if (finderr) {
-        next(finderr);
-      }
+    .exec()
+    .then((services) => {
       if (services.length === 0) {
         return next([Strings.visitorErrors.NoRelatedServices]);
       }
@@ -39,9 +37,9 @@ router.get('/category/:id/:offset', (req, res, next) => {
         count: services.length,
         results: services,
       });
-    });
+    })
+    .catch(err => next([err]));
 });
-
 
 /**
  * Error handling Middlewares

@@ -61,10 +61,7 @@ const serviceSchema = Schema({
     },
   }],
   coverImage: {
-    path: {
-      type: String,
-      required: true,
-    },
+    type: String,
   },
   _deleted: {
     type: Boolean,
