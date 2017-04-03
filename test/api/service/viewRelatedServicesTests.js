@@ -16,6 +16,9 @@ const categories = require('../../../app/seed/service/serviceCatgeoriesSeed');
 
 const Strings = require('../../../app/services/shared/Strings');
 
+const categoriesIDs = [];
+const businessesIDs = [];
+
 /**
  * Database Connection
  */
@@ -24,83 +27,18 @@ require('dotenv')
   .config();
 
 /**
- * View Related Services Suite
+ * Dropping Database collections Suite
  */
 
-describe('Client Signup API', () => {
-  let req;
-  let category1ID;
-  let category2ID;
-  let category3ID;
-
-  /**
-   * Dropping Category, Business, Service collections
-   * populating database with some dummy values
-   */
-
-  before((done) => {
+describe('Dropping the Database Collections', () => {
+  it('should drop the database collections', (done) => {
     Service.collection.drop(() => {
       Service.ensureIndexes(() => {
         Business.collection.drop(() => {
           Business.ensureIndexes(() => {
             Category.collection.drop(() => {
               Category.ensureIndexes(() => {
-                Category.insertMany(categories)
-                  .then((docs1) => {
-                    Category.findOne({
-                      title: 'Language Courses',
-                    })
-                      .then((category1) => {
-                        Category.findOne({
-                          title: 'English Courses',
-                        })
-                          .then((category2) => {
-                            Category.findOne({
-                              title: 'Principles of Self Management',
-                            })
-                              .then((category3) => {
-                                Business.insertMany(businesses)
-                                  .then((docs2) => {
-                                    Business.findOne({
-                                      name: 'Not Courses',
-                                    })
-                                      .then((business1) => {
-                                        Business.findOne({
-                                          name: 'GUC language center',
-                                        })
-                                          .then((business2) => {
-                                            category1ID = category1._id;
-                                            category2ID = category2._id;
-                                            category3ID = category3._id;
-
-                                            services[0].categories = [category2ID];
-                                            services[0]._business = business1._id;
-
-                                            services[1].categories = [category2ID, category1ID];
-                                            services[1]._business = business2._id;
-
-                                            services[2].categories = [category1ID];
-                                            services[2]._business = business2._id;
-
-                                            Service.insertMany(services)
-                                              .then((docs3) => {
-                                                done();
-                                              })
-                                              .catch(err => done([err]));
-                                          })
-                                          .catch(err => done([err]));
-                                      })
-                                      .catch(err => done([err]));
-                                  })
-                                  .catch(err => done([err]));
-                              })
-                              .catch(err => done([err]));
-                          })
-                          .catch(err => done([err]));
-                      })
-                      .catch(err => done([err]));
-                  })
-                  .catch(err => done([err]));
+                done();
               });
             });
           });
@@ -108,13 +46,75 @@ describe('Client Signup API', () => {
       });
     });
   });
+});
+
+/**
+ * Populating Category collection with categoriesSeed and saving their IDs in categories array
+ */
+
+describe('Populating Category Collection', () => {
+  it('should enter categories in the Category collection', (done) => {
+    Category.insertMany(categories)
+      .then((docs) => {
+        categoriesIDs.push(docs[0]._id);
+        categoriesIDs.push(docs[2]._id);
+        categoriesIDs.push(docs[1]._id);
+        done();
+      })
+      .catch(e => done([e]));
+  });
+});
+
+/**
+ * Populating business collection with businessSeed and saving their IDs in businesses array
+ */
+
+describe('Populating Business Collection', () => {
+  it('should enter businesses in the Business collection', (done) => {
+    Business.insertMany(businesses)
+      .then((docs) => {
+        businessesIDs.push(docs[1]._id);
+        businessesIDs.push(docs[2]._id);
+        done();
+      })
+      .catch(e => done([e]));
+  });
+});
+
+/**
+ * Populating Service collection with categoriesIDs & businessesIDs
+ */
+
+describe('Populating Service Collection', () => {
+  it('should enter services in the service collection', (done) => {
+    services[0].categories = [categoriesIDs[1]];
+    services[0]._business = businessesIDs[0];
+
+    services[1].categories = [categoriesIDs[1], categoriesIDs[0]];
+    services[1]._business = businessesIDs[1];
+
+    services[2].categories = [categoriesIDs[0]];
+    services[2]._business = businessesIDs[1];
+
+    Service.insertMany(services).then((docs) => {
+      done();
+    }).catch(e => done([e]));
+  });
+});
+
+/**
+ * View Related Services Suite
+ */
+
+describe('Client Signup API', () => {
+  let req;
 
   /**
    * Passing Test1: returning services of the same categories and same offering business
    */
   it('should return the services of the same category from the same businesses', (done) => {
     req = supertest(app)
-      .get(`/api/v1/service/category/${category1ID}/1`);
+      .get(`/api/v1/service/category/${categoriesIDs[0]}/1`);
     req
       .expect('Content-Type', /json/)
       .expect(200)
@@ -154,7 +154,7 @@ describe('Client Signup API', () => {
 
   it('should return the services of the same category from different businesses', (done) => {
     req = supertest(app)
-      .get(`/api/v1/service/category/${category2ID}/1`);
+      .get(`/api/v1/service/category/${categoriesIDs[1]}/1`);
     req
       .expect('Content-Type', /json/)
       .expect(200)
@@ -195,7 +195,7 @@ describe('Client Signup API', () => {
 
   it('should return no related businesses in a requested category', (done) => {
     req = supertest(app)
-      .get(`/api/v1/service/category/${category3ID}/1`);
+      .get(`/api/v1/service/category/${categoriesIDs[2]}/1`);
     req.expect('Content-Type', /json/)
       .expect(400, {
         errors: [Strings.visitorErrors.NoRelatedServices],
