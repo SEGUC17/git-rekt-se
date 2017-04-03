@@ -2,13 +2,24 @@
  * Constant Strings
  */
 
+
+/**
+ *  General Strings
+ */
+
 const generalErrors = {
   mailerError: 'An issue occured while send the email.',
 };
 
+/**
+ * Business Strings
+ */
+
 const bussinessValidationErrors = {
   emptyEmail: 'Email is a required field.',
   invalidEmail: 'Invalid Email.',
+  emptyPassword: 'Password is a required field.',
+  invalidPassword: 'Password length must be between 8 and 15 and contains at least one number.',
   emptyName: 'Name is a required field.',
   emptyMobile: 'Mobile is a required field.',
   emptyDescription: 'Description is a required field.',
@@ -27,10 +38,22 @@ const businessSuccess = {
   emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
+const businessLoginMessages = {
+  invalidCreds: 'Invalid Credentials.',
+  loginSuccess: 'Business Login Success.',
+  pendingVerification: 'You have not been confirmed by the admin.',
+  removeBusiness: 'This business has been removed.',
+  invalidToken: 'Invalid Token',
+};
+
+/**
+ * Client Strings
+ */
+
 const clientValidationErrors = {
   emptyEmail: 'Email is a required field.',
   invalidEmail: 'Invalid Email.',
-  emptyPassword: 'Email is a required field.',
+  emptyPassword: 'Password is a required field.',
   invalidPassword: 'Password length must be between 8 and 15 and contains at least one number.',
   emptyConfirmation: 'Password Confirmation is a required field.',
   passwordMismatch: 'Password and Password Confirmation must match.',
@@ -49,11 +72,6 @@ const clientSuccess = {
   emailConfirmation: 'Please check your email for the email confirmation.',
 };
 
-const businessForgotPassword = {
-  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
-  INVALID_RESET_TOKEN: 'Invalid reset token.',
-  PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
-};
 
 const clientForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
@@ -61,12 +79,28 @@ const clientForgotPassword = {
   PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
 };
 
+const clientLoginMessages = {
+  invalidCreds: 'Invalid Credentials.',
+  loginSuccess: 'Client Login Success.',
+  confirmEmail: 'Please confirm your email.',
+  bannedClient: 'This user has been banned.',
+  invalidToken: 'Invalid Token',
+};
+
+const clientConfirmation = {
+  emailAlreadyConfirmed: 'User email already confirmed.',
+  notFound: 'User not found.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
+  clientLoginMessages,
+  clientConfirmation,
+
   bussinessValidationErrors,
   businessSuccess,
-  businessForgotPassword,
   clientForgotPassword,
+  businessLoginMessages,
 };

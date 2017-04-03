@@ -97,9 +97,14 @@ businessSchema.pre('save', function preSave(done) {
  * Check the password
  */
 
-businessSchema.methods.checkPassword = function checkPassword(guess, done) {
-  bcrypt.compare(guess, this.password, (err, matching) => {
-    done(err, matching);
+businessSchema.methods.checkPassword = function checkPassword(guess) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(guess, this.password, (err, matching) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(matching);
+    });
   });
 };
 
