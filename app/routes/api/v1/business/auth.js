@@ -103,38 +103,45 @@ router.post('/reset', (req, res, next) => {
   req.checkBody(validationSchemas.businessResetPasswordValidation);
   req.checkBody('confirmPassword')
     .equals(req.body.password)
-.withMessage(Strings.bussinessValidationErrors.passwordMismatch);
+    .withMessage(Strings.bussinessValidationErrors.passwordMismatch);
 
-  jwt.verify(resetToken, JWT_KEY, (err, payload) => {
-    if (!payload) {
-      next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
-    } else {
-      const email = payload.email;
-      const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        jwt.verify(resetToken, JWT_KEY, (err, payload) => {
+          if (!payload) {
+            next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
+          } else {
+            const email = payload.email;
+            const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
 
-      Business.findOne({
-        email,
-        passwordChangeDate: {
-          $lte: creationDate,
-        },
-      })
-      .exec()
-      .then((business) => {
-        if (!business) {
-          return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
-        }
-        business.passwordResetTokenDate = undefined; // Disable the token
-        business.passwordChangeDate = Date.now(); // Invalidate Login Tokens
-        business.password = password; // Reset password
+            Business.findOne({
+              email,
+              passwordChangeDate: {
+                $lte: creationDate,
+              },
+            })
+              .exec()
+              .then((business) => {
+                if (!business) {
+                  return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
+                }
+                business.passwordResetTokenDate = undefined; // Disable the token
+                business.passwordChangeDate = Date.now(); // Invalidate Login Tokens
+                business.password = password; // Reset password
 
-        return business.save()
-          .then(() => res.json({
-            message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
-          }));
-      })
-      .catch(e => next([e]));
-    }
-  });
+                return business.save()
+                  .then(() => res.json({
+                    message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
+                  }));
+              })
+              .catch(e => next([e]));
+          }
+        });
+      } else {
+        next(result.array());
+      }
+    });
 });
 
 /**
