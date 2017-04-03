@@ -58,7 +58,7 @@ router.post('/:id/review', clientAuthMiddleware, (req, res, next) => {
               throw new Error(Strings.reviewErrors.alreadyReviewedService);
             }
             const newReview = new Review({
-              _client: req.client._id,
+              _client: req.user._id,
               rating: req.body.rating,
               description: req.body.description,
             });
@@ -71,7 +71,7 @@ router.post('/:id/review', clientAuthMiddleware, (req, res, next) => {
                   populatedService._totalRating / populatedService._reviewCount;
                 populatedService.save()
                   .then(() => {
-                    res.send({
+                    res.json({
                       message: Strings.reviewSuccess.createSuccess,
                     });
                   });
@@ -130,7 +130,7 @@ router.post('/:id/review/:review_id/edit', clientAuthMiddleware, (req, res, next
                   populatedService._totalRating / populatedService._reviewCount;
                 populatedService.save()
                   .then(() => {
-                    res.send({
+                    res.json({
                       message: Strings.reviewSuccess.createSuccess,
                     });
                   });
@@ -170,7 +170,7 @@ router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, ne
       if (!review) {
         throw new Error(Strings.reviewErrors.invalidReview);
       }
-      if (review._client !== req.client._id) {
+      if (review._client !== req.user._id) {
         throw new Error(Strings.reviewErrors.userMismatch);
       }
       review._deleted = true;
@@ -182,7 +182,7 @@ router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, ne
             populatedService._totalRating / populatedService._reviewCount;
           populatedService.save()
             .then(() => {
-              res.send({
+              res.json({
                 message: Strings.reviewSuccess.createSuccess,
               });
             });

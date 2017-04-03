@@ -1,5 +1,6 @@
 const chai = require('chai');
 const supertest = require('supertest');
+const mongoose = require('mongoose');
 const app = require('../../../app/app');
 
 const clients = require('../../../app/seed/client/clientSeed');
@@ -12,8 +13,11 @@ const Client = require('../../../app/models/client/Client');
 const Business = require('../../../app/models/business/Business');
 const Branch = require('../../../app/models/service/Branch');
 const Service = require('../../../app/models/service/Service');
+const Review = require('../../../app/models/service/Review');
 
 const Strings = require('../../../app/services/shared/Strings');
+
+mongoose.Promise = Promise;
 
 /* Review CRUD test suite */
 
@@ -22,8 +26,9 @@ describe('Should create, update and delete reviews correctly', () => {
   let req;
   let serviceID;
   let clientID;
+  let token;
 
-  const client1 = clients[0];
+  const client1 = new Client(clients[0]);
   client1.status = 'confirmed';
 
   const client1Login = {
@@ -31,7 +36,7 @@ describe('Should create, update and delete reviews correctly', () => {
     password: client1.password,
   };
 
-  const client2 = clients[1];
+  const client2 = new Client(clients[1]);
   client2.status = 'confirmed';
 
   const client2Login = {
@@ -39,14 +44,14 @@ describe('Should create, update and delete reviews correctly', () => {
     password: client2.password,
   };
 
-  const business = businesses[0];
+  const business = new Business(businesses[0]);
   business._status = 'verified';
 
-  const branch = branches[0];
+  const branch = new Branch(branches[0]);
 
-  const service = services[0];
+  const service = new Service(services[0]);
 
-  const review1 = reviews[0];
+  const review1 = new Review(reviews[0]);
 
   const review2 = reviews[1];
 
@@ -65,31 +70,34 @@ describe('Should create, update and delete reviews correctly', () => {
     Service.collection.drop(() => {
       Service.ensureIndexes();
     });
+    done();
   });
 
-  beforeEach(() => {
+
+  beforeEach((done) => {
     client1.save()
       .then((savedClient) => {
         clientID = `${savedClient._id}`;
-        client2.save()
-          .then(() => {
-            business.save()
-              .exec()
-              .then((savedBusiness) => {
-                branch._business = savedBusiness._id;
-                service._business = savedBusiness._id;
-                branch.save()
-                  .then((savedBranch) => {
-                    service.branches = [savedBranch];
-                    service.save()
-                      .then((savedService) => {
-                        serviceID = `${savedService._id}`;
-                        req = supertest(app)
-                          .post('/api/v1/client/auth/login');
-                        req.send(client1Login);
-                      });
-                  });
-              });
+        return client2.save();
+      })
+      .then(() => business.save())
+      .then((savedBusiness) => {
+        branch._business = savedBusiness._id;
+        service._business = savedBusiness._id;
+        return branch.save();
+      })
+      .then((savedBranch) => {
+        service.branches = [savedBranch];
+        return service.save();
+      })
+      .then((savedService) => {
+        serviceID = `${savedService._id}`;
+        supertest(app)
+          .post('/api/v1/client/auth/login')
+          .send(client1Login)
+          .end((err, res) => {
+            token = res.body.token;
+            done();
           });
       });
   });
@@ -99,6 +107,7 @@ describe('Should create, update and delete reviews correctly', () => {
   it('should create a review for the service specified', (done) => {
     req = supertest(app)
       .post(`/api/v1/service/${serviceID}/review`);
+    req.set('Authorization', `JWT ${token}`);
     req.send(review1)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -110,11 +119,7 @@ describe('Should create, update and delete reviews correctly', () => {
         if (err) {
           done(err);
         }
-        chai.expect(res.body.count)
-          .to.equal(1);
         chai.expect(res.body.message)
-          .to.have.lengthOf(1);
-        chai.expect(res.body.message[0])
           .to.equal(Strings.reviewSuccess.createSuccess);
         done();
       });
