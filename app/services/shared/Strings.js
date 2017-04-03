@@ -46,6 +46,13 @@ const businessLoginMessages = {
   invalidToken: 'Invalid Token',
 };
 
+const businessConfirmation = {
+  alreadyConfirmed: 'Business already confirmed.',
+  notFound: 'Business not found.',
+  confirmed: 'Business confirmed successfully!',
+  denied: 'Business request denied.',
+};
+
 /**
  * Client Strings
  */
@@ -98,9 +105,9 @@ module.exports = {
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
-
   bussinessValidationErrors,
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
+  businessConfirmation,
 };

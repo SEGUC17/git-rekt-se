@@ -60,6 +60,10 @@ const businessSchema = Schema({
     type: Boolean,
     default: false,
   },
+  confirmed: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 /**
