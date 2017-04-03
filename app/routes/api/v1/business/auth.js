@@ -8,10 +8,8 @@ const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 
-
-
-const router = express.Router();
 mongoose.Promise = Promise;
+const router = express.Router();
 
 require('dotenv')
   .config();
@@ -80,7 +78,8 @@ router.post('/unverified/signup', (req, res, next) => {
 
 router.post('/forgot', (req, res, next) => {
   const email = req.body.email;
-  const iat = Math.floor(Date.now() / 1000);
+  const currentDate = Date.now();
+  const iat = Math.floor(currentDate / 1000);
   const resetToken = jwt.sign({
     email,
     iat,
@@ -92,17 +91,16 @@ router.post('/forgot', (req, res, next) => {
     email: req.body.email,
   }).exec().then((business) => {
     if (!business) { // Business not found, Invalid mail
-      // Not using middleware due to status
       return res.json({
         message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
       });
     }
-    business.passwordResetTokenDate = iat * 1000;
+    business.passwordResetTokenDate = currentDate;
 
     return business.save().then(() => {
       Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
         .then(() => res.json({ message: Strings.businessForgotPassword.CHECK_YOU_EMAIL }))
-        .catch(() => res.json('err'));
+        .catch(err => next([err]));
     });
   }).catch(err => next([err]));
 });
