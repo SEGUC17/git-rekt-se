@@ -1,12 +1,14 @@
-const mongoose = require('mongoose');
 const express = require('express');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
-const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
+
+
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -14,20 +16,23 @@ mongoose.Promise = Promise;
 require('dotenv')
   .config();
 
+const JWT_KEY = process.env.JWT_KEY_BUSSINES;
+
+
 /**
- * Parsing Middleware(s).
+ * Parsing Middleware(s)
  */
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Business signup route.
+ * Business signup route
  */
 
 router.post('/unverified/signup', (req, res, next) => {
   /**
-   * Body Inputs.
+   * Body Inputs
    */
 
   const userInfo = {
@@ -69,23 +74,37 @@ router.post('/unverified/signup', (req, res, next) => {
     });
 });
 
-
 /**
- * Business login route.
+ * Business forgot password
  */
 
-router.post('/verified/login', (req, res, next) => {
-  req.checkBody(validationSchemas.businessLoginValidation);
-  req.getValidationResult()
-    .then((result) => {
-      if (result.isEmpty()) {
-        BusinessAuthenticator.loginBusiness(req.body.email, req.body.password)
-          .then(info => res.json(info))
-          .catch(err => next([err]));
-      } else {
-        next(result.array());
-      }
+router.post('/forgot', (req, res, next) => {
+  const email = req.body.email;
+  const iat = Math.floor(Date.now() / 1000);
+  const resetToken = jwt.sign({
+    email,
+    iat,
+  }, JWT_KEY, {
+    expiresIn: '1h',
+  });
+
+  Business.findOne({
+    email: req.body.email,
+  }).exec().then((business) => {
+    if (!business) { // Business not found, Invalid mail
+      // Not using middleware due to status
+      return res.json({
+        message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
+      });
+    }
+    business.passwordResetTokenDate = iat * 1000;
+
+    return business.save().then(() => {
+      Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
+        .then(() => res.json({ message: Strings.businessForgotPassword.CHECK_YOU_EMAIL }))
+        .catch(() => res.json('err'));
     });
+  }).catch(err => next([err]));
 });
 
 /**
