@@ -52,25 +52,10 @@ describe('Populating Category Collection', () => {
   it('should enter categories in the Category collection', (done) => {
     Category.insertMany(categories)
       .then((docs) => {
-        Category.findOne({
-          title: 'Language Courses',
-        })
-          .then((category1) => {
-            Category.findOne({
-              title: 'Self-Managment Courses',
-            })
-              .then((category2) => {
-                Category.findOne({
-                  title: 'Team Management Courses',
-                })
-                  .then((category3) => {
-                    categoriesIDs.push(category1._id);
-                    categoriesIDs.push(category2._id);
-                    categoriesIDs.push(category3._id);
-                    done();
-                  }).catch(e => done([e]));
-              }).catch(e => done([e]));
-          }).catch(e => done([e]));
+        categoriesIDs.push(docs[0]._id);
+        categoriesIDs.push(docs[1]._id);
+        categoriesIDs.push(docs[2]._id);
+        done();
       }).catch(e => done([e]));
   });
 });
@@ -97,7 +82,6 @@ describe('Populating Business Collection', () => {
 
 describe('View Related Businesses API', () => {
   let req;
-  console.log(categoriesIDs);
 
   /**
    * Passing Test: Only 2 businesses of the same category appears
