@@ -1,4 +1,6 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
@@ -7,7 +9,14 @@ const Client = require('../../../../models/client/Client');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const Strings = require('../../../../services/shared/Strings');
 
+mongoose.Promise = Promise;
+
 const router = express.Router();
+
+require('dotenv')
+  .config();
+
+const JWT_KEY = process.env.JWT_KEY_CLIENT;
 
 /**
  * Body Parser Middleware
@@ -102,6 +111,58 @@ router.post('/confirmation/send', (req, res, next) => {
 
 router.post('/confirmation/:token/confirm', (req, res, next) => {
 
+});
+
+
+/**
+ * Client Login
+ */
+
+router.post('/login', (req, res, next) => {
+  req.checkBody(validationSchemas.clientLoginValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        ClientAuthenticator.loginClient(req.body.email, req.body.password)
+          .then(info => res.json(info))
+          .catch(err => next([err]));
+      } else {
+        next(result.array());
+      }
+    });
+});
+
+/**
+ * Client forgot password
+ */
+
+router.post('/forgot', (req, res, next) => {
+  const email = req.body.email;
+  const currentDate = Date.now();
+  const iat = Math.floor(currentDate / 1000);
+  const resetToken = jwt.sign({
+    email,
+    iat,
+  }, JWT_KEY, {
+    expiresIn: '1h',
+  });
+
+  Client.findOne({
+    email: req.body.email,
+  }).exec().then((client) => {
+    if (!client) { // Client not found, Invalid mail
+      return res.json({
+        message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
+      });
+    }
+    client.passwordResetTokenDate = currentDate;
+
+    return client.save().then(() => {
+      Mailer.forgotPasswordEmail(email, req.hostname, resetToken)
+        .then(() => res.json({ message: Strings.clientForgotPassword.CHECK_YOU_EMAIL }))
+        .catch(err => next([err]));
+    });
+  }).catch(err => next([err]));
 });
 
 /**

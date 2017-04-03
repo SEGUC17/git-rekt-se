@@ -1,47 +1,51 @@
 const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
-const Client = require('../../../app/models/client/Client');
-const clients = require('../../../app/seed/client/clientSeed');
+const Business = require('../../../app/models/business/Business');
+const Admin = require('../../../app/models/admin/Admin');
+const unverifiedBussiness = require('../../../app/seed/business/unverifiedBusinessSeed');
 
 /**
- * Client Signup Suite
+ * Business Signup Suite
  */
 
-describe('Client Signup API', () => {
+describe('Unverified Business Signup API', () => {
   let req;
 
   before((done) => {
-    Client.collection.drop(() => {
-      Client.ensureIndexes(done);
-    });
+    supertest(app)
+      .post('/api/v1/admin/auth/create')
+      .end((request, res) => {
+        Business.collection.drop(() => {
+          Business.ensureIndexes(done);
+        });
+      });
   });
 
   beforeEach(() => {
     req = supertest(app)
-      .post('/api/v1/client/auth/signup');
+      .post('/api/v1/business/auth/unverified/signup');
   });
 
   /**
-   * Register a new client
+   * Register a new Business
    */
 
-  it('should register a new client', (done) => {
-    const client1 = clients[0];
-    req.send(client1)
+  it('should add a new business', (done) => {
+    const business1 = unverifiedBussiness[0];
+    req.send(business1)
       .expect('Content-Type', /json/)
-      .expect(200)
+      // .expect(200)
       .end((err, res) => {
         /**
          * Error happend with request, fail the test
          * with the error message.
          */
-
         if (err) {
           done(err);
         } else {
-          Client.find({
-            email: client1.email,
+          Business.find({
+            email: business1.email,
           }, (finderr, data) => {
             if (finderr) {
               done(finderr);
@@ -55,9 +59,9 @@ describe('Client Signup API', () => {
       });
   });
 
-  it('should register a another client with different email.', (done) => {
-    const client2 = clients[1];
-    req.send(client2)
+  it('should register add another business with different email.', (done) => {
+    const business2 = unverifiedBussiness[1];
+    req.send(business2)
       .expect('Content-Type', /json/)
       .expect(200)
       .end((err, res) => {
@@ -65,12 +69,11 @@ describe('Client Signup API', () => {
          * Error happend with request, fail the test
          * with the error message.
          */
-
         if (err) {
           done(err);
         } else {
-          Client.find({
-            email: client2.email,
+          Business.find({
+            email: business2.email,
           }, (finderr, data) => {
             if (finderr) {
               done(finderr);
@@ -84,8 +87,8 @@ describe('Client Signup API', () => {
       });
   });
 
-  it('should have two users in the database', (done) => {
-    Client.find()
+  it('should have two unverified businesses in the database', (done) => {
+    Business.find()
       .then((data) => {
         chai.expect(data.length)
           .to.equal(2);
@@ -95,80 +98,86 @@ describe('Client Signup API', () => {
   });
 
   it('should not allow duplicate emails at registration', (done) => {
-    const client1 = clients[1];
-    req.send(client1)
+    const business1 = unverifiedBussiness[1];
+    req.send(business1)
       .expect('Content-Type', /json/)
       .expect(400, {
-        errors: ['User already exists.'],
+        errors: ['Business already exists.'],
       }, done);
   });
 
-  it('should not allow registration with mis-matching passwords', (done) => {
-    const badClient = Object.assign({}, clients[0]);
-    badClient.confirmPassword = 'YEQmxoav4NK';
+  it('should not allow registration with wrong information.', (done) => {
+    const badBusiness = Object.assign({}, unverifiedBussiness[0]);
+    badBusiness.mobile = '98172323212323';
 
-    req.send(badClient)
+    req.send(badBusiness)
       .expect('Content-Type', /json/)
       .expect(400, {
         errors: [{
-          param: 'confirmPassword',
-          msg: 'Password and Password Confirmation must match.',
-          value: 'YEQmxoav4NK',
+          param: 'mobile',
+          msg: 'Mobile must be in this format 01xxxxxxxxx',
+          value: '98172323212323',
         }],
       }, done);
+  });
+
+  after((done) => {
+    Admin.collection.drop(() => {
+      Admin.ensureIndexes(done);
+    });
   });
 });
 
 
 /**
- * Client Login Suite
+ * Business Login Suite.
  */
 
-describe('Client Login API', () => {
+describe('Business Login API', () => {
   let req;
+  let sampleBusiness;
+
   before((done) => {
-    Client.collection.drop(() => {
-      Client.ensureIndexes(done);
+    sampleBusiness = {
+      name: 'HelloWorld',
+      email: 'melzareios@gmail.com',
+      shortDescription: 'My life is good.',
+      mobile: '01032454321',
+      password: 'Strong#1234',
+      _status: 'verified',
+    };
+
+    Business.collection.drop(() => {
+      Business.ensureIndexes(done);
     });
   });
 
   beforeEach(() => {
     req = supertest(app)
-      .post('/api/v1/client/auth/login');
+      .post('/api/v1/business/auth/verified/login');
+  });
+
+  it('should add a new dummy business to test', (done) => {
+    new Business(sampleBusiness)
+      .save()
+      .then(() => done())
+      .catch(done);
   });
 
   it('should login using email and password', (done) => {
-    /**
-     * Add a dummy client to DB.
-     */
-    const newClient = Object.assign({}, clients[0]);
-    newClient.status = 'confirmed';
-
-    new Client(newClient)
-      .save()
-      .then(() => {
-        req
-          .send({
-            email: clients[0].email,
-            password: clients[0].password,
-          })
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end((err, res) => {
-            if (err) {
-              done(err);
-            } else {
-              done();
-            }
-          });
+    req
+      .send({
+        email: sampleBusiness.email,
+        password: sampleBusiness.password,
       })
-      .catch(done);
+      .expect('Content-Type', /json/)
+      .expect(200, done);
   });
 
   it('should include JWT token after login', (done) => {
     req.send({
-      email: clients[0].email,
-      password: clients[0].password,
+      email: sampleBusiness.email,
+      password: sampleBusiness.password,
     })
       .expect('Content-Type', /json/)
       .expect(200)
@@ -180,22 +189,22 @@ describe('Client Login API', () => {
           .to.match(JWS_REGEX);
 
         chai.expect(res.body.message)
-          .to.equal('Client Login Success.');
+          .to.equal('Business Login Success.');
 
         chai.expect(res.body.email)
-          .to.equal(clients[0].email);
+          .to.equal(sampleBusiness.email);
 
         done();
       });
   });
 
   it('should not login with wrong email', (done) => {
-    const newClient = Object.assign({}, clients[0]);
-    newClient.email = 'slim.abdelnadder@gmail.com';
+    const newBusiness = Object.assign({}, sampleBusiness);
+    newBusiness.email = 'slim.abdelnadder@gmail.com';
 
     req.send({
-      email: newClient.email,
-      password: newClient.password,
+      email: newBusiness.email,
+      password: newBusiness.password,
     })
       .expect('Content-Type', /json/)
       .expect(400, {
@@ -204,12 +213,12 @@ describe('Client Login API', () => {
   });
 
   it('should not login with wrong password', (done) => {
-    const newClient = Object.assign({}, clients[0]);
-    newClient.password = 'youcantbeatme0';
+    const newBusiness = Object.assign({}, sampleBusiness);
+    newBusiness.password = 'youcantbeatme0';
 
     req.send({
-      email: newClient.email,
-      password: newClient.password,
+      email: newBusiness.email,
+      password: newBusiness.password,
     })
       .expect('Content-Type', /json/)
       .expect(400, {
@@ -218,13 +227,13 @@ describe('Client Login API', () => {
   });
 
   it('should not login with wrong email and wrong password', (done) => {
-    const newClient = Object.assign({}, clients[0]);
-    newClient.email = 'helloworld@gmail.com';
-    newClient.password = 'youcantbeatme0';
+    const newBusiness = Object.assign({}, sampleBusiness);
+    newBusiness.email = 'helloworld@gmail.com';
+    newBusiness.password = 'youcantbeatme0';
 
     req.send({
-      email: newClient.email,
-      password: newClient.password,
+      email: newBusiness.email,
+      password: newBusiness.password,
     })
       .expect('Content-Type', /json/)
       .expect(400, {
@@ -233,12 +242,12 @@ describe('Client Login API', () => {
   });
 
   it('should not login with an empty email', (done) => {
-    const newClient = Object.assign({}, clients[0]);
-    newClient.email = '';
+    const newBusiness = Object.assign({}, sampleBusiness);
+    newBusiness.email = '';
 
     req.send({
-      email: newClient.email,
-      password: newClient.password,
+      email: newBusiness.email,
+      password: newBusiness.password,
     })
       .expect('Content-Type', /json/)
       .expect(400, {
@@ -258,12 +267,12 @@ describe('Client Login API', () => {
 
 
   it('should not login with an empty password', (done) => {
-    const newClient = Object.assign({}, clients[0]);
-    newClient.password = '';
+    const newBusiness = Object.assign({}, sampleBusiness);
+    newBusiness.password = '';
 
     req.send({
-      email: newClient.email,
-      password: newClient.password,
+      email: newBusiness.email,
+      password: newBusiness.password,
     })
       .expect('Content-Type', /json/)
       .expect(400, {
@@ -282,8 +291,8 @@ describe('Client Login API', () => {
   });
 
   after((done) => {
-    Client.collection.drop(() => {
-      Client.ensureIndexes(done);
+    Business.collection.drop(() => {
+      Business.ensureIndexes(done);
     });
   });
 });
