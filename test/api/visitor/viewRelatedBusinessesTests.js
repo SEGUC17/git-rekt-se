@@ -17,6 +17,8 @@ const businesses = require('../../../app/seed/business/verifiedBusinessSeed');
 
 const Strings = require('../../../app/services/shared/Strings');
 
+const categoriesIDs = [];
+
 /**
  * Database Connection
  */
@@ -25,63 +27,77 @@ require('dotenv')
   .config();
 
 /**
- * View Related Business Suite
+ * Droping the Database Collections Suite
  */
 
-describe('View Related Businesses API', () => {
-  let req;
-  let category1ID;
-  let category2ID;
-  let category3ID;
-
-  /**
-   * Inserting Business Categories and getting their object IDs
-   */
-
-  before((done) => {
+describe('Dropping the Database Collections', () => {
+  it('should drop the database collections', (done) => {
     Business.collection.drop(() => {
       Business.ensureIndexes(() => {
         Category.collection.drop(() => {
           Category.ensureIndexes(() => {
-            Category.insertMany(categories)
-              .then((docs1) => {
-                Category.findOne({
-                  title: 'Language Courses',
-                })
-                  .then((category1) => {
-                    Category.findOne({
-                      title: 'Self-Managment Courses',
-                    })
-                      .then((category2) => {
-                        Category.findOne({
-                          title: 'Team Management Courses',
-                        })
-                          .then((category3) => {
-                            category1ID = category1._id;
-                            category2ID = category2._id;
-                            category3ID = category3._id;
-                            businesses[0].categories = [category2ID];
-                            businesses[1].categories = [category1ID];
-                            businesses[2].categories = [category1ID];
-
-                            Business.insertMany(businesses)
-                              .then((docs2) => {
-                                done();
-                              })
-                              .catch(e => done([e]));
-                          })
-                          .catch(e => done([e]));
-                      })
-                      .catch(e => done([e]));
-                  })
-                  .catch(e => done([e]));
-              })
-              .catch(e => done([e]));
+            done();
           });
         });
       });
     });
   });
+});
+
+/**
+ * Populating Category collection with categoriesSeed and saving their IDs in categories array
+ */
+
+describe('Populating Category Collection', () => {
+  it('should enter categories in the Category collection', (done) => {
+    Category.insertMany(categories)
+      .then((docs) => {
+        Category.findOne({
+          title: 'Language Courses',
+        })
+          .then((category1) => {
+            Category.findOne({
+              title: 'Self-Managment Courses',
+            })
+              .then((category2) => {
+                Category.findOne({
+                  title: 'Team Management Courses',
+                })
+                  .then((category3) => {
+                    categoriesIDs.push(category1._id);
+                    categoriesIDs.push(category2._id);
+                    categoriesIDs.push(category3._id);
+                    done();
+                  }).catch(e => done([e]));
+              }).catch(e => done([e]));
+          }).catch(e => done([e]));
+      }).catch(e => done([e]));
+  });
+});
+
+/**
+ * Populating Business collection with categoriesIDs
+ */
+
+describe('Populating Business Collection', () => {
+  it('should enter businesses in the business collection', (done) => {
+    businesses[0].categories = [categoriesIDs[1]];
+    businesses[1].categories = [categoriesIDs[0]];
+    businesses[2].categories = [categoriesIDs[0]];
+
+    Business.insertMany(businesses).then((docs) => {
+      done();
+    }).catch(e => done([e]));
+  });
+});
+
+/**
+ * View Related Business Suite
+ */
+
+describe('View Related Businesses API', () => {
+  let req;
+  console.log(categoriesIDs);
 
   /**
    * Passing Test: Only 2 businesses of the same category appears
@@ -89,7 +105,7 @@ describe('View Related Businesses API', () => {
 
   it('should return only the businesses of the category requested', (done) => {
     req = supertest(app)
-      .get(`/api/v1/business/category/${category1ID}/1`);
+      .get(`/api/v1/business/category/${categoriesIDs[0]}/1`);
     req
       .expect('Content-Type', /json/)
       .expect(200)
@@ -125,7 +141,7 @@ describe('View Related Businesses API', () => {
 
   it('should return only the businesses of the category requested', (done) => {
     req = supertest(app)
-      .get(`/api/v1/business/category/${category2ID}/1`);
+      .get(`/api/v1/business/category/${categoriesIDs[1]}/1`);
     req
       .expect('Content-Type', /json/)
       .expect(200)
@@ -159,7 +175,7 @@ describe('View Related Businesses API', () => {
 
   it('should return no related businesses in a requested category', (done) => {
     req = supertest(app)
-      .get(`/api/v1/business/category/${category3ID}/1`);
+      .get(`/api/v1/business/category/${categoriesIDs[2]}/1`);
     req.expect('Content-Type', /json/)
       .expect(400, {
         errors: [Strings.visitorErrors.NoRelatedBusinesses],
