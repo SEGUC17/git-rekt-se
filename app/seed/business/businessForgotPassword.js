@@ -9,9 +9,4 @@ module.exports = [{
   confirmPassword: 'blahblah1',
   description: 'This is for testing the API',
   workingHours: 'Saturday To Thursday 8AM-5PM',
-  categories: ['Language'],
-  branches: [{
-    location: locations[0],
-    address: 'Some Address Here',
-  }],
 }];

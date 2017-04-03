@@ -92,15 +92,21 @@ const clientConfirmation = {
   notFound: 'User not found.',
 };
 
+const businessForgotPassword = {
+  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
+  INVALID_RESET_TOKEN: 'Invalid reset token.',
+  PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
-
   bussinessValidationErrors,
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
+  businessForgotPassword,
 };
