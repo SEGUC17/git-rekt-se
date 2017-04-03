@@ -205,8 +205,7 @@ describe('Should create, update and delete reviews correctly', () => {
         if (err) {
           done(err);
         } else {
-          console.log(res.body);
-          chai.expect(res.body.errors[0].error)
+          chai.expect(res.body.errors[0])
             .to.equal(Strings.reviewErrors.alreadyReviewedService);
           done();
         }
