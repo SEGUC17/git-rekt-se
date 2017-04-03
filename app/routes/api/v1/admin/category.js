@@ -30,21 +30,28 @@ router.use(bodyParser.json());
 
 router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensureauthenticated
   console.log(req.file);
-  const Servicecategory = new Category({
-    type: req.body.type,
-    title: req.body.title,
-    icon: req.file.filename,
-  });
-  console.log(2);
-  Servicecategory.save((err) => {
-    if (err) {
-      next(err);
-    } else {
-      res.json({
-        message: 'Category added succesfully!',
-      });
-    }
-  });
+  if (req.body.type === 'Business' || req.body.type === 'Service') {
+    const Servicecategory = new Category({
+      type: req.body.type,
+      title: req.body.title,
+      icon: req.file.filename,
+    });
+    console.log(2);
+    Servicecategory.save((err) => {
+      if (err) {
+        console.log(3);
+        next(err);
+      } else {
+        res.json({
+          message: 'Category added succesfully!',
+        });
+      }
+    });
+  } else {
+    res.json({
+      message: 'Invalid category type!',
+    });
+  }
 });
 
 router.post('/editCategory/:id', upload.single('icon'), (req, res, next) => { // ensureauthenticated
