@@ -99,7 +99,7 @@ describe('Should Edit Info Correctly', () => {
 
   it('should edit categories correctly', (done) => {
     const editInfo = {
-      categories: ['Machine Learning', 'Big Data'],
+      categories: ['58e26fa936e8ca3378874a9d'],
     };
     req.send(editInfo)
       .set('Authorization', `JWT ${token}`)
@@ -112,7 +112,7 @@ describe('Should Edit Info Correctly', () => {
           .exec()
           .then((business) => {
             chai.expect(business.categories.length)
-              .to.equal(2);
+              .to.equal(editInfo.categories.length);
             done();
           })
           .catch(done);
@@ -157,5 +157,19 @@ describe('Should Edit Info Correctly', () => {
     req.send(editInfo)
       .expect('Content-Type', /json/)
       .expect(400, done);
+  });
+
+  it('should not allow a logged in business from editing another business', (done) => {
+    const editInfo = {
+      description: 'This is a new description',
+    };
+    req = supertest(app)
+      .put('/api/v1/business/edit/222');
+    req.send(editInfo)
+      .set('Authorization', `JWT ${token}`)
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [businessMessages.mismatchID],
+      }, done);
   });
 });

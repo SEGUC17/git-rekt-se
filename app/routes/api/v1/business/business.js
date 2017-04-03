@@ -1,61 +1,66 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+
+const Schema = mongoose.Schema;
 
 const Business = require('../../../../models/business/Business');
-const BusinessUtils = require('../../../../services/business/businessUtils');
 const businessMessages = require('../../../../services/shared/Strings')
   .businessMessages;
 const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
+const businessEditInfoValidation = require('../../../../services/shared/validation')
+  .businessEditInfoValidation;
 
 mongoose.Promise = Promise;
 
 const router = express.Router();
 
 router.use(bodyParser.json());
+router.use(expressValidator({}));
 
 router.put('/:id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
-  const body = req.body;
-  const searchID = {
-    _id: id,
-  };
-  // TODO filter other keys ?
-  const keys = Object.keys(body);
-  if (keys.length === 0) {
-    next([businessMessages.allFieldsEmpty]);
+  if (req.user.id !== id) {
+    next([businessMessages.mismatchID]);
   } else {
-    Business.findOne(searchID)
-      .exec()
-      .then((business) => {
-        if (!business) {
-          next([businessMessages.doesntExist]);
+    const body = req.body;
+    const searchID = {
+      _id: id,
+    };
+    req.checkBody(businessEditInfoValidation);
+    req.getValidationResult()
+      .then((result) => {
+        const resultArray = result.array();
+        // All Are Empty
+        if (resultArray.length === 3) {
+          next([businessMessages.allFieldsEmpty]);
         } else {
-          if (body.workingHours && body.workingHours.length > 0) {
-            business.workingHours = body.workingHours;
-          }
-          if (body.description && body.description.length > 0) {
-            business.description = body.description;
-          }
-          if (body.categories && body.categories.length > 0) {
-            BusinessUtils.addCategories(body.categories)
-              .then((allCategories) => {
-                business.categories = business.categories.concat(allCategories);
+          Business.findOne(searchID)
+            .exec()
+            .then((business) => {
+              if (!business) {
+                next([businessMessages.doesntExist]);
+              } else {
+                if (body.workingHours && body.workingHours.length > 0) {
+                  business.workingHours = body.workingHours;
+                }
+                if (body.description && body.description.length > 0) {
+                  business.description = body.description;
+                }
+                if (body.categories && body.categories.length > 0) {
+                  business.categories = body.categories
+                    .map(category => Schema.Types.ObjectId(category));
+                }
                 business.save()
                   .then(() => res.json({
                     message: businessMessages.editSuccess,
                   }))
                   .catch(err => next([err]));
-              })
-              .catch(err => next([err]));
-          } else {
-            business.save()
-              .then(() => res.json({
-                message: businessMessages.editSuccess,
-              }))
-              .catch(err => next([err]));
-          }
+              }
+            })
+            .catch(err => next([err]));
         }
       })
       .catch(err => next([err]));

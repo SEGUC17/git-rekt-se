@@ -16,9 +16,9 @@ mongoose.Promise = Promise;
 
 exports.loginBusiness = (email, password) => new Promise((resolve, reject) => {
   Business.findOne({
-      email,
-      _deleted: false,
-    })
+    email,
+    _deleted: false,
+  })
     .then((user) => {
       if (!user) {
         reject(Strings.businessLoginMessages.invalidCreds);

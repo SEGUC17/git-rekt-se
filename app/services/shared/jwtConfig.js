@@ -47,8 +47,8 @@ const parseAuthHeader = (hdrValue) => {
 
 const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) => {
   Client.findOne({
-      _id: payload.id,
-    })
+    _id: payload.id,
+  })
     .then((user) => {
       if (!user) {
         done(null, false, Strings.clientLoginMessages.invalidCreds);
@@ -59,8 +59,8 @@ const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) =>
           .value;
 
         InvalidToken.findOne({
-            token: reqToken,
-          })
+          token: reqToken,
+        })
           .then((token) => {
             if (token) {
               return done(null, false, Strings.clientLoginMessages.invalidToken);
@@ -103,8 +103,8 @@ const clientAuthMiddleware = (req, res, next) => {
 
 const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done) => {
   Business.findOne({
-      _id: payload.id,
-    })
+    _id: payload.id,
+  })
     .then((user) => {
       if (!user) {
         done(null, false, Strings.businessLoginMessages.invalidCreds);
@@ -115,8 +115,8 @@ const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done
           .value;
 
         InvalidToken.findOne({
-            token: reqToken,
-          })
+          token: reqToken,
+        })
           .then((token) => {
             if (token) {
               return done(null, false, Strings.businessLoginMessages.invalidToken);
