@@ -1,9 +1,5 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const Business = require('../../../../models/business/Business');
 const Service = require('../../../../models/service/Service');
-const Branch = require('../../../../models/service/Branch');
-const Offering = require('../../../../models/service/Offering');
 const Strings = require('../../../../services/shared/Strings');
 
 const router = express.Router();
@@ -13,9 +9,12 @@ const router = express.Router();
  */
 
 router.get('/:id', (req, res, next) => {
-  Service.findOne({
-    _id: req.params.id,
-  })
+  const pattern = new RegExp('/^[0-9a-fA-F]{24}$/');
+  const isValidId = pattern.test(req.params.id);
+  if (isValidId) {
+    Service.findOne({
+      _id: req.params.id,
+    })
     .populate('_business branches categories reviews')
     .exec()
     .then((service) => {
@@ -29,18 +28,18 @@ router.get('/:id', (req, res, next) => {
         businessDescription: service.business.description,
         businessPhoneNumbers: service.business.phoneNumbers,
         businessGallery: service.business.gallery,
-        businessWorkingHours: service.business,
-        // branches:
-        // offerings:
-        // reviews:
-        // gallery
-
+        businessWorkingHours: service.business.businessWorkingHours,
+        branches: service.branches,
+        offerings: service.offerings,
+        reviews: service.reviews,
+        gallery: service.gallery,
       };
-      res.json(service);
+      res.json(returnedService);
     })
     .catch((err) => {
       res.json({ message: Strings.serviceFailure.serviceNotFound });
     });
+  }
 });
 
 /**
