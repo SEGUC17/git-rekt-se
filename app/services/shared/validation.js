@@ -8,6 +8,8 @@ const bussinessValidationErrors = Strings.bussinessValidationErrors;
 const serviceValidationErrors = Strings.serviceValidationErrors;
 const offeringValidationErrors = Strings.offeringValidationError;
 
+const adminValidationErrors = Strings.adminValidationErrors;
+const visitorValidationErrors = Strings.visitorValidationErrors;
 
 /**
  * Client validation
@@ -218,6 +220,20 @@ const offeringCreateValidationParams = {
   },
 };
 
+const visitorValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: visitorValidationErrors.InvalidID,
+    },
+  },
+  offset: {
+    isInt: {
+      options: { min: 1 },
+      errorMessage: visitorValidationErrors.InvalidOffset,
+    },
+  },
+};
+
 const businessEditInfoValidation = {
   workingHours: {
     notEmpty: {
@@ -236,15 +252,43 @@ const businessEditInfoValidation = {
   },
 };
 
+/**
+ * Administrator validation
+ */
+
+const adminLoginValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.emptyEmail,
+    },
+    isEmail: {
+      errorMessage: adminValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: adminValidationErrors.invalidPassword,
+    },
+  },
+};
+
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
+  adminLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+
   serviceCreateValidation,
   offeringCreateValidationBody,
   offeringCreateValidationParams,
+  visitorValidation,
   businessEditInfoValidation,
 };
 

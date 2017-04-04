@@ -39,6 +39,9 @@ jspm_packages
 # ENV 
 .env
 
+# DS store
+.DS_Store
+
 # VS code seetings
 .vscode/*
 !.vscode/settings.json
