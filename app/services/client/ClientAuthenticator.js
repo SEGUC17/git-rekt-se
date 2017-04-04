@@ -21,7 +21,7 @@ const generateToken = payload =>
   });
 
 /**
- * Generate Token for Client Email Confirmation
+ * Generate Token for Client Email Confirmation.
  */
 
 exports.generateConfirmationToken = (email) => {
@@ -53,7 +53,7 @@ exports.generateConfirmationToken = (email) => {
 
 
 /**
- * Login Client
+ * Login Client.
  */
 
 exports.loginClient = (email, password) => new Promise((resolve, reject) => {
@@ -92,3 +92,23 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
     })
     .catch(reject);
 });
+
+
+/**
+ * Login Client facebook.
+ */
+
+exports.loginFacebook = (email, id) => {
+  const token = jwt.sign({
+    id,
+  }, process.env.JWT_KEY, {
+    expiresIn: '10d',
+  });
+
+  return {
+    message: Strings.clientLoginMessages.loginSuccess,
+    id,
+    email,
+    token,
+  };
+};
