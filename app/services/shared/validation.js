@@ -158,12 +158,15 @@ const businessLoginValidation = {
 
 const visitorValidation = {
   id: {
-    options: [/^[a-fA-F0-9]{24}$/],
-    errorMessage: visitorValidationErrors.InvalidID,
+    isMongoId: {
+      errorMessage: visitorValidationErrors.InvalidID,
+    },
   },
   offset: {
-    options: [{ min: 1 }],
-    errorMessage: visitorValidationErrors.InvalidOffset,
+    isInt: {
+      options: { min: 1 },
+      errorMessage: visitorValidationErrors.InvalidOffset,
+    },
   },
 };
 

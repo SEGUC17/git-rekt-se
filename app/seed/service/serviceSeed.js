@@ -20,6 +20,13 @@ const Services = [{
   _business: null,
   categories: null,
   coverImage: 'guc.jpg',
+}, {
+  name: 'Not Courses conversation course',
+  shortDescription: 'We teach you English conversations from scratch',
+  _business: null,
+  categories: null,
+  coverImage: 'notcourses.jpg',
+  _deleted: true,
 }];
 
 module.exports = Services;

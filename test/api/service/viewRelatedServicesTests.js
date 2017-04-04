@@ -19,6 +19,8 @@ const Strings = require('../../../app/services/shared/Strings');
 const categoriesIDs = [];
 const businessesIDs = [];
 
+// deleted service - invalid id
+
 /**
  * Database Connection
  */
@@ -59,6 +61,7 @@ describe('Populating Category Collection', () => {
         categoriesIDs.push(docs[0]._id);
         categoriesIDs.push(docs[2]._id);
         categoriesIDs.push(docs[1]._id);
+        categoriesIDs.push(docs[3]._id);
         done();
       })
       .catch(e => done([e]));
@@ -95,6 +98,9 @@ describe('Populating Service Collection', () => {
 
     services[2].categories = [categoriesIDs[0]];
     services[2]._business = businessesIDs[1];
+
+    services[3]._business = businessesIDs[0];
+    services[3].categories = [categoriesIDs[3], categoriesIDs[1]];
 
     Service.insertMany(services).then((docs) => {
       done();
@@ -150,6 +156,7 @@ describe('Client Signup API', () => {
 
   /**
    * Passing Test2: returning services of the same categories and differnet offering business
+   * The count is 2 also for ensuring that the deleted service will not appear in the results
    */
 
   it('should return the services of the same category from different businesses', (done) => {
@@ -189,16 +196,79 @@ describe('Client Signup API', () => {
       });
   });
 
+
   /**
-   * Failing Test: No related services in the category requested
+   * Failing Test1: No related services in the category requested
    */
 
-  it('should return no related businesses in a requested category', (done) => {
+  it('should return no related services in a requested category', (done) => {
     req = supertest(app)
       .get(`/api/v1/service/category/${categoriesIDs[2]}/1`);
     req.expect('Content-Type', /json/)
       .expect(400, {
         errors: [Strings.visitorErrors.NoRelatedServices],
       }, done);
+  });
+
+  /**
+   * Failing Test2: No related services in the category requested if no
+   */
+
+  it('should return no related services in a requested category if they are deleted', (done) => {
+    req = supertest(app)
+      .get(`/api/v1/service/category/${categoriesIDs[3]}/1`);
+    req.expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [Strings.visitorErrors.NoRelatedServices],
+      }, done);
+  });
+
+  /**
+   * Failing Test3: No results if the offset is more than the number of data
+   */
+
+  it('should return no related services in a requested category if the offset is too large', (done) => {
+    req = supertest(app)
+      .get(`/api/v1/service/category/${categoriesIDs[2]}/10`);
+    req.expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [Strings.visitorErrors.NoRelatedServices],
+      }, done);
+  });
+
+  /**
+   * Failing Test4: Invalid category id middleware handling check
+   */
+
+  it('should return invalid id message whenever requsting invalid id', (done) => {
+    req = supertest(app)
+      .get('/api/v1/service/category/10/1');
+    req.expect('Content-Type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        }
+        chai.expect(res.body.errors[0].msg).to.equal(Strings.visitorValidationErrors.InvalidID);
+        done();
+      });
+  });
+
+   /**
+   * Failing Test5: Invalid offset middleware handling check
+   */
+
+  it('should return invalid offset message whenever requsting invalid offset', (done) => {
+    req = supertest(app)
+      .get(`/api/v1/service/category/${categoriesIDs[2]}/0`);
+    req.expect('Content-Type', /json/)
+     .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        }
+        chai.expect(res.body.errors[0].msg).to.equal(Strings.visitorValidationErrors.InvalidOffset);
+        done();
+      });
   });
 });

@@ -10,6 +10,9 @@ const categories = [{
 }, {
   type: 'Service',
   title: 'English Courses',
+}, {
+  type: 'Service',
+  title: 'English Conversation Courses',
 }];
 
 module.exports = categories;

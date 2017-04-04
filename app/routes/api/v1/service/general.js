@@ -25,7 +25,8 @@ router.use(expressValidator({}));
  */
 
 router.get('/category/:id/:offset', (req, res, next) => {
-  req.checkParams(validationSchemas.visitorValidation).then((result) => {
+  req.checkParams(validationSchemas.visitorValidation);
+  req.getValidationResult().then((result) => {
     if (result.isEmpty()) {
       const offset = req.params.offset;
       Service.count({
@@ -63,7 +64,7 @@ router.get('/category/:id/:offset', (req, res, next) => {
         results: services,
       });
     })
-    .catch(err => next([err]));
+    .catch(e => next([e]));
       }).catch(e => next([e]));
     } else {
       next(result.array());
