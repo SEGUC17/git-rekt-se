@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
@@ -7,6 +8,7 @@ const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
 const Client = require('../../../../models/client/Client');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
+const fbConfig = require('../../../../services/shared/fbConfig');
 const Strings = require('../../../../services/shared/Strings');
 
 
@@ -20,19 +22,19 @@ require('dotenv')
 const JWT_KEY = process.env.JWT_KEY_CLIENT;
 
 /**
- * Body Parser Middleware
+ * Body Parser Middleware.
  */
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Client signup route
+ * Client signup route.
  */
 
 router.post('/signup', (req, res, next) => {
   /**
-   * Body Inputs
+   * Body Inputs.
    */
 
   const userInfo = {
@@ -80,8 +82,8 @@ router.post('/signup', (req, res, next) => {
 });
 
 /**
- * Send Confirmation Mail Route
- * For resending a confirmation Mail to User
+ * Send Confirmation Mail Route.
+ * For resending a confirmation Mail to User.
  */
 
 router.post('/confirmation/send', (req, res, next) => {
@@ -153,7 +155,7 @@ router.post('/reset', (req, res, next) => {
 
 
 /**
- * Confirm Email Route
+ * Confirm Email Route.
  */
 
 router.post('/confirmation/:token/confirm', (req, res, next) => {
@@ -162,7 +164,7 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
 
 
 /**
- * Client Login
+ * Client Login.
  */
 
 router.post('/login', (req, res, next) => {
@@ -180,8 +182,13 @@ router.post('/login', (req, res, next) => {
 });
 
 /**
- * Client forgot password
+ * Client facebook login.
  */
+
+router.get('/fb/login', passport.authenticate('facebook_strategy', {
+  authType: 'rerequest',
+  scope: ['email'],
+}));
 
 router.post('/forgot', (req, res, next) => {
   const email = req.body.email;
@@ -196,20 +203,52 @@ router.post('/forgot', (req, res, next) => {
 
   Client.findOne({
     email: req.body.email,
-  }).exec().then((client) => {
-    if (!client) { // Client not found, Invalid mail
-      return res.json({
-        message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
-      });
-    }
-    client.passwordResetTokenDate = currentDate;
+  })
+    .exec()
+    .then((client) => {
+      if (!client) { // Client not found, Invalid mail
+        return res.json({
+          message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
+        });
+      }
+      client.passwordResetTokenDate = currentDate;
 
-    return client.save().then(() => {
-      Mailer.forgotPasswordEmail(email, req.hostname, resetToken)
-        .then(() => res.json({ message: Strings.clientForgotPassword.CHECK_YOU_EMAIL }))
-        .catch(err => next([err]));
-    });
-  }).catch(err => next([err]));
+      return client.save()
+        .then(() => {
+          Mailer.forgotPasswordEmail(email, req.hostname, resetToken)
+            .then(() => res.json({
+              message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
+            }))
+            .catch(err => next([err]));
+        });
+    })
+    .catch(err => next([err]));
+});
+
+/**
+ * Client facebook Callback.
+ */
+
+router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
+  /**
+   * If authenticated with facebook.
+   */
+  if (req.isAuthenticated()) {
+    res.json(ClientAuthenticator.loginFacebook(req.user.email, req.user.id));
+  } else {
+    /**
+     * Redirect to Signup page with data accquired from facebook.
+     * Idea from https://www.vezeeta.com/ar/Account/SignIn
+     */
+    let redirectURL = '';
+    const facebookInfo = res.locals.facebookInfo;
+    Object.keys(facebookInfo)
+      .forEach((key) => {
+        redirectURL += `&${key}=${facebookInfo[key]}`;
+      });
+    redirectURL = `?${redirectURL.substr(1)}`;
+    res.redirect(`/client/signup/${redirectURL}`);
+  }
 });
 
 /**

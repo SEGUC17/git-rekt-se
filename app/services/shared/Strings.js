@@ -46,6 +46,13 @@ const businessLoginMessages = {
   invalidToken: 'Invalid Token',
 };
 
+const businessMessages = {
+  allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
+  editSuccess: 'Edited Successfully!',
+  doesntExist: 'Business Doesn\'t Exist',
+  mismatchID: 'You can only edit your profile!',
+};
+
 /**
  * Client Strings
  */
@@ -109,4 +116,5 @@ module.exports = {
   businessForgotPassword,
   clientForgotPassword,
   businessLoginMessages,
+  businessMessages,
 };
