@@ -101,7 +101,8 @@ const clientConfirmation = {
 
 const businessInformationChanged = {
   UPDATE_SUCCESSFULL: 'Information successfully updated',
-}
+};
+
 /**
  * Visitor Strings
  */
