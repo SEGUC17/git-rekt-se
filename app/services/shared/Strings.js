@@ -2,6 +2,8 @@
  * Constant Strings
  */
 
+const locations = require('../../seed/service/locations')
+  .join(', ');
 
 /**
  *  General Strings
@@ -31,6 +33,9 @@ const bussinessValidationErrors = {
   categoriesRequired: 'Must Include atleast 1 category.',
   branchesRequired: 'Must Include aleast 1 branch.',
   businessExists: 'Business already exists.',
+  locationRequired: 'Location is a required field',
+  addressRequired: 'Address is a required field',
+  locationInvalid: `Invalid location. Must be [${locations}]`,
 };
 
 const businessSuccess = {
@@ -49,7 +54,8 @@ const businessLoginMessages = {
 const businessMessages = {
   allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
   editSuccess: 'Edited Successfully!',
-  doesntExist: 'Business Doesn\'t Exist',
+  businessDoesntExist: 'Business Doesn\'t Exist',
+  branchDoesntExist: 'Business Doesn\'t Exist',
   mismatchID: 'You can only edit your profile!',
 };
 

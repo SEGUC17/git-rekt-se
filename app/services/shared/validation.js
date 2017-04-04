@@ -1,6 +1,8 @@
 /**
  * Express validator schema
  */
+const locations = require('../../seed/service/locations');
+
 const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
@@ -173,10 +175,27 @@ const businessEditInfoValidation = {
   },
 };
 
-const businessCRUDValidation = {
+const businessAddValidation = {
   branches: {
     notEmpty: {
       errorMessage: bussinessValidationErrors.branchesRequired,
+    },
+  },
+};
+
+const businessEditValidation = {
+  'branches.location': {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.locationRequired,
+    },
+    isIn: {
+      options: locations,
+      errorMessage: bussinessValidationErrors.locationInvalid,
+    },
+  },
+  'branches.address': {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.addressRequired,
     },
   },
 };
@@ -188,7 +207,8 @@ const validation = {
   businessSignupValidation,
   businessLoginValidation,
   businessEditInfoValidation,
-  businessCRUDValidation,
+  businessAddValidation,
+  businessEditValidation,
 };
 
 module.exports = validation;

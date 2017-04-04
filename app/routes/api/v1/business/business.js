@@ -5,6 +5,7 @@ const expressValidator = require('express-validator');
 
 const Schema = mongoose.Schema;
 
+const Branch = require('../../../../models/service/Branch');
 const Business = require('../../../../models/business/Business');
 const businessMessages = require('../../../../services/shared/Strings')
   .businessMessages;
@@ -20,6 +21,9 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
+/**
+ * Business Edit Info API Route.
+ */
 router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
   if (req.user.id !== id) {
@@ -37,7 +41,7 @@ router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
             .exec()
             .then((business) => {
               if (!business) {
-                next([businessMessages.doesntExist]);
+                next([businessMessages.businessDoesntExist]);
               } else {
                 business.workingHours = body.workingHours;
                 business.description = body.description;
@@ -62,7 +66,10 @@ router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
   }
 });
 
-router.post('/:id/add/branches', (req, res, next) => {
+/**
+ * Business Add Branches API Route.
+ */
+router.post('/:id/add/branches', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
   if (req.user.id !== id) {
     next([businessMessages.mismatchID]);
@@ -70,24 +77,68 @@ router.post('/:id/add/branches', (req, res, next) => {
     const searchID = {
       _id: id,
     };
-    req.checkBody(businessValidation.businessCRUDValidation);
+    req.checkBody(businessValidation.businessAddValidation);
     req.getValidationResult()
       .then((result) => {
-        console.log(result.isEmpty);
+        console.log(result.array());
         if (result.isEmpty()) {
           businessUtils.addBranches(req.body.branches, id)
             .then((branches) => {
               Business.findOne(searchID)
                 .exec()
                 .then((business) => {
-                  business.branches = business.branches.concat(branches);
-                  business.save()
-                    .then(() => res.json({
-                      message: 'Branch Added Successfully',
-                    }))
-                    .catch(err => next([err]));
+                  if (!business) {
+                    next([businessMessages.businessDoesntExist]);
+                  } else {
+                    business.branches = business.branches.concat(branches);
+                    business.save()
+                      .then(() => res.json({
+                        message: 'Branch Added Successfully',
+                      }))
+                      .catch(err => next([err]));
+                  }
                 })
                 .catch(err => next([err]));
+            })
+            .catch(err => next([err]));
+        } else {
+          next(result.array());
+        }
+      })
+      .catch(err => next([err]));
+  }
+});
+
+/**
+ * Business Edit Branch API Route.
+ */
+router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req, res, next) => {
+  const id = req.params.business_id;
+  if (req.user.id !== id) {
+    next([businessMessages.mismatchID]);
+  } else {
+    req.checkBody(businessValidation.businessEditValidation);
+    req.getValidationResult()
+      .then((result) => {
+        if (result.isEmpty()) {
+          const branchID = req.params.branch_id;
+          const searchID = {
+            _id: branchID,
+          };
+          Branch.findOne(searchID)
+            .exec()
+            .then((branch) => {
+              if (!branch) {
+                next([businessMessages.branchDoesntExist]);
+              } else {
+                branch.location = req.body.branches.location;
+                branch.address = req.body.branches.address;
+                branch.save()
+                  .then(() => res.json({
+                    message: 'Edited Branch Successfully',
+                  }))
+                  .catch(err => next([err]));
+              }
             })
             .catch(err => next([err]));
         } else {
