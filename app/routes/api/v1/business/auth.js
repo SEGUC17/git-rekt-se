@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const Strings = require('../../../../services/shared/Strings');
@@ -8,8 +9,14 @@ const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 
-const router = express.Router();
 mongoose.Promise = Promise;
+
+const router = express.Router();
+
+require('dotenv')
+  .config();
+
+const JWT_KEY = process.env.JWT_KEY_CLIENT;
 
 /**
  * Parsing Middleware(s).
