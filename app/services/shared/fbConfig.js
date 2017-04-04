@@ -58,9 +58,6 @@ const facebookMiddleware = (req, res, next) => {
   passport.authenticate('facebook_strategy', {
     session: false,
   }, (err, user, info) => {
-    console.log(err);
-    console.log(user);
-    console.log(info);
     if (err) {
       return next(err);
     }

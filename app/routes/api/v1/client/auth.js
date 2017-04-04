@@ -139,6 +139,7 @@ router.post('/login', (req, res, next) => {
  */
 
 router.get('/fb/login', passport.authenticate('facebook_strategy', {
+  authType: 'rerequest',
   scope: ['email'],
 }));
 
