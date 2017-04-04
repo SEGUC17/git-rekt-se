@@ -84,10 +84,18 @@ const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
 };
+/**
+ * Visitor Strings
+ */
 
 const visitorErrors = {
   NoRelatedBusinesses: 'No related businesses',
   NoRelatedServices: 'No related services',
+};
+
+const visitorValidationErrors = {
+  InvalidID: 'Invalid category ID',
+  InvalidOffset: 'Invalid Offset',
 };
 
 module.exports = {
@@ -100,4 +108,5 @@ module.exports = {
   businessSuccess,
   businessLoginMessages,
   visitorErrors,
+  visitorValidationErrors,
 };
