@@ -170,6 +170,24 @@ const visitorValidation = {
   },
 };
 
+const businessEditInfoValidation = {
+  workingHours: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.workingHoursRequired,
+    },
+  },
+  description: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyConfirmation,
+    },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.categoriesRequired,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
@@ -177,6 +195,7 @@ const validation = {
   businessSignupValidation,
   businessLoginValidation,
   visitorValidation,
+  businessEditInfoValidation,
 };
 
 module.exports = validation;
