@@ -156,6 +156,24 @@ const businessLoginValidation = {
   },
 };
 
+const businessEditInfoValidation = {
+  workingHours: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.workingHoursRequired,
+    },
+  },
+  description: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyConfirmation,
+    },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.categoriesRequired,
+    },
+  },
+};
+
 /* Review Validation */
 
 const createReviewValidation = {
@@ -220,6 +238,7 @@ const validation = {
   clientLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+  businessEditInfoValidation,
   createReviewValidation,
   updateReviewValidation,
   deleteReviewValidation,
