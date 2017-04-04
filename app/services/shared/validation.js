@@ -5,6 +5,7 @@ const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
+const visitorValidationErrors = Strings.visitorValidationErrors;
 
 
 /**
@@ -155,12 +156,46 @@ const businessLoginValidation = {
   },
 };
 
+const visitorValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: visitorValidationErrors.InvalidID,
+    },
+  },
+  offset: {
+    isInt: {
+      options: { min: 1 },
+      errorMessage: visitorValidationErrors.InvalidOffset,
+    },
+  },
+};
+
+const businessEditInfoValidation = {
+  workingHours: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.workingHoursRequired,
+    },
+  },
+  description: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyConfirmation,
+    },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.categoriesRequired,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+  visitorValidation,
+  businessEditInfoValidation,
 };
 
 module.exports = validation;

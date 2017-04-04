@@ -47,6 +47,13 @@ const businessLoginMessages = {
   invalidToken: 'Invalid Token',
 };
 
+const businessMessages = {
+  allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
+  editSuccess: 'Edited Successfully!',
+  doesntExist: 'Business Doesn\'t Exist',
+  mismatchID: 'You can only edit your profile!',
+};
+
 /**
  * Client Strings
  */
@@ -93,15 +100,31 @@ const clientConfirmation = {
   notFound: 'User not found.',
 };
 
+/**
+ * Visitor Strings
+ */
+
+const visitorErrors = {
+  NoRelatedBusinesses: 'No related businesses',
+  NoRelatedServices: 'No related services',
+};
+
+const visitorValidationErrors = {
+  InvalidID: 'Invalid category ID',
+  InvalidOffset: 'Invalid Offset',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
-
   bussinessValidationErrors,
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
+  visitorErrors,
+  visitorValidationErrors,
+  businessMessages,
 };
