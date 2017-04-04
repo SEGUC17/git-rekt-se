@@ -51,6 +51,10 @@ const businessSchema = Schema({
   workingHours: {
     type: String,
   },
+  passwordChangeDate: {
+    type: Date,
+    default: Date.now,
+  },
   _status: {
     type: String,
     enum: ['unverified', 'verified', 'removed'],
