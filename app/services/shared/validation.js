@@ -5,6 +5,8 @@ const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
+const serviceValidationErrors = Strings.serviceValidationErrors;
+const offeringValidationErrors = Strings.offeringValidationError;
 
 
 /**
@@ -155,12 +157,48 @@ const businessLoginValidation = {
   },
 };
 
+const serviceValidation = {
+  name: {
+    notEmpty: {
+      errorMessage: serviceValidationErrors.emptyName,
+    },
+  },
+};
+
+const offeringValidation = {
+  price: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyPrice,
+    },
+  },
+  startDate: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyStartDate,
+    },
+    matches: {
+      options: [/^\d\d\d\d-(0[1-9]|1[0-2])-(0[1-9]|[1-2]\d|3[0-1])$/],
+      errorMessage: offeringValidationErrors.invalidStartDate,
+    },
+  },
+  endDate: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyEndDate,
+    },
+    matches: {
+      options: [/^\d\d\d\d-(0[1-9]|1[0-2])-(0[1-9]|[1-2]\d|3[0-1])$/],
+      errorMessage: offeringValidationErrors.invalidEndDate,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+  serviceValidation,
+  offeringValidation,
 };
 
 module.exports = validation;

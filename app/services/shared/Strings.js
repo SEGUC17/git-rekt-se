@@ -92,6 +92,23 @@ const clientConfirmation = {
   notFound: 'User not found.',
 };
 
+/**
+ * Service Strings
+ */
+
+const serviceValidationErrors = {
+  emptyName: 'Service Name is a required field',
+};
+
+const offeringValidationError = {
+  emptyPrice: 'Offering Price is a required field',
+  emptyStartDate: 'Offering Start Date is a required field',
+  invalidStartDate: 'Invalid Start Date',
+  emptyEndDate: 'Offering End Date is a required field',
+  invalidEndDate: 'Invalid End Date',
+};
+
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
@@ -103,4 +120,7 @@ module.exports = {
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
+
+  serviceValidationErrors,
+  offeringValidationError,
 };
