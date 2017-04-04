@@ -136,16 +136,6 @@ const businessSignupValidation = {
   },
 };
 
-/* Review Validation */
-
-const reviewValidation = {
-  rating: {
-    notEmpty: {
-      errorMessage: reviewErrors.emptyRating,
-    },
-  },
-};
-
 const businessLoginValidation = {
   email: {
     notEmpty: {
@@ -166,13 +156,73 @@ const businessLoginValidation = {
   },
 };
 
+/* Review Validation */
+
+const createReviewValidation = {
+  id: {
+    in: 'params',
+    matches: {
+      options: [/^[a-fA-F0-9]{24}$/],
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  rating: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
+    },
+  },
+};
+
+const updateReviewValidation = {
+  id: {
+    in: 'params',
+    matches: {
+      options: [/^[a-fA-F0-9]{24}$/],
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  review_id: {
+    in: 'params',
+    matches: {
+      options: [/^[a-fA-F0-9]{24}$/],
+      errorMessage: reviewErrors.invalidReview,
+    },
+  },
+  rating: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
+    },
+  },
+};
+
+const deleteReviewValidation = {
+  id: {
+    in: 'params',
+    matches: {
+      options: [/^[a-fA-F0-9]{24}$/],
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  review_id: {
+    in: 'params',
+    matches: {
+      options: [/^[a-fA-F0-9]{24}$/],
+      errorMessage: reviewErrors.invalidReview,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
-  reviewValidation,
+  createReviewValidation,
+  updateReviewValidation,
+  deleteReviewValidation,
 };
 
 module.exports = validation;

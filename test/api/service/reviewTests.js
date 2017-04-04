@@ -211,4 +211,55 @@ describe('Should create, update and delete reviews correctly', () => {
         }
       });
   });
+
+    // Failing test
+
+  it('should not create a review if the service ID refers to one that does not exist', (done) => {
+    req = supertest(app)
+      .post('/api/v1/service/000000000000000000000000/review');
+    req.set('Authorization', `JWT ${token}`);
+    req.send(review1)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        /**
+         * Error happend with request, fail the test
+         * with the error message.
+         */
+        if (err) {
+          done(err);
+        } else {
+          chai.expect(res.body.errors[0])
+            .to.equal(Strings.reviewErrors.invalidService);
+          done();
+        }
+      });
+  });
+
+      // Failing test
+
+  it('should not create a review if the service ID format is invalid', (done) => {
+    req = supertest(app)
+      .post('/api/v1/service/x/review');
+    req.set('Authorization', `JWT ${token}`);
+    req.send(review1)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        /**
+         * Error happend with request, fail the test
+         * with the error message.
+         */
+        if (err) {
+          done(err);
+        } else {
+          console.log(res.body);
+          chai.expect(res.body.errors[0].msg)
+            .to.equal(Strings.reviewErrors.invalidService);
+          done();
+        }
+      });
+  });
 });
+
+
