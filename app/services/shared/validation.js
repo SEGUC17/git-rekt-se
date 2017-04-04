@@ -1,8 +1,15 @@
 /**
  * Express validator schema
  */
-const clientValidationErrors = require('./Strings')
-  .clientValidationErrors;
+const Strings = require('./Strings');
+
+const clientValidationErrors = Strings.clientValidationErrors;
+const bussinessValidationErrors = Strings.bussinessValidationErrors;
+
+
+/**
+ * Client validation
+ */
 
 const clientSignupValidation = {
   email: {
@@ -19,7 +26,7 @@ const clientSignupValidation = {
     },
     matches: {
       options: [/^(?=.*\d).{8,15}$/],
-      errorMessage: clientValidationErrors.emptyPassword,
+      errorMessage: clientValidationErrors.invalidPassword,
     },
   },
   confirmPassword: {
@@ -73,9 +80,106 @@ const clientConfirmEmailValidation = {
   },
 };
 
+
+const clientLoginValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyEmail,
+    },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.invalidPassword,
+    },
+  },
+};
+
+/**
+ * Business validation
+ */
+
+const businessSignupValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyEmail,
+    },
+    isEmail: {
+      errorMessage: bussinessValidationErrors.invalidEmail,
+    },
+  },
+  name: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyName,
+    },
+  },
+  mobile: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyMobile,
+    },
+    matches: {
+      options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
+      errorMessage: bussinessValidationErrors.invalidMobile,
+    },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyDescription,
+    },
+  },
+};
+
+const businessLoginValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyEmail,
+    },
+    isEmail: {
+      errorMessage: bussinessValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
+};
+
+const businessEditInfoValidation = {
+  workingHours: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.workingHoursRequired,
+    },
+  },
+  description: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyConfirmation,
+    },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.categoriesRequired,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
+  clientLoginValidation,
+  businessSignupValidation,
+  businessLoginValidation,
+  businessEditInfoValidation,
 };
 
 module.exports = validation;
