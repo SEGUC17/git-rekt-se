@@ -20,7 +20,7 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
-router.put('/:id', businessAuthMiddleware, (req, res, next) => {
+router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
   if (req.user.id !== id) {
     next([businessMessages.mismatchID]);

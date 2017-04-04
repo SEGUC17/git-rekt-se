@@ -2,6 +2,7 @@ const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 
+const locations = require('../../../app/seed/service/locations');
 const Category = require('../../../app/models/service/Category');
 const Business = require('../../../app/models/business/Business');
 const businessSeed = require('../../../app/seed/business/businessSeed');
@@ -12,6 +13,9 @@ const businessMessages = require('../../../app/services/shared/Strings')
  * Authenticated Business Test Suite
  */
 
+/**
+ * Authenticated Business Edit Info Test Suite
+ */
 describe('Should Edit Info Correctly', () => {
   let req;
   let businessID;
@@ -224,6 +228,49 @@ describe('Should Edit Info Correctly', () => {
     req = supertest(app)
       .put('/api/v1/business/edit/222');
     req.send(editInfo)
+      .set('Authorization', `JWT ${token}`)
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [businessMessages.mismatchID],
+      }, done);
+  });
+});
+
+/**
+ * Authenticated Business CRUD Branches Test Suite
+ */
+describe('Should ADD/EDIT/DELETE Branches', () => {
+  let token;
+  let req;
+
+  before((done) => {
+
+  });
+
+  it('should not allow un-authenticated business from adding branches', (done) => {
+    req = supertest(app)
+      .post('/api/v1/business/add/branches');
+    const branchInfo = {
+      branches: [{
+        location: locations[0],
+        address: '16th Avenue',
+      }],
+    };
+    req.send(branchInfo)
+      .expect('Content-Type', /json/)
+      .expect(400, done);
+  });
+
+  it('should not allow a logged in business from adding branches to another business', (done) => {
+    const branchInfo = {
+      branches: [{
+        location: locations[0],
+        address: '16th Avenue',
+      }],
+    };
+    req = supertest(app)
+      .post('/api/v1/business/edit/222');
+    req.send(branchInfo)
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
       .expect(400, {
