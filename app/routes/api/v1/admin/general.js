@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Business = require('../../../../models/business/Business');
 const AdminAuth = require('../../../../services/shared/jwtConfig').adminAuthMiddleware;
 const Strings = require('../../../../services/shared/Strings');
+const Mailer = require('../../../../services/shared/Mailer');
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -29,9 +30,11 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
         .exec()
         .then(() => {
           // send e-mail
-          res.json({
+          Mailer.notifyBusinessOfConfirmation(business.email)
+          .then(res.json({
             message: Strings.businessConfirmation.confirmed,
-          });
+          }))
+          .catch(err => next([err]));
         })
         .catch(saveErr => next([saveErr]));
       }
@@ -64,10 +67,12 @@ router.post('/deny/:id', AdminAuth, (req, res, next) => {
           business.save()
           .exec()
           .then(() => {
-              // send e-mail
-            res.json({
-              message: Strings.businessConfirmation.denied,
-            });
+             // send e-mail
+            Mailer.notifyBusinessOfDenial(business.emails)
+          .then(res.json({
+            message: Strings.businessConfirmation.confirmed,
+          }))
+          .catch(err => next([err]));
           })
           .catch(saveErr => next([saveErr]));
         }
