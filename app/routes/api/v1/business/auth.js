@@ -90,7 +90,7 @@ router.post('/verified/login', (req, res, next) => {
  * Business update data
  */
 
-router.post('/update', (req, res, next) => {
+router.post('/update', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
   const businessInfo = {
     name: req.body.name,
     shortDescription: req.body.shortDescription,
@@ -109,7 +109,7 @@ router.post('/update', (req, res, next) => {
 
       return business.save().then(() => {
         res.json({
-          message: Strings.businessInformationChanged,
+          message: Strings.businessInformationChanged.UPDATE_SUCCESSFULL,
         });
       });
     })

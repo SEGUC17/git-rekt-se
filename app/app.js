@@ -35,6 +35,7 @@ mongoose.connect(process.env.DB_URL);
 
 passport.use('jwt_client', jwtConfig.clientStrategy);
 passport.use('jwt_bussiness', jwtConfig.businessStrategy);
+passport.use('jwt_administrator', jwtConfig.adminStrategy);
 passport.use('facebook_strategy', fbConfig.facebookStrategy);
 
 app.use(passport.initialize());
