@@ -98,8 +98,10 @@ router.post('/update', authMiddleWare.businessAuthMiddleware, (req, res, next) =
     phoneNumbers: req.body.phoneNumbers, // Add to phone numbers array
   };
   req.checkBody(validationSchemas.businessUpdateValidation);
-
-  Business.findOne({ email: businessInfo.email })
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        Business.findOne({ email: businessInfo.email })
     .exec()
     .then((business) => {
       business.name = businessInfo.name;
@@ -114,6 +116,10 @@ router.post('/update', authMiddleWare.businessAuthMiddleware, (req, res, next) =
       });
     })
     .catch(err => next([err]));
+      } else {
+        next(result.array());
+      }
+    });
 });
 
 /**

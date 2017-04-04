@@ -46,6 +46,13 @@ const businessLoginMessages = {
   invalidToken: 'Invalid Token',
 };
 
+const businessMessages = {
+  allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
+  editSuccess: 'Edited Successfully!',
+  doesntExist: 'Business Doesn\'t Exist',
+  mismatchID: 'You can only edit your profile!',
+};
+
 /**
  * Client Strings
  */
@@ -94,6 +101,19 @@ const clientConfirmation = {
 
 const businessInformationChanged = {
   UPDATE_SUCCESSFULL: 'Information successfully updated',
+}
+/**
+ * Visitor Strings
+ */
+
+const visitorErrors = {
+  NoRelatedBusinesses: 'No related businesses',
+  NoRelatedServices: 'No related services',
+};
+
+const visitorValidationErrors = {
+  InvalidID: 'Invalid category ID',
+  InvalidOffset: 'Invalid Offset',
 };
 
 module.exports = {
@@ -107,4 +127,7 @@ module.exports = {
   clientForgotPassword,
   businessLoginMessages,
   businessInformationChanged,
+  visitorErrors,
+  visitorValidationErrors,
+  businessMessages,
 };
