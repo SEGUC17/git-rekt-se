@@ -16,7 +16,7 @@ describe('Business forgot password API', () => {
         const businessData = {
           name: data.name,
           email: data.email,
-          description: data.description,
+          shortDescription: data.description,
           phoneNumbers: data.phoneNumbers,
         };
 
