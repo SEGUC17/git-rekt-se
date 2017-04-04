@@ -399,6 +399,26 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
       });
   });
 
+  it('should also return an error when request is empty', (done) => {
+    req = supertest(app)
+      .put(`/api/v1/business/${businessID}/edit/branch/${branchID}`);
+    req.send({})
+      .set('Authorization', `JWT ${token}`)
+      .expect('Content-Type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          chai.expect(res.body)
+            .to.have.property('errors');
+          chai.expect(res.body.errors.length)
+            .to.equal(3);
+          done();
+        }
+      });
+  });
+
   it('should delete a branch correctly', (done) => {
     req = supertest(app)
       .delete(`/api/v1/business/${businessID}/delete/branch/${branchID}`);
