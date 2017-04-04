@@ -32,10 +32,8 @@ router.put('/:id', businessAuthMiddleware, (req, res, next) => {
     req.checkBody(businessEditInfoValidation);
     req.getValidationResult()
       .then((result) => {
-        const resultArray = result.array();
-        // All Are Empty
-        if (resultArray.length === 3) {
-          next([businessMessages.allFieldsEmpty]);
+        if (!result.isEmpty()) {
+          next(result.array());
         } else {
           Business.findOne(searchID)
             .exec()
@@ -43,16 +41,13 @@ router.put('/:id', businessAuthMiddleware, (req, res, next) => {
               if (!business) {
                 next([businessMessages.doesntExist]);
               } else {
-                if (body.workingHours && body.workingHours.length > 0) {
-                  business.workingHours = body.workingHours;
-                }
-                if (body.description && body.description.length > 0) {
-                  business.description = body.description;
-                }
-                if (body.categories && body.categories.length > 0) {
-                  business.categories = body.categories
-                    .map(category => Schema.Types.ObjectId(category));
-                }
+                business.workingHours = body.workingHours;
+                business.description = body.description;
+                business.categories = body.categories
+                  .filter((category, index, self) => self.indexOf(category) === index)
+                  .map(category =>
+                    new Schema.Types.ObjectId(category)
+                    .path);
                 business.save()
                   .then(() => res.json({
                     message: businessMessages.editSuccess,

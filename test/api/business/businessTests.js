@@ -14,7 +14,8 @@ const businessMessages = require('../../../app/services/shared/Strings')
 
 describe('Should Edit Info Correctly', () => {
   let req;
-  let id;
+  let businessID;
+  let categoryID;
   let searchID;
   let token;
 
@@ -32,52 +33,66 @@ describe('Should Edit Info Correctly', () => {
     password: businessData.password,
   };
 
+  const categoryData = {
+    type: 'Business',
+    title: 'Test',
+  };
+
   before((done) => {
     Business.collection.drop(() => {
       Business.ensureIndexes((err) => {
         if (err) {
           done(err);
-        }
-        Category.collection.drop(() => {
-          Category.ensureIndexes((categoryErr) => {
-            if (categoryErr) {
-              done(categoryErr);
-            } else {
-              new Business(businessData)
-                .save()
-                .then((business) => {
-                  id = business._id;
-                  searchID = {
-                    _id: id,
-                  };
-                  req = supertest(app)
-                    .post('/api/v1/business/auth/verified/login')
-                    .send(businessLogin)
-                    .end((postErr, res) => {
-                      if (postErr) {
-                        done(postErr);
-                      } else {
-                        token = res.body.token;
-                        done();
-                      }
-                    });
-                })
-                .catch(done);
-            }
+        } else {
+          Category.collection.drop(() => {
+            Category.ensureIndexes((categoryErr) => {
+              if (categoryErr) {
+                done(categoryErr);
+              } else {
+                new Category(categoryData)
+                  .save()
+                  .then((category) => {
+                    categoryID = category._id;
+                    new Business(businessData)
+                      .save()
+                      .then((business) => {
+                        businessID = business._id;
+                        searchID = {
+                          _id: businessID,
+                        };
+                        req = supertest(app)
+                          .post('/api/v1/business/auth/verified/login')
+                          .send(businessLogin)
+                          .end((postErr, res) => {
+                            if (postErr) {
+                              done(postErr);
+                            } else {
+                              token = res.body.token;
+                              done();
+                            }
+                          });
+                      })
+                      .catch(done);
+                  })
+                  .catch(done);
+              }
+            });
           });
-        });
+        }
       });
     });
   });
 
   beforeEach(() => {
     req = supertest(app)
-      .put(`/api/v1/business/edit/${id}`);
+      .put(`/api/v1/business/edit/${businessID}`);
   });
 
-  it('should edit working hours correctly', (done) => {
+  it('should edit info correctly', (done) => {
     const editInfo = {
       workingHours: 'Not Open!',
+      categories: [categoryID],
+      description: 'Test Description',
     };
     req.send(editInfo)
       .set('Authorization', `JWT ${token}`)
@@ -86,20 +101,32 @@ describe('Should Edit Info Correctly', () => {
         message: businessMessages.editSuccess,
       })
       .end((err, res) => {
-        Business.findOne(searchID)
-          .exec()
-          .then((business) => {
-            chai.expect(business.workingHours)
-              .to.equal(editInfo.workingHours);
-            done();
-          })
-          .catch(done);
+        if (err) {
+          done(err);
+        } else {
+          Business.findOne(searchID)
+            .exec()
+            .then((business) => {
+              chai.expect(business.workingHours)
+                .to.equal(editInfo.workingHours);
+              chai.expect(business.categories.length)
+                .to.equal(1);
+              chai.expect(business.categories[0])
+                .to.satisfy(category => category.equals(editInfo.categories[0]));
+              chai.expect(business.description)
+                .to.equal(editInfo.description);
+              done();
+            })
+            .catch(done);
+        }
       });
   });
 
-  it('should edit categories correctly', (done) => {
+  it('should edit info correctly again', (done) => {
     const editInfo = {
-      categories: ['58e26fa936e8ca3378874a9d'],
+      workingHours: 'Now Open!',
+      categories: [categoryID],
+      description: 'Test Description 2',
     };
     req.send(editInfo)
       .set('Authorization', `JWT ${token}`)
@@ -108,19 +135,31 @@ describe('Should Edit Info Correctly', () => {
         message: businessMessages.editSuccess,
       })
       .end((err, res) => {
-        Business.findOne(searchID)
-          .exec()
-          .then((business) => {
-            chai.expect(business.categories.length)
-              .to.equal(editInfo.categories.length);
-            done();
-          })
-          .catch(done);
+        if (err) {
+          done(err);
+        } else {
+          Business.findOne(searchID)
+            .exec()
+            .then((business) => {
+              chai.expect(business.workingHours)
+                .to.equal(editInfo.workingHours);
+              chai.expect(business.categories.length)
+                .to.equal(1);
+              chai.expect(business.categories[0])
+                .to.satisfy(category => category.equals(editInfo.categories[0]));
+              chai.expect(business.description)
+                .to.equal(editInfo.description);
+              done();
+            })
+            .catch(done);
+        }
       });
   });
 
-  it('should edit description correctly', (done) => {
+  it('should edit info correctly when there are duplicate categories', (done) => {
     const editInfo = {
+      workingHours: 'Now Open 1 2 3!',
+      categories: [categoryID, categoryID],
       description: 'This is a new description',
     };
     req.send(editInfo)
@@ -130,14 +169,24 @@ describe('Should Edit Info Correctly', () => {
         message: businessMessages.editSuccess,
       })
       .end((err, res) => {
-        Business.findOne(searchID)
-          .exec()
-          .then((business) => {
-            chai.expect(business.description)
-              .to.equal(editInfo.description);
-            done();
-          })
-          .catch(done);
+        if (err) {
+          done(err);
+        } else {
+          Business.findOne(searchID)
+            .exec()
+            .then((business) => {
+              chai.expect(business.workingHours)
+                .to.equal(editInfo.workingHours);
+              chai.expect(business.categories.length)
+                .to.equal(1);
+              chai.expect(business.categories[0])
+                .to.satisfy(category => category.equals(editInfo.categories[0]));
+              chai.expect(business.description)
+                .to.equal(editInfo.description);
+              done();
+            })
+            .catch(done);
+        }
       });
   });
 
@@ -145,9 +194,18 @@ describe('Should Edit Info Correctly', () => {
     req.send({})
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
-      .expect(400, {
-        errors: [businessMessages.allFieldsEmpty],
-      }, done);
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          chai.expect(res.body)
+            .to.have.property('errors');
+          chai.expect(res.body.errors.length)
+            .to.equal(3);
+          done();
+        }
+      });
   });
 
   it('should not allow un-authenticated business from editing', (done) => {
