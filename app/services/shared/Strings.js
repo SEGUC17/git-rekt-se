@@ -119,6 +119,19 @@ const adminValidationErrors = {
   passwordMismatch: 'Password and Password Confirmation must match.',
   adminExists: 'Administrator already exists.',
 };
+/**
+ * Visitor Strings
+ */
+
+const visitorErrors = {
+  NoRelatedBusinesses: 'No related businesses',
+  NoRelatedServices: 'No related services',
+};
+
+const visitorValidationErrors = {
+  InvalidID: 'Invalid category ID',
+  InvalidOffset: 'Invalid Offset',
+};
 
 module.exports = {
   generalErrors,
@@ -132,5 +145,7 @@ module.exports = {
   businessLoginMessages,
   adminLoginMessages,
   adminValidationErrors,
+  visitorErrors,
+  visitorValidationErrors,
   businessMessages,
 };

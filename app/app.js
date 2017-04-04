@@ -2,6 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
+
 const jwtConfig = require('./services/shared/jwtConfig');
 const fbConfig = require('./services/shared/fbConfig');
 
