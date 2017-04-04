@@ -169,6 +169,7 @@ const visitorValidation = {
     },
   },
 };
+
 const businessEditInfoValidation = {
   workingHours: {
     notEmpty: {
