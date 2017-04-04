@@ -1,18 +1,21 @@
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
+const passportFB = require('passport-facebook');
 const InvalidToken = require('../../models/shared/InvalidToken');
 const Client = require('../../models/client/Client');
 const Business = require('../../models/business/Business');
+const Admin = require('../../models/admin/Admin');
 const Strings = require('../../services/shared/Strings');
 
 const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
+const FBStrategy = passportFB.Strategy;
 
 require('dotenv')
   .config();
 
 /**
- * JWT Configuration
+ * JWT Configuration.
  */
 
 const JWTOptionsClient = {
@@ -23,6 +26,9 @@ const JWTOptionsClient = {
 
 const JWTOptionsBusiness = Object.assign({}, JWTOptionsClient);
 JWTOptionsBusiness.secretOrKey = process.env.JWT_KEY_BUSSINES;
+
+const JWTOptionsAdmins = Object.assign({}, JWTOptionsClient);
+JWTOptionsAdmins.secretOrKey = process.env.JWT_KEY_ADMINISTRATOR;
 
 /**
  * Extract JWT Token from the header.
@@ -48,13 +54,14 @@ const parseAuthHeader = (hdrValue) => {
 const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) => {
   Client.findOne({
     _id: payload.id,
+    _deleted: false,
   })
     .then((user) => {
       if (!user) {
         done(null, false, Strings.clientLoginMessages.invalidCreds);
       } else {
-        const tokenCreationTime = new Date(parseInt(payload.iat, 10) * 1000);
-        const lastPasswordChangeTime = user.passwordChangeDate;
+        const tokenCreationTime = parseInt(payload.iat, 10);
+        const lastPasswordChangeTime = Math.floor(user.passwordChangeDate.getTime() / 1000);
         const reqToken = parseAuthHeader(req.headers.authorization)
           .value;
 
@@ -66,7 +73,7 @@ const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) =>
               return done(null, false, Strings.clientLoginMessages.invalidToken);
             }
 
-            if (tokenCreationTime.getTime() < lastPasswordChangeTime.getTime()) {
+            if (tokenCreationTime < lastPasswordChangeTime) {
               return done(null, false, Strings.clientLoginMessages.invalidToken);
             }
 
@@ -77,6 +84,7 @@ const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) =>
     })
     .catch(done);
 });
+
 
 /**
  * Client Authentication Middleware.
@@ -97,6 +105,7 @@ const clientAuthMiddleware = (req, res, next) => {
   })(req, res, next);
 };
 
+
 /**
  * Business Authentication Strategy.
  */
@@ -104,13 +113,14 @@ const clientAuthMiddleware = (req, res, next) => {
 const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done) => {
   Business.findOne({
     _id: payload.id,
+    _deleted: false,
   })
     .then((user) => {
       if (!user) {
         done(null, false, Strings.businessLoginMessages.invalidCreds);
       } else {
-        const tokenCreationTime = new Date(parseInt(payload.iat, 10) * 1000);
-        const lastPasswordChangeTime = user.passwordChangeDate;
+        const tokenCreationTime = parseInt(payload.iat, 10);
+        const lastPasswordChangeTime = Math.floor(user.passwordChangeDate.getTime() / 1000);
         const reqToken = parseAuthHeader(req.headers.authorization)
           .value;
 
@@ -122,7 +132,7 @@ const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done
               return done(null, false, Strings.businessLoginMessages.invalidToken);
             }
 
-            if (tokenCreationTime.getTime() < lastPasswordChangeTime.getTime()) {
+            if (tokenCreationTime < lastPasswordChangeTime) {
               return done(null, false, Strings.businessLoginMessages.invalidToken);
             }
 
@@ -149,9 +159,64 @@ const businessAuthMiddleware = (req, res, next) => {
   })(req, res, next);
 };
 
+/**
+ * Administrator Authentication Strategy.
+ */
+
+const adminStrategy = new JWTStrategy(JWTOptionsAdmins, (req, payload, done) => {
+  Admin.findOne({
+    _id: payload.id,
+    _deleted: false,
+  })
+    .then((user) => {
+      if (!user) {
+        done(null, false, Strings.adminLoginMessages.invalidCreds);
+      } else {
+        const tokenCreationTime = parseInt(payload.iat, 10);
+        const lastPasswordChangeTime = Math.floor(user.passwordChangeDate.getTime() / 1000);
+        const reqToken = parseAuthHeader(req.headers.authorization)
+          .value;
+
+        InvalidToken.findOne({
+          token: reqToken,
+        })
+          .then((token) => {
+            if (token) {
+              return done(null, false, Strings.adminLoginMessages.invalidToken);
+            }
+
+            if (tokenCreationTime < lastPasswordChangeTime) {
+              return done(null, false, Strings.adminLoginMessages.invalidToken);
+            }
+
+            return done(null, user);
+          })
+          .catch(done);
+      }
+    })
+    .catch(done);
+});
+
+const adminAuthMiddleware = (req, res, next) => {
+  passport.authenticate('jwt_administrator', {
+    session: false,
+  }, (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return next(info);
+    }
+    req.user = user;
+    return next();
+  })(req, res, next);
+};
+
 module.exports = {
   clientStrategy,
   clientAuthMiddleware,
   businessStrategy,
   businessAuthMiddleware,
+  adminStrategy,
+  adminAuthMiddleware,
 };

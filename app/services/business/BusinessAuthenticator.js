@@ -22,9 +22,9 @@ exports.loginBusiness = (email, password) => new Promise((resolve, reject) => {
     .then((user) => {
       if (!user) {
         reject(Strings.businessLoginMessages.invalidCreds);
-      } else if (user.status === 'unverified') {
+      } else if (user._status === 'unverified') {
         reject(Strings.businessLoginMessages.pendingVerification);
-      } else if (user.status === 'removed') {
+      } else if (user._status === 'removed') {
         reject(Strings.businessLoginMessages.removeBusiness);
       } else {
         user.checkPassword(password)
