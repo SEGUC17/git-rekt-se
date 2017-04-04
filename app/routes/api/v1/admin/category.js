@@ -49,55 +49,33 @@ router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensu
   });
 });
 
-// router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensureauthenticated
-//   // console.log(req.file);
-//   const Servicecategory = new Category({
-//     type: req.body.type,
-//     title: req.body.title,
-//     icon: req.file.filename,
-//   });
-//   const promise = Servicecategory.save();
-//   promise.then(Servicecategory.save())
-//     .then(res.json({
-//       message: 'Category added succesfully!',
-//     }))
-//     .catch((err) => {
-//       next(err);
-//     });
-// });
-
 router.post('/editCategory/:id', upload.single('icon'), (req, res, next) => { // ensureauthenticated
-  //  console.log(req.file);
-  if (req.body.type && req.body.title && req.file.filename) {
-    if (req.body.type === 'Business' || req.body.type === 'Service') {
-      // console.log(req.body.type);
-      Category.findByIdAndUpdate(req.params.id, {
-        $set: {
-          type: req.body.type,
-          title: req.body.title,
-          icon: req.file.filename,
-        },
-      }, {
-        new: true,
-      }, (err, category) => {
-        if (err) {
-          console.log(1);
-          return next(err);
-        }
-        // console.log(category);
-        console.log(2);
-        return res.json({
-          message: 'Category edited succesfully!',
-        });
-      });
-      // }
-    } else {
-      return next('Invalid values');
+  const Servicecategory = new Category({
+    type: req.body.type,
+    title: req.body.title,
+    icon: req.file.filename,
+  });
+  Category.findOne({
+    _id: req.params.id,
+  }, (err, category2) => {
+    if (err) {
+      next(err);
+      return;
     }
-  } else {
-    return next('Missing values');
-  }
-  return next('error');
+    //  console.log(category2);
+    category2.type = Servicecategory.type;
+    category2.title = Servicecategory.title;
+    category2.icon = Servicecategory.icon;
+    //  console.log(category2);
+    category2.save((err2) => {
+      if (err2) {
+        return next(err2);
+      }
+      return res.json({
+        message: 'Category edited succesfully!',
+      });
+    });
+  });
 });
 
 router.post('/deleteCategory/:id', (req, res, next) => { // ensureauthenticated

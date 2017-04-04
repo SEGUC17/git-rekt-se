@@ -38,6 +38,12 @@ describe('Category CRUD Test Suite', () => {
           console.log('kojak');
           chai.expect(res.body.message)
             .to.equal('Category added succesfully!');
+          Category.findOne({
+            title: 'Sample Title',
+          }, (err3, category3) => {
+            chai.expect(category3.type)
+              .to.equal('Business');
+          });
           done();
         }
       });
@@ -74,7 +80,7 @@ describe('Category CRUD Test Suite', () => {
     });
     newCategory.save((err, newcat) => {
       if (err) {
-        console.log(err);
+        done(err);
       } else {
         req = supertest(app)
           .post(`/api/v1/admin/category/editCategory/${newcat._id}`)
@@ -82,7 +88,7 @@ describe('Category CRUD Test Suite', () => {
           .field('title', '3ala2')
           .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
           .end((err2, res) => {
-           // console.log(res.body);
+            // console.log(res.body);
             if (err2) {
               done(err2);
             } else {
@@ -93,11 +99,11 @@ describe('Category CRUD Test Suite', () => {
                 _id: `${newcat._id}`,
               }, (err3, category) => {
                 if (err3) {
-                //  console.log('errr', err3);
+                  //  console.log('errr', err3);
                   // return done(err, null);
                 } else {
-                //  console.log(category);
-                //  console.log('yaaaaaaaaay');
+                  //  console.log(category);
+                  //  console.log('yaaaaaaaaay');
                   chai.expect(category.title)
                     .to.equal('3ala2');
                   done();
@@ -108,5 +114,137 @@ describe('Category CRUD Test Suite', () => {
           });
       }
     });
+  });
+  it('should not edit a category and return an error message', (done) => {
+    const newCategory = new Category({
+      type: 'Business',
+      title: 'Sample Title',
+      icon: 'sampleimagePath',
+    });
+    newCategory.save((err, newcat) => {
+      if (err) {
+        done(err);
+      } else {
+        req = supertest(app)
+          .post(`/api/v1/admin/category/editCategory/${newcat._id}`)
+          .field('type', 'bla')
+          .field('title', '3ala2')
+          .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+          .end((err2, res) => {
+            if (err2) {
+              done(err2);
+            } else {
+              chai.expect(res.body.errors.message)
+                .to.equal('Category validation failed');
+              Category.findOne({
+                _id: `${newcat._id}`,
+              }, (err3, category) => {
+                if (err3) {
+                  //  console.log('errr', err3);
+                  // return done(err, null);
+                } else {
+                  //  console.log(category);
+                  //  console.log('yaaaaaaaaay');
+                  chai.expect(category.type)
+                    .to.equal('Business');
+                  done();
+                }
+              });
+            }
+          });
+      }
+    });
+  });
+  it('should not edit a category and return an error message', (done) => {
+    const newCategory = new Category({
+      type: 'Business',
+      title: 'Sample Title',
+      icon: 'sampleimagePath',
+    });
+    newCategory.save((err, newcat) => {
+      if (err) {
+        done(err);
+      } else {
+        req = supertest(app)
+          .post(`/api/v1/admin/category/editCategory/${newcat._id}`)
+          .field('type', 'Business')
+          .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+          .end((err2, res) => {
+            if (err2) {
+              done(err2);
+            } else {
+              chai.expect(res.body.errors.message)
+                .to.equal('Category validation failed');
+              Category.findOne({
+                _id: `${newcat._id}`,
+              }, (err3, category) => {
+                if (err3) {
+                  //  console.log('errr', err3);
+                  // return done(err, null);
+                } else {
+                  //  console.log(category);
+                  //  console.log('yaaaaaaaaay');
+                  chai.expect(category.title)
+                    .to.equal('Sample Title');
+                  done();
+                }
+              });
+            }
+          });
+      }
+    });
+  });
+  it('should delete a category and return a confirmation message', (done) => {
+    const newCategory = new Category({
+      type: 'Business',
+      title: 'Sample Title',
+      icon: 'sampleimagePath',
+    });
+    newCategory.save((err, newcat) => {
+      if (err) {
+        done(err);
+      } else {
+        req = supertest(app)
+          .post(`/api/v1/admin/category/deleteCategory/${newcat._id}`)
+          .end((err2, res) => {
+            if (err2) {
+              done(err2);
+            } else {
+              chai.expect(res.body.message)
+                .to.equal('Category deleted succesfully!');
+              Category.count((err3, c) => {
+                if (err3) {
+                  done(err3);
+                } else {
+                  chai.expect(c)
+                    .to.equal(0);
+                  done();
+                }
+              });
+            }
+          });
+      }
+    });
+  });
+  it('should not delete a category and return an error message', (done) => {
+    req = supertest(app)
+      .post('/api/v1/admin/category/deleteCategory/4')
+      .end((err2, res) => {
+        if (err2) {
+          done(err2);
+        } else {
+          chai.expect(res.body.errors.message)
+            .to.equal('Cast to ObjectId failed for value \"4\" at path \"_id\" for model \"Category\"');
+          Category.count((err3, c) => {
+            if (err3) {
+              done(err3);
+            } else {
+              chai.expect(c)
+                .to.equal(0);
+              done();
+            }
+          });
+        }
+      });
   });
 });
