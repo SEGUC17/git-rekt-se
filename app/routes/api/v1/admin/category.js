@@ -3,7 +3,9 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const crypto = require('crypto');
 const Category = require('../../../../models/service/Category');
+const AdminAuth = require('../../../../services/shared/jwtConfig').adminAuthMiddleware;
 const path = require('path');
+
 const mongoose = require('mongoose');
 
 mongoose.Promise = Promise;
@@ -20,7 +22,7 @@ const storage = multer.diskStorage({
   },
   filename(req, file, cb) {
     const buf = crypto.randomBytes(16);
-    cb(null, 'abc.jpg');
+    cb(null, Date.now() + buf.toString('hex') + path.extname(file.originalname));
   },
 });
 
@@ -32,13 +34,11 @@ router.use(bodyParser.json());
 
 
 router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensureauthenticated
-  // console.log(req.file);
   const Servicecategory = new Category({
     type: req.body.type,
     title: req.body.title,
     icon: req.file.filename,
   });
-  // console.log(2);
   Servicecategory.save((err) => {
     if (err) {
       return next(err);
@@ -62,11 +62,9 @@ router.post('/editCategory/:id', upload.single('icon'), (req, res, next) => { //
       next(err);
       return;
     }
-    //  console.log(category2);
     category2.type = Servicecategory.type;
     category2.title = Servicecategory.title;
     category2.icon = Servicecategory.icon;
-    //  console.log(category2);
     category2.save((err2) => {
       if (err2) {
         return next(err2);
@@ -79,7 +77,6 @@ router.post('/editCategory/:id', upload.single('icon'), (req, res, next) => { //
 });
 
 router.post('/deleteCategory/:id', (req, res, next) => { // ensureauthenticated
-  //  console.log(req.file);
   Category.findByIdAndRemove(req.params.id, (err) => {
     if (err) {
       return next(err);
@@ -87,7 +84,6 @@ router.post('/deleteCategory/:id', (req, res, next) => { // ensureauthenticated
     return res.json({
       message: 'Category deleted succesfully!',
     });
-    //  console.log(2);
   });
 });
 

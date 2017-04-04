@@ -31,11 +31,9 @@ describe('Category CRUD Test Suite', () => {
       .field('title', 'Sample Title')
       .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
       .end((err2, res) => {
-        //  console.log(res.body);
         if (err2) {
           done(err2);
         } else {
-          console.log('kojak');
           chai.expect(res.body.message)
             .to.equal('Category added succesfully!');
           Category.findOne({
@@ -57,17 +55,20 @@ describe('Category CRUD Test Suite', () => {
       .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
       .expect(400)
       .end((err2, res2) => {
-        // console.log(res2.body);
         if (err2) {
           done(err2);
-          console.log('error caught..');
         } else {
-          //  console.log(res2.error);
-          // console.log('error not found');
-          // console.log(res2.body);
           chai.expect(res2.body.errors.message)
             .to.equal('Category validation failed');
-          done();
+          Category.count((err3, c) => {
+            if (err3) {
+              done(err3);
+            } else {
+              chai.expect(c)
+                .to.equal(0);
+              done();
+            }
+          });
         }
       });
   });
@@ -88,28 +89,22 @@ describe('Category CRUD Test Suite', () => {
           .field('title', '3ala2')
           .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
           .end((err2, res) => {
-            // console.log(res.body);
             if (err2) {
               done(err2);
             } else {
-              // console.log(3);
               chai.expect(res.body.message)
                 .to.equal('Category edited succesfully!'); // const chaiCategory = Category.findbyId(element => `${element._id}` === `${newcat._id}`);
               Category.findOne({
                 _id: `${newcat._id}`,
               }, (err3, category) => {
                 if (err3) {
-                  //  console.log('errr', err3);
-                  // return done(err, null);
+                  done(err3);
                 } else {
-                  //  console.log(category);
-                  //  console.log('yaaaaaaaaay');
                   chai.expect(category.title)
                     .to.equal('3ala2');
                   done();
                 }
               });
-              // console.log(chaiCategory);
             }
           });
       }
@@ -140,11 +135,8 @@ describe('Category CRUD Test Suite', () => {
                 _id: `${newcat._id}`,
               }, (err3, category) => {
                 if (err3) {
-                  //  console.log('errr', err3);
-                  // return done(err, null);
+                  done(err3);
                 } else {
-                  //  console.log(category);
-                  //  console.log('yaaaaaaaaay');
                   chai.expect(category.type)
                     .to.equal('Business');
                   done();
@@ -179,11 +171,8 @@ describe('Category CRUD Test Suite', () => {
                 _id: `${newcat._id}`,
               }, (err3, category) => {
                 if (err3) {
-                  //  console.log('errr', err3);
-                  // return done(err, null);
+                  done(err3);
                 } else {
-                  //  console.log(category);
-                  //  console.log('yaaaaaaaaay');
                   chai.expect(category.title)
                     .to.equal('Sample Title');
                   done();
@@ -234,7 +223,7 @@ describe('Category CRUD Test Suite', () => {
           done(err2);
         } else {
           chai.expect(res.body.errors.message)
-            .to.equal('Cast to ObjectId failed for value \"4\" at path \"_id\" for model \"Category\"');
+            .to.equal('Cast to ObjectId failed for value "4" at path "_id" for model "Category"');
           Category.count((err3, c) => {
             if (err3) {
               done(err3);
