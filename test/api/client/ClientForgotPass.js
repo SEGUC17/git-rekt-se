@@ -75,8 +75,8 @@ describe('Client forgot password API', () => {
         if (err) {
           return done(err);
         }
-
         // check if the message matches the one expected to be returned
+
 
         const eq = res.body.message === Strings.clientForgotPassword.CHECK_YOU_EMAIL ? 1 : 0;
         const chckMsg = eq;
