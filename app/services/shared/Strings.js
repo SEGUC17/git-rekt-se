@@ -103,6 +103,19 @@ const businessForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
   INVALID_RESET_TOKEN: 'Invalid reset token.',
   PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
+}
+/**
+ * Visitor Strings
+ */
+
+const visitorErrors = {
+  NoRelatedBusinesses: 'No related businesses',
+  NoRelatedServices: 'No related services',
+};
+
+const visitorValidationErrors = {
+  InvalidID: 'Invalid category ID',
+  InvalidOffset: 'Invalid Offset',
 };
 
 module.exports = {
@@ -116,5 +129,7 @@ module.exports = {
   clientForgotPassword,
   businessLoginMessages,
   businessForgotPassword,
+  visitorErrors,
+  visitorValidationErrors,
   businessMessages,
 };
