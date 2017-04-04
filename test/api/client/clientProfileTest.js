@@ -16,50 +16,6 @@ let token;
 /**
  * Client Edit info Suite
  */
-describe('Client Login', () => {
-  let req;
-
-  before((done) => {
-    Client.collection.drop(() => {
-      Client.ensureIndexes(() => {
-        Client.insertMany(clients[1])
-          .then(() => {
-            done();
-          })
-          .catch((err) => {
-            done(err);
-          });
-      });
-    });
-  });
-
-  it('Test to get the token of a logged in Client', (done) => {
-    const newClient = Object.assign({}, clients[0]);
-    newClient.status = 'confirmed';
-
-    new Client(newClient)
-      .save()
-      .then(() => {
-        req = supertest(app)
-          .post('/api/v1/client/auth/login')
-          .send({
-            email: clients[0].email,
-            password: clients[0].password,
-          })
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end((err, res) => {
-            if (err) {
-              done(err);
-            } else {
-              token = res.body.token;
-              done();
-            }
-          });
-      });
-  });
-});
-
 
 describe('Client Profile API', () => {
   let req;
