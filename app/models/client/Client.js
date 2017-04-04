@@ -6,7 +6,6 @@ const Schema = mongoose.Schema;
 const clientSchema = Schema({
   _facebookId: {
     type: String,
-    unique: true,
   },
   email: {
     type: String,
