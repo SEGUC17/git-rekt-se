@@ -8,7 +8,7 @@
  */
 
 const generalErrors = {
-  mailerError: 'An issue occured while send the email.',
+  mailerError: 'An issue occured while sending the email.',
 };
 
 /**
@@ -101,6 +101,26 @@ const clientConfirmation = {
 };
 
 /**
+ * Admin Strings
+ */
+
+const adminLoginMessages = {
+  invalidCreds: 'Invalid Credentials.',
+  loginSuccess: 'Admin Login Success.',
+  invalidToken: 'Invalid Token',
+};
+
+const adminValidationErrors = {
+  emptyEmail: 'Email is a required field.',
+  invalidEmail: 'Invalid Email.',
+  emptyPassword: 'Password is a required field.',
+  invalidPassword: 'Password length must be between 8 and 15 and contains at least one number.',
+  passwordRequired: 'Password is a required field.',
+  passwordLength: 'Password length must be between 8 and 15 and contains at least one number.',
+  passwordMismatch: 'Password and Password Confirmation must match.',
+  adminExists: 'Administrator already exists.',
+};
+/**
  * Visitor Strings
  */
 
@@ -124,6 +144,8 @@ module.exports = {
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
+  adminLoginMessages,
+  adminValidationErrors,
   visitorErrors,
   visitorValidationErrors,
   businessMessages,
