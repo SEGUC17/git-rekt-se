@@ -45,14 +45,6 @@ app.use(passport.initialize());
 require('./routes/routes')(app);
 
 /**
- * Future Frontend Routes.
- */
-
-app.get('/client/auth/signup', (req, res) => {
-  res.send('This is dummy to test facebook auth.');
-});
-
-/**
  * Generic Error Handling Middlewares.
  */
 
