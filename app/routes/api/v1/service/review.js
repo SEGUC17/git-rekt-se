@@ -120,7 +120,7 @@ router.post('/:id/review/:review_id/edit', clientAuthMiddleware, (req, res, next
               throw (Strings.reviewErrors.invalidReview);
             }
             if (`${review._client}` !== `${req.user._id}`) {
-              throw (Strings.reviewErrors.userMismatch);
+              throw (Strings.reviewErrors.userMismatchEdit);
             }
             populatedService._totalRating -= review.rating;
             review.rating = req.body.rating;
@@ -133,7 +133,7 @@ router.post('/:id/review/:review_id/edit', clientAuthMiddleware, (req, res, next
                 populatedService.save()
                   .then(() => {
                     res.json({
-                      message: Strings.reviewSuccess.createSuccess,
+                      message: Strings.reviewSuccess.updateSuccess,
                     });
                   });
               });
@@ -178,8 +178,8 @@ router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, ne
             if (!review) {
               throw (Strings.reviewErrors.invalidReview);
             }
-            if (review._client !== req.user._id) {
-              throw (Strings.reviewErrors.userMismatch);
+            if (`${review._client}` !== `${req.user._id}`) {
+              throw (Strings.reviewErrors.userMismatchDelete);
             }
             review._deleted = true;
             review.save()
@@ -191,7 +191,7 @@ router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, ne
                 populatedService.save()
                   .then(() => {
                     res.json({
-                      message: Strings.reviewSuccess.createSuccess,
+                      message: Strings.reviewSuccess.deleteSuccess,
                     });
                   });
               });

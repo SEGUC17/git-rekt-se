@@ -97,7 +97,8 @@ const reviewErrors = {
   emptyRating: 'You must provide a rating in your review.',
   alreadyReviewedService: 'You have already reviewed this service.',
   invalidReview: 'This review does not exist.',
-  userMismatch: 'You did not create the review that you are trying to edit.',
+  userMismatchEdit: 'You did not create the review that you are trying to edit.',
+  userMismatchDelete: 'You did not create the review that you are trying to delete.',
 };
 
 const reviewSuccess = {
