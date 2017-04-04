@@ -103,6 +103,7 @@ describe('View Related Businesses API', () => {
 
         if (err) {
           done(err);
+          return;
         }
 
         /**
@@ -139,6 +140,7 @@ describe('View Related Businesses API', () => {
 
         if (err) {
           done(err);
+          return;
         }
 
         /**
@@ -206,8 +208,8 @@ describe('View Related Businesses API', () => {
       .end((err, res) => {
         if (err) {
           done(err);
+          return;
         }
-        console.log(res.body);
         chai.expect(res.body.errors[0].msg).to.equal(Strings.visitorValidationErrors.InvalidID);
         done();
       });
@@ -225,8 +227,8 @@ describe('View Related Businesses API', () => {
       .end((err, res) => {
         if (err) {
           done(err);
+          return;
         }
-        console.log(res.body);
         chai.expect(res.body.errors[0].msg).to.equal(Strings.visitorValidationErrors.InvalidOffset);
         done();
       });

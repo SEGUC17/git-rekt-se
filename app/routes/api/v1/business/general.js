@@ -71,7 +71,7 @@ router.get('/category/:id/:offset', (req, res, next) => {
     .catch(err => next([err]));
       }).catch(e => next([e]));
     } else {
-      next(result.array());
+      return next(result.array());
     }
   }).catch(e => next([e]));
 });
