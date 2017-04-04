@@ -31,6 +31,7 @@ const bussinessValidationErrors = {
   categoriesRequired: 'Must Include atleast 1 category.',
   branchesRequired: 'Must Include aleast 1 branch.',
   businessExists: 'Business already exists.',
+  invalidBusinessId: 'The required id is invalid.',
 };
 
 const businessSuccess = {

@@ -6,10 +6,6 @@ const Branch = require('../../../app/models/service/Branch');
 const Category = require('../../../app/models/service/Category');
 const businesses = require('../../../app/seed/business/businessSeed');
 
-/**
- * Database Connection
- */
-
 require('dotenv')
   .config();
 
