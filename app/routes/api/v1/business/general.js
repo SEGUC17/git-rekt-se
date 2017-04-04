@@ -20,14 +20,15 @@ router.use(bodyParser.json());
 router.get('/:id', (req, res, next) => {
   Business.findOne({
     _id: req.params.id,
+    _status: 'verified',
   }, {
     password: false,
     deleted: false,
-    _status: 'verified',
   })
     .populate('branches categories')
     .exec()
     .then((business) => {
+      console.log('lala');
       Service.find({ business }).populate('branches offerings reviews').exec()
       .then((businessServices) => {
         const returnedBusiness = {
