@@ -63,14 +63,14 @@ const businessSchema = Schema({
     type: Date,
     default: Date.now,
   },
-  _deleted: {
-    type: Boolean,
-    default: false,
-  },
   _status: {
     type: String,
     enum: ['unverified', 'verified', 'removed'],
     default: 'unverified',
+  },
+  _deleted: {
+    type: Boolean,
+    default: false,
   },
 });
 
