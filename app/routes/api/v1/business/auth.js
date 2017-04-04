@@ -90,10 +90,9 @@ router.post('/verified/login', (req, res, next) => {
  * Business update data
  */
 
-router.post('/update', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
+router.post('/update', (req, res, next) => {
   const businessInfo = {
     name: req.body.name,
-    password: req.body.password,
     shortDescription: req.body.shortDescription,
     phoneNumbers: req.body.phoneNumbers, // Add to phone numbers array
   };
@@ -101,11 +100,10 @@ router.post('/update', authMiddleWare.businessAuthMiddleware, (req, res, next) =
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        Business.findOne({ email: businessInfo.email })
+        Business.findOne({ email: req.body.email })
     .exec()
     .then((business) => {
       business.name = businessInfo.name;
-      business.password = businessInfo.password;
       business.shortDescription = businessInfo.shortDescription;
       business.phoneNumbers = businessInfo.phoneNumbers;
 
