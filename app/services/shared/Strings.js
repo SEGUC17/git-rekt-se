@@ -99,16 +99,31 @@ const clientConfirmation = {
   notFound: 'User not found.',
 };
 
+/**
+ * Visitor Strings
+ */
+
+const visitorErrors = {
+  NoRelatedBusinesses: 'No related businesses',
+  NoRelatedServices: 'No related services',
+};
+
+const visitorValidationErrors = {
+  InvalidID: 'Invalid category ID',
+  InvalidOffset: 'Invalid Offset',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
-
   bussinessValidationErrors,
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
+  visitorErrors,
+  visitorValidationErrors,
   businessMessages,
 };
