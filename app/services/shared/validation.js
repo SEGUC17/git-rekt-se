@@ -5,8 +5,8 @@ const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
+const adminValidationErrors = Strings.adminValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
-
 
 /**
  * Client validation
@@ -188,10 +188,36 @@ const businessEditInfoValidation = {
   },
 };
 
+/**
+ * Administrator validation
+ */
+
+const adminLoginValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.emptyEmail,
+    },
+    isEmail: {
+      errorMessage: adminValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: adminValidationErrors.invalidPassword,
+    },
+  },
+};
+
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
+  adminLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
   visitorValidation,
