@@ -30,7 +30,7 @@ router.use(expressValidator({}));
 router.get('/category/:id/:offset', (req, res, next) => {
   req.checkParams(visitorValidator.visitorValidation);
   req.getValidationResult().then((result) => {
-    if (result.isEmpty) {
+    if (result.isEmpty()) {
       const offset = req.params.offset;
       Business.count({
         categories: {

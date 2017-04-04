@@ -23,6 +23,14 @@ const Businesses = [{
   categories: null,
   _status: 'verified',
 },
+{
+  name: 'IELTS Center',
+  email: 'ielts_egypt@gmail.com',
+  shortDescription: 'Verified Center for teaching IELTS course',
+  categories: null,
+  _status: 'verified',
+  _deleted: true,
+},
 ];
 
 module.exports = Businesses;
