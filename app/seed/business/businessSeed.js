@@ -1,32 +1,84 @@
-/**
- * Businesses Database Seed
- */
+const locations = require('../service/locations');
 
-
-const Businesses = [{
-  name: 'hobala1',
+module.exports = [{
+  name: 'Balabizo',
   email: 'test@gmail.com',
   shortDescription: 'This item is for testing the Business SignUp API',
-  phoneNumbers: ['01000000000', '01111111111', '01222222222'],
+  phoneNumbers: ['01112345677', '01122222222', '01132414553'],
   password: 'blahblah1',
   confirmPassword: 'blahblah1',
   description: 'This is for testing the API',
   workingHours: 'Saturday To Thursday 8AM-5PM',
-  categories: null,
-  branches: null,
-},
-{
-  name: 'hobala26',
-  email: 'test1@gmail.com',
+  categories: ['Language'],
+  branches: [{
+    location: locations[0],
+    address: 'Some Address Here',
+  }],
+}, {
+  name: 'Balabizo',
+  email: 'test@gmail.com',
   shortDescription: 'This item is for testing the Business SignUp API',
-  phoneNumbers: ['01000000000', '01111111111', '01222222222'],
-  password: 'blahblah1',
-  confirmPassword: 'blahblah1',
+  phoneNumbers: ['01112345677', '01122222222', '01132414553'],
+  password: '',
+  confirmPassword: 'blahblah',
   description: 'This is for testing the API',
   workingHours: 'Saturday To Thursday 8AM-5PM',
-  categories: null,
-  branches: null,
-},
-];
-
-module.exports = Businesses;
+  categories: ['Language'],
+  branches: [{
+    location: locations[0],
+    address: 'Some Address Here',
+  }],
+}, {
+  name: 'Balabizo',
+  email: 'test@gmail.com',
+  shortDescription: 'This item is for testing the Business SignUp API',
+  phoneNumbers: ['01112345677', '01122222222', '01132414553'],
+  password: 'blabizo',
+  confirmPassword: 'blahblah',
+  description: 'This is for testing the API',
+  workingHours: 'Saturday To Thursday 10AM-3PM',
+  categories: ['Balabizo'],
+  branches: [{
+    location: locations[0],
+    address: 'Some Address Here',
+  }],
+}, {
+  name: 'Balabizo',
+  email: 'test@gmail.com',
+  shortDescription: 'This item is for testing the Business SignUp API',
+  phoneNumbers: ['01112345677', '01122222222', '01132414553'],
+  password: 'blahblah',
+  confirmPassword: 'blahblah',
+  description: 'This is for testing the API',
+  workingHours: 'Saturday To Thursday 10AM-4PM',
+  categories: [],
+  branches: [{
+    location: locations[1],
+    address: 'Some Address Here',
+  }],
+}, {
+  name: 'Balabizo',
+  email: 'test@gmail.com',
+  shortDescription: 'This item is for testing the Business SignUp API',
+  phoneNumbers: ['01112345677', '01122222222', '01132414553'],
+  password: 'blahblah123',
+  confirmPassword: 'blahblah123',
+  description: 'This is for testing the API',
+  workingHours: 'Saturday To Thursday 10AM-3PM',
+  categories: [],
+  branches: [],
+}, {
+  name: 'Balabizo',
+  email: 'test@gmail.com',
+  shortDescription: 'This item is for testing the Business SignUp API',
+  phoneNumbers: ['01112345677', '01122222222', '01132414553'],
+  password: 'blahblah',
+  confirmPassword: 'blahblah',
+  description: 'This is for testing the API',
+  workingHours: '',
+  categories: ['Balabizo'],
+  branches: [{
+    location: locations[1],
+    address: 'Some Address Here',
+  }],
+}];

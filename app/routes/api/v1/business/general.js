@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Business = require('../../../../models/business/Business');
 const Service = require('../../../../models/service/Service');
-const Strings = require('../../../../services/shared/Strings');
 
 
 mongoose.Promise = Promise;
@@ -19,17 +18,13 @@ router.use(bodyParser.json());
  * View business page
  */
 router.get('/:id', (req, res, next) => {
-  const pattern = new RegExp('/^[0-9a-fA-F]{24}$/');
-  const isValidId = pattern.test(req.params.id);
-
-  if (isValidId) {
-    Business.findOne({
-      _id: req.params.id,
-    }, {
-      password: false,
-      deleted: false,
-      _status: 'verified',
-    })
+  Business.findOne({
+    _id: req.params.id,
+  }, {
+    password: false,
+    deleted: false,
+    _status: 'verified',
+  })
     .populate('branches categories')
     .exec()
     .then((business) => {
@@ -54,9 +49,6 @@ router.get('/:id', (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-  } else {
-    res.json({ message: Strings.bussinessValidationErrors.invalidBusinessId });
-  }
 });
 
 /**

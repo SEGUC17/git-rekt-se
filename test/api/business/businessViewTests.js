@@ -4,7 +4,7 @@ const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
 const Branch = require('../../../app/models/service/Branch');
 const Category = require('../../../app/models/service/Category');
-const businesses = require('../../../app/seed/business/veriifiedBusinessSeed');
+const businesses = require('../../../app/seed/business/businessSeed');
 
 require('dotenv')
   .config();
