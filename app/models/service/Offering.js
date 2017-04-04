@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const locations = require('../../seed/service/locations');
 
 const Schema = mongoose.Schema;
 
@@ -7,13 +8,18 @@ const Schema = mongoose.Schema;
  */
 
 const offeringSchema = Schema({
-  _service: {
-    type: Schema.Types.ObjectId,
-    ref: 'Service',
-  },
   branch: {
     type: Schema.Types.ObjectId,
     ref: 'Branch',
+    required: true,
+  },
+  location: {
+    type: String,
+    required: true,
+    enum: locations,
+  },
+  address: {
+    type: String,
   },
   price: {
     type: Number,
