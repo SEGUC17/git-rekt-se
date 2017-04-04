@@ -22,7 +22,7 @@ module.exports = (app) => {
    * Admin Routes
    */
   app.use('/api/v1/admin/auth', adminAuthAPI);
-  app.use('api/v1/admin/general', adminGeneral);
+  app.use('/api/v1/admin/general', adminGeneral);
 
   /**
    * Service Routes
