@@ -157,15 +157,24 @@ const businessLoginValidation = {
   },
 };
 
-const serviceValidation = {
+/**
+ * Service CRUD Validation
+ */
+
+const serviceCreateValidation = {
   name: {
     notEmpty: {
       errorMessage: serviceValidationErrors.emptyName,
     },
   },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: serviceValidationErrors.emptyShortDescription,
+    },
+  },
 };
 
-const offeringValidation = {
+const offeringCreateValidationBody = {
   price: {
     notEmpty: {
       errorMessage: offeringValidationErrors.emptyPrice,
@@ -189,7 +198,26 @@ const offeringValidation = {
       errorMessage: offeringValidationErrors.invalidEndDate,
     },
   },
+  location: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyLocation,
+    },
+  },
+  branch: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidBranchID,
+    },
+  },
 };
+
+const offeringCreateValidationParams = {
+  id: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidServiceID,
+    },
+  },
+};
+
 const businessEditInfoValidation = {
   workingHours: {
     notEmpty: {
@@ -214,8 +242,9 @@ const validation = {
   clientLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
-  serviceValidation,
-  offeringValidation,
+  serviceCreateValidation,
+  offeringCreateValidationBody,
+  offeringCreateValidationParams,
   businessEditInfoValidation,
 };
 

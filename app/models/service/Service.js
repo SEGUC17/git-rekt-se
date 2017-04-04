@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const Offering = require('../service/Offering');
+
 const Schema = mongoose.Schema;
 
 /**
@@ -13,6 +15,7 @@ const serviceSchema = Schema({
   },
   shortDescription: {
     type: String,
+    required: true,
   },
   description: {
     type: String,
@@ -22,18 +25,33 @@ const serviceSchema = Schema({
     ref: 'Business',
     required: true,
   },
+  _totalRating: {
+    type: Number,
+    default: 0,
+  },
+  _reviewCount: {
+    type: Number,
+    default: 0,
+  },
+  _avgRating: {
+    type: Number,
+    default: 0,
+  },
   branches: [{
     type: Schema.Types.ObjectId,
     ref: 'Branch',
     required: true,
   }],
   offerings: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Offering',
+    type: Offering.offeringSchema,
   }],
   reviews: [{
     type: Schema.Types.ObjectId,
     ref: 'Review',
+  }],
+  categories: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
   }],
   gallery: [{
     path: {
@@ -44,6 +62,9 @@ const serviceSchema = Schema({
       type: String,
     },
   }],
+  coverImage: {
+    type: String,
+  },
   _deleted: {
     type: Boolean,
     default: false,

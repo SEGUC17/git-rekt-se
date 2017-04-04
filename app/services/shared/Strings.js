@@ -105,6 +105,8 @@ const clientConfirmation = {
 
 const serviceValidationErrors = {
   emptyName: 'Service Name is a required field',
+  emptyShortDescription: 'Service short description is a required field',
+  invalidCategory: 'No such a category',
 };
 
 const offeringValidationError = {
@@ -113,8 +115,21 @@ const offeringValidationError = {
   invalidStartDate: 'Invalid Start Date',
   emptyEndDate: 'Offering End Date is a required field',
   invalidEndDate: 'Invalid End Date',
+  emptyLocation: 'Location is a required field',
+  invalidBranchID: 'Branch is invalid',
+  invalidServiceID: 'Service is invalid',
+  invalidService: 'No such a service',
+  invalidOperation: 'Not authorized for doing such an operation',
+  invalidBranch: 'Your business doesnot have this branch',
 };
 
+const serviceSuccess = {
+  serviceAdded: 'Service has been added successfully to your business',
+};
+
+const offerSuccess = {
+  offerAdded: 'Offer has been added successfully to your service',
+};
 
 module.exports = {
   generalErrors,
@@ -122,13 +137,15 @@ module.exports = {
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
+  clientForgotPassword,
 
   bussinessValidationErrors,
   businessSuccess,
-  clientForgotPassword,
   businessLoginMessages,
+  businessMessages,
 
   serviceValidationErrors,
   offeringValidationError,
-  businessMessages,
+  serviceSuccess,
+  offerSuccess,
 };
