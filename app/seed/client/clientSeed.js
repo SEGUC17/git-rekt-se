@@ -3,6 +3,7 @@
  */
 
 const clients = [{
+  _facebookId: '995126147288426',
   email: 'mohamedelzarei@gmail.com',
   password: 'YEQmxoav4NqK',
   confirmPassword: 'YEQmxoav4NqK',
@@ -12,7 +13,6 @@ const clients = [{
   gender: 'Male',
   birthdate: new Date('11-2-1996'),
 }, {
-  _facebookId: '995126147288426',
   email: 'melzareios@gmail.com',
   password: 'YEQmxoav4N1K',
   confirmPassword: 'YEQmxoav4N1K',
