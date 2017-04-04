@@ -4,6 +4,9 @@ const bcrypt = require('bcrypt-nodejs');
 const Schema = mongoose.Schema;
 
 const clientSchema = Schema({
+  _facebookId: {
+    type: String,
+  },
   email: {
     type: String,
     unique: true,
@@ -37,6 +40,10 @@ const clientSchema = Schema({
     type: String,
     default: 'unconfirmed',
     enums: ['unconfirmed', 'confirmed', 'banned'],
+  },
+  passwordResetTokenDate: {
+    type: Date,
+    default: Date.now,
   },
   confirmationTokenDate: {
     type: Date,
