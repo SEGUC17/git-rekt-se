@@ -5,6 +5,7 @@ const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
+const visitorValidationErrors = Strings.visitorValidationErrors;
 const reviewErrors = Strings.reviewErrors;
 
 
@@ -156,6 +157,20 @@ const businessLoginValidation = {
   },
 };
 
+const visitorValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: visitorValidationErrors.InvalidID,
+    },
+  },
+  offset: {
+    isInt: {
+      options: { min: 1 },
+      errorMessage: visitorValidationErrors.InvalidOffset,
+    },
+  },
+};
+
 const businessEditInfoValidation = {
   workingHours: {
     notEmpty: {
@@ -233,6 +248,7 @@ const validation = {
   clientLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+  visitorValidation,
   businessEditInfoValidation,
   createReviewValidation,
   updateReviewValidation,

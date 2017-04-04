@@ -114,6 +114,20 @@ const reviewSuccess = {
   deleteSuccess: 'Review deleted successfully.',
 };
 
+/**
+ * Visitor Strings
+ */
+
+const visitorErrors = {
+  NoRelatedBusinesses: 'No related businesses',
+  NoRelatedServices: 'No related services',
+};
+
+const visitorValidationErrors = {
+  InvalidID: 'Invalid category ID',
+  InvalidOffset: 'Invalid Offset',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
@@ -124,6 +138,8 @@ module.exports = {
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
+  visitorErrors,
+  visitorValidationErrors,
   businessMessages,
   reviewErrors,
   reviewSuccess,
