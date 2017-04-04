@@ -1,44 +1,46 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const Business = require('../../../../models/business/Business');
 const AdminAuth = require('../../../../services/shared/jwtConfig').adminAuthMiddleware;
 const Strings = require('../../../../services/shared/Strings');
 
 const router = express.Router();
+mongoose.Promise = Promise;
 
 router.post('/confirm/:id', AdminAuth, (req, res, next) => {
   Business.findOne({
     _id: req.params.ser_id,
     _deleted: false,
   })
-    .exec((err, business) => {
-      if (err) {
-        next(err);
-      }
-      if (business) {
-        if (business.confirmed === true) {
-          res.json({
-            message: Strings.businessConfirmation.alreadyConfirmed,
-          });
-          next(err);
-        } else {
-          business.confirmed = true;
-          business.save((saveErr) => {
-            if (saveErr) {
-              next(saveErr);
-            } else {
-              res.json({
-                message: Strings.businessConfirmation.confirmed,
-              });
-            }
-          });
-        }
-      } else {
+  .exec()
+  .then((business) => {
+    if (business) {
+      if (business._status === 'verified') {
         res.json({
-          message: Strings.businessConfirmation.notFound,
+          message: Strings.businessConfirmation.alreadyConfirmed,
         });
-        next(err);
+      } else if (business._status === 'rejected') {
+        res.json({
+          message: Strings.businessConfirmation.alreadyDenied,
+        });
+      } else {
+        business._status = 'verified';
+        business.save()
+        .exec()
+        .then(() => {
+          // send e-mail
+          res.json({
+            message: Strings.businessConfirmation.confirmed,
+          });
+        })
+        .catch(saveErr => next([saveErr]));
       }
-    });
+    } else {
+      res.json({
+        message: Strings.businessConfirmation.notFound,
+      });
+    }
+  }).catch(err => next([err]));
 });
 
 router.post('/deny/:id', AdminAuth, (req, res, next) => {
@@ -46,33 +48,33 @@ router.post('/deny/:id', AdminAuth, (req, res, next) => {
     _id: req.params.ser_id,
     _deleted: false,
   })
-    .exec((err, business) => {
-      if (err) {
-        next(err);
-      }
+    .exec()
+    .then((business) => {
       if (business) {
-        if (business.confirmed === true) {
+        if (business._status === 'rejected') {
+          res.json({
+            message: Strings.businessConfirmation.alreadyDenied,
+          });
+        } else if (business._status === 'confirmed') {
           res.json({
             message: Strings.businessConfirmation.alreadyConfirmed,
           });
-          next(err);
         } else {
-          business._deleted = true;
-          business.save((saveErr) => {
-            if (saveErr) {
-              next(saveErr);
-            } else {
-              res.json({
-                message: Strings.businessConfirmation.denied,
-              });
-            }
-          });
+          business._status = 'rejected';
+          business.save()
+          .exec()
+          .then(() => {
+              // send e-mail
+            res.json({
+              message: Strings.businessConfirmation.denied,
+            });
+          })
+          .catch(saveErr => next([saveErr]));
         }
       } else {
         res.json({
           message: Strings.businessConfirmation.notFound,
         });
-        next(err);
       }
-    });
+    }).catch(err => next([err]));
 });

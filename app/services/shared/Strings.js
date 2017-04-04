@@ -47,10 +47,11 @@ const businessLoginMessages = {
 };
 
 const businessConfirmation = {
-  alreadyConfirmed: 'Business already confirmed.',
+  alreadyConfirmed: 'Business was already confirmed.',
   notFound: 'Business not found.',
   confirmed: 'Business confirmed successfully!',
   denied: 'Business request denied.',
+  alreadyDenied: 'Business was already rejected.',
 };
 
 /**

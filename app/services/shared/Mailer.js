@@ -5,6 +5,7 @@
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
 const Admin = require('../../models/admin/Admin');
+const Business = require('../../models/business/Business');
 
 /**
  * Mailer Configuration
@@ -100,5 +101,53 @@ exports.forgotPasswordEmail = (email, host, resetToken) => {
       }
       return resolve(information);
     });
+  });
+};
+
+exports.notifyBusinessOfConfirmation = (mail) => {
+  const emailContent = {
+    from: info.from,
+    to: mail,
+    subject: 'Git Rekt Application Accepted',
+    text: `
+       Hello,
+       Your application for our directory [Git-Rekt] has been accepted.
+       ---------------------------------
+       This is an automated message.
+
+      `,
+  };
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(emailContent, (err, information) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(information);
+    })
+      .catch(reject);
+  });
+};
+
+exports.notifyBusinessOfDenial = (mail) => {
+  const emailContent = {
+    from: info.from,
+    to: mail,
+    subject: 'Git Rekt Application Denied',
+    text: `
+       Hello,
+       Your application for our directory [Git-Rekt] has been Denied.
+       ---------------------------------
+       This is an automated message.
+
+      `,
+  };
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(emailContent, (err, information) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(information);
+    })
+      .catch(reject);
   });
 };
