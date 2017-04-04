@@ -162,15 +162,6 @@ const businessUpdateValidation = {
       errorMessage: bussinessValidationErrors.emptyName,
     },
   },
-  password: {
-    notEmpty: {
-      errorMessage: bussinessValidationErrors.emptyPassword,
-    },
-    matches: {
-      options: [/^(?=.*\d).{8,15}$/],
-      errorMessage: bussinessValidationErrors.invalidPassword,
-    },
-  },
   shortDescription: {
     notEmpty: {
       errorMessage: bussinessValidationErrors.emptyDescription,
