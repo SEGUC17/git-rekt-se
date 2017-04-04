@@ -212,6 +212,14 @@ const adminLoginValidation = {
   },
 };
 
+const adminConfirmBusinessValidation = {
+  _id: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.invalidBusinessID,
+    },
+  },
+};
+
 
 const validation = {
   clientSignupValidation,
@@ -222,6 +230,7 @@ const validation = {
   businessLoginValidation,
   visitorValidation,
   businessEditInfoValidation,
+  adminConfirmBusinessValidation,
 };
 
 module.exports = validation;

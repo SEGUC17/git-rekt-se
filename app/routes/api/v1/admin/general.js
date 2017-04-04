@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Business = require('../../../../models/business/Business');
 const AdminAuth = require('../../../../services/shared/jwtConfig').adminAuthMiddleware;
+const AdminValidator = require('../../../../services/shared/validation');
 const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
 
@@ -9,7 +10,7 @@ const router = express.Router();
 mongoose.Promise = Promise;
 
 router.post('/confirm/:id', AdminAuth, (req, res, next) => {
-  console.log('000000000000000000000000000000000000000000');
+  req.checkParams(AdminValidator.adminConfirmBusinessValidation);
   Business.findOne({
     _id: req.params.ser_id,
     _deleted: false,
@@ -50,6 +51,7 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
 });
 
 router.post('/deny/:id', AdminAuth, (req, res, next) => {
+  req.checkParams(AdminValidator.adminConfirmBusinessValidation);
   Business.findOne({
     _id: req.params.ser_id,
     _deleted: false,
@@ -86,3 +88,5 @@ router.post('/deny/:id', AdminAuth, (req, res, next) => {
       }
     }).catch(err => next([err]));
 });
+
+module.exports = router;

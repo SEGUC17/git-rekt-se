@@ -11,7 +11,7 @@ const unverifiedBussiness = require('../../../app/seed/business/unverifiedBusine
 
 describe('Administrator Accept/Reject Business Application API', () => {
   let req;
-
+  let token;
 
   before((done) => { // creating our dummy admin
     Admin.collection.drop(() => {
@@ -23,9 +23,11 @@ describe('Administrator Accept/Reject Business Application API', () => {
         supertest(app)
       .post('/api/v1/admin/auth/login')
       .send({ email: 'mohamedelzarei@gmail.com',
-        password: 'helloworld',
+        password: '',
       })
       .end((err2, res2) => {
+        token = res2.body.token;
+        console.log(token);
         done();
       });
       });
@@ -46,7 +48,7 @@ describe('Administrator Accept/Reject Business Application API', () => {
     const business = unverifiedBussiness[2]; // business with basic info]
     req = supertest(app)
       .post('/api/v1/business/auth/unverified/signup'); // submitting an application (basic signup)
-
+    req.set('Authorization', `JWT ${token}`);
     req.send(business)
       .expect('Content-Type', /json/)
       .end((err, res) => {
@@ -83,6 +85,7 @@ describe('Administrator Accept/Reject Business Application API', () => {
     req = supertest(app)
       .post('/api/v1/business/auth/unverified/signup'); // submitting an application (basic signup)
 
+    req.set('Authorization', `JWT ${token}`);
     req.send(business)
       .expect('Content-Type', /json/)
       .end((err, res) => {
