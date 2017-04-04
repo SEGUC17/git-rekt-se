@@ -17,6 +17,7 @@ mongoose.Promise = Promise;
 exports.loginAdmin = (email, password) => new Promise((resolve, reject) => {
   Admin.findOne({
     email,
+    _deleted: false,
   })
     .then((user) => {
       if (!user) {

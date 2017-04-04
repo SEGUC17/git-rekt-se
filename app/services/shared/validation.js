@@ -155,6 +155,24 @@ const businessLoginValidation = {
   },
 };
 
+const businessEditInfoValidation = {
+  workingHours: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.workingHoursRequired,
+    },
+  },
+  description: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyConfirmation,
+    },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.categoriesRequired,
+    },
+  },
+};
+
 /**
  * Administrator validation
  */
@@ -187,6 +205,7 @@ const validation = {
   adminLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+  businessEditInfoValidation,
 };
 
 module.exports = validation;

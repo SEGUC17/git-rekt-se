@@ -21,6 +21,10 @@ const adminSchema = Schema({
     type: Date,
     default: Date.now,
   },
+  _deleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 /**
