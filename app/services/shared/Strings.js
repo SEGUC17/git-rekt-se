@@ -100,7 +100,6 @@ const clientLoginMessages = {
 const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
-
 };
 
 module.exports = {
