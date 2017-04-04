@@ -173,6 +173,14 @@ const businessEditInfoValidation = {
   },
 };
 
+const businessCRUDValidation = {
+  branches: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.branchesRequired,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
@@ -180,6 +188,7 @@ const validation = {
   businessSignupValidation,
   businessLoginValidation,
   businessEditInfoValidation,
+  businessCRUDValidation,
 };
 
 module.exports = validation;

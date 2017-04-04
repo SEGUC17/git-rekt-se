@@ -10,8 +10,8 @@ const businessMessages = require('../../../../services/shared/Strings')
   .businessMessages;
 const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
-const businessEditInfoValidation = require('../../../../services/shared/validation')
-  .businessEditInfoValidation;
+const businessValidation = require('../../../../services/shared/validation');
+const businessUtils = require('../../../../services/business/businessUtils');
 
 mongoose.Promise = Promise;
 
@@ -29,12 +29,10 @@ router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
     const searchID = {
       _id: id,
     };
-    req.checkBody(businessEditInfoValidation);
+    req.checkBody(businessValidation.businessEditInfoValidation);
     req.getValidationResult()
       .then((result) => {
-        if (!result.isEmpty()) {
-          next(result.array());
-        } else {
+        if (result.isEmpty()) {
           Business.findOne(searchID)
             .exec()
             .then((business) => {
@@ -56,6 +54,44 @@ router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
               }
             })
             .catch(err => next([err]));
+        } else {
+          next(result.array());
+        }
+      })
+      .catch(err => next([err]));
+  }
+});
+
+router.post('/:id/add/branches', (req, res, next) => {
+  const id = req.params.id;
+  if (req.user.id !== id) {
+    next([businessMessages.mismatchID]);
+  } else {
+    const searchID = {
+      _id: id,
+    };
+    req.checkBody(businessValidation.businessCRUDValidation);
+    req.getValidationResult()
+      .then((result) => {
+        console.log(result.isEmpty);
+        if (result.isEmpty()) {
+          businessUtils.addBranches(req.body.branches, id)
+            .then((branches) => {
+              Business.findOne(searchID)
+                .exec()
+                .then((business) => {
+                  business.branches = business.branches.concat(branches);
+                  business.save()
+                    .then(() => res.json({
+                      message: 'Branch Added Successfully',
+                    }))
+                    .catch(err => next([err]));
+                })
+                .catch(err => next([err]));
+            })
+            .catch(err => next([err]));
+        } else {
+          next(result.array());
         }
       })
       .catch(err => next([err]));
