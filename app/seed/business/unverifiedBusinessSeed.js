@@ -1,5 +1,5 @@
 /**
- * Client Database Seed
+ * Business Database Seed
  */
 
 const unverifiedBussiness = [{
