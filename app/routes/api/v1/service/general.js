@@ -18,20 +18,25 @@ router.use(bodyParser.json());
 
 router.get('/category/:id/:offset', (req, res, next) => {
   const offset = req.params.offset;
-  Service.find({
+  Service.count({
     categories: {
       $in: [req.params.id],
     },
-  }, {
-    name: true,
-    shortDescription: true,
-    coverImage: true,
-    _business: true,
-    _id: false,
-  }, {
-    skip: (offset - 1) * 10,
-    limit: 10,
-  })
+  }).then((cnt) => {
+    Service.find({
+      categories: {
+        $in: [req.params.id],
+      },
+    }, {
+      name: true,
+      shortDescription: true,
+      coverImage: true,
+      _business: true,
+      _id: false,
+    }, {
+      skip: (offset - 1) * 10,
+      limit: 10,
+    })
     .populate({
       path: '_business',
       select: 'name -_id',
@@ -42,11 +47,12 @@ router.get('/category/:id/:offset', (req, res, next) => {
         return next([Strings.visitorErrors.NoRelatedServices]);
       }
       return res.json({
-        count: services.length,
+        count: cnt,
         results: services,
       });
     })
     .catch(err => next([err]));
+  }).catch(e => next([e]));
 });
 
 /**
