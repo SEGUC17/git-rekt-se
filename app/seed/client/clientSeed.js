@@ -21,6 +21,7 @@ const clients = [{
   mobile: '01093125263',
   gender: 'Male',
   birthdate: new Date('11-2-1994'),
+  status: 'confirmed',
 }];
 
 module.exports = clients;
