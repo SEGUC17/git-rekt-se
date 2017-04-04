@@ -156,7 +156,6 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
 router.delete('/:business_id/delete/branch/:branch_id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.business_id;
   if (req.user.id !== id) {
-    console.log(2222);
     next([businessMessages.mismatchID]);
   } else {
     const searchID = {

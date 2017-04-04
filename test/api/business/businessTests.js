@@ -293,8 +293,6 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
     });
   });
 
-  // beforeEach(() => console.log(token));
-
   it('should add branches correctly', (done) => {
     const searchBranchID = {
       _id: branchID,
