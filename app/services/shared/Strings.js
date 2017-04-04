@@ -35,12 +35,16 @@ const bussinessValidationErrors = {
   businessExists: 'Business already exists.',
   locationRequired: 'Location is a required field',
   addressRequired: 'Address is a required field',
-  locationInvalid: `Invalid location. Must be [${locations}]`,
+  locationInvalid: `Invalid location. Must be any of [${locations}]`,
 };
 
 const businessSuccess = {
   unverifiedSignup: 'Signup Successful, A representative will contact you soon.',
   emailConfirmation: 'Please check your email for the email confirmation.',
+  infoEditSuccess: 'Info Edited Successfully',
+  branchAddedSuccess: 'Branch Added Successfully',
+  branchEditSuccess: 'Branch Edited Successfully',
+  branchDeleteSuccess: 'Branch Deleted Successfully',
 };
 
 const businessLoginMessages = {
@@ -53,10 +57,9 @@ const businessLoginMessages = {
 
 const businessMessages = {
   allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
-  editSuccess: 'Edited Successfully!',
   businessDoesntExist: 'Business Doesn\'t Exist',
   branchDoesntExist: 'Business Doesn\'t Exist',
-  mismatchID: 'You can only edit your profile!',
+  mismatchID: 'You can only edit your Info!',
 };
 
 /**

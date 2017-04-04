@@ -184,16 +184,16 @@ const businessAddValidation = {
 };
 
 const businessEditValidation = {
-  'branches.location': {
+  'branch.location': {
     notEmpty: {
       errorMessage: bussinessValidationErrors.locationRequired,
     },
     isIn: {
-      options: locations,
+      options: [locations],
       errorMessage: bussinessValidationErrors.locationInvalid,
     },
   },
-  'branches.address': {
+  'branch.address': {
     notEmpty: {
       errorMessage: bussinessValidationErrors.addressRequired,
     },

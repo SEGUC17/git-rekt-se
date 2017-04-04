@@ -9,6 +9,8 @@ const Branch = require('../../../../models/service/Branch');
 const Business = require('../../../../models/business/Business');
 const businessMessages = require('../../../../services/shared/Strings')
   .businessMessages;
+const businessSuccess = require('../../../../services/shared/Strings')
+  .businessSuccess;
 const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
 const businessValidation = require('../../../../services/shared/validation');
@@ -52,7 +54,7 @@ router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
                     .path);
                 business.save()
                   .then(() => res.json({
-                    message: businessMessages.editSuccess,
+                    message: businessSuccess.infoEditSuccess,
                   }))
                   .catch(err => next([err]));
               }
@@ -80,7 +82,6 @@ router.post('/:id/add/branches', businessAuthMiddleware, (req, res, next) => {
     req.checkBody(businessValidation.businessAddValidation);
     req.getValidationResult()
       .then((result) => {
-        console.log(result.array());
         if (result.isEmpty()) {
           businessUtils.addBranches(req.body.branches, id)
             .then((branches) => {
@@ -93,7 +94,7 @@ router.post('/:id/add/branches', businessAuthMiddleware, (req, res, next) => {
                     business.branches = business.branches.concat(branches);
                     business.save()
                       .then(() => res.json({
-                        message: 'Branch Added Successfully',
+                        message: businessSuccess.branchAddedSuccess,
                       }))
                       .catch(err => next([err]));
                   }
@@ -128,14 +129,14 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
           Branch.findOne(searchID)
             .exec()
             .then((branch) => {
-              if (!branch) {
+              if (!branch || branch._deleted) {
                 next([businessMessages.branchDoesntExist]);
               } else {
-                branch.location = req.body.branches.location;
-                branch.address = req.body.branches.address;
+                branch.location = req.body.branch.location;
+                branch.address = req.body.branch.address;
                 branch.save()
                   .then(() => res.json({
-                    message: 'Edited Branch Successfully',
+                    message: businessSuccess.branchEditSuccess,
                   }))
                   .catch(err => next([err]));
               }
@@ -143,6 +144,36 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
             .catch(err => next([err]));
         } else {
           next(result.array());
+        }
+      })
+      .catch(err => next([err]));
+  }
+});
+
+/**
+ * Business Delete Branch API Route.
+ */
+router.delete('/:business_id/delete/branch/:branch_id', businessAuthMiddleware, (req, res, next) => {
+  const id = req.params.business_id;
+  if (req.user.id !== id) {
+    console.log(2222);
+    next([businessMessages.mismatchID]);
+  } else {
+    const searchID = {
+      _id: req.params.branch_id,
+    };
+    Branch.findOne(searchID)
+      .exec()
+      .then((branch) => {
+        if (!branch || branch._deleted) {
+          next([businessMessages.branchDoesntExist]);
+        } else {
+          branch._deleted = true;
+          branch.save()
+            .then(() => res.json({
+              message: businessSuccess.branchDeleteSuccess,
+            }))
+            .catch(err => next([err]));
         }
       })
       .catch(err => next([err]));
