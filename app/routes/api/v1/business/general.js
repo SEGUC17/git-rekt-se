@@ -19,7 +19,7 @@ router.use(bodyParser.json());
  * View business page
  */
 router.get('/:id', (req, res, next) => {
-  const pattern = new RegExp('e');
+  const pattern = new RegExp('/^[0-9a-fA-F]{24}$/');
   const isValidId = pattern.test(req.params.id);
 
   if (isValidId) {
