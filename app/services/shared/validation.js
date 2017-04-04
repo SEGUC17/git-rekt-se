@@ -5,7 +5,8 @@ const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
-
+const adminValidationErrors = Strings.adminValidationErrors;
+const visitorValidationErrors = Strings.visitorValidationErrors;
 
 /**
  * Client validation
@@ -135,12 +136,92 @@ const businessSignupValidation = {
   },
 };
 
+const businessLoginValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyEmail,
+    },
+    isEmail: {
+      errorMessage: bussinessValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
+};
+
+const visitorValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: visitorValidationErrors.InvalidID,
+    },
+  },
+  offset: {
+    isInt: {
+      options: { min: 1 },
+      errorMessage: visitorValidationErrors.InvalidOffset,
+    },
+  },
+};
+
+const businessEditInfoValidation = {
+  workingHours: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.workingHoursRequired,
+    },
+  },
+  description: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyConfirmation,
+    },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.categoriesRequired,
+    },
+  },
+};
+
+/**
+ * Administrator validation
+ */
+
+const adminLoginValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.emptyEmail,
+    },
+    isEmail: {
+      errorMessage: adminValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: adminValidationErrors.invalidPassword,
+    },
+  },
+};
+
 
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
+  adminLoginValidation,
   businessSignupValidation,
+  businessLoginValidation,
+  visitorValidation,
+  businessEditInfoValidation,
 };
 
 module.exports = validation;
