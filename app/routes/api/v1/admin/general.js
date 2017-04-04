@@ -9,13 +9,16 @@ const router = express.Router();
 mongoose.Promise = Promise;
 
 router.post('/confirm/:id', AdminAuth, (req, res, next) => {
+  console.log('000000000000000000000000000000000000000000');
   Business.findOne({
     _id: req.params.ser_id,
     _deleted: false,
   })
   .exec()
   .then((business) => {
+    console.log('1111111111111111111111111111111111111111');
     if (business) {
+      console.log('22222222222222222222222222222222222222222');
       if (business._status === 'verified') {
         res.json({
           message: Strings.businessConfirmation.alreadyConfirmed,
@@ -25,11 +28,11 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
           message: Strings.businessConfirmation.alreadyDenied,
         });
       } else {
+        console.log('33333333333333333333333333333333333333333333');
         business._status = 'verified';
         business.save()
         .exec()
         .then(() => {
-          // send e-mail
           Mailer.notifyBusinessOfConfirmation(business.email)
           .then(res.json({
             message: Strings.businessConfirmation.confirmed,

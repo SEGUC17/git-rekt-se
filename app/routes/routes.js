@@ -1,6 +1,7 @@
 const clientAuthAPI = require('./api/v1/client/auth');
 const businessAuthAPI = require('./api/v1/business/auth');
 const adminAuthAPI = require('./api/v1/admin/auth');
+const adminGeneral = require('./api/v1/admin/general');
 
 module.exports = (app) => {
   /**
@@ -21,6 +22,7 @@ module.exports = (app) => {
    * Admin Routes
    */
   app.use('/api/v1/admin/auth', adminAuthAPI);
+  app.use('api/v1/admin/general', adminGeneral);
 
   /**
    * Service Routes
