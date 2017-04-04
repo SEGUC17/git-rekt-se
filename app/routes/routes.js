@@ -29,5 +29,5 @@ module.exports = (app) => {
    * Service Routes
    */
 
-  app.use('/api/v1/service/', reviewCRUDAPI);
+  app.use('/api/v1/service', reviewCRUDAPI);
 };

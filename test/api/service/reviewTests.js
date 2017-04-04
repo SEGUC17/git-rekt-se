@@ -65,45 +65,61 @@ describe('Should create, update and delete reviews correctly', () => {
 
 
   before((done) => {
-    client1.save()
-      .then((savedClient) => {
-        clientID = `${savedClient._id}`;
-        return client2.save();
-      })
-      .then(() => business.save())
-      .then((savedBusiness) => {
-        branch._business = savedBusiness._id;
-        service._business = savedBusiness._id;
-        return branch.save();
-      })
-      .then((savedBranch) => {
-        service.branches = [savedBranch];
-        return service.save();
-      })
-      .then((savedService) => {
-        serviceID = `${savedService._id}`;
-        done();
-      })
-      .catch({});
+    Client.collection.drop(() => {
+      Client.ensureIndexes();
+      Business.collection.drop(() => {
+        Business.ensureIndexes();
+        Branch.collection.drop(() => {
+          Branch.ensureIndexes();
+          Service.collection.drop(() => {
+            Service.ensureIndexes();
+            Review.collection.drop(() => {
+              Service.ensureIndexes();
+              client1.save()
+                .then((savedClient) => {
+                  clientID = `${savedClient._id}`;
+                  return client2.save();
+                })
+                .then(() => business.save())
+                .then((savedBusiness) => {
+                  branch._business = savedBusiness._id;
+                  service._business = savedBusiness._id;
+                  return branch.save();
+                })
+                .then((savedBranch) => {
+                  service.branches = [savedBranch];
+                  return service.save();
+                })
+                .then((savedService) => {
+                  serviceID = `${savedService._id}`;
+                  done();
+                })
+                .catch({});
+            });
+          });
+        });
+      });
+    });
   });
+
 
   after((done) => {
     Client.collection.drop(() => {
       Client.ensureIndexes();
+      Business.collection.drop(() => {
+        Business.ensureIndexes();
+        Branch.collection.drop(() => {
+          Branch.ensureIndexes();
+          Service.collection.drop(() => {
+            Service.ensureIndexes();
+            Review.collection.drop(() => {
+              Service.ensureIndexes();
+              done();
+            });
+          });
+        });
+      });
     });
-    Business.collection.drop(() => {
-      Business.ensureIndexes();
-    });
-    Branch.collection.drop(() => {
-      Branch.ensureIndexes();
-    });
-    Service.collection.drop(() => {
-      Service.ensureIndexes();
-    });
-    Review.collection.drop(() => {
-      Service.ensureIndexes();
-    });
-    done();
   });
 
 
@@ -327,7 +343,7 @@ describe('Should create, update and delete reviews correctly', () => {
       });
   });
 
-    // Passing test
+  // Passing test
 
   it('should delete my review for the service specified with the id specified', (done) => {
     req = supertest(app)
@@ -360,7 +376,7 @@ describe('Should create, update and delete reviews correctly', () => {
       });
   });
 
-    // Failing test
+  // Failing test
 
   it('should not delete a review that is not mine', (done) => {
     req = supertest(app)
@@ -380,7 +396,7 @@ describe('Should create, update and delete reviews correctly', () => {
       });
   });
 
-      // Failing test
+  // Failing test
 
   it('should not delete a review that I already deleted', (done) => {
     req = supertest(app)
@@ -399,7 +415,7 @@ describe('Should create, update and delete reviews correctly', () => {
         }
       });
   });
-        // Failing test
+  // Failing test
 
   it('should not edit a review that I already deleted', (done) => {
     req = supertest(app)
@@ -419,7 +435,7 @@ describe('Should create, update and delete reviews correctly', () => {
       });
   });
 
-    // Passing test
+  // Passing test
 
   it('should create a review for the service specified if I deleted my old one', (done) => {
     req = supertest(app)

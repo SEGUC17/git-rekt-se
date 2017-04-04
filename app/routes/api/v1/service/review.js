@@ -38,6 +38,7 @@ router.post('/:id/review', clientAuthMiddleware, (req, res, next) => {
         const serviceId = req.params.id;
         Service.findOne({
           _id: serviceId,
+          _deleted: false,
         })
           .exec()
           .then((service) => {
@@ -99,6 +100,7 @@ router.post('/:id/review/:review_id/edit', clientAuthMiddleware, (req, res, next
         const reviewId = req.params.review_id;
         Service.findOne({
           _id: serviceId,
+          _deleted: false,
         })
           .exec()
           .then((service) => {
@@ -148,6 +150,7 @@ router.post('/:id/review/:review_id/edit', clientAuthMiddleware, (req, res, next
 /**
  * Delete Review route
  */
+
 router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, next) => {
   // Validate SerivceID & ReviewID
   req.check(validationSchemas.deleteReviewValidation);
@@ -158,6 +161,7 @@ router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, ne
         const reviewId = req.params.review_id;
         Service.findOne({
           _id: serviceId,
+          _deleted: false,
         })
           .exec()
           .then((service) => {
@@ -202,6 +206,10 @@ router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, ne
       }
     });
 });
+
+/**
+ * Error handling middleware
+ */
 
 router.use((err, req, res, next) => {
   res.status(400)

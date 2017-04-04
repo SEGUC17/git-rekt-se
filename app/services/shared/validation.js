@@ -179,8 +179,7 @@ const businessEditInfoValidation = {
 const createReviewValidation = {
   id: {
     in: 'params',
-    matches: {
-      options: [/^[a-fA-F0-9]{24}$/],
+    isMongoId: {
       errorMessage: reviewErrors.invalidService,
     },
   },
@@ -195,15 +194,13 @@ const createReviewValidation = {
 const updateReviewValidation = {
   id: {
     in: 'params',
-    matches: {
-      options: [/^[a-fA-F0-9]{24}$/],
+    isMongoId: {
       errorMessage: reviewErrors.invalidService,
     },
   },
   review_id: {
     in: 'params',
-    matches: {
-      options: [/^[a-fA-F0-9]{24}$/],
+    isMongoId: {
       errorMessage: reviewErrors.invalidReview,
     },
   },
@@ -218,15 +215,13 @@ const updateReviewValidation = {
 const deleteReviewValidation = {
   id: {
     in: 'params',
-    matches: {
-      options: [/^[a-fA-F0-9]{24}$/],
+    isMongoId: {
       errorMessage: reviewErrors.invalidService,
     },
   },
   review_id: {
     in: 'params',
-    matches: {
-      options: [/^[a-fA-F0-9]{24}$/],
+    isMongoId: {
       errorMessage: reviewErrors.invalidReview,
     },
   },
