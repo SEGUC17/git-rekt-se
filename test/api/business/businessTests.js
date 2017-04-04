@@ -294,9 +294,6 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
   });
 
   it('should add branches correctly', (done) => {
-    const searchBranchID = {
-      _id: branchID,
-    };
     const searchBusinessID = {
       _id: businessID,
     };

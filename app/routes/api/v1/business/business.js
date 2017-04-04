@@ -131,7 +131,7 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
             .then((branch) => {
               if (!branch || branch._deleted) {
                 next([businessMessages.branchDoesntExist]);
-              } else {
+              } else if (branch._business.equals(id)) {
                 branch.location = req.body.branch.location;
                 branch.address = req.body.branch.address;
                 branch.save()
@@ -139,6 +139,8 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
                     message: businessSuccess.branchEditSuccess,
                   }))
                   .catch(err => next([err]));
+              } else {
+                next([businessMessages.mismatchID]);
               }
             })
             .catch(err => next([err]));
@@ -166,13 +168,15 @@ router.delete('/:business_id/delete/branch/:branch_id', businessAuthMiddleware, 
       .then((branch) => {
         if (!branch || branch._deleted) {
           next([businessMessages.branchDoesntExist]);
-        } else {
+        } else if (branch._business.equals(id)) {
           branch._deleted = true;
           branch.save()
             .then(() => res.json({
               message: businessSuccess.branchDeleteSuccess,
             }))
             .catch(err => next([err]));
+        } else {
+          next([businessMessages.mismatchID]);
         }
       })
       .catch(err => next([err]));
