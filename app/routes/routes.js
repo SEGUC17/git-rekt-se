@@ -3,7 +3,6 @@ const businessAuthAPI = require('./api/v1/business/auth');
 const businessAPI = require('./api/v1/business/business');
 const businessGeneralAPI = require('./api/v1/business/general');
 const adminAuthAPI = require('./api/v1/admin/auth');
-const businessAPI = require('./api/v1/business/general');
 
 module.exports = (app) => {
   /**
