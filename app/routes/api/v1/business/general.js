@@ -27,7 +27,7 @@ router.use(expressValidator({}));
  * View Related Business route
  */
 
-router.get('/category/:id/:offset', (req, res, next) => {
+router.get('/:id/:offset', (req, res, next) => {
   req.checkParams(visitorValidator.visitorValidation);
   req.getValidationResult().then((result) => {
     if (result.isEmpty()) {
@@ -71,7 +71,7 @@ router.get('/category/:id/:offset', (req, res, next) => {
     .catch(err => next([err]));
       }).catch(e => next([e]));
     } else {
-      return next(result.array());
+      next(result.array());
     }
   }).catch(e => next([e]));
 });
