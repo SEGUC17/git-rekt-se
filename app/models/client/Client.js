@@ -42,6 +42,10 @@ const clientSchema = Schema({
     default: 'unconfirmed',
     enums: ['unconfirmed', 'confirmed', 'banned'],
   },
+  passwordResetTokenDate: {
+    type: Date,
+    default: Date.now,
+  },
   confirmationTokenDate: {
     type: Date,
     default: Date.now,
