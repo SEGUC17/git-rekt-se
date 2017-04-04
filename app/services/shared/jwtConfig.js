@@ -55,8 +55,8 @@ const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) =>
       if (!user) {
         done(null, false, Strings.clientLoginMessages.invalidCreds);
       } else {
-        const tokenCreationTime = new Date(parseInt(payload.iat, 10) * 1000);
-        const lastPasswordChangeTime = user.passwordChangeDate;
+        const tokenCreationTime = parseInt(payload.iat, 10);
+        const lastPasswordChangeTime = Math.floor(user.passwordChangeDate.getTime() / 1000);
         const reqToken = parseAuthHeader(req.headers.authorization)
           .value;
 
@@ -68,7 +68,7 @@ const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) =>
               return done(null, false, Strings.clientLoginMessages.invalidToken);
             }
 
-            if (tokenCreationTime.getTime() < lastPasswordChangeTime.getTime()) {
+            if (tokenCreationTime < lastPasswordChangeTime) {
               return done(null, false, Strings.clientLoginMessages.invalidToken);
             }
 
@@ -113,8 +113,8 @@ const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done
       if (!user) {
         done(null, false, Strings.businessLoginMessages.invalidCreds);
       } else {
-        const tokenCreationTime = new Date(parseInt(payload.iat, 10) * 1000);
-        const lastPasswordChangeTime = user.passwordChangeDate;
+        const tokenCreationTime = parseInt(payload.iat, 10);
+        const lastPasswordChangeTime = Math.floor(user.passwordChangeDate.getTime() / 1000);
         const reqToken = parseAuthHeader(req.headers.authorization)
           .value;
 
@@ -126,7 +126,7 @@ const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done
               return done(null, false, Strings.businessLoginMessages.invalidToken);
             }
 
-            if (tokenCreationTime.getTime() < lastPasswordChangeTime.getTime()) {
+            if (tokenCreationTime < lastPasswordChangeTime) {
               return done(null, false, Strings.businessLoginMessages.invalidToken);
             }
 
