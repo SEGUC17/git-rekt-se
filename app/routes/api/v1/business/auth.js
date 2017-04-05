@@ -16,7 +16,7 @@ const router = express.Router();
 require('dotenv')
   .config();
 
-const JWT_KEY = process.env.JWT_KEY_CLIENT;
+const JWT_KEY = process.env.JWT_KEY_BUSSINES;
 
 /**
  * Parsing Middleware(s).

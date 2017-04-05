@@ -2,13 +2,12 @@
  * Constant Strings
  */
 
-
 /**
  *  General Strings
  */
 
 const generalErrors = {
-  mailerError: 'An issue occured while send the email.',
+  mailerError: 'An issue occured while sending the email.',
 };
 
 /**
@@ -98,11 +97,44 @@ const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
 };
+/**
+ * Visitor Strings
+ */
+
+const visitorErrors = {
+  NoRelatedBusinesses: 'No related businesses',
+  NoRelatedServices: 'No related services',
+};
+
+const visitorValidationErrors = {
+  InvalidID: 'Invalid category ID',
+  InvalidOffset: 'Invalid Offset',
+};
 
 const businessForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
   INVALID_RESET_TOKEN: 'Invalid reset token.',
   PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
+}
+/**
+ * Admin Strings
+ */
+
+const adminLoginMessages = {
+  invalidCreds: 'Invalid Credentials.',
+  loginSuccess: 'Admin Login Success.',
+  invalidToken: 'Invalid Token',
+};
+
+const adminValidationErrors = {
+  emptyEmail: 'Email is a required field.',
+  invalidEmail: 'Invalid Email.',
+  emptyPassword: 'Password is a required field.',
+  invalidPassword: 'Password length must be between 8 and 15 and contains at least one number.',
+  passwordRequired: 'Password is a required field.',
+  passwordLength: 'Password length must be between 8 and 15 and contains at least one number.',
+  passwordMismatch: 'Password and Password Confirmation must match.',
+  adminExists: 'Administrator already exists.',
 };
 
 module.exports = {
@@ -116,5 +148,9 @@ module.exports = {
   clientForgotPassword,
   businessLoginMessages,
   businessForgotPassword,
+  adminLoginMessages,
+  adminValidationErrors,
+  visitorErrors,
+  visitorValidationErrors,
   businessMessages,
 };
