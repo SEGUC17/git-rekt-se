@@ -112,9 +112,42 @@ router.post('/confirmation/send', (req, res, next) => {
  */
 
 router.post('/confirmation/:token/confirm', (req, res, next) => {
+  const cofirmationToken = req.params.token;
 
+  jwt.verify(cofirmationToken, JWT_KEY, (err, payload) => {
+    if (err) {
+      next([err]);
+      return;
+    }
+    if (!payload) {
+      next([Strings.clientVerfication.invalidToken]);
+      return;
+    }
+    const clientEmail = payload.email;
+    const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
+    Client.findOne({
+      email: clientEmail,
+      confirmationTokenDate: {
+        $gte: creationDate,
+      },
+    })
+    .exec()
+    .then((client) => {
+      if (!client) {
+        next([Strings.clientVerfication.invalidToken]);
+        return;
+      }
+      client.confirmationTokenDate = undefined;
+      client.status = 'confirmed';
+      client.save()
+      .then(res.json({
+        message: Strings.clientVerfication.verificationSuccess,
+      }))
+      .catch(err2 => next([err2]));
+    })
+    .catch(err2 => next([err2]));
+  });
 });
-
 
 /**
  * Client Login.

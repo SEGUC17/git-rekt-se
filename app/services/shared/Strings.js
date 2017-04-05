@@ -107,6 +107,12 @@ const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
 };
+
+const clientVerfication = {
+  invalidToken: 'This token is invalid or has expired.',
+  verificationSuccess: 'Your e-mail has been successfully confirmed.',
+};
+
 /**
  * Visitor Strings
  */
@@ -125,7 +131,8 @@ const businessForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
   INVALID_RESET_TOKEN: 'Invalid reset token.',
   PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
-}
+};
+
 /**
  * Admin Strings
  */
@@ -153,6 +160,7 @@ module.exports = {
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
+  clientVerfication,
   bussinessValidationErrors,
   businessSuccess,
   clientForgotPassword,
