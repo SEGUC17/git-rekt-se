@@ -55,9 +55,9 @@ describe('Populating the databases', () => {
   });
 
   it('Inserting data in the Service collection ', (done) => {
-    services[0]._business = businessID;
-    services[0].branches = [branchID];
-    new Service(services[0])
+    services[4]._business = businessID;
+    services[4].branches = [branchID];
+    new Service(services[4])
       .save()
       .then(() => {
         done();
