@@ -63,65 +63,72 @@ describe('Should create, update and delete reviews correctly', () => {
     description: 'I should not be inserted',
   };
 
-
   before((done) => {
     Client.collection.drop(() => {
-      Client.ensureIndexes();
-      Business.collection.drop(() => {
-        Business.ensureIndexes();
-        Branch.collection.drop(() => {
-          Branch.ensureIndexes();
-          Service.collection.drop(() => {
-            Service.ensureIndexes();
-            Review.collection.drop(() => {
-              Service.ensureIndexes();
-              client1.save()
-                .then((savedClient) => {
-                  clientID = `${savedClient._id}`;
-                  return client2.save();
-                })
-                .then(() => business.save())
-                .then((savedBusiness) => {
-                  branch._business = savedBusiness._id;
-                  service._business = savedBusiness._id;
-                  return branch.save();
-                })
-                .then((savedBranch) => {
-                  service.branches = [savedBranch];
-                  return service.save();
-                })
-                .then((savedService) => {
-                  serviceID = `${savedService._id}`;
-                  done();
-                })
-                .catch({});
+      Client.ensureIndexes(() => {
+        Business.collection.drop(() => {
+          Business.ensureIndexes(() => {
+            Branch.collection.drop(() => {
+              Branch.ensureIndexes(() => {
+                Service.collection.drop(() => {
+                  Service.ensureIndexes(() => {
+                    Review.collection.drop(() => {
+                      Service.ensureIndexes(() => {
+                        client1.save()
+                          .then((savedClient) => {
+                            clientID = `${savedClient._id}`;
+                            return client2.save();
+                          })
+                          .then(() => business.save())
+                          .then((savedBusiness) => {
+                            branch._business = savedBusiness._id;
+                            service._business = savedBusiness._id;
+                            return branch.save();
+                          })
+                          .then((savedBranch) => {
+                            service.branches = [savedBranch];
+                            return service.save();
+                          })
+                          .then((savedService) => {
+                            serviceID = `${savedService._id}`;
+                            done();
+                          })
+                          .catch({});
+                      });
+                    });
+                  });
+                });
+              });
             });
           });
         });
       });
     });
   });
-
 
   after((done) => {
     Client.collection.drop(() => {
-      Client.ensureIndexes();
-      Business.collection.drop(() => {
-        Business.ensureIndexes();
-        Branch.collection.drop(() => {
-          Branch.ensureIndexes();
-          Service.collection.drop(() => {
-            Service.ensureIndexes();
-            Review.collection.drop(() => {
-              Service.ensureIndexes();
-              done();
+      Client.ensureIndexes(() => {
+        Business.collection.drop(() => {
+          Business.ensureIndexes(() => {
+            Branch.collection.drop(() => {
+              Branch.ensureIndexes(() => {
+                Service.collection.drop(() => {
+                  Service.ensureIndexes(() => {
+                    Review.collection.drop(() => {
+                      Service.ensureIndexes(() => {
+                        done();
+                      });
+                    });
+                  });
+                });
+              });
             });
           });
         });
       });
     });
   });
-
 
   beforeEach((done) => {
     supertest(app)
