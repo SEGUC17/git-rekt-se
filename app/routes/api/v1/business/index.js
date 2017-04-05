@@ -60,8 +60,6 @@ router.use(expressValidator({}));
  */
 
 router.get('/test', (req, res, next) => {
-  console.log('ya rb nengz');
-  console.log(1);
   const business1 = new Business({
     name: 'kojak',
     email: 'kojak@gmail.com',
@@ -91,7 +89,6 @@ router.get('/test', (req, res, next) => {
 });
 
 router.get('/testt', (req, res, next) => {
-  console.log(1);
   Category.insertMany(categories).then(docs => res.json({
     message: 'database2 updated',
   })).catch(e => next(e));
