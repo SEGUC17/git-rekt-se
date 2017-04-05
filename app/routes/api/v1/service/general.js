@@ -33,26 +33,26 @@ router.get('/:id/:offset', (req, res, next) => {
         const offset = req.params.offset;
         Service.count({
           categories: {
-              $in: [req.params.id],
-            },
+            $in: [req.params.id],
+          },
           _deleted: false,
         })
           .then((cnt) => {
             Service.find({
               categories: {
-                  $in: [req.params.id],
-                },
+                $in: [req.params.id],
+              },
               _deleted: false,
             }, {
-                name: true,
-                shortDescription: true,
-                coverImage: true,
-                _business: true,
-                _id: false,
-              }, {
-                skip: (offset - 1) * 10,
-                limit: 10,
-              })
+              name: true,
+              shortDescription: true,
+              coverImage: true,
+              _business: true,
+              _id: false,
+            }, {
+              skip: (offset - 1) * 10,
+              limit: 10,
+            })
               .populate({
                 path: '_business',
                 select: 'name -_id',
