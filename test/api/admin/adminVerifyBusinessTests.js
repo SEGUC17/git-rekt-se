@@ -186,7 +186,7 @@ describe('Administrator Accept/Reject Business Application API', () => {
         }
       });
   });
-  it('should not verify a business application that was already verified', (done) => {
+  it('should not reject a business application that was already verified', (done) => {
     const business = BusinessesSeed[1]; // business with basic info, and verified
     new Business(business)
       .save((err, res) => {
@@ -201,7 +201,7 @@ describe('Administrator Accept/Reject Business Application API', () => {
                 done(findErr);
               } else {
                 req = supertest(app)
-                  .post(`/api/v1/admin/general/confirm/${data._id}`)
+                  .post(`/api/v1/admin/general/deny/${data._id}`)
                   .set('Authorization', `JWT ${token}`)
                   .send()
                   .expect('Content-Type', /json/)
@@ -221,7 +221,7 @@ describe('Administrator Accept/Reject Business Application API', () => {
       });
   });
 
-  it('should not verify a business application that was already rejected', (done) => {
+  it('should not reject a business application that was already rejected', (done) => {
     const business = BusinessesSeed[2]; // business with basic info, and rejected
     new Business(business)
       .save((err, res) => {
@@ -236,7 +236,7 @@ describe('Administrator Accept/Reject Business Application API', () => {
                 done(findErr);
               } else {
                 req = supertest(app)
-                  .post(`/api/v1/admin/general/confirm/${data._id}`)
+                  .post(`/api/v1/admin/general/deny/${data._id}`)
                   .set('Authorization', `JWT ${token}`)
                   .send()
                   .expect('Content-Type', /json/)
@@ -254,6 +254,22 @@ describe('Administrator Accept/Reject Business Application API', () => {
             });
         }
       });
+  });
+
+  it('should not do anything on invalid ID input', (done) => {
+    req = supertest(app)
+      .post('/api/v1/admin/general/confirm/x1')
+      .set('Authorization', `JWT ${token}`)
+      .send()
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [{
+          param: '_id',
+          msg: 'Invalid Business ID',
+          value: 'x1',
+        },
+        ],
+      }, done);
   });
 
 

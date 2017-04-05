@@ -245,7 +245,7 @@ const adminLoginValidation = {
 const adminConfirmBusinessValidation = {
   _id: {
     isMongoId: {
-      errorMessage: visitorValidationErrors.InvalidID,
+      errorMessage: adminValidationErrors.invalidBusinessID,
     },
   },
 };
