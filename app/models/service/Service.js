@@ -22,6 +22,18 @@ const serviceSchema = Schema({
     ref: 'Business',
     required: true,
   },
+  _totalRating: {
+    type: Number,
+    default: 0,
+  },
+  _reviewCount: {
+    type: Number,
+    default: 0,
+  },
+  _avgRating: {
+    type: Number,
+    default: 0,
+  },
   branches: [{
     type: Schema.Types.ObjectId,
     ref: 'Branch',
@@ -35,6 +47,10 @@ const serviceSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: 'Review',
   }],
+  categories: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
+  }],
   gallery: [{
     path: {
       type: String,
@@ -44,6 +60,9 @@ const serviceSchema = Schema({
       type: String,
     },
   }],
+  coverImage: {
+    type: String,
+  },
   _deleted: {
     type: Boolean,
     default: false,
