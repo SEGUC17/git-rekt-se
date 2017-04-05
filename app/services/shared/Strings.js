@@ -93,6 +93,10 @@ const clientSuccess = {
   logout: 'You have been logged out.',
 };
 
+const businessForgotPassword = {
+  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
+  INVALID_RESET_TOKEN: 'Invalid reset token.',
+};
 
 const clientForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
@@ -147,11 +151,7 @@ const visitorValidationErrors = {
   InvalidOffset: 'Invalid Offset',
 };
 
-const businessForgotPassword = {
-  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
-  INVALID_RESET_TOKEN: 'Invalid reset token.',
-  PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
-};
+
 /**
  * Admin Strings
  */
@@ -181,9 +181,9 @@ module.exports = {
   clientConfirmation,
   bussinessValidationErrors,
   businessSuccess,
+  businessForgotPassword,
   clientForgotPassword,
   businessLoginMessages,
-  businessForgotPassword,
   adminLoginMessages,
   adminValidationErrors,
   visitorErrors,
