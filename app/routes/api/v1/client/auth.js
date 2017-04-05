@@ -7,9 +7,12 @@ const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
 const Client = require('../../../../models/client/Client');
+const InvalidToken = require('../../../../models/shared/InvalidToken');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const fbConfig = require('../../../../services/shared/fbConfig');
+const jwtConfig = require('../../../../services/shared/jwtConfig');
 const Strings = require('../../../../services/shared/Strings');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 
 mongoose.Promise = Promise;
@@ -70,9 +73,9 @@ router.post('/signup', (req, res, next) => {
                       message: Strings.clientSuccess.signup,
                     });
                   })
-                  .catch(e => next([e]));
+                  .catch(e => next(e));
               })
-              .catch(e => next([e]));
+              .catch(e => next(e));
           })
           .catch(() => next([Strings.clientValidationErrors.userExists]));
       } else {
@@ -99,9 +102,9 @@ router.post('/confirmation/send', (req, res, next) => {
                   message: Strings.clientSuccess.emailConfirmation,
                 });
               })
-              .catch(e => next([e]));
+              .catch(e => next(e));
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
@@ -181,7 +184,7 @@ router.post('/login', (req, res, next) => {
       if (result.isEmpty()) {
         ClientAuthenticator.loginClient(req.body.email, req.body.password)
           .then(info => res.json(info))
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next(result.array());
       }
@@ -226,10 +229,10 @@ router.post('/forgot', (req, res, next) => {
             .then(() => res.json({
               message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
             }))
-            .catch(err => next([err]));
+            .catch(err => next(err));
         });
     })
-    .catch(err => next([err]));
+    .catch(err => next(err));
 });
 
 /**
@@ -258,15 +261,33 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
   }
 });
 
+
+/**
+ * Client Logout.
+ * http://stackoverflow.com/questions/3521290/logout-get-or-post
+ */
+
+router.post('/logout', jwtConfig.clientAuthMiddleware, (req, res, next) => {
+  const token = jwtConfig.parseAuthHeader(req.headers.authorization)
+    .value;
+  new InvalidToken({
+    token,
+  })
+    .save((err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.json({
+        message: Strings.clientSuccess.logout,
+      });
+    });
+});
+
 /**
  *  Error Handling Middlewares.
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
+
 
 module.exports = router;
