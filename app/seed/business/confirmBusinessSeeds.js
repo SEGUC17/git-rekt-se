@@ -1,0 +1,51 @@
+const locations = require('../service/locations');
+
+module.exports = [{
+  name: 'shabrawys1',
+  email: 'test1@gmail.com',
+  password: 'Strong#1234',
+  shortDescription: 'This item is for testing the Business confirmation API',
+  description: 'This is for testing the API',
+  phoneNumbers: ['01112345677', '01122222222', '01132414553'],
+  gallery: [],
+  workingHours: '',
+  categories: ['Balabizo'],
+  branches: [{
+    location: locations[1],
+    address: 'Some Address Here',
+  }],
+  _status: 'unverified',
+  _deleted: false,
+}, {
+  name: 'shabrawys2',
+  email: 'test2@gmail.com',
+  password: 'Strong#1234',
+  shortDescription: 'This item is for testing the Business confirmation API',
+  description: 'This is for testing the API',
+  phoneNumbers: ['01112345677', '01122222222', '01132414553'],
+  gallery: [],
+  workingHours: '',
+  categories: ['Balabizo'],
+  branches: [{
+    location: locations[1],
+    address: 'Some Address Here',
+  }],
+  _status: 'verified',
+  _deleted: false,
+}, {
+  name: 'shabrawys3',
+  email: 'test3@gmail.com',
+  password: 'Strong#1234',
+  shortDescription: 'This item is for testing the Business confirmation API',
+  description: 'This is for testing the API',
+  phoneNumbers: ['01112345677', '01122222222', '01132414553'],
+  gallery: [],
+  workingHours: '',
+  categories: ['Balabizo'],
+  branches: [{
+    location: locations[1],
+    address: 'Some Address Here',
+  }],
+  _status: 'rejected',
+  _deleted: false,
+}];
