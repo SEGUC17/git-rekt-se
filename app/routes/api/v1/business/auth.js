@@ -1,5 +1,5 @@
-const express = require('express');
 const mongoose = require('mongoose');
+const express = require('express');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
@@ -16,11 +16,12 @@ const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 const errorHandler = require('../../../../services/shared/errorHandler');
+const InvalidToken = require('../../../../models/shared/InvalidToken');
+const jwtConfig = require('../../../../services/shared/jwtConfig');
 
 mongoose.Promise = Promise;
 
 const router = express.Router();
-
 
 require('dotenv')
   .config();
@@ -192,6 +193,28 @@ router.post('/forgot', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+
+/**
+ * Business Logout.
+ * http://stackoverflow.com/questions/3521290/logout-get-or-post
+ */
+
+router.post('/logout', jwtConfig.businessAuthMiddleware, (req, res, next) => {
+  const token = jwtConfig.parseAuthHeader(req.headers.authorization)
+    .value;
+  new InvalidToken({
+    token,
+  })
+    .save((err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.json({
+        message: Strings.businessSuccess.logout,
+      });
+    });
+});
+
 
 /**
  *  Error Handling Middlewares.
