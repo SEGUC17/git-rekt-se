@@ -1,5 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+const validationSchemas = require('../../../../services/shared/validation');
+const Admin = require('../../../../models/admin/Admin');
+const AdminAuthenticator = require('../../../../services/admin/AdminAuthenticator');
 
 const router = express.Router();
 
@@ -8,15 +12,51 @@ const router = express.Router();
  */
 
 router.use(bodyParser.json());
+router.use(expressValidator({}));
 
 /**
- * Admin login route
+ * Dummy admin registeration route
+ * FOR TESTING PURPOSES
  */
 
-router.post('/login', (req, res) => {
-  res.send({
-    message: 'This should be fun.',
-  });
+router.post('/create', (req, res) => {
+  new Admin({
+    email: 'mohamedelzarei@gmail.com',
+    password: 'helloworld',
+  })
+    .save()
+    .then(() => res.json({
+      message: 'Dummy admin added.',
+    }));
+});
+
+/*
+  * Admin Login route
+  */
+router.post('/login', (req, res, next) => {
+  req.checkBody(validationSchemas.adminLoginValidation);
+  req.getValidationResult()
+     .then((result) => {
+       if (result.isEmpty()) {
+         AdminAuthenticator.loginAdmin(req.body.email, req.body.password)
+           .then(info => res.json(info))
+           .catch(err => next([err]));
+       } else {
+         next(result.array());
+       }
+     });
+});
+
+
+/**
+ *  Error Handling Middlewares.
+ */
+
+router.use((err, req, res, next) => {
+  res.status(400)
+    .json({
+      errors: err,
+    });
 });
 
 module.exports = router;

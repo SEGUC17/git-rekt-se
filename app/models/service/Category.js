@@ -14,6 +14,7 @@ const categorySchema = Schema({
   },
   title: {
     type: String,
+    required: true,
   },
   icon: {
     type: String,

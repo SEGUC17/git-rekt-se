@@ -1,12 +1,18 @@
 const clientAuthAPI = require('./api/v1/client/auth');
 const businessAuthAPI = require('./api/v1/business/auth');
+const businessAPI = require('./api/v1/business/business');
+const businessGeneralAPI = require('./api/v1/business/general');
 const adminAuthAPI = require('./api/v1/admin/auth');
+const ServiceGeneralAPI = require('./api/v1/service/general');
+const reviewCRUDAPI = require('./api/v1/service/review');
 
 module.exports = (app) => {
   /**
    * Visitor Routes
    */
-
+  app.use('/api/v1/business', businessGeneralAPI);
+  app.use('/api/v1/service/category', ServiceGeneralAPI);
+  app.use('/api/v1/business/category', businessGeneralAPI);
   /**
    * Client Routes
    */
@@ -16,6 +22,7 @@ module.exports = (app) => {
    * Business Routes
    */
   app.use('/api/v1/business/auth', businessAuthAPI);
+  app.use('/api/v1/business', businessAPI);
 
   /**
    * Admin Routes
@@ -25,4 +32,6 @@ module.exports = (app) => {
   /**
    * Service Routes
    */
+
+  app.use('/api/v1/service', reviewCRUDAPI);
 };

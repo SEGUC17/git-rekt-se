@@ -1,68 +1,57 @@
-/**
- * Verified Business API Tests
- */
-
 const chai = require('chai');
 const supertest = require('supertest');
-
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
-const errorMessages = require('../../../app/services/shared/Strings')
-  .bussinessValidationErrors;
-
-const testData = require('../../../app/seed/business/businessSeed');
+const Admin = require('../../../app/models/admin/Admin');
+const unverifiedBussiness = require('../../../app/seed/business/unverifiedBusinessSeed');
 
 /**
- * Verified Business Sign Up Suite
+ * Business Signup Suite
  */
 
-describe('Verified Business Sign Up API', () => {
+describe('Unverified Business Signup API', () => {
   let req;
 
   before((done) => {
-    Business.collection.drop(() => {
-      Business.ensureIndexes(() => {
-        const data = testData[0];
-        const businessData = {
-          name: data.name,
-          email: data.email,
-          description: data.description,
-          phoneNumbers: data.phoneNumbers,
-        };
-        /* eslint-disable no-new */
-        new Business(businessData)
-          .save()
-          .then(() => done())
-          .catch(done);
+    supertest(app)
+      .post('/api/v1/admin/auth/create')
+      .end((request, res) => {
+        Business.collection.drop(() => {
+          Business.ensureIndexes(done);
+        });
       });
-    });
   });
 
   beforeEach(() => {
     req = supertest(app)
-      .post('/api/v1/business/auth/confirm/123');
+      .post('/api/v1/business/auth/unverified/signup');
   });
 
-  it('Should mark Business as verified', (done) => {
-    const business = testData[0];
-    const emailObj = {
-      email: business.email,
-    };
-    req.send(business)
+  /**
+   * Register a new Business
+   */
+
+  it('should add a new business', (done) => {
+    const business1 = unverifiedBussiness[0];
+    req.send(business1)
       .expect('Content-Type', /json/)
-      .expect(200)
+      // .expect(200)
       .end((err, res) => {
+        /**
+         * Error happend with request, fail the test
+         * with the error message.
+         */
         if (err) {
           done(err);
         } else {
-          // We can use email since it's unique
-          Business.find(emailObj, (findErr, result) => {
-            if (findErr) {
-              done(findErr);
+          Business.find({
+            email: business1.email,
+          }, (finderr, data) => {
+            if (finderr) {
+              done(finderr);
             } else {
-              /* eslint-disable no-underscore-dangle */
-              chai.expect(result[0]._status)
-                .to.equal('verified');
+              chai.expect(data.length)
+                .to.equal(1);
               done();
             }
           });
@@ -70,98 +59,240 @@ describe('Verified Business Sign Up API', () => {
       });
   });
 
-  it('Should not allow sign up when password is missing', (done) => {
-    req.send(testData[1])
+  it('should register add another business with different email.', (done) => {
+    const business2 = unverifiedBussiness[1];
+    req.send(business2)
       .expect('Content-Type', /json/)
-      .expect(400)
+      .expect(200)
       .end((err, res) => {
+        /**
+         * Error happend with request, fail the test
+         * with the error message.
+         */
         if (err) {
           done(err);
         } else {
-          const errors = res.body.errors;
-          const finalErr = errors.filter(er => er.msg === errorMessages.passwordRequired);
-          if (finalErr.length === 0) {
-            done(new Error('Password is missing but an error is not sent!'));
-          } else {
-            done();
-          }
+          Business.find({
+            email: business2.email,
+          }, (finderr, data) => {
+            if (finderr) {
+              done(finderr);
+            } else {
+              chai.expect(data.length)
+                .to.equal(1);
+              done();
+            }
+          });
         }
       });
   });
 
-  it('Should not allow sign up when password mismatch', (done) => {
-    req.send(testData[2])
+  it('should have two unverified businesses in the database', (done) => {
+    Business.find()
+      .then((data) => {
+        chai.expect(data.length)
+          .to.equal(2);
+        done();
+      })
+      .catch(done);
+  });
+
+  it('should not allow duplicate emails at registration', (done) => {
+    const business1 = unverifiedBussiness[1];
+    req.send(business1)
       .expect('Content-Type', /json/)
-      .expect(400)
+      .expect(400, {
+        errors: ['Business already exists.'],
+      }, done);
+  });
+
+  it('should not allow registration with wrong information.', (done) => {
+    const badBusiness = Object.assign({}, unverifiedBussiness[0]);
+    badBusiness.mobile = '98172323212323';
+
+    req.send(badBusiness)
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [{
+          param: 'mobile',
+          msg: 'Mobile must be in this format 01xxxxxxxxx',
+          value: '98172323212323',
+        }],
+      }, done);
+  });
+
+  after((done) => {
+    Admin.collection.drop(() => {
+      Admin.ensureIndexes(done);
+    });
+  });
+});
+
+
+/**
+ * Business Login Suite.
+ */
+
+describe('Business Login API', () => {
+  let req;
+  let sampleBusiness;
+
+  before((done) => {
+    sampleBusiness = {
+      name: 'HelloWorld',
+      email: 'melzareios@gmail.com',
+      shortDescription: 'My life is good.',
+      mobile: '01032454321',
+      password: 'Strong#1234',
+      _status: 'verified',
+    };
+
+    Business.collection.drop(() => {
+      Business.ensureIndexes(done);
+    });
+  });
+
+  beforeEach(() => {
+    req = supertest(app)
+      .post('/api/v1/business/auth/verified/login');
+  });
+
+  it('should add a new dummy business to test', (done) => {
+    new Business(sampleBusiness)
+      .save()
+      .then(() => done())
+      .catch(done);
+  });
+
+  it('should login using email and password', (done) => {
+    req
+      .send({
+        email: sampleBusiness.email,
+        password: sampleBusiness.password,
+      })
+      .expect('Content-Type', /json/)
+      .expect(200, done);
+  });
+
+  it('should include JWT token after login', (done) => {
+    req.send({
+      email: sampleBusiness.email,
+      password: sampleBusiness.password,
+    })
+      .expect('Content-Type', /json/)
+      .expect(200)
       .end((err, res) => {
-        if (err) {
-          done(err);
-        } else {
-          const errors = res.body.errors;
-          const finalErr = errors.filter(er => er.msg === errorMessages.passwordMismatch);
-          if (finalErr.length === 0) {
-            done(new Error('Passwords mismatch but an error is not sent!'));
-          } else {
-            done();
-          }
-        }
+        const JWTtoken = res.body.token;
+        const JWS_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/;
+
+        chai.expect(JWTtoken)
+          .to.match(JWS_REGEX);
+
+        chai.expect(res.body.message)
+          .to.equal('Business Login Success.');
+
+        chai.expect(res.body.email)
+          .to.equal(sampleBusiness.email);
+
+        done();
       });
   });
 
-  it('Should not allow sign up when there are no categories', (done) => {
-    req.send(testData[3])
+  it('should not login with wrong email', (done) => {
+    const newBusiness = Object.assign({}, sampleBusiness);
+    newBusiness.email = 'slim.abdelnadder@gmail.com';
+
+    req.send({
+      email: newBusiness.email,
+      password: newBusiness.password,
+    })
       .expect('Content-Type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else {
-          const errors = res.body.errors;
-          const finalErr = errors.filter(er => er.msg === errorMessages.categoriesRequired);
-          if (finalErr.length === 0) {
-            done(new Error('Missing Categories but an error is not sent'));
-          } else {
-            done();
-          }
-        }
-      });
+      .expect(400, {
+        errors: ['Invalid Credentials.'],
+      }, done);
   });
 
-  it('Should not allow sign up when there are no branches', (done) => {
-    req.send(testData[4])
+  it('should not login with wrong password', (done) => {
+    const newBusiness = Object.assign({}, sampleBusiness);
+    newBusiness.password = 'youcantbeatme0';
+
+    req.send({
+      email: newBusiness.email,
+      password: newBusiness.password,
+    })
       .expect('Content-Type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else {
-          const errors = res.body.errors;
-          const finalErr = errors.filter(er => er.msg === errorMessages.branchesRequired);
-          if (finalErr.length === 0) {
-            done(new Error('Missing Branches but an error is not sent'));
-          } else {
-            done();
-          }
-        }
-      });
+      .expect(400, {
+        errors: ['Invalid Credentials.'],
+      }, done);
   });
 
-  it('Should not allow sign up when there are no working hours', (done) => {
-    req.send(testData[5])
+  it('should not login with wrong email and wrong password', (done) => {
+    const newBusiness = Object.assign({}, sampleBusiness);
+    newBusiness.email = 'helloworld@gmail.com';
+    newBusiness.password = 'youcantbeatme0';
+
+    req.send({
+      email: newBusiness.email,
+      password: newBusiness.password,
+    })
       .expect('Content-Type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else {
-          const errors = res.body.errors;
-          const finalErr = errors.filter(er => er.msg === errorMessages.workingHoursRequired);
-          if (finalErr.length === 0) {
-            done(new Error('Missing Working Hours but an error is not sent'));
-          } else {
-            done();
-          }
-        }
-      });
+      .expect(400, {
+        errors: ['Invalid Credentials.'],
+      }, done);
+  });
+
+  it('should not login with an empty email', (done) => {
+    const newBusiness = Object.assign({}, sampleBusiness);
+    newBusiness.email = '';
+
+    req.send({
+      email: newBusiness.email,
+      password: newBusiness.password,
+    })
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [{
+          param: 'email',
+          msg: 'Email is a required field.',
+          value: '',
+        },
+        {
+          param: 'email',
+          msg: 'Invalid Email.',
+          value: '',
+        },
+        ],
+      }, done);
+  });
+
+
+  it('should not login with an empty password', (done) => {
+    const newBusiness = Object.assign({}, sampleBusiness);
+    newBusiness.password = '';
+
+    req.send({
+      email: newBusiness.email,
+      password: newBusiness.password,
+    })
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [{
+          param: 'password',
+          msg: 'Password is a required field.',
+          value: '',
+        },
+        {
+          param: 'password',
+          msg: 'Password length must be between 8 and 15 and contains at least one number.',
+          value: '',
+        },
+        ],
+      }, done);
+  });
+
+  after((done) => {
+    Business.collection.drop(() => {
+      Business.ensureIndexes(done);
+    });
   });
 });
