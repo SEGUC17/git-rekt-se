@@ -137,7 +137,6 @@ exports.notifyBusinessOfDenial = (mail) => {
        Your application for our directory [Git-Rekt] has been Denied.
        ---------------------------------
        This is an automated message.
-
       `,
   };
   return new Promise((resolve, reject) => {
