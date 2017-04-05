@@ -53,7 +53,7 @@ require('./routes/routes')(app);
 app.use((err, req, res, next) => {
   res.status(500)
     .json({
-      error: err.toString(),
+      error: 'An error occurred with the server.',
     });
 });
 

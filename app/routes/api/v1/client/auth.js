@@ -10,6 +10,7 @@ const Client = require('../../../../models/client/Client');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const fbConfig = require('../../../../services/shared/fbConfig');
 const Strings = require('../../../../services/shared/Strings');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 mongoose.Promise = Promise;
 
@@ -69,9 +70,9 @@ router.post('/signup', (req, res, next) => {
                       message: Strings.clientSuccess.signup,
                     });
                   })
-                  .catch(e => next([e]));
+                  .catch(e => next(e));
               })
-              .catch(e => next([e]));
+              .catch(e => next(e));
           })
           .catch(() => next([Strings.clientValidationErrors.userExists]));
       } else {
@@ -98,9 +99,9 @@ router.post('/confirmation/send', (req, res, next) => {
                   message: Strings.clientSuccess.emailConfirmation,
                 });
               })
-              .catch(e => next([e]));
+              .catch(e => next(e));
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
@@ -160,7 +161,7 @@ router.post('/login', (req, res, next) => {
       if (result.isEmpty()) {
         ClientAuthenticator.loginClient(req.body.email, req.body.password)
           .then(info => res.json(info))
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next(result.array());
       }
@@ -205,10 +206,10 @@ router.post('/forgot', (req, res, next) => {
             .then(() => res.json({
               message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
             }))
-            .catch(err => next([err]));
+            .catch(err => next(err));
         });
     })
-    .catch(err => next([err]));
+    .catch(err => next(err));
 });
 
 /**
@@ -241,11 +242,7 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
  *  Error Handling Middlewares.
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
+
 
 module.exports = router;
