@@ -2,6 +2,8 @@
  * Constant Strings
  */
 
+const locations = require('../../seed/service/locations')
+  .join(', ');
 
 /**
  *  General Strings
@@ -31,11 +33,18 @@ const bussinessValidationErrors = {
   categoriesRequired: 'Must Include atleast 1 category.',
   branchesRequired: 'Must Include aleast 1 branch.',
   businessExists: 'Business already exists.',
+  locationRequired: 'Location is a required field',
+  addressRequired: 'Address is a required field',
+  locationInvalid: `Invalid location. Must be any of [${locations}]`,
 };
 
 const businessSuccess = {
   unverifiedSignup: 'Signup Successful, A representative will contact you soon.',
   emailConfirmation: 'Please check your email for the email confirmation.',
+  infoEditSuccess: 'Info Edited Successfully',
+  branchAddedSuccess: 'Branch Added Successfully',
+  branchEditSuccess: 'Branch Edited Successfully',
+  branchDeleteSuccess: 'Branch Deleted Successfully',
 };
 
 const businessLoginMessages = {
@@ -55,9 +64,9 @@ const businessConfirmation = {
 };
 const businessMessages = {
   allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
-  editSuccess: 'Edited Successfully!',
-  doesntExist: 'Business Doesn\'t Exist',
-  mismatchID: 'You can only edit your profile!',
+  businessDoesntExist: 'Business Doesn\'t Exist',
+  branchDoesntExist: 'Business Doesn\'t Exist',
+  mismatchID: 'You can only edit your Info!',
 };
 
 /**
@@ -105,6 +114,19 @@ const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
 };
+/**
+ * Visitor Strings
+ */
+
+const visitorErrors = {
+  NoRelatedBusinesses: 'No related businesses',
+  NoRelatedServices: 'No related services',
+};
+
+const visitorValidationErrors = {
+  InvalidID: 'Invalid category ID',
+  InvalidOffset: 'Invalid Offset',
+};
 
 /**
  * Admin Strings
@@ -126,19 +148,6 @@ const adminValidationErrors = {
   passwordMismatch: 'Password and Password Confirmation must match.',
   adminExists: 'Administrator already exists.',
   invalidBusinessID: 'Invalid Business ID',
-};
-/**
- * Visitor Strings
- */
-
-const visitorErrors = {
-  NoRelatedBusinesses: 'No related businesses',
-  NoRelatedServices: 'No related services',
-};
-
-const visitorValidationErrors = {
-  InvalidID: 'Invalid category ID',
-  InvalidOffset: 'Invalid Offset',
 };
 
 module.exports = {
