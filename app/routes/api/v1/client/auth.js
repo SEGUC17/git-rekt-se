@@ -70,9 +70,9 @@ router.post('/signup', (req, res, next) => {
                       message: Strings.clientSuccess.signup,
                     });
                   })
-                  .catch(e => next([e]));
+                  .catch(e => next(e));
               })
-              .catch(e => next([e]));
+              .catch(e => next(e));
           })
           .catch(() => next([Strings.clientValidationErrors.userExists]));
       } else {
@@ -99,9 +99,9 @@ router.post('/confirmation/send', (req, res, next) => {
                   message: Strings.clientSuccess.emailConfirmation,
                 });
               })
-              .catch(e => next([e]));
+              .catch(e => next(e));
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
@@ -128,7 +128,7 @@ router.post('/login', (req, res, next) => {
       if (result.isEmpty()) {
         ClientAuthenticator.loginClient(req.body.email, req.body.password)
           .then(info => res.json(info))
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next(result.array());
       }
@@ -173,10 +173,10 @@ router.post('/forgot', (req, res, next) => {
             .then(() => res.json({
               message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
             }))
-            .catch(err => next([err]));
+            .catch(err => next(err));
         });
     })
-    .catch(err => next([err]));
+    .catch(err => next(err));
 });
 
 /**

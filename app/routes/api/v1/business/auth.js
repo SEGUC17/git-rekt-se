@@ -86,7 +86,7 @@ router.post('/verified/login', (req, res, next) => {
       if (result.isEmpty()) {
         BusinessAuthenticator.loginBusiness(req.body.email, req.body.password)
           .then(info => res.json(info))
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next(result.array());
       }
@@ -130,10 +130,10 @@ router.post('/forgot', (req, res, next) => {
             .then(() => res.json({
               message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
             }))
-            .catch(err => next([err]));
+            .catch(err => next(err));
         });
     })
-    .catch(err => next([err]));
+    .catch(err => next(err));
 });
 
 /**

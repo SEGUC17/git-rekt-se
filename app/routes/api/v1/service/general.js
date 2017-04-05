@@ -67,14 +67,14 @@ router.get('/:id/:offset', (req, res, next) => {
                   results: services,
                 });
               })
-              .catch(e => next([e]));
+              .catch(e => next(e));
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
     })
-    .catch(e => next([e]));
+    .catch(e => next(e));
 });
 
 /**

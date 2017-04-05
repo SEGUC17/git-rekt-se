@@ -57,15 +57,15 @@ router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
                   .then(() => res.json({
                     message: businessSuccess.infoEditSuccess,
                   }))
-                  .catch(err => next([err]));
+                  .catch(err => next(err));
               }
             })
-            .catch(err => next([err]));
+            .catch(err => next(err));
         } else {
           next(result.array());
         }
       })
-      .catch(err => next([err]));
+      .catch(err => next(err));
   }
 });
 
@@ -97,17 +97,17 @@ router.post('/:id/add/branches', businessAuthMiddleware, (req, res, next) => {
                       .then(() => res.json({
                         message: businessSuccess.branchAddedSuccess,
                       }))
-                      .catch(err => next([err]));
+                      .catch(err => next(err));
                   }
                 })
-                .catch(err => next([err]));
+                .catch(err => next(err));
             })
-            .catch(err => next([err]));
+            .catch(err => next(err));
         } else {
           next(result.array());
         }
       })
-      .catch(err => next([err]));
+      .catch(err => next(err));
   }
 });
 
@@ -139,17 +139,17 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
                   .then(() => res.json({
                     message: businessSuccess.branchEditSuccess,
                   }))
-                  .catch(err => next([err]));
+                  .catch(err => next(err));
               } else {
                 next([businessMessages.mismatchID]);
               }
             })
-            .catch(err => next([err]));
+            .catch(err => next(err));
         } else {
           next(result.array());
         }
       })
-      .catch(err => next([err]));
+      .catch(err => next(err));
   }
 });
 
@@ -175,12 +175,12 @@ router.delete('/:business_id/delete/branch/:branch_id', businessAuthMiddleware, 
             .then(() => res.json({
               message: businessSuccess.branchDeleteSuccess,
             }))
-            .catch(err => next([err]));
+            .catch(err => next(err));
         } else {
           next([businessMessages.mismatchID]);
         }
       })
-      .catch(err => next([err]));
+      .catch(err => next(err));
   }
 });
 

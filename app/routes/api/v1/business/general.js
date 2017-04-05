@@ -25,9 +25,9 @@ router.get('/:id', (req, res, next) => {
   let returnedBusiness;
 
   Business.findOne({
-      _id: req.params.id,
-      _status: 'verified',
-    }, {
+    _id: req.params.id,
+    _status: 'verified',
+  }, {
       password: false,
       _deleted: false,
     })
@@ -57,9 +57,9 @@ router.get('/:id', (req, res, next) => {
       };
 
       Service.find({
-          _business: business._id,
-          _deleted: false,
-        })
+        _business: business._id,
+        _deleted: false,
+      })
         .populate([{
           path: 'branches',
           match: {
@@ -94,18 +94,18 @@ router.get('/:id/:offset', (req, res, next) => {
       if (result.isEmpty()) {
         const offset = req.params.offset;
         Business.count({
-            categories: {
+          categories: {
               $in: [req.params.id],
             },
-            _deleted: false,
-          })
+          _deleted: false,
+        })
           .then((cnt) => {
             Business.find({
-                categories: {
+              categories: {
                   $in: [req.params.id],
                 },
-                _deleted: false,
-              }, {
+              _deleted: false,
+            }, {
                 shortDescription: true,
                 name: true,
                 _id: false,
@@ -131,14 +131,14 @@ router.get('/:id/:offset', (req, res, next) => {
                   results: businesses,
                 });
               })
-              .catch(err => next([err]));
+              .catch(err => next(err));
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
     })
-    .catch(e => next([e]));
+    .catch(e => next(e));
 });
 
 router.use(errorHandler);

@@ -80,7 +80,7 @@ router.post('/:id/review', clientAuthMiddleware, (req, res, next) => {
                   });
               });
           })
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next(result.array());
       }
@@ -141,7 +141,7 @@ router.post('/:id/review/:review_id/edit', clientAuthMiddleware, (req, res, next
                   });
               });
           })
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next(result.array());
       }
@@ -201,7 +201,7 @@ router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, ne
                   });
               });
           })
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next(result.array());
       }

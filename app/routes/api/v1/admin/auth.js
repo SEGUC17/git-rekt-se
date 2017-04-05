@@ -41,7 +41,7 @@ router.post('/login', (req, res, next) => {
       if (result.isEmpty()) {
         AdminAuthenticator.loginAdmin(req.body.email, req.body.password)
           .then(info => res.json(info))
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next(result.array());
       }
