@@ -27,7 +27,7 @@ const router = express.Router();
  */
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, './public/dist/uploads');
+    cb(null, `${__dirname}/uploads`);
   },
   filename(req, file, cb) {
     const buf = crypto.randomBytes(48);
@@ -60,6 +60,7 @@ router.use(expressValidator({}));
  */
 
 router.get('/test', (req, res, next) => {
+  console.log('ya rb nengz');
   console.log(1);
   const business1 = new Business({
     name: 'kojak',
@@ -345,6 +346,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
   /**
    * Form validation
    */
+  console.log(1);
   req.checkBody(validator.offeringCreateValidationBody);
   req.checkParams(validator.offeringEditValidationParmas);
 
@@ -364,7 +366,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
           price: req.body.price,
           address: req.body.address ? req.body.address : '',
         };
-
+        console.log(2);
         Service.findOne({
           _id: serviceID,
           _deleted: false,
@@ -376,7 +378,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                */
               return next([Strings.offeringValidationError.invalidService]);
             }
-
+            console.log(3);
             if (service._business.equals(req.user._id)) {
               const business = req.user;
               let validBranch = false;
@@ -385,6 +387,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                   validBranch = true;
                 }
               });
+              console.log(4);
               if (validBranch) {
                 let validOffering = false;
                 service.offerings.forEach((serviceOffering) => {
@@ -392,13 +395,16 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                     validOffering = true;
                   }
                 });
+                console.log(5);
                 if (validOffering) {
                   Offering.findOne({
                     _id: offeringID,
                     _deleted: false,
                   })
                     .then((offeringfound) => {
+                      console.log(6);
                       if (offeringfound) {
+                        console.log(7);
                         const oldbranch = offeringfound.branch;
                         offeringfound.startDate = reqData.startDate;
                         offeringfound.endDate = reqData.endDate;
