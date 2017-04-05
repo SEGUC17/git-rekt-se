@@ -89,7 +89,7 @@ const clientSuccess = {
 };
 
 const serviceSuccess = {
-  imageAdd: 'Image added succesfully!',
+  imageAdd: 'Image added successfully!',
   imageEdit: 'Description updated succesfully!',
   imageDelete: 'Image deleted succesfully!',
 };
