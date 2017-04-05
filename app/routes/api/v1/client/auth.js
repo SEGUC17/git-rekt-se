@@ -126,7 +126,7 @@ router.post('/reset', (req, res, next) => {
       if (result.isEmpty()) {
         jwt.verify(resetToken, JWT_KEY, (err, payload) => {
           if (!payload) {
-            next(Strings.businessForgotPassword.INva);
+            next(Strings.clientForgotPassword.INVALID_RESET_TOKEN);
           } else {
             const email = payload.email;
             const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
@@ -140,7 +140,7 @@ router.post('/reset', (req, res, next) => {
       .exec()
       .then((client) => {
         if (!client) {
-          return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
+          return next(Strings.clientForgotPassword.INVALID_RESET_TOKEN);
         }
         client.passwordResetTokenDate = undefined; // Disable the token
         client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
@@ -158,37 +158,6 @@ router.post('/reset', (req, res, next) => {
         next(result.array());
       }
     });
-
-  jwt.verify(resetToken, JWT_KEY, (err, payload) => {
-    if (!payload) {
-      next(Strings.businessForgotPassword.INva);
-    } else {
-      const email = payload.email;
-      const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
-
-      Client.findOne({
-        email,
-        passwordChangeDate: {
-          $lte: creationDate,
-        },
-      })
-      .exec()
-      .then((client) => {
-        if (!client) {
-          return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
-        }
-        client.passwordResetTokenDate = undefined; // Disable the token
-        client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
-        client.password = password; // Reset password
-
-        return client.save()
-          .then(() => res.json({
-            message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
-          }));
-      })
-      .catch(e => next([e]));
-    }
-  });
 });
 
 

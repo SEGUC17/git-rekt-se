@@ -126,11 +126,6 @@ const visitorValidationErrors = {
   InvalidOffset: 'Invalid Offset',
 };
 
-const businessForgotPassword = {
-  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
-  INVALID_RESET_TOKEN: 'Invalid reset token.',
-  PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
-}
 /**
  * Admin Strings
  */
@@ -163,7 +158,6 @@ module.exports = {
   businessForgotPassword,
   clientForgotPassword,
   businessLoginMessages,
-  businessForgotPassword,
   adminLoginMessages,
   adminValidationErrors,
   visitorErrors,
