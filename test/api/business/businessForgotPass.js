@@ -1,28 +1,26 @@
 const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
-const Client = require('../../../app/models/client/Client');
-const clients = require('../../../app/seed/client/clientForgotPasswordSeed');
+const Business = require('../../../app/models/business/Business');
+const businesses = require('../../../app/seed/business/businessForgotPassword');
 const Strings = require('../../../app/services/shared/Strings');
 
-describe('Client forgot password API', () => {
+
+describe('Business forgot password API', () => {
   let req;
 
   before((done) => {
-    Client.collection.drop(() => {
-      Client.ensureIndexes(() => {
-        const data = clients[0];
-        const clientData = {
+    Business.collection.drop(() => {
+      Business.ensureIndexes(() => {
+        const data = businesses[0];
+        const businessData = {
           name: data.name,
-          password: data.password,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          mobile: data.mobile,
-          gender: data.gender,
           email: data.email,
+          shortDescription: data.description,
+          phoneNumbers: data.phoneNumbers,
         };
 
-        new Client(clientData)
+        new Business(businessData)
           .save()
           .then(() => done())
           .catch(done);
@@ -32,7 +30,7 @@ describe('Client forgot password API', () => {
 
   beforeEach(() => {
     req = supertest(app)
-      .post('/api/v1/client/auth/forgot');
+      .post('/api/v1/business/auth/forgot');
   });
 
 
@@ -52,7 +50,7 @@ describe('Client forgot password API', () => {
 
         // check if the message matches the one expected to be returned
 
-        const eq = res.body.message === Strings.clientForgotPassword.CHECK_YOU_EMAIL ? 1 : 0;
+        const eq = res.body.message === Strings.businessForgotPassword.CHECK_YOU_EMAIL ? 1 : 0;
         const chckMsg = eq;
 
         chai.expect(chckMsg)
@@ -63,8 +61,8 @@ describe('Client forgot password API', () => {
   });
 
 
-  it('should send an email to a valid client that is in the database', (done) => {
-    // initialize mail that matches one in seed
+  it('should send an email to a valid Business that is in the database', (done) => {
+    // initialize mail that does matches one in seed
     const mail1 = {
       email: 'hadyyasser23@gmail.com',
     };
@@ -75,10 +73,10 @@ describe('Client forgot password API', () => {
         if (err) {
           return done(err);
         }
+
         // check if the message matches the one expected to be returned
 
-
-        const eq = res.body.message === Strings.clientForgotPassword.CHECK_YOU_EMAIL ? 1 : 0;
+        const eq = res.body.message === Strings.businessForgotPassword.CHECK_YOU_EMAIL ? 1 : 0;
         const chckMsg = eq;
 
         chai.expect(chckMsg)
