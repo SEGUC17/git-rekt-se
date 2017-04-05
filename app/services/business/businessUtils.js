@@ -1,5 +1,11 @@
 const Branch = require('../../models/service/Branch');
 
+/**
+ * Utility Function for parsing and creating and array of branches and returning a Promise
+ * @param {Object} branches
+ * @param {ObjectId} businessID
+ * @returns {Promise}
+ */
 const addBranches = (branches, businessID) => {
   const resultBranches = branches.map((branch) => {
     const branchData = {
