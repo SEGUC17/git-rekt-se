@@ -19,6 +19,7 @@ describe('Category CRUD Test Suite', () => {
 
   before((done) => {
     console.log('I create a dummy admin and login.');
+    console.log('I also drop the category collection before each test.');
     sampleAdmin = new Admin({
       email: 'abdobassiony996@hotmail.com',
       password: 'Strong#1234',
@@ -45,7 +46,6 @@ describe('Category CRUD Test Suite', () => {
   });
 
   beforeEach((done) => {
-    console.log('I drop the category collection before each test.');
     Category.collection.drop(() => {
       Category.ensureIndexes(done);
     });
