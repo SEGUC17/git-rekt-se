@@ -16,15 +16,16 @@ mongoose.Promise = Promise;
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
-router.post('/confirm/:_id', AdminAuth, (req, res, next) => {
+router.post('/confirm/:id', AdminAuth, (req, res, next) => {
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        Business.findOne({
-          _id: req.params._id,
+        const search = {
+          _id: req.params.id,
           _deleted: false,
-        })
+        };
+        Business.findOne(search)
           .exec()
           .then((business) => {
             if (business) {
@@ -60,15 +61,16 @@ router.post('/confirm/:_id', AdminAuth, (req, res, next) => {
     .catch(err => next([err]));
 });
 
-router.post('/deny/:_id', AdminAuth, (req, res, next) => {
+router.post('/deny/:id', AdminAuth, (req, res, next) => {
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        Business.findOne({
-          _id: req.params._id,
+        const search = {
+          _id: req.params.id,
           _deleted: false,
-        })
+        };
+        Business.findOne(search)
           .exec()
           .then((business) => {
             if (business) {
@@ -98,7 +100,8 @@ router.post('/deny/:_id', AdminAuth, (req, res, next) => {
       } else {
         next(result.array());
       }
-    });
+    })
+.catch(err => next([err]));
 });
 
 /**

@@ -264,7 +264,7 @@ describe('Administrator Accept/Reject Business Application API', () => {
       .expect('Content-Type', /json/)
       .expect(400, {
         errors: [{
-          param: '_id',
+          param: 'id',
           msg: 'Invalid Business ID',
           value: 'x1',
         },

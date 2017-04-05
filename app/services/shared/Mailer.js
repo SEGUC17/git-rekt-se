@@ -114,12 +114,9 @@ exports.notifyBusinessOfConfirmation = (host, mail) => {
        'Your application for our directory [Git-Rekt] has been Accepted.\n\n' +
        'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
        'http://'}${host}/confirm/signup\n\n` +
-       '--------------------------------- ' +
-       'This is an automated message.'
-      ,
+      '--------------------------------- ' +
+      'This is an automated message.',
   };
-  // console.log('---------------------------LINK----------------------');
-  // console.log(`${'http://'}${host}/confirm/signup\n\n`);
   return new Promise((resolve, reject) => {
     mailer.sendMail(emailContent, (err, information) => {
       if (err) {
@@ -140,7 +137,6 @@ exports.notifyBusinessOfDenial = (mail) => {
        Your application for our directory [Git-Rekt] has been Denied.
        ---------------------------------
        This is an automated message.
-
       `,
   };
   return new Promise((resolve, reject) => {
