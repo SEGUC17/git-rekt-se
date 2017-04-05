@@ -23,7 +23,7 @@ module.exports = (app) => {
    * Business Routes
    */
   app.use('/api/v1/business/auth', businessAuthAPI);
-  // app.use('/api/v1/business/profile', businessProfileAPI);
+  app.use('/api/v1/business/profile', businessProfileAPI);
   app.use('/api/v1/business', businessAPI);
 
   /**
