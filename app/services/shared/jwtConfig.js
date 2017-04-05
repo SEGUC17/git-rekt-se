@@ -213,6 +213,7 @@ const adminAuthMiddleware = (req, res, next) => {
 };
 
 module.exports = {
+  parseAuthHeader,
   clientStrategy,
   clientAuthMiddleware,
   businessStrategy,
