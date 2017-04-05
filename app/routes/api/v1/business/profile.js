@@ -82,9 +82,10 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
                   })
                   .catch(e => next(e));
               } else {
-                business.save();
-                res.json({
-                  message: Strings.businessInformationChanged.UPDATE_SUCCESSFULL,
+                business.save().then(() => {
+                  res.json({
+                    message: Strings.businessInformationChanged.UPDATE_SUCCESSFULL,
+                  });
                 });
               }
             })
