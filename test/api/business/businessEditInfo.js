@@ -6,8 +6,23 @@ const businesses = require('../../../app/seed/business/verifiedBusinessSeed');
 const Business = require('../../../app/models/business/Business');
 
 
-const notModifiedMail = Object.assign({}, businesses[1]);
-notModifiedMail.email = 'hadyyasser23@gmail.com';
+const notModifiedMail = {
+  name: 'GUC german center',
+  password: 'keytroniC1100',
+  confirmPassword: 'keytroniC1100',
+  email: 'hadyyasser23@gmail.com',
+  shortDescription: 'test',
+  phoneNumbers: ['01114804171'],
+};
+
+const modifiedMail = {
+  name: 'GUC german center',
+  password: 'keytroniC1100',
+  confirmPassword: 'keytroniC1100',
+  email: 'hadyyasser@me.com',
+  shortDescription: 'test',
+  phoneNumbers: ['01114804171'],
+};
 
 mongoose.Promise = Promise;
 
@@ -16,54 +31,50 @@ describe('Should update business information correctly', () => {
   let token;
 
 
-  before((done) => {
-    console.log('I run before the first it block.');
+  // before((done) => {
+
+  // });
+
+  beforeEach((done) => {
     Business.collection.drop(() => {
       Business.ensureIndexes(() => {
-        console.log('ok?');
         const business1 = new Business(businesses[0]);
         business1.password = 'Lenovo1100';
-        business1.save();
-
-
-        console.log('henaaaaaaaaaaaaaaaaaaaaaa');
-        req = supertest(app)
-                  .post('api/v1/business/auth/verified/login')
-                  .send({
-                    email: business1.email,
-                    password: business1.password,
-                  })
-                  .expect('Content-Type', /json/)
-                  .expect(200)
-                  .end((err, res) => {
-                    if (err) {
-                      console.log('hmmm?');
-                      done(err);
-                    } else {
-                      token = res.body.token;
-                      done();
-                    }
-                  });
+        business1.save()
+          .then(() => {
+            req = supertest(app)
+              .post('/api/v1/business/auth/verified/login')
+              .send({
+                email: business1.email,
+                password: 'Lenovo1100',
+              })
+              .expect('Content-Type', /json/)
+              .expect(200)
+              .end((err, res) => {
+                if (err) {
+                  done(err);
+                } else {
+                  token = res.body.token;
+                  done();
+                }
+              });
+          })
+          .catch(err => done(err));
       });
     });
   });
 
-//   beforeEach(() => {
-//     console.log('I run before every it block');
-//     req = supertest(app)
-//       .get('/api/v1/route_to_test');
-//   });
-
 
   it('edit info without editing email', (done) => {
-    console.log('ok????');
     const business1 = businesses[0];
     Business.findOne({
       email: business1.email,
     })
       .exec()
       .then((business) => {
-        req.post('/api/v1/business/auth/update')
+        supertest(app)
+          .post('/api/v1/business/profile/'.concat(business._id)
+            .concat('/edit'))
           .send(notModifiedMail)
           .expect('Content-Type', /json/)
           .set('Authorization', `JWT ${token}`)
@@ -82,35 +93,43 @@ describe('Should update business information correctly', () => {
               done();
             }
           });
-      });
+      })
+      .catch(err => done(err));
   });
-
 
   /**
    * Passing test
    */
 
-//   it('should do something modular, meaningful and pass', (done) => {
-//     req.expect(404)
-//       .end((err, res) => {
-//         /**
-//          * Error happend with request, fail the test
-//          * with the error message.
-//          */
-//         if (err) {
-//           return done(err);
-//         }
+  it('edit info with editing email and send an email', (done) => {
+    const business1 = businesses[0];
+    Business.findOne({
+      email: business1.email,
+    })
+      .exec()
+      .then((business) => {
+        supertest(app)
+          .post('/api/v1/business/profile/'.concat(business._id)
+            .concat('/edit'))
+          .send(modifiedMail)
+          .expect('Content-Type', /json/)
+          .set('Authorization', `JWT ${token}`)
+          .end((err, res) => {
+            /**
+             * Error happend with request, fail the test
+             * with the error message.
+             */
 
-//         /**
-//          * Do something with the response
-//          */
-
-//         const doSomethingMeaningFul = res.body.message === 'Working' ? 1 : 0;
-
-//         chai.expect(doSomethingMeaningFul)
-//           .to.equal(0);
-
-//         return done();
-//       });
-//   });
+            if (err) {
+              done(err);
+            } else {
+              chai.expect(res.body)
+                .to.have.property('message')
+                .to.equal('Please check your email for the email confirmation.');
+              done();
+            }
+          });
+      })
+      .catch(err => done(err));
+  });
 });

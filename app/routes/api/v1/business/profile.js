@@ -60,7 +60,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
               /**
                * Editing existing information
                */
-
+              const oldMail = business.email;
               business.name = userInfo.name;
               business.shortDescription = userInfo.shortDescription;
               business.phoneNumbers = userInfo.phoneNumbers;
@@ -70,7 +70,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
               if (emailChanged) {
                 business.save()
                   .then(() => {
-                    Mailer.sendConfirmationMessage(req.body.email)
+                    Mailer.sendConfirmationMessage(oldMail)
                           .then(() => {
                             res.json({
                               message: Strings.businessSuccess.emailConfirmation,
