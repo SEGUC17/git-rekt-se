@@ -11,6 +11,7 @@ const locations = require('../../seed/service/locations')
 
 const generalErrors = {
   mailerError: 'An issue occured while sending the email.',
+  generalError: 'An error occurred trying to handle this request.',
 };
 
 /**
@@ -33,6 +34,7 @@ const bussinessValidationErrors = {
   categoriesRequired: 'Must Include atleast 1 category.',
   branchesRequired: 'Must Include aleast 1 branch.',
   businessExists: 'Business already exists.',
+  invalidBusinessId: 'The required id is invalid.',
   locationRequired: 'Location is a required field',
   addressRequired: 'Address is a required field',
   locationInvalid: `Invalid location. Must be any of [${locations}]`,
@@ -107,6 +109,26 @@ const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
 };
+
+/**
+ * Review Strings
+ */
+
+const reviewErrors = {
+  invalidService: 'The service you are trying to review does not exist.',
+  emptyRating: 'You must provide a rating in your review.',
+  alreadyReviewedService: 'You have already reviewed this service.',
+  invalidReview: 'This review does not exist.',
+  userMismatchEdit: 'You did not create the review that you are trying to edit.',
+  userMismatchDelete: 'You did not create the review that you are trying to delete.',
+};
+
+const reviewSuccess = {
+  createSuccess: 'Review added successfully.',
+  updateSuccess: 'Review updated successfully.',
+  deleteSuccess: 'Review deleted successfully.',
+};
+
 /**
  * Visitor Strings
  */
@@ -168,4 +190,6 @@ module.exports = {
   visitorErrors,
   visitorValidationErrors,
   businessMessages,
+  reviewErrors,
+  reviewSuccess,
 };
