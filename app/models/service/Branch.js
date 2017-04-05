@@ -19,7 +19,6 @@ const branchSchema = Schema({
   },
   address: {
     type: String,
-    required: false,
   },
   _deleted: {
     type: Boolean,
