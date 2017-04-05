@@ -7,8 +7,10 @@ const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
 const Client = require('../../../../models/client/Client');
+const InvalidToken = require('../../../../models/shared/InvalidToken');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const fbConfig = require('../../../../services/shared/fbConfig');
+const jwtConfig = require('../../../../services/shared/jwtConfig');
 const Strings = require('../../../../services/shared/Strings');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
@@ -236,6 +238,28 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
     redirectURL = `?${redirectURL.substr(1)}`;
     res.redirect(`/client/signup/${redirectURL}`);
   }
+});
+
+
+/**
+ * Client Logout.
+ * http://stackoverflow.com/questions/3521290/logout-get-or-post
+ */
+
+router.post('/logout', jwtConfig.clientAuthMiddleware, (req, res, next) => {
+  const token = jwtConfig.parseAuthHeader(req.headers.authorization)
+    .value;
+  new InvalidToken({
+    token,
+  })
+    .save((err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.json({
+        message: Strings.clientSuccess.logout,
+      });
+    });
 });
 
 /**
