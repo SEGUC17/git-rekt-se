@@ -144,7 +144,7 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
         next(Strings.clientVerfication.alreadyConfirmed);
         return;
       }
-      if (client.status === 'banned'){
+      if (client.status === 'banned') {
         next(Strings.clientVerfication.accountBanned);
         return;
       }
