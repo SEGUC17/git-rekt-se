@@ -6,7 +6,7 @@ const adminAuthAPI = require('./api/v1/admin/auth');
 const clientProfileAPI = require('./api/v1/client/profile');
 const ServiceGeneralAPI = require('./api/v1/service/general');
 const reviewCRUDAPI = require('./api/v1/service/review');
-const businessProfileAPI = require('./api/v1/business/business');
+const businessProfileAPI = require('./api/v1/business/profile');
 
 
 module.exports = (app) => {
