@@ -7,7 +7,6 @@ const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
-const authMiddleWare = require('../../../../services/shared/jwtConfig');
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -80,40 +79,6 @@ router.post('/verified/login', (req, res, next) => {
         BusinessAuthenticator.loginBusiness(req.body.email, req.body.password)
           .then(info => res.json(info))
           .catch(err => next([err]));
-      } else {
-        next(result.array());
-      }
-    });
-});
-
-/**
- * Business update data
- */
-
-router.post('/update', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
-  const businessInfo = {
-    name: req.body.name,
-    shortDescription: req.body.shortDescription,
-    phoneNumbers: req.body.phoneNumbers, // Add to phone numbers array
-  };
-  req.checkBody(validationSchemas.businessUpdateValidation);
-  req.getValidationResult()
-    .then((result) => {
-      if (result.isEmpty()) {
-        Business.findOne({ email: req.body.email })
-    .exec()
-    .then((business) => {
-      business.name = businessInfo.name;
-      business.shortDescription = businessInfo.shortDescription;
-      business.phoneNumbers = businessInfo.phoneNumbers;
-
-      return business.save().then(() => {
-        res.json({
-          message: Strings.businessInformationChanged.UPDATE_SUCCESSFULL,
-        });
-      });
-    })
-    .catch(err => next([err]));
       } else {
         next(result.array());
       }

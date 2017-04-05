@@ -100,7 +100,7 @@ const clientConfirmation = {
 };
 
 const businessInformationChanged = {
-  UPDATE_SUCCESSFULL: 'Information successfully updated',
+  UPDATE_SUCCESSFULL: 'Your information has been updated successfully.',
 };
 
 /**

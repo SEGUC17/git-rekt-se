@@ -189,12 +189,7 @@ const visitorValidation = {
 };
 
 const businessEditInfoValidation = {
-  workingHours: {
-    notEmpty: {
-      errorMessage: bussinessValidationErrors.workingHoursRequired,
-    },
-  },
-  description: {
+  shortDescription: {
     notEmpty: {
       errorMessage: bussinessValidationErrors.emptyConfirmation,
     },
@@ -202,6 +197,20 @@ const businessEditInfoValidation = {
   categories: {
     notEmpty: {
       errorMessage: bussinessValidationErrors.categoriesRequired,
+    },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.invalidPassword,
+    },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
     },
   },
 };
