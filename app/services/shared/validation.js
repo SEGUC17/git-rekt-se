@@ -1,12 +1,14 @@
 /**
  * Express validator schema
  */
+const locations = require('../../seed/service/locations');
+
 const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
-const adminValidationErrors = Strings.adminValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
+const adminValidationErrors = Strings.adminValidationErrors;
 
 /**
  * Client validation
@@ -182,7 +184,9 @@ const visitorValidation = {
   },
   offset: {
     isInt: {
-      options: { min: 1 },
+      options: {
+        min: 1,
+      },
       errorMessage: visitorValidationErrors.InvalidOffset,
     },
   },
@@ -215,6 +219,32 @@ const businessEditInfoValidation = {
   },
 };
 
+
+const businessAddValidation = {
+  branches: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.branchesRequired,
+    },
+  },
+};
+
+const businessEditValidation = {
+  'branch.location': {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.locationRequired,
+    },
+    isIn: {
+      options: [locations],
+      errorMessage: bussinessValidationErrors.locationInvalid,
+    },
+  },
+  'branch.address': {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.addressRequired,
+    },
+  },
+};
+
 /**
  * Administrator validation
  */
@@ -239,7 +269,6 @@ const adminLoginValidation = {
   },
 };
 
-
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
@@ -250,6 +279,8 @@ const validation = {
   businessUpdateValidation,
   visitorValidation,
   businessEditInfoValidation,
+  businessAddValidation,
+  businessEditValidation,
 };
 
 module.exports = validation;
