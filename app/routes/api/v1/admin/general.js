@@ -16,18 +16,14 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 router.post('/confirm/:id', AdminAuth, (req, res, next) => {
-  console.log(1);
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
-  console.log(2);
   Business.findOne({
     _id: req.params.id,
     _deleted: false,
   })
   .exec()
   .then((business) => {
-    console.log('1111111111111111111111111111111111111111');
     if (business) {
-      console.log('22222222222222222222222222222222222222222');
       if (business._status === 'verified') {
         res.json({
           message: Strings.businessConfirmation.alreadyConfirmed,
@@ -37,27 +33,24 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
           message: Strings.businessConfirmation.alreadyDenied,
         });
       } else {
-        console.log('33333333333333333333333333333333333333333333');
         business._status = 'verified';
         business.save()
-        .exec()
         .then(() => {
-          Mailer.notifyBusinessOfConfirmation(business.email)
-          .then(res.json({
-            message: Strings.businessConfirmation.confirmed,
-          }))
-          .catch(err => next([err]));
+          Mailer.notifyBusinessOfConfirmation(req.hostname, business.email)
+          .then(() => {
+            res.json({
+              message: Strings.businessConfirmation.confirmed,
+            });
+          }).catch(err => next([err.message]));
         })
         .catch(saveErr => next([saveErr]));
       }
     } else {
-      console.log('not found');
       res.json({
         message: Strings.businessConfirmation.notFound,
       });
     }
-  }).catch(err =>
- console.log(next([err])));
+  }).catch(err => next([err]));
 });
 
 router.post('/deny/:id', AdminAuth, (req, res, next) => {
@@ -84,7 +77,7 @@ router.post('/deny/:id', AdminAuth, (req, res, next) => {
           .then(() => {
              // send e-mail
             Mailer.notifyBusinessOfDenial(business.emails)
-          .then(res.json({
+          .then(() => res.json({
             message: Strings.businessConfirmation.confirmed,
           }))
           .catch(err => next([err]));

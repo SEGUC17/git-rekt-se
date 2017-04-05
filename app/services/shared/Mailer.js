@@ -118,14 +118,15 @@ exports.notifyBusinessOfConfirmation = (host, mail) => {
        'This is an automated message.'
       ,
   };
+  // console.log('---------------------------LINK----------------------');
+  // console.log(`${'http://'}${host}/confirm/signup\n\n`);
   return new Promise((resolve, reject) => {
     mailer.sendMail(emailContent, (err, information) => {
       if (err) {
         return reject(err);
       }
       return resolve(information);
-    })
-      .catch(reject);
+    });
   });
 };
 
