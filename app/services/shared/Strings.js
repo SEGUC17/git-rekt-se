@@ -117,6 +117,8 @@ const clientConfirmation = {
 const clientVerfication = {
   invalidToken: 'This token is invalid or has expired.',
   verificationSuccess: 'Your e-mail has been successfully confirmed.',
+  alreadyConfirmed: 'Your e-mail is already confirmed.',
+  accountBanned: 'Your account is banned.',
 };
 
 /**

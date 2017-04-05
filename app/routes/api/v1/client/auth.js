@@ -140,6 +140,14 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
         next(Strings.clientVerfication.invalidToken);
         return;
       }
+      if (client.status === 'confirmed') {
+        next(Strings.clientVerfication.alreadyConfirmed);
+        return;
+      }
+      if (client.status === 'banned'){
+        next(Strings.clientVerfication.accountBanned);
+        return;
+      }
       client.confirmationTokenDate = undefined;
       client.status = 'confirmed';
       client.save()
