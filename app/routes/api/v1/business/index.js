@@ -16,6 +16,7 @@ const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
 const validator = require('../../../../services/shared/validation');
 const Strings = require('../../../../services/shared/Strings');
+const categories = require('../../../../seed/service/serviceCatgeoriesSeed');
 
 mongoose.Promise = Promise;
 
@@ -88,19 +89,23 @@ router.get('/test', (req, res, next) => {
     .catch(e => next(e));
 });
 
+router.get('/testt', (req, res, next) => {
+  console.log(1);
+  Category.insertMany(categories).then(docs => res.json({
+    message: 'database2 updated',
+  })).catch(e => next(e));
+});
+
 
 router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req, res, next) => {
   /**
    * Form validation
    */
-  console.log('Hello world1');
   req.checkBody(validator.serviceCreateValidation);
 
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        console.log('Hello world2');
-
         /**
          * Validation passed
          */
@@ -110,7 +115,6 @@ router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req
           description: req.body.description ? req.body.description : '',
           categories: req.body.categories ? req.body.categories : [],
         };
-        console.log(req.file);
 
         /**
          * Checking category IDs are invalid or not
@@ -129,9 +133,6 @@ router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req
             })
             .catch(e => next([e]));
         });
-        console.log('Hello world3');
-
-
         if (valid) {
           /**
            * Saving the serivce to the service collection
@@ -144,7 +145,6 @@ router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req
             _business: req.user._id,
             coverImage: req.file ? req.file.filename : undefined,
           });
-          console.log('zftnggjtngtkjtnm');
           service.save()
             .then(doc => res.json({
               message: Strings.serviceSuccess.serviceAdded,
@@ -195,7 +195,6 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
                 const business = req.user;
                 let valid = false;
                 business.branches.forEach((branch) => {
-                  console.log(branch);
                   if (reqData.branch === `${branch}`) {
                     valid = true;
                   }
@@ -221,19 +220,19 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
                   })
                   .catch(e => next([e]));
                 } else {
-                  return next([Strings.offeringValidationError.invalidBranch]);
+                  next([Strings.offeringValidationError.invalidBranch]);
                 }
               } else {
               /**
                * business doesn't own this particular service to edit it
                */
-                return next([Strings.offeringValidationError.invalidOperation]);
+                next([Strings.offeringValidationError.invalidOperation]);
               }
             } else {
             /**
              * No service with the id in the request params
              */
-              return next([Strings.offeringValidationError.invalidService]);
+              next([Strings.offeringValidationError.invalidService]);
             }
           })
           .catch(e => next([e]));
@@ -273,7 +272,7 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
          * Checking category IDs are invalid or not
          */
         let valid = true;
-        reqData.categories.foreach((category) => {
+        reqData.categories.forEach((category) => {
           Category.findOne({
             _id: category,
             _deleted: false,
@@ -286,7 +285,7 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
             })
             .catch(e => next([e]));
         });
-
+        console.log('hello2');
         if (valid) {
           Service.findOne({
             _id: req.params.id,
@@ -294,7 +293,7 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
           })
             .then((service) => {
               if (!service) {
-                return next([Strings.offeringValidationError.invalidService]);
+                next([Strings.offeringValidationError.invalidService]);
               }
               if (service._business.equals(req.user._id)) {
                 service.name = reqData.name;
@@ -310,12 +309,14 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
                     });
                   })
                   .catch(e => next(e));
+              } else {
+                next([Strings.offeringValidationError.invalidOperation]);
               }
-              return next([Strings.offeringValidationError.invalidOperation]);
             })
             .catch(e => next([e]));
+        } else {
+          next([Strings.serviceValidationErrors.invalidCategory]);
         }
-        next([Strings.serviceValidationErrors.invalidCategory]);
       } else {
         next(result.array());
       }
