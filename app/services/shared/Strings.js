@@ -11,6 +11,7 @@ const locations = require('../../seed/service/locations')
 
 const generalErrors = {
   mailerError: 'An issue occured while sending the email.',
+  generalError: 'An error occurred trying to handle this request.',
 };
 
 /**
@@ -89,6 +90,7 @@ const clientSuccess = {
   emailConfirmation: 'Please check your email for the email confirmation.',
   editInformation: 'Your information has been updated successfully.',
   editInformationWithEmail: 'Your information has been updated successfully. An email has been sent to your new email for the email confirmation.',
+  logout: 'You have been logged out.',
 };
 
 
