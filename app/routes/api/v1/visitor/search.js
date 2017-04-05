@@ -12,12 +12,12 @@ mongoose.Promise = Promise;
 
 router.get('/search', (req, res, next) => {
   const inputQuery = req.query;
+  const output = {};
   // Build up query
   const offset = (inputQuery.offset) ? inputQuery.offset : 0;
   const mongooseQuery = {
     _deleted: false,
   };
-  const mongooseQuery2 = {};
   if (inputQuery.name) {
     mongooseQuery.push({
       name: new RegExp(inputQuery.name, 'i'),
@@ -32,29 +32,31 @@ router.get('/search', (req, res, next) => {
   }
   // Check if query needs to check the offerings of the service
   if (inputQuery.min || inputQuery.max || inputQuery.location) {
-    mongooseQuery2.push({
+    mongooseQuery.push({
       offerings: {
-        $elemMatch: {},
+        $elemMatch: {
+          _deleted: false,
+        },
       },
     });
   }
   if (inputQuery.min || inputQuery.max) {
-    mongooseQuery2.offerings.$elemMatch.push({
+    mongooseQuery.offerings.$elemMatch.push({
       price: {},
     });
   }
   if (inputQuery.min) {
-    mongooseQuery2.offerings.$elemMatch.price.push({
+    mongooseQuery.offerings.$elemMatch.price.push({
       $gte: inputQuery.min,
     });
   }
   if (inputQuery.max) {
-    mongooseQuery2.offerings.$elemMatch.price.push({
+    mongooseQuery.offerings.$elemMatch.price.push({
       $lte: inputQuery.max,
     });
   }
   if (inputQuery.location) {
-    mongooseQuery2.offerings.$elemMatch.push({
+    mongooseQuery.offerings.$elemMatch.push({
       branch: {
         location: inputQuery.location,
       },
@@ -62,52 +64,47 @@ router.get('/search', (req, res, next) => {
   }
   // Query to execute
   const fullQuery = Service
-    .find(mongooseQuery)
-    .populate({
-      path: 'offerings',
-      match: {
-        _deleted: false,
-      },
-      populate: {
-        path: 'branch',
-        match: {
-          _deleted: false,
-        },
-      },
-    })
-    .find(mongooseQuery2);
+    .find(mongooseQuery);
   // Executing
   fullQuery.count()
     .exec()
     .then((cnt) => {
       if (cnt === 0) {
-        throw new Error(Strings.searchErrors.emptySearchResult);
+        throw (Strings.searchErrors.emptySearchResult);
       }
-      res.json({
-        count: cnt,
-      });
-      return fullQuery.populate('_business categories')
-        .select('name shortDescription _business.name _avgRating categories.title')
+      output.count = cnt;
+      fullQuery.populate([{
+        path: '_business',
+        match: {
+          _deleted: false,
+        },
+        select: 'name',
+      }, {
+        path: 'categories',
+        match: {
+          _deleted: false,
+        },
+        select: 'type',
+      }])
+        .select('name shortDescription _business _avgRating categories')
         .skip(offset * 10)
         .limit(10)
-        .exec();
-    })
-    .then((services) => {
-      res.json.push({
-        results: services,
-      });
-    })
-    .catch((err) => {
-      next([err]);
+        .exec((err, services) => {
+          if (err) {
+            next([err]);
+            return;
+          }
+          output.results = services;
+          res.json(output);
+        });
     });
 });
-
 
 /**
  *  Error Handling Middlewares.
  */
 
-router.use((err, req, res) => {
+router.use((err, req, res, next) => {
   res.status(400)
     .json({
       errors: err,
