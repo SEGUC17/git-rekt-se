@@ -98,6 +98,7 @@ const businessForgotPassword = {
   INVALID_RESET_TOKEN: 'Invalid reset token.',
 };
 
+
 const clientForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
   INVALID_RESET_TOKEN: 'Invalid reset token.',
@@ -150,7 +151,6 @@ const visitorValidationErrors = {
   InvalidID: 'Invalid category ID',
   InvalidOffset: 'Invalid Offset',
 };
-
 
 /**
  * Admin Strings

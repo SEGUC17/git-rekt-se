@@ -196,5 +196,4 @@ router.post('/forgot', (req, res, next) => {
 
 router.use(errorHandler);
 
-
 module.exports = router;
