@@ -70,9 +70,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
               if (emailChanged) {
                 business.save()
                   .then(() => {
-                    BusinessAuthenticator.generateConfirmationToken(req.body.email)
-                      .then((token) => {
-                        Mailer.notifyAdminOfNewBusinessSignup(req.body.email, req.hostname, token)
+                    Mailer.sendConfirmationMessage(req.body.email)
                           .then(() => {
                             res.json({
                               message: Strings.businessSuccess.emailConfirmation,
@@ -81,10 +79,6 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
                           .catch((e) => {
                             next([e]);
                           });
-                      })
-                      .catch((e) => {
-                        next([e]);
-                      });
                   })
                   .catch(e => next(e));
               } else {
@@ -101,7 +95,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
         }
       });
   } else {
-    next(Strings.clientLoginMessages.notLoggedIn);
+    next(Strings.businessMessages.mismatchID);
   }
 });
 
