@@ -107,7 +107,7 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
         }
       });
   } else {
-    next([Strings.clientLoginMessages.notLoggedIn]);
+    next(Strings.clientLoginMessages.notLoggedIn);
   }
 });
 
