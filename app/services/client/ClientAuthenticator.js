@@ -76,7 +76,7 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
             } else {
               const token = jwt.sign({
                 id: user._id,
-              }, process.env.JWT_KEY, {
+              }, process.env.JWT_KEY_CLIENT, {
                 expiresIn: '10d',
               });
               resolve({
@@ -101,7 +101,7 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
 exports.loginFacebook = (email, id) => {
   const token = jwt.sign({
     id,
-  }, process.env.JWT_KEY, {
+  }, process.env.JWT_KEY_CLIENT, {
     expiresIn: '10d',
   });
 
