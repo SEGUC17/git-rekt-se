@@ -4,7 +4,7 @@
 
 const Businesses = [{
   name: 'Enhance',
-  email: 'hadyyasser23@gmail.com',
+  email: 'enhance@gmail.com',
   shortDescription: 'Self developpment is our target.',
   categories: null,
   _status: 'verified',
