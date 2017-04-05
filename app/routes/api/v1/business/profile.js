@@ -113,38 +113,3 @@ router.use((err, req, res, next) => {
 });
 
 module.exports = router;
-
-/**
- * Business update data
- */
-
-// router.post('/update', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
-//   console.log('ok?');
-//   const businessInfo = {
-//     name: req.body.name,
-//     shortDescription: req.body.shortDescription,
-//     phoneNumbers: req.body.phoneNumbers, // Add to phone numbers array
-//   };
-//   req.checkBody(validationSchemas.businessUpdateValidation);
-//   req.getValidationResult()
-//     .then((result) => {
-//       if (result.isEmpty()) {
-//         Business.findOne({ email: req.body.email })
-//     .exec()
-//     .then((business) => {
-//       business.name = businessInfo.name;
-//       business.shortDescription = businessInfo.shortDescription;
-//       business.phoneNumbers = businessInfo.phoneNumbers;
-
-//       return business.save().then(() => {
-//         res.json({
-//           message: Strings.businessInformationChanged.UPDATE_SUCCESSFULL,
-//         });
-//       });
-//     })
-//     .catch(console.log('failed'));
-//       } else {
-//         next(result.array());
-//       }
-//     });
-// });
