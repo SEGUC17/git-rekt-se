@@ -39,6 +39,7 @@ describe('Should update business information correctly', () => {
     Business.collection.drop(() => {
       Business.ensureIndexes(() => {
         const business1 = new Business(businesses[0]);
+        business1.email = 'hadyyasser23@gmail.com';
         business1.password = 'Lenovo1100';
         business1.save()
           .then(() => {
@@ -67,6 +68,7 @@ describe('Should update business information correctly', () => {
 
   it('edit info without editing email', (done) => {
     const business1 = businesses[0];
+    business1.email = 'hadyyasser23@gmail.com';
     Business.findOne({
       email: business1.email,
     })
@@ -103,6 +105,7 @@ describe('Should update business information correctly', () => {
 
   it('edit info with editing email and send an email', (done) => {
     const business1 = businesses[0];
+    business1.email = 'hadyyasser23@gmail.com';
     Business.findOne({
       email: business1.email,
     })
