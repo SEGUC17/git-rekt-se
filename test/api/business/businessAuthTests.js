@@ -59,7 +59,7 @@ describe('Unverified Business Signup API', () => {
       });
   });
 
-  it('should register add another business with different email.', (done) => {
+  it('should add another business with different email.', (done) => {
     const business2 = unverifiedBussiness[1];
     req.send(business2)
       .expect('Content-Type', /json/)

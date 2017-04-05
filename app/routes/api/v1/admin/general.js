@@ -5,14 +5,22 @@ const AdminAuth = require('../../../../services/shared/jwtConfig').adminAuthMidd
 const AdminValidator = require('../../../../services/shared/validation');
 const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
+const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+
 
 const router = express.Router();
 mongoose.Promise = Promise;
 
+router.use(bodyParser.json());
+router.use(expressValidator({}));
+
 router.post('/confirm/:id', AdminAuth, (req, res, next) => {
+  console.log(1);
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
+  console.log(2);
   Business.findOne({
-    _id: req.params.ser_id,
+    _id: req.params.id,
     _deleted: false,
   })
   .exec()
@@ -43,17 +51,19 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
         .catch(saveErr => next([saveErr]));
       }
     } else {
+      console.log('not found');
       res.json({
         message: Strings.businessConfirmation.notFound,
       });
     }
-  }).catch(err => next([err]));
+  }).catch(err =>
+ console.log(next([err])));
 });
 
 router.post('/deny/:id', AdminAuth, (req, res, next) => {
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
   Business.findOne({
-    _id: req.params.ser_id,
+    _id: req.params.id,
     _deleted: false,
   })
     .exec()
@@ -87,6 +97,17 @@ router.post('/deny/:id', AdminAuth, (req, res, next) => {
         });
       }
     }).catch(err => next([err]));
+});
+
+/**
+ *  Error Handling Middlewares.
+ */
+
+router.use((err, req, res, next) => {
+  res.status(400)
+    .json({
+      errors: err,
+    });
 });
 
 module.exports = router;
