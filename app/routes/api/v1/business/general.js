@@ -21,6 +21,7 @@ router.use(bodyParser.json());
 /**
  * View business page
  */
+
 router.get('/:id', (req, res, next) => {
   let returnedBusiness;
 
@@ -28,9 +29,9 @@ router.get('/:id', (req, res, next) => {
     _id: req.params.id,
     _status: 'verified',
   }, {
-      password: false,
-      _deleted: false,
-    })
+    password: false,
+    _deleted: false,
+  })
     .populate([{
       path: 'branches',
       match: {
@@ -95,24 +96,24 @@ router.get('/:id/:offset', (req, res, next) => {
         const offset = req.params.offset;
         Business.count({
           categories: {
-              $in: [req.params.id],
-            },
+            $in: [req.params.id],
+          },
           _deleted: false,
         })
           .then((cnt) => {
             Business.find({
               categories: {
-                  $in: [req.params.id],
-                },
+                $in: [req.params.id],
+              },
               _deleted: false,
             }, {
-                shortDescription: true,
-                name: true,
-                _id: false,
-              }, {
-                skip: (offset - 1) * 10,
-                limit: 10,
-              })
+              shortDescription: true,
+              name: true,
+              _id: false,
+            }, {
+              skip: (offset - 1) * 10,
+              limit: 10,
+            })
               .exec()
               .then((businesses) => {
                 /**
