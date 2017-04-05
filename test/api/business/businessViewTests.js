@@ -52,9 +52,6 @@ describe('View Businesses Tests', () => {
           chai.expect(res.body).to.have.property('name');
           chai.expect(res.body).to.have.property(('email'));
           chai.expect(res.body).to.have.property(('shortDescription'));
-          chai.expect(res.body).to.have.property(('description'));
-          chai.expect(res.body).to.have.property(('workingHours'));
-          chai.expect(res.body).to.have.property(('branches'));
           chai.expect(res.body).to.have.property(('categories'));
           chai.expect(res.body).to.have.property(('services'));
           chai.expect(res.body).to.have.property(('_id')).to.equal(business.id);
