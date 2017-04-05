@@ -117,11 +117,11 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
 
   jwt.verify(cofirmationToken, JWT_KEY, (err, payload) => {
     if (err) {
-      next([err]);
+      next(err);
       return;
     }
     if (!payload) {
-      next([Strings.clientVerfication.invalidToken]);
+      next(Strings.clientVerfication.invalidToken);
       return;
     }
     const clientEmail = payload.email;
@@ -135,7 +135,7 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
     .exec()
     .then((client) => {
       if (!client) {
-        next([Strings.clientVerfication.invalidToken]);
+        next(Strings.clientVerfication.invalidToken);
         return;
       }
       client.confirmationTokenDate = undefined;
@@ -144,9 +144,9 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
       .then(res.json({
         message: Strings.clientVerfication.verificationSuccess,
       }))
-      .catch(err2 => next([err2]));
+      .catch(err2 => next(err2));
     })
-    .catch(err2 => next([err2]));
+    .catch(err2 => next(err2));
   });
 });
 
