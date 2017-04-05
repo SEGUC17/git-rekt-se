@@ -212,13 +212,31 @@ const offeringCreateValidationBody = {
   },
 };
 
-const offeringCreateValidationParams = {
+const ServiceCreateValidationParams = {
   id: {
     isMongoId: {
       errorMessage: offeringValidationErrors.invalidServiceID,
     },
   },
 };
+
+
+const offeringEditValidationParmas = {
+  id1: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidServiceID,
+    },
+  },
+  id2: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidOfferingID,
+    },
+  },
+};
+
+/**
+ * Visitor validation
+ */
 
 const visitorValidation = {
   id: {
@@ -287,7 +305,8 @@ const validation = {
 
   serviceCreateValidation,
   offeringCreateValidationBody,
-  offeringCreateValidationParams,
+  ServiceCreateValidationParams,
+  offeringEditValidationParmas,
   visitorValidation,
   businessEditInfoValidation,
 };

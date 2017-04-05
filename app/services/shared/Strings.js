@@ -121,10 +121,13 @@ const offeringValidationError = {
   invalidService: 'No such a service',
   invalidOperation: 'Not authorized for doing such an operation',
   invalidBranch: 'Your business doesnot have this branch',
+  invalidOfferingID: 'Offering is invalid',
+  invalidOffering: 'No such offering',
 };
 
 const serviceSuccess = {
   serviceAdded: 'Service has been added successfully to your business',
+  serviceEdited: 'Service has been edited successfully to your business',
 };
 
 const offerSuccess = {
