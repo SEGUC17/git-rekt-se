@@ -185,7 +185,6 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
           price: req.body.price,
           address: req.body.address ? req.body.address : '',
         };
-
         Service.findOne({
           _id: req.params.id,
           _deleted: false,
@@ -194,7 +193,14 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
             if (service) {
               if (service._business.equals(req.user._id)) {
                 const business = req.user;
-                if (business.branches.includes(reqData.branch)) {
+                let valid = false;
+                business.branches.forEach((branch) => {
+                  console.log(branch);
+                  if (reqData.branch === `${branch}`) {
+                    valid = true;
+                  }
+                });
+                if (valid) {
                   const offering = new Offering({
                     startDate: reqData.startDate,
                     endDate: reqData.endDate,
@@ -223,12 +229,12 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
                */
                 return next([Strings.offeringValidationError.invalidOperation]);
               }
-            }
-
+            } else {
             /**
              * No service with the id in the request params
              */
-            return next([Strings.offeringValidationError.invalidService]);
+              return next([Strings.offeringValidationError.invalidService]);
+            }
           })
           .catch(e => next([e]));
       } else {
