@@ -210,8 +210,20 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
                   });
                   offering.save()
                   .then((offer) => {
-                    service.offerings.push(offer._id);
-                    service.branches.push(offer.branch);
+                    service.offerings.push(offer);
+                    /**
+                     * Check whether this branch is in the list of branches in service object
+                     */
+                    let exist = false;
+                    service.branches.forEach((branch) => {
+                      if (branch.equals(offer.branch)) {
+                        exist = true;
+                      }
+                    });
+                    if (!exist) {
+                      service.branches.push(offer.branch);
+                    }
+
                     service.save()
                       .then(addedService => res.json({
                         message: Strings.serviceSuccess.offeringAdded,
@@ -285,7 +297,6 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
             })
             .catch(e => next([e]));
         });
-        console.log('hello2');
         if (valid) {
           Service.findOne({
             _id: req.params.id,
@@ -368,15 +379,27 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
 
             if (service._business.equals(req.user._id)) {
               const business = req.user;
-              if (business.branches.includes(reqData.branch)) {
-                if (service.offerings.includes(offeringID)) {
-                  // to test whether the offering only update or the array too
+              let validBranch = false;
+              business.branches.forEach((branch) => {
+                if (reqData.branch === `${branch}`) {
+                  validBranch = true;
+                }
+              });
+              if (validBranch) {
+                let validOffering = false;
+                service.offerings.forEach((serviceOffering) => {
+                  if (`${serviceOffering}` === offeringID) {
+                    validOffering = true;
+                  }
+                });
+                if (validOffering) {
                   Offering.findOne({
                     _id: offeringID,
                     _deleted: false,
                   })
                     .then((offeringfound) => {
                       if (offeringfound) {
+                        const oldbranch = offeringfound.branch;
                         offeringfound.startDate = reqData.startDate;
                         offeringfound.endDate = reqData.endDate;
                         offeringfound.location = reqData.location;
@@ -385,8 +408,32 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                         offeringfound.address = reqData.address;
                         offeringfound.save()
                           .then((offer) => {
+                            let oldexist = false; // old branch before edit exist
+                            let newexist = false; // new branch after edit exit
+                            service.offerings.forEach((offering) => {
+                              if (offering.branch.equals(oldbranch) && offeringID !== `${offering._id}`) {
+                                oldexist = true;
+                              } else if (`${offering.branch}` === reqData.branch && offeringID !== `${offering._id}`) {
+                                newexist = true;
+                              }
+                            });
+                            const newBranches = []; // new list of branches for the service
+                            service.branches.forEach((branch) => {
+                              if (branch.equals(oldbranch)) {
+                                if (oldexist) {
+                                  newBranches.push(branch);
+                                }
+                              } else if (`${branch}` === reqData.branch) {
+                                if (!newexist) {
+                                  newBranches.push(branch);
+                                }
+                              } else {
+                                newBranches.push(branch);
+                              }
+                            });
                             service.offerings.push(offer._id);
-                            service.branches.push(offer.branch);
+
+                            service.branches = newBranches;
                             service.save()
                               .then(addedService => res.json({
                                 message: Strings.serviceSuccess.offeringEdited,
@@ -420,83 +467,111 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
     .catch(e => next([e]));
 });
 
-// /**
-//  * Business delete service
-//  */
+/**
+ * Business delete service
+ */
 
-// router.get('/:id/delete', businessAuthMiddleware, (req, res, next) => {
-//   req.checkParams(validator.ServiceCreateValidationParams);
-//   req.getValidationResult().then((result) => {
-//     if (result.isEmpty()) {
-//       const serviceID = req.params.id;
-//       Service.findOne({
-//         _id: serviceID,
-//         _deleted: false,
-//       }).then((service) => {
-//         if (!service) {
-//           /**
-//            * No service with the id in the request params
-//            */
-//           return next([Strings.offeringValidationError.invalidService]);
-//         }
-//         const business = req.user;
-//         if (service._business.equals(business._id)) {
-//           /**
-//            * Delete here
-//            */
-//           service._deleted = false;
-//         } else {
-//           return next([Strings.offeringValidationError.invalidOperation]);
-//         }
-//       }).catch(e => next([e]));
-//     } else {
-//       return next(result.array());
-//     }
-//   }).catch(e => next([e]));
-// });
+router.get('/:id/delete', businessAuthMiddleware, (req, res, next) => {
+  req.checkParams(validator.ServiceCreateValidationParams);
+  req.getValidationResult().then((result) => {
+    if (result.isEmpty()) {
+      const serviceID = req.params.id;
+      Service.findOne({
+        _id: serviceID,
+        _deleted: false,
+      }).then((service) => {
+        if (!service) {
+          /**
+           * No service with the id in the request params
+           */
+          next([Strings.offeringValidationError.invalidService]);
+        } else {
+          const business = req.user;
+          if (service._business.equals(business._id)) {
+          /**
+           * Delete here
+           */
+            service._deleted = false;
+            service.offerings.forEach((offer) => {
+              offer._deleted = true;
+            });
+            service.save().then(addedService => res.json({
+              message: Strings.serviceSuccess.serviceDeleted,
+            })).catch(e => next([e]));
+          } else {
+            next([Strings.offeringValidationError.invalidOperation]);
+          }
+        }
+      }).catch(e => next([e]));
+    } else {
+      next(result.array());
+    }
+  }).catch(e => next([e]));
+});
 
-// /**
-//  * Business delete offering
-//  */
+/**
+ * Business delete offering
+ */
 
-// router.get('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, next) => {
-//   req.checkParams(validator.ServiceCreateValidationParams);
-//   req.getValidationResult().then((result) => {
-//     if (result.isEmpty()) {
-//       const serviceID = req.params.id1;
-//       const offeringID = req.params.id2;
-//       Service.findOne({
-//         _id: serviceID,
-//         _deleted: false,
-//       }).then((service) => {
-//         if (!service) {
-//           /**
-//            * No service with the id in the request params
-//            */
-//           return next([Strings.offeringValidationError.invalidService]);
-//         }
-//         const business = req.user;
-//         if (service._business.equals(business._id)) {
-//           /**
-//            * Delete here
-//            */
-//           Offering.findOne({
-//             _id: offeringID,
-//           }).then((offering) => {
-//             if (!offering) {
-//               return next([Strings.offeringValidationError.invalidServiceID]);
-//             }
-//             service._deleted = false;
-//           }).catch(e => next([e]));
-//         } else {
-//           return next([Strings.offeringValidationError.invalidOperation]);
-//         }
-//       }).catch(e => next([e]));
-//     } else {
-//       return next(result.array());
-//     }
-//   }).catch(e => next([e]));
-// });
+router.get('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, next) => {
+  req.checkParams(validator.ServiceCreateValidationParams);
+  req.getValidationResult().then((result) => {
+    if (result.isEmpty()) {
+      const serviceID = req.params.id1;
+      const offeringID = req.params.id2;
+      Service.findOne({
+        _id: serviceID,
+        _deleted: false,
+      }).then((service) => {
+        if (!service) {
+          /**
+           * No service with the id in the request params
+           */
+          next([Strings.offeringValidationError.invalidService]);
+        } else {
+          const business = req.user;
+          if (service._business.equals(business._id)) {
+          /**
+           * Delete here
+           */
+            Offering.findOne({
+              _id: offeringID,
+            }).then((offering) => {
+              if (!offering) {
+                next([Strings.offeringValidationError.invalidServiceID]);
+              }
+              let branchExist = false;  // branch of this offering e
+              service.offerings.forEach((offer) => {
+                if (`${offer._id}` === offeringID) {
+                  offer._deleted = true;
+                } else if (offer.branch.equals(offering.branch)) { branchExist = true; }
+              });
+              const newBranches = []; // new list of branches for the service
+              service.branches.forEach((branch) => {
+                if (branch.equals(offering.branch)) {
+                  if (branchExist) {
+                    newBranches.push(branch);
+                  }
+                } else {
+                  newBranches.push(branch);
+                }
+              });
+              service.save().then((savedService) => {
+                res.json({
+                  message: Strings.serviceSuccess.offeringDeleted,
+                });
+              }).catch(e => next(e));
+            }).catch(e => next([e]));
+          } else {
+            next([Strings.offeringValidationError.invalidOperation]);
+          }
+        }
+      }).catch(e => next([e]));
+    } else {
+      next(result.array());
+    }
+  }).catch(e => next([e]));
+});
 
 /**
  * Error handling Middlewares

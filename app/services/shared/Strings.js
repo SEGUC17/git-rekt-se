@@ -156,8 +156,10 @@ const offeringValidationError = {
 const serviceSuccess = {
   serviceAdded: 'Service has been added successfully to your business',
   serviceEdited: 'Service has been edited successfully to your business',
+  serviceDeleted: 'Service has been deleted successfully',
   offeringAdded: 'Offering has been added successfully to your business',
   offeringEdited: 'Offering has been edited successfully to your business',
+  offeringDeleted: 'Offering has been deleted successfully',
 };
 
 /**
