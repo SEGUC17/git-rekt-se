@@ -12,10 +12,10 @@ const BusinessesSeed = require('../../../app/seed/business/confirmBusinessSeeds'
 describe('Administrator Accept/Reject Business Application API', () => {
   let req;
   let token;
-  let sampleAdmin;
+
 
   before((done) => { // creating our dummy admin
-    sampleAdmin = {
+    const sampleAdmin = {
       email: 'abdobassiony996@hotmail.com',
       password: 'Strong#1234',
     };
