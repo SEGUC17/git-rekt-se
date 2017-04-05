@@ -60,6 +60,9 @@ const serviceSchema = Schema({
       type: String,
     },
   }],
+  coverImage: {
+    type: String,
+  },
   _deleted: {
     type: Boolean,
     default: false,
