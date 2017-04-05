@@ -1,4 +1,4 @@
-/**
+/*
  * Verified Business Database Seed
  */
 
