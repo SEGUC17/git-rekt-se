@@ -149,7 +149,6 @@ exports.notifyBusinessOfDenial = (mail) => {
         return reject(err);
       }
       return resolve(information);
-    })
-      .catch(reject);
+    });
   });
 };
