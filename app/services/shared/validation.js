@@ -1,12 +1,14 @@
 /**
  * Express validator schema
  */
+const locations = require('../../seed/service/locations');
+
 const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
-
+const adminValidationErrors = Strings.adminValidationErrors;
 
 /**
  * Client validation
@@ -181,7 +183,9 @@ const visitorValidation = {
   },
   offset: {
     isInt: {
-      options: { min: 1 },
+      options: {
+        min: 1,
+      },
       errorMessage: visitorValidationErrors.InvalidOffset,
     },
   },
@@ -205,15 +209,68 @@ const businessEditInfoValidation = {
   },
 };
 
+
+const businessAddValidation = {
+  branches: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.branchesRequired,
+    },
+  },
+};
+
+const businessEditValidation = {
+  'branch.location': {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.locationRequired,
+    },
+    isIn: {
+      options: [locations],
+      errorMessage: bussinessValidationErrors.locationInvalid,
+    },
+  },
+  'branch.address': {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.addressRequired,
+    },
+  },
+};
+
+/**
+ * Administrator validation
+ */
+
+const adminLoginValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.emptyEmail,
+    },
+    isEmail: {
+      errorMessage: adminValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: adminValidationErrors.invalidPassword,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
+  adminLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
   businessResetPasswordValidation,
   visitorValidation,
   businessEditInfoValidation,
+  businessAddValidation,
+  businessEditValidation,
 };
 
 module.exports = validation;
