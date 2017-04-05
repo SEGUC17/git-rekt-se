@@ -11,6 +11,7 @@ const serviceValidationErrors = Strings.serviceValidationErrors;
 const offeringValidationErrors = Strings.offeringValidationError;
 const adminValidationErrors = Strings.adminValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
+const reviewErrors = Strings.reviewErrors;
 
 /**
  * Client validation
@@ -292,6 +293,61 @@ const businessEditValidation = {
 };
 
 /**
+ * Review Validation
+ */
+
+const createReviewValidation = {
+  id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  rating: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
+    },
+  },
+};
+
+const updateReviewValidation = {
+  id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  review_id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidReview,
+    },
+  },
+  rating: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
+    },
+  },
+};
+
+const deleteReviewValidation = {
+  id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  review_id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidReview,
+    },
+  },
+};
+
+/**
  * Administrator validation
  */
 
@@ -331,6 +387,9 @@ const validation = {
   businessEditInfoValidation,
   businessAddValidation,
   businessEditValidation,
+  createReviewValidation,
+  updateReviewValidation,
+  deleteReviewValidation,
 };
 
 module.exports = validation;

@@ -57,7 +57,8 @@ describe('Populating Category Collection', () => {
         categoriesIDs.push(docs[2]._id);
         categoriesIDs.push(docs[3]._id);
         done();
-      }).catch(e => done([e]));
+      })
+      .catch(e => done(e));
   });
 });
 
@@ -71,9 +72,11 @@ describe('Populating Business Collection', () => {
     businesses[1].categories = [categoriesIDs[0]];
     businesses[2].categories = [categoriesIDs[0]];
     businesses[3].categories = [categoriesIDs[0], categoriesIDs[3]];
-    Business.insertMany(businesses).then((docs) => {
-      done();
-    }).catch(e => done([e]));
+    Business.insertMany(businesses)
+      .then((docs) => {
+        done();
+      })
+      .catch(e => done(e));
   });
 });
 
@@ -170,7 +173,7 @@ describe('View Related Businesses API', () => {
       }, done);
   });
 
-/**
+  /**
    * Failing Test2: No related businesses in the category requested if they are deleted
    */
 
@@ -210,12 +213,13 @@ describe('View Related Businesses API', () => {
           done(err);
           return;
         }
-        chai.expect(res.body.errors[0].msg).to.equal(Strings.visitorValidationErrors.InvalidID);
+        chai.expect(res.body.errors[0].msg)
+          .to.equal(Strings.visitorValidationErrors.InvalidID);
         done();
       });
   });
 
-   /**
+  /**
    * Failing Test5: Invalid offset middleware handling check
    */
 
@@ -223,13 +227,14 @@ describe('View Related Businesses API', () => {
     req = supertest(app)
       .get(`/api/v1/business/category/${categoriesIDs[2]}/0`);
     req.expect('Content-Type', /json/)
-     .expect(400)
+      .expect(400)
       .end((err, res) => {
         if (err) {
           done(err);
           return;
         }
-        chai.expect(res.body.errors[0].msg).to.equal(Strings.visitorValidationErrors.InvalidOffset);
+        chai.expect(res.body.errors[0].msg)
+          .to.equal(Strings.visitorValidationErrors.InvalidOffset);
         done();
       });
   });

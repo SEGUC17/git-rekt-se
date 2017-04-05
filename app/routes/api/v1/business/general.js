@@ -6,6 +6,7 @@ const Service = require('../../../../models/service/Service');
 const visitorValidator = require('../../../../services/shared/validation');
 const Strings = require('../../../../services/shared/Strings');
 const expressValidator = require('express-validator');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 mongoose.Promise = Promise;
 const router = express.Router();
@@ -20,6 +21,7 @@ router.use(bodyParser.json());
 /**
  * View business page
  */
+
 router.get('/:id', (req, res, next) => {
   let returnedBusiness;
 
@@ -130,21 +132,16 @@ router.get('/:id/:offset', (req, res, next) => {
                   results: businesses,
                 });
               })
-              .catch(err => next([err]));
+              .catch(err => next(err));
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
     })
-    .catch(e => next([e]));
+    .catch(e => next(e));
 });
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
 
 module.exports = router;
