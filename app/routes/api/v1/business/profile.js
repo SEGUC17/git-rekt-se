@@ -70,7 +70,19 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
               if (emailChanged) {
                 business.save()
                   .then(() => {
-                  
+                    Mailer.sendConfirmationMessage(req.body.email)
+                          .then(() => {
+                            res.json({
+                              message: Strings.businessSuccess.emailConfirmation,
+                            });
+                          })
+                          .catch((e) => {
+                            next([e]);
+                          });
+                  })
+                  .catch(e => next(e));
+              } else {
+                business.save();
                 res.json({
                   message: Strings.businessInformationChanged.UPDATE_SUCCESSFULL,
                 });
