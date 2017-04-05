@@ -41,9 +41,9 @@ const serviceSchema = Schema({
     ref: 'Branch',
     required: true,
   }],
-  offerings: [{
-    type: Offering.offeringSchema,
-  }],
+  offerings: {
+    type: [Offering.offeringSchema],
+  },
   reviews: [{
     type: Schema.Types.ObjectId,
     ref: 'Review',
