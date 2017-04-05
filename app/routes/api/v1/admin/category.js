@@ -33,7 +33,7 @@ const upload = multer({
 router.use(bodyParser.json());
 
 
-router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensureauthenticated
+router.post('/addCategory', AdminAuth, upload.single('icon'), (req, res, next) => {
   const Servicecategory = new Category({
     type: req.body.type,
     title: req.body.title,
@@ -49,7 +49,7 @@ router.post('/addCategory', upload.single('icon'), (req, res, next) => { // ensu
   });
 });
 
-router.post('/editCategory/:id', upload.single('icon'), (req, res, next) => { // ensureauthenticated
+router.post('/editCategory/:id', AdminAuth, upload.single('icon'), (req, res, next) => {
   const Servicecategory = new Category({
     type: req.body.type,
     title: req.body.title,
@@ -76,7 +76,7 @@ router.post('/editCategory/:id', upload.single('icon'), (req, res, next) => { //
   });
 });
 
-router.post('/deleteCategory/:id', (req, res, next) => { // ensureauthenticated
+router.post('/deleteCategory/:id', AdminAuth, (req, res, next) => {
   Category.findByIdAndRemove(req.params.id, (err) => {
     if (err) {
       return next(err);

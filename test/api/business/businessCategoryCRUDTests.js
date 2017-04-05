@@ -6,6 +6,7 @@ const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Category = require('../../../app/models/service/Category');
+const Admin = require('../../../app/models/admin/Admin');
 
 /**
  * Test Suite
@@ -13,12 +14,38 @@ const Category = require('../../../app/models/service/Category');
 
 describe('Category CRUD Test Suite', () => {
   let req;
+  let sampleAdmin;
+  let token;
 
-  before(() => {
-    console.log('I run before the first it block.');
+  before((done) => {
+    console.log('I create a dummy admin and login.');
+    sampleAdmin = new Admin({
+      email: 'abdobassiony996@hotmail.com',
+      password: 'Strong#1234',
+    });
+    Admin.collection.drop(() => {
+      Admin.ensureIndexes(() => {
+        new Admin(sampleAdmin)
+          .save()
+          .then(() => {
+            req = supertest(app)
+              .post('/api/v1/Admin/auth/login')
+              .send({
+                email: sampleAdmin.email,
+                password: sampleAdmin.password,
+              })
+              .end((err, res) => {
+                token = res.body.token;
+                done();
+              });
+          })
+          .catch(done);
+      });
+    });
   });
 
   beforeEach((done) => {
+    console.log('I drop the category collection before each test.');
     Category.collection.drop(() => {
       Category.ensureIndexes(done);
     });
@@ -30,6 +57,7 @@ describe('Category CRUD Test Suite', () => {
       .field('type', 'Business')
       .field('title', 'Sample Title')
       .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+      .set('Authorization', `JWT ${token}`)
       .end((err2, res) => {
         if (err2) {
           done(err2);
@@ -53,6 +81,7 @@ describe('Category CRUD Test Suite', () => {
       .field('type', 'bla')
       .field('title', 'Sample Title')
       .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+      .set('Authorization', `JWT ${token}`)
       .expect(400)
       .end((err2, res2) => {
         if (err2) {
@@ -88,6 +117,7 @@ describe('Category CRUD Test Suite', () => {
           .field('type', 'Business')
           .field('title', '3ala2')
           .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+          .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
               done(err2);
@@ -125,6 +155,7 @@ describe('Category CRUD Test Suite', () => {
           .field('type', 'bla')
           .field('title', '3ala2')
           .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+          .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
               done(err2);
@@ -161,6 +192,7 @@ describe('Category CRUD Test Suite', () => {
           .post(`/api/v1/admin/category/editCategory/${newcat._id}`)
           .field('type', 'Business')
           .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+          .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
               done(err2);
@@ -195,6 +227,7 @@ describe('Category CRUD Test Suite', () => {
       } else {
         req = supertest(app)
           .post(`/api/v1/admin/category/deleteCategory/${newcat._id}`)
+          .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
               done(err2);
@@ -218,6 +251,7 @@ describe('Category CRUD Test Suite', () => {
   it('should not delete a category and return an error message', (done) => {
     req = supertest(app)
       .post('/api/v1/admin/category/deleteCategory/4')
+      .set('Authorization', `JWT ${token}`)
       .end((err2, res) => {
         if (err2) {
           done(err2);
