@@ -88,6 +88,8 @@ const clientValidationErrors = {
 const clientSuccess = {
   signup: 'Signup Successful, Please check your email for the email confirmation.',
   emailConfirmation: 'Please check your email for the email confirmation.',
+  editInformation: 'Your information has been updated successfully.',
+  editInformationWithEmail: 'Your information has been updated successfully. An email has been sent to your new email for the email confirmation.',
   logout: 'You have been logged out.',
 };
 
@@ -104,6 +106,7 @@ const clientLoginMessages = {
   confirmEmail: 'Please confirm your email.',
   bannedClient: 'This user has been banned.',
   invalidToken: 'Invalid Token',
+  notLoggedIN: 'You need to be logged in.',
 };
 
 const clientConfirmation = {

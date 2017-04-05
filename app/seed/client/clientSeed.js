@@ -13,7 +13,7 @@ const clients = [{
   gender: 'Male',
   birthdate: new Date('11-2-1996'),
 }, {
-  email: 'melzareios@gmail.com',
+  email: 'atherkhalid158@gmail.com',
   password: 'YEQmxoav4N1K',
   confirmPassword: 'YEQmxoav4N1K',
   firstName: 'Ahmed',
@@ -21,6 +21,7 @@ const clients = [{
   mobile: '01093125263',
   gender: 'Male',
   birthdate: new Date('11-2-1994'),
+  status: 'confirmed',
 }];
 
 module.exports = clients;
