@@ -10,6 +10,7 @@ const Client = require('../../../../models/client/Client');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const fbConfig = require('../../../../services/shared/fbConfig');
 const Strings = require('../../../../services/shared/Strings');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 mongoose.Promise = Promise;
 
@@ -208,11 +209,7 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
  *  Error Handling Middlewares.
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
+
 
 module.exports = router;

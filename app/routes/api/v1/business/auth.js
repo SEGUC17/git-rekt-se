@@ -8,6 +8,7 @@ const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 mongoose.Promise = Promise;
 
@@ -139,11 +140,6 @@ router.post('/forgot', (req, res, next) => {
  *  Error Handling Middlewares.
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
 
 module.exports = router;

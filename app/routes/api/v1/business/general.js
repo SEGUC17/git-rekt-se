@@ -6,6 +6,7 @@ const Service = require('../../../../models/service/Service');
 const visitorValidator = require('../../../../services/shared/validation');
 const Strings = require('../../../../services/shared/Strings');
 const expressValidator = require('express-validator');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 mongoose.Promise = Promise;
 const router = express.Router();
@@ -24,12 +25,12 @@ router.get('/:id', (req, res, next) => {
   let returnedBusiness;
 
   Business.findOne({
-    _id: req.params.id,
-    _status: 'verified',
-  }, {
-    password: false,
-    _deleted: false,
-  })
+      _id: req.params.id,
+      _status: 'verified',
+    }, {
+      password: false,
+      _deleted: false,
+    })
     .populate([{
       path: 'branches',
       match: {
@@ -56,9 +57,9 @@ router.get('/:id', (req, res, next) => {
       };
 
       Service.find({
-        _business: business._id,
-        _deleted: false,
-      })
+          _business: business._id,
+          _deleted: false,
+        })
         .populate([{
           path: 'branches',
           match: {
@@ -93,25 +94,25 @@ router.get('/:id/:offset', (req, res, next) => {
       if (result.isEmpty()) {
         const offset = req.params.offset;
         Business.count({
-          categories: {
-            $in: [req.params.id],
-          },
-          _deleted: false,
-        })
+            categories: {
+              $in: [req.params.id],
+            },
+            _deleted: false,
+          })
           .then((cnt) => {
             Business.find({
-              categories: {
-                $in: [req.params.id],
-              },
-              _deleted: false,
-            }, {
-              shortDescription: true,
-              name: true,
-              _id: false,
-            }, {
-              skip: (offset - 1) * 10,
-              limit: 10,
-            })
+                categories: {
+                  $in: [req.params.id],
+                },
+                _deleted: false,
+              }, {
+                shortDescription: true,
+                name: true,
+                _id: false,
+              }, {
+                skip: (offset - 1) * 10,
+                limit: 10,
+              })
               .exec()
               .then((businesses) => {
                 /**
@@ -140,11 +141,6 @@ router.get('/:id/:offset', (req, res, next) => {
     .catch(e => next([e]));
 });
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
 
 module.exports = router;

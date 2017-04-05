@@ -15,6 +15,7 @@ const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
 const businessValidation = require('../../../../services/shared/validation');
 const businessUtils = require('../../../../services/business/businessUtils');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 mongoose.Promise = Promise;
 
@@ -186,11 +187,7 @@ router.delete('/:business_id/delete/branch/:branch_id', businessAuthMiddleware, 
 /**
  * Error Handling Middleware
  */
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+
+router.use(errorHandler);
 
 module.exports = router;

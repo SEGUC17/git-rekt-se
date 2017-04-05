@@ -9,6 +9,7 @@ const Review = require('../../../../models/service/Review');
 const Strings = require('../../../../services/shared/Strings');
 const clientAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .clientAuthMiddleware;
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -211,11 +212,7 @@ router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, ne
  * Error handling middleware
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
+
 
 module.exports = router;
