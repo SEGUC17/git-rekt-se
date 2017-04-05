@@ -10,7 +10,7 @@ const businessValidator = require('../../../../services/shared/validation')
 const validatorErrors = require('../../../../services/shared/Strings')
   .bussinessValidationErrors;
 
-const BusinessUtils = require('../../../../services/business/VerifiedBusinessUtil.js');
+const BusinessUtils = require('../../../../services/business/businessUtils');
 const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
@@ -152,7 +152,6 @@ router.use((err, req, res, next) => {
 /**
  * Verified Business Signup
  */
-// TODO will most probably change route
 router.post('/confirm/:token', (req, res, next) => {
   /**
    * Form Validation
@@ -165,42 +164,30 @@ router.post('/confirm/:token', (req, res, next) => {
     .withMessage(validatorErrors.passwordMismatch);
 
   const body = req.body;
-  // TODO Change to token and verify
-  const dbQuery = {
-    name: body.name,
-  };
+  const token = req.params.token;
 
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        // TODO Change Parameter
-        Business.findOne(dbQuery)
-          .exec()
+        BusinessAuthenticator.verifyBusiness(token)
           .then((business) => {
-            BusinessUtils.addCategories(body.categories)
-              .then((categories) => { /* eslint-disable no-param-reassign, no-underscore-dangle */
-                BusinessUtils.addBranches(body.branches, business)
-                  .then((branches) => {
-                    business.password = body.password;
-                    business.description = body.description;
-                    business.workingHours = body.workingHours;
-                    business.categories.concat(categories);
-                    business.branches.concat(branches);
-                    business._status = 'verified';
-
-                    /* eslint-enable no-param-reassign, no-underscore-dangle */
-
-                    business.save()
-                      .then(() => res.json({
-                        message: 'Verification Completed Successfully',
-                      }))
-                      .catch(err => next([err]));
-                  })
+            BusinessUtils.addBranches(body.branches, business._id)
+              .then((branches) => {
+                business.password = body.password;
+                business.description = body.description;
+                business.workingHours = body.workingHours;
+                business.categories = business.categories.concat(body.categories);
+                business.branches = business.branches.concat(branches);
+                business._status = 'verified';
+                business.save()
+                  .then(() => res.json({
+                    message: 'Verification Completed Successfully',
+                  }))
                   .catch(err => next([err]));
               })
               .catch(err => next([err]));
           })
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next(result.array());
       }

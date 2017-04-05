@@ -50,3 +50,13 @@ exports.loginBusiness = (email, password) => new Promise((resolve, reject) => {
     })
     .catch(reject);
 });
+
+exports.verifyBusiness = token => new Promise((resolve, reject) => {
+  jwt.verify(token, process.env.JWT_KEY_BUSSINES, (err, decoded) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(decoded);
+    }
+  });
+});
