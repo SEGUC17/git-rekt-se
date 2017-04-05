@@ -107,6 +107,19 @@ const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
 };
+/**
+ * Visitor Strings
+ */
+
+const visitorErrors = {
+  NoRelatedBusinesses: 'No related businesses',
+  NoRelatedServices: 'No related services',
+};
+
+const visitorValidationErrors = {
+  InvalidID: 'Invalid category ID',
+  InvalidOffset: 'Invalid Offset',
+};
 
 /**
  * Admin Strings
@@ -127,19 +140,6 @@ const adminValidationErrors = {
   passwordLength: 'Password length must be between 8 and 15 and contains at least one number.',
   passwordMismatch: 'Password and Password Confirmation must match.',
   adminExists: 'Administrator already exists.',
-};
-/**
- * Visitor Strings
- */
-
-const visitorErrors = {
-  NoRelatedBusinesses: 'No related businesses',
-  NoRelatedServices: 'No related services',
-};
-
-const visitorValidationErrors = {
-  InvalidID: 'Invalid category ID',
-  InvalidOffset: 'Invalid Offset',
 };
 
 module.exports = {

@@ -7,8 +7,8 @@ const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
-const adminValidationErrors = Strings.adminValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
+const adminValidationErrors = Strings.adminValidationErrors;
 
 /**
  * Client validation
