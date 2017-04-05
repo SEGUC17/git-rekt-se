@@ -24,7 +24,8 @@ router.use(expressValidator({}));
  * Search for a service route
  */
 
-router.get('/category/:id/:offset', (req, res, next) => {
+router.get('/:id/:offset', (req, res, next) => {
+  console.log(req.params.id);
   req.checkParams(validationSchemas.visitorValidation);
   req.getValidationResult().then((result) => {
     if (result.isEmpty()) {
