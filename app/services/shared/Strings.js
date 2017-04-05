@@ -128,10 +128,8 @@ const offeringValidationError = {
 const serviceSuccess = {
   serviceAdded: 'Service has been added successfully to your business',
   serviceEdited: 'Service has been edited successfully to your business',
-};
-
-const offerSuccess = {
-  offerAdded: 'Offer has been added successfully to your service',
+  offeringAdded: 'Offering has been added successfully to your business',
+  offeringEdited: 'Offering has been edited successfully to your business',
 };
 
 /**
@@ -188,5 +186,4 @@ module.exports = {
   serviceValidationErrors,
   offeringValidationError,
   serviceSuccess,
-  offerSuccess,
 };
