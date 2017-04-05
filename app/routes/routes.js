@@ -12,6 +12,7 @@ module.exports = (app) => {
    * Visitor Routes
    */
   app.use('/api/v1/service', ServiceAPI);
+  app.use('/api/v1/business', businessGeneralAPI);
   app.use('/api/v1/service/category', ServiceGeneralAPI);
   app.use('/api/v1/business/category', businessGeneralAPI);
 

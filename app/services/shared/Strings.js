@@ -33,6 +33,7 @@ const bussinessValidationErrors = {
   categoriesRequired: 'Must Include atleast 1 category.',
   branchesRequired: 'Must Include aleast 1 branch.',
   businessExists: 'Business already exists.',
+  invalidBusinessId: 'The required id is invalid.',
   locationRequired: 'Location is a required field',
   addressRequired: 'Address is a required field',
   locationInvalid: `Invalid location. Must be any of [${locations}]`,
