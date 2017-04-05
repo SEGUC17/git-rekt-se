@@ -86,7 +86,7 @@ describe('Service Gallery CRUD Tests', () => {
       .save()
       .then((savedSer) => {
         req = supertest(app)
-          .post(`api/v1/service/addServiceImage/${dbBusiness._id}`) // wrong ID
+          .post('/api/v1/service/addServiceImage/1x')
           .field('description', 'sample Image Description')
           .attach('path', '/home/abdelrahman-a-elshabrawy/Desktop/guc.png')
           .set('Authorization', `JWT ${token}`)
@@ -95,8 +95,7 @@ describe('Service Gallery CRUD Tests', () => {
             if (err) {
               done(err);
             } else {
-              chai.expect(res.body.message)
-                .to.equal(Strings.serviceFail.invalidService);
+              chai.expect(res.body.error).to.equal('Invalid Service ID');
               Service.findOne({
                 _id: savedSer._id,
               }, (finderr, data) => {
@@ -116,59 +115,92 @@ describe('Service Gallery CRUD Tests', () => {
 
 
   it('should update an image description, and return success message: Description updated succesfully!', (done) => {
-    const newBranch = new Branch({
-      location: 'Nasr City',
-      address: '123 nasr street',
+    const newService = new Service({
+      name: 'Service1',
+      shortDescription: 'Service 1 short description',
+      description: 'Description',
+      _business: sampleBusiness._id,
+      branches: null,
+      reviews: [],
+      gallery: [],
     });
-    newBranch.save()
-      .then((newbran) => {
-        const newService = new Service({
-          name: 'Service1',
-          shortDescription: 'Service 1 short description',
-          description: 'Description',
-          _business: sampleBusiness._id,
-          branches: newbran._id,
-          reviews: [],
-          gallery: [],
-        });
-        const newImage = ({
-          path: 'sampleImagePath',
-          description: 'sample Image Description',
-        });
-        newService.gallery.push(newImage);
-        newService.save()
-          .then((newser) => {
-            const newim = newser.gallery.find(element => `${element.path}` === 'sampleImagePath');
-            req = supertest(app)
-              .post(`/api/v1/service/editServiceImage/${newser._id}/${newim._id}`)
-              .set('Authorization', `JWT ${token}`)
-              .send({
-                description: 'API Description is working',
-              })
-              .expect(200)
-              .end((err, res) => {
-                if (err) {
-                  done(err);
-                } else {
-                  Service.findOne({
-                    _id: newser._id,
-                  })
-                    .exec()
-                    .then((data) => {
-                      console.log('plz');
-                      console.log(res.body);
-                      chai.expect(res.body.message)
-                        .to.equal(Strings.serviceSuccess.imageEdit);
-                      const chaiImage = data.gallery.find(element => `${element._id}` === `${newim._id}`);
-                      chai.expect(chaiImage.description)
-                        .to.equal('API Description is working');
-                      done();
-                    })
-                    .catch(() => done(err));
-                }
-              });
+    const newImage = ({
+      path: 'sampleImagePath',
+      description: 'sample Image Description',
+    });
+    newService.gallery.push(newImage);
+    newService.save()
+      .then((newser) => {
+        const newim = newser.gallery.find(element => `${element.path}` === 'sampleImagePath');
+        req = supertest(app)
+          .post(`/api/v1/service/editServiceImage/${newser._id}/${newim._id}`)
+          .set('Authorization', `JWT ${token}`)
+          .send({
+            description: 'API Description is working',
           })
-          .catch(err => done(err));
+          .expect(200)
+          .end((err, res) => {
+            if (err) {
+              done(err);
+            } else {
+              Service.findOne({
+                _id: newser._id,
+              })
+                .exec()
+                .then((data) => {
+                  chai.expect(res.body.message)
+                    .to.equal(Strings.serviceSuccess.imageEdit);
+                  const chaiImage = data.gallery.find(element => `${element._id}` === `${newim._id}`);
+                  chai.expect(chaiImage.description)
+                    .to.equal('API Description is working');
+                  done();
+                })
+                .catch(() => done(err));
+            }
+          });
+      })
+      .catch(err => done(err));
+  });
+  it('should delete an image description, and return success message: Image deleted succesfully!', (done) => {
+    const newService = new Service({
+      name: 'Service1',
+      shortDescription: 'Service 1 short description',
+      description: 'Description',
+      _business: sampleBusiness._id,
+      branches: null,
+      reviews: [],
+      gallery: [],
+    });
+    const newImage = ({
+      path: 'sampleImagePath',
+      description: 'sample Image Description',
+    });
+    newService.gallery.push(newImage);
+    newService.save()
+      .then((newser) => {
+        const newim = newser.gallery.find(element => `${element.path}` === 'sampleImagePath');
+        req = supertest(app)
+          .post(`/api/v1/service/deleteServiceImage/${newser._id}/${newim._id}`)
+          .set('Authorization', `JWT ${token}`)
+          .expect(200)
+          .end((err, res) => {
+            if (err) {
+              done(err);
+            } else {
+              Service.findOne({
+                _id: newser._id,
+              })
+                .exec()
+                .then((data) => {
+                  chai.expect(res.body.message)
+                    .to.equal(Strings.serviceSuccess.imageDelete);
+                  chai.expect(data.gallery.length)
+                    .to.equal(0);
+                  done();
+                })
+                .catch(() => done(err));
+            }
+          });
       })
       .catch(err => done(err));
   });

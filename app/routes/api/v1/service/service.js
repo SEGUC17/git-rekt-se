@@ -55,14 +55,12 @@ router.post('/addServiceImage/:id', BusinessAuth, upload.single('path'), (req, r
           .exec()
           .then((service) => {
             if (service) {
-              console.log('00000000000000000000000');
               /* check whether logged in business matches the service provider.*/
               if (`${service._business}` === `${req.user._id}`) {
                 const image = ({
                   path: req.file.filename,
                   description: req.body.description,
                 });
-                console.log(service);
                 service.gallery.push(image);
                 service.save()
                   .then(() => {
@@ -80,10 +78,10 @@ router.post('/addServiceImage/:id', BusinessAuth, upload.single('path'), (req, r
           })
           .catch(err => next([err]));
       } else {
-        next(result.array());
+        next(Strings.serviceValidationErrors.invalidServiceID);
       }
     })
-    .catch(err => next[err]);
+    .catch(err => next([err]));
 });
 
 
@@ -91,7 +89,6 @@ router.post('/addServiceImage/:id', BusinessAuth, upload.single('path'), (req, r
 Service Image Update
 */
 router.post('/editServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next) => { // ensureauthenticated
-  console.log('0000000000000000000');
   req.checkParams(validationSchemas.serviceEditImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -101,11 +98,10 @@ router.post('/editServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next) =
         })
           .exec()
           .then((service) => {
-            console.log(service);
             if (service) {
               if (`${service._business}` === `${req.user._id}`) {
                 const image = service.gallery
-                  .find(element => `${element._id}` === req.params.im_id);
+                  .find(element => `${element._id}` === `${req.params.im_id}`);
                 if (!image) {
                   next([Strings.serviceFail.imageNotFound]);
                 } else {
@@ -138,8 +134,7 @@ router.post('/editServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next) =
 Service Image Update
 */
 router.post('/deleteServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next) => { // ensureauthenticated
-  console.log('0000000000000000');
-  req.checkparams(validationSchemas.serviceEditImageValidation);
+  req.checkParams(validationSchemas.serviceEditImageValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
@@ -149,14 +144,14 @@ router.post('/deleteServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next)
           .exec()
           .then((service) => {
             if (service) {
-              if (service._business._id === req.user._id) {
+              if (`${service._business}` === `${req.user._id}`) {
                 const image = service.gallery
-                  .find(element => `${element._id}` === req.params.im_id);
+                  .find(element => `${element._id}` === `${req.params.im_id}`);
                 if (!image) {
                   next([Strings.serviceFail.imageNotFound]);
                 } else {
                   const newGallery = service.gallery
-                    .filter(element => `${element._id}` !== req.params.im_id);
+                    .filter(element => `${element._id}` !== `${req.params.im_id}`);
                   service.gallery = newGallery;
                   service.save()
                     .then(() => {
