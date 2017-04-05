@@ -18,35 +18,43 @@ router.use(expressValidator({}));
 
 router.post('/confirm/:id', AdminAuth, (req, res, next) => {
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
-  Business.findOne({
-    _id: req.params.id,
-    _deleted: false,
-  })
-    .exec()
-    .then((business) => {
-      if (business) {
-        if (business._status === 'verified') {
-          next([Strings.businessConfirmation.alreadyConfirmed]);
-        } else if (business._status === 'rejected') {
-          next([Strings.businessConfirmation.alreadyDenied]);
-        } else {
-          business._status = 'verified';
-          business.save()
-            .then(() => {
-              Mailer.notifyBusinessOfConfirmation(req.hostname, business.email)
-                .then(() => {
-                  res.json({
-                    message: Strings.businessConfirmation.confirmed,
-                  });
-                })
-                .catch(err => next([err]));
-            })
-            .catch(saveErr => next([saveErr]));
-        }
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        Business.findOne({
+          _id: req.params.id,
+          _deleted: false,
+        })
+          .exec()
+          .then((business) => {
+            if (business) {
+              if (business._status === 'verified') {
+                next([Strings.businessConfirmation.alreadyConfirmed]);
+              } else if (business._status === 'rejected') {
+                next([Strings.businessConfirmation.alreadyDenied]);
+              } else {
+                business._status = 'verified';
+                business.save()
+                  .then(() => {
+                    Mailer.notifyBusinessOfConfirmation(req.hostname, business.email)
+                      .then(() => {
+                        res.json({
+                          message: Strings.businessConfirmation.confirmed,
+                        });
+                      })
+                      .catch(err => next([err]));
+                  })
+                  .catch(saveErr => next([saveErr]));
+              }
+            } else {
+              res.json({
+                message: Strings.businessConfirmation.notFound,
+              });
+            }
+          })
+          .catch(err => next([err]));
       } else {
-        res.json({
-          message: Strings.businessConfirmation.notFound,
-        });
+        next([result.array()]);
       }
     })
     .catch(err => next([err]));
@@ -54,36 +62,44 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
 
 router.post('/deny/:id', AdminAuth, (req, res, next) => {
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
-  Business.findOne({
-    _id: req.params.id,
-    _deleted: false,
-  })
-    .exec()
-    .then((business) => {
-      if (business) {
-        if (business._status === 'rejected') {
-          next([Strings.businessConfirmation.alreadyDenied]);
-        } else if (business._status === 'verified') {
-          next([Strings.businessConfirmation.alreadyConfirmed]);
-        } else {
-          business._status = 'rejected';
-          business.save()
-            .then(() => {
-              Mailer.notifyBusinessOfDenial(business.email)
-                .then(() => res.json({
-                  message: Strings.businessConfirmation.denied,
-                }))
-                .catch(err => next([err]));
-            })
-            .catch(saveErr => next([saveErr]));
-        }
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        Business.findOne({
+          _id: req.params.id,
+          _deleted: false,
+        })
+          .exec()
+          .then((business) => {
+            if (business) {
+              if (business._status === 'rejected') {
+                next([Strings.businessConfirmation.alreadyDenied]);
+              } else if (business._status === 'verified') {
+                next([Strings.businessConfirmation.alreadyConfirmed]);
+              } else {
+                business._status = 'rejected';
+                business.save()
+                  .then(() => {
+                    Mailer.notifyBusinessOfDenial(business.email)
+                      .then(() => res.json({
+                        message: Strings.businessConfirmation.denied,
+                      }))
+                      .catch(err => next([err]));
+                  })
+                  .catch(saveErr => next([saveErr]));
+              }
+            } else {
+              res.json({
+                message: Strings.businessConfirmation.notFound,
+              });
+            }
+          })
+          .catch(finderr => next([finderr]));
       } else {
-        res.json({
-          message: Strings.businessConfirmation.notFound,
-        });
+        next(result.array());
       }
     })
-    .catch(finderr => next([finderr]));
+    .catch(err => next([err]));
 });
 
 /**
