@@ -141,12 +141,12 @@ describe('Client Signup API', () => {
           .to.have.lengthOf(2);
 
         chai.expect(res.body.results[0]._business.name)
-          .to.equal('GUC language center');
+          .to.equal('GUC german center');
         chai.expect(res.body.results[0].name)
           .to.equal('GUC english course');
 
         chai.expect(res.body.results[1]._business.name)
-          .to.equal('GUC language center');
+          .to.equal('GUC german center');
         chai.expect(res.body.results[1].name)
           .to.equal('GUC german course');
 
@@ -188,7 +188,7 @@ describe('Client Signup API', () => {
           .to.equal('Not Courses English Language Course');
 
         chai.expect(res.body.results[1]._business.name)
-          .to.equal('GUC language center');
+          .to.equal('GUC german center');
         chai.expect(res.body.results[1].name)
           .to.equal('GUC english course');
 
