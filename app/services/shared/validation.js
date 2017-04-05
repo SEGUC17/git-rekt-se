@@ -227,6 +227,22 @@ const offeringEditValidationParmas = {
     },
   },
 };
+const businessResetPasswordValidation = {
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
+    },
+  },
+};
 
 /**
  * Visitor validation
@@ -383,6 +399,7 @@ const validation = {
   offeringCreateValidationBody,
   ServiceCreateValidationParams,
   offeringEditValidationParmas,
+  businessResetPasswordValidation,
   visitorValidation,
   businessEditInfoValidation,
   businessAddValidation,

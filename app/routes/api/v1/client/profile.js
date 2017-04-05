@@ -7,7 +7,7 @@ const Client = require('../../../../models/client/Client');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const Strings = require('../../../../services/shared/Strings');
 const authMiddleWare = require('../../../../services/shared/jwtConfig');
-
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 const router = express.Router();
 
@@ -82,11 +82,11 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
                             });
                           })
                           .catch((e) => {
-                            next([e]);
+                            next(e);
                           });
                       })
                       .catch((e) => {
-                        next([e]);
+                        next(e);
                       });
                   })
                   .catch(e => next(e));
@@ -100,7 +100,7 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
               }
             })
             .catch((e) => {
-              next([e]);
+              next(e);
             });
         } else {
           next(result.array());
@@ -115,11 +115,6 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
  *  Error Handling Middlewares.
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
 
 module.exports = router;
