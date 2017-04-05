@@ -64,7 +64,7 @@ describe('Populating Category Collection', () => {
         categoriesIDs.push(docs[3]._id);
         done();
       })
-      .catch(e => done([e]));
+      .catch(e => done(e));
   });
 });
 
@@ -80,7 +80,7 @@ describe('Populating Business Collection', () => {
         businessesIDs.push(docs[2]._id);
         done();
       })
-      .catch(e => done([e]));
+      .catch(e => done(e));
   });
 });
 
@@ -102,9 +102,11 @@ describe('Populating Service Collection', () => {
     services[3]._business = businessesIDs[0];
     services[3].categories = [categoriesIDs[3], categoriesIDs[1]];
 
-    Service.insertMany(services).then((docs) => {
-      done();
-    }).catch(e => done([e]));
+    Service.insertMany(services)
+      .then((docs) => {
+        done();
+      })
+      .catch(e => done(e));
   });
 });
 
@@ -249,12 +251,13 @@ describe('Client Signup API', () => {
         if (err) {
           done(err);
         }
-        chai.expect(res.body.errors[0].msg).to.equal(Strings.visitorValidationErrors.InvalidID);
+        chai.expect(res.body.errors[0].msg)
+          .to.equal(Strings.visitorValidationErrors.InvalidID);
         done();
       });
   });
 
-   /**
+  /**
    * Failing Test5: Invalid offset middleware handling check
    */
 
@@ -262,12 +265,13 @@ describe('Client Signup API', () => {
     req = supertest(app)
       .get(`/api/v1/service/category/${categoriesIDs[2]}/0`);
     req.expect('Content-Type', /json/)
-     .expect(400)
+      .expect(400)
       .end((err, res) => {
         if (err) {
           done(err);
         }
-        chai.expect(res.body.errors[0].msg).to.equal(Strings.visitorValidationErrors.InvalidOffset);
+        chai.expect(res.body.errors[0].msg)
+          .to.equal(Strings.visitorValidationErrors.InvalidOffset);
         done();
       });
   });
