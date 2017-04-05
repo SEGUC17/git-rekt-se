@@ -17,7 +17,6 @@ const reviewSchema = mongoose.Schema({
   },
   description: {
     type: String,
-    required: false,
   },
   _deleted: {
     type: Boolean,

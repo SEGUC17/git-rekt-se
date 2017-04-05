@@ -2,6 +2,7 @@ const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Client = require('../../../app/models/client/Client');
+const InvalidToken = require('../../../app/models/shared/InvalidToken');
 const clients = require('../../../app/seed/client/clientSeed');
 
 /**
@@ -279,6 +280,50 @@ describe('Client Login API', () => {
         },
         ],
       }, done);
+  });
+});
+
+describe('Client Logout API', () => {
+  it('should add token to invalid tokens', (done) => {
+    supertest(app)
+          .post('/api/v1/client/auth/login')
+          .send({
+            email: clients[0].email,
+            password: clients[0].password,
+          })
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end((err, res) => {
+            if (err) {
+              done(err);
+            } else {
+              const token = res.body.token;
+              const JWS_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/;
+              chai.expect(token).to.match(JWS_REGEX);
+
+              supertest(app)
+                    .post('/api/v1/client/auth/logout')
+                    .set('Authorization', `JWT ${token}`)
+                    .end((e, result) => {
+                      if (err) {
+                        done(err);
+                        return;
+                      }
+                      chai.expect(result.body.message).to.equal('You have been logged out.');
+
+                      InvalidToken.findOne({
+                        token,
+                      }, (dberr, data) => {
+                        if (dberr) {
+                          done(dberr);
+                          return;
+                        }
+                        chai.expect(data).not.to.equal(undefined);
+                        done();
+                      });
+                    });
+            }
+          });
   });
 
   after((done) => {

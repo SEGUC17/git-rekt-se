@@ -10,6 +10,7 @@ const bussinessValidationErrors = Strings.bussinessValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
 const adminValidationErrors = Strings.adminValidationErrors;
 const serviceValidationErrors = Strings.serviceValidationErrors;
+const reviewErrors = Strings.reviewErrors;
 
 /**
  * Client validation
@@ -139,6 +140,23 @@ const businessSignupValidation = {
   },
 };
 
+const clientResetPasswordValidation = {
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
+    },
+  },
+};
+
 const businessLoginValidation = {
   email: {
     notEmpty: {
@@ -155,6 +173,23 @@ const businessLoginValidation = {
     matches: {
       options: [/^(?=.*\d).{8,15}$/],
       errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
+};
+
+const businessResetPasswordValidation = {
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
     },
   },
 };
@@ -219,6 +254,61 @@ const businessEditValidation = {
 };
 
 /**
+ * Review Validation
+ */
+
+const createReviewValidation = {
+  id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  rating: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
+    },
+  },
+};
+
+const updateReviewValidation = {
+  id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  review_id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidReview,
+    },
+  },
+  rating: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
+    },
+  },
+};
+
+const deleteReviewValidation = {
+  id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  review_id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidReview,
+    },
+  },
+};
+
+/**
  * Administrator validation
  */
 
@@ -268,18 +358,23 @@ const serviceEditImageValidation = {
 };
 
 const validation = {
+  clientResetPasswordValidation,
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
   adminLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+  businessResetPasswordValidation,
   visitorValidation,
   businessEditInfoValidation,
   businessAddValidation,
   businessEditValidation,
   serviceAddImageValidation,
   serviceEditImageValidation,
+  createReviewValidation,
+  updateReviewValidation,
+  deleteReviewValidation,
 };
 
 module.exports = validation;
