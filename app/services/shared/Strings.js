@@ -95,10 +95,15 @@ const serviceSuccess = {
 };
 
 const serviceFail = {
-  invalidService: 'Service not found!',
-  invalidImage: 'Image not found!',
+  serviceNotFound: 'Service not found!',
+  imageNotFound: 'Image not found!',
   notYourService: 'Can not modify a service that is not owned by your business!',
   missingField: 'Missing Field(s)!',
+};
+
+const serviceValidationErrors = {
+  invalidServiceID: 'Invalid Service ID',
+  invalidImageID: 'Invalid Image ID',
 };
 
 const clientForgotPassword = {
@@ -171,6 +176,7 @@ module.exports = {
   businessLoginMessages,
   serviceSuccess,
   serviceFail,
+  serviceValidationErrors,
   businessForgotPassword,
   adminLoginMessages,
   adminValidationErrors,

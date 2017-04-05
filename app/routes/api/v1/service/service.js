@@ -3,12 +3,22 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const crypto = require('crypto');
 const Service = require('../../../../models/service/Service');
-const BusinessAuth = require('../../../../services/shared/jwtConfig').businessAuthMiddleware;
+const validationSchemas = require('../../../../services/shared/validation');
+const BusinessAuth = require('../../../../services/shared/jwtConfig')
+  .businessAuthMiddleware;
 const Strings = require('../../../../services/shared/Strings');
 const path = require('path');
+const expressValidator = require('express-validator');
 
 const router = express.Router();
 /* eslint-disable no-underscore-dangle */
+
+/**
+ * Parsing Middleware(s).
+ */
+
+router.use(bodyParser.json());
+router.use(expressValidator({}));
 
 /*
     Multer Config.
@@ -34,43 +44,40 @@ Service Image CRUD section
 /*
 Service Image Create
 */
-router.use(bodyParser.json());
 router.post('/addServiceImage/:id', BusinessAuth, upload.single('file'), (req, res, next) => { // ensureauthenticated
-  Service.findOne({
-    _id: req.params.id,
-  })
-    .exec((err, service) => {
-      if (service) {
-         /* check whether logged in business matches the service provider.*/
-        if (service._business._id === req.user._id) {
-          const image = ({
-            path: req.file.filename,
-            description: req.body.description,
-          });
-          service.gallery.push(image);
-          service.save((err2) => {
-            if (err) {
-              next(err);
-            } else
-          if (err2) {
-            next(err2);
-          } else {
-            res.json({
-              message: Strings.serviceSuccess.imageAdd,
-            });
-          }
-          });
-        } else {
-          res.json({
-            message: Strings.serviceFail.notYourService,
-          });
-          next(err);
-        }
+  req.checkparams(validationSchemas.serviceAddImageValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        Service.findOne({
+          _id: req.params.id,
+        })
+          .then((service) => {
+            if (service) {
+              /* check whether logged in business matches the service provider.*/
+              if (service._business._id === req.user._id) {
+                const image = ({
+                  path: req.file.filename,
+                  description: req.body.description,
+                });
+                service.gallery.push(image);
+                service.save()
+                  .then(() => {
+                    res.json({
+                      message: Strings.serviceSuccess.imageAdd,
+                    });
+                  })
+                  .catch(saveErr => next([saveErr]));
+              } else {
+                next([Strings.serviceFail.notYourService]);
+              }
+            } else {
+              next([Strings.serviceFail.invalidService]);
+            }
+          })
+          .catch(err => next([err]));
       } else {
-        res.json({
-          message: Strings.serviceFail.invalidService,
-        });
-        next(err);
+        next(result.array());
       }
     });
 });
@@ -80,50 +87,41 @@ router.post('/addServiceImage/:id', BusinessAuth, upload.single('file'), (req, r
 Service Image Update
 */
 router.post('/editServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next) => { // ensureauthenticated
-  Service.findOne({
-    _id: req.params.ser_id,
-  })
-    .exec((err, service) => {
-      console.log('-----------------service(findone)------------------');
-      console.log(service);
-      console.log(req.params.im_id);
-      if (service) {
-        if (service._business._id === req.user._id) {
-          const image = service.gallery.find(element => `${element._id}` === req.params.im_id);
-          if (!image) {
-            console.log('_____________no image returned_______');
-            res.json({
-              message: Strings.serviceFail.invalidImage,
-            });
-            next(err);
-          } else {
-            const newDescr = req.body.description;
-            console.log('----------------------desc---------------------------');
-            console.log(newDescr);
-            console.log('image?');
-            console.log(image);
-            image.description = newDescr;
-            service.save((err3) => {
-              if (err3) {
-                next(err3);
+  req.checkparams(validationSchemas.serviceEditImageValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        Service.findOne({
+          _id: req.params.ser_id,
+        })
+          .then((service) => {
+            if (service) {
+              if (service._business._id === req.user._id) {
+                const image = service.gallery
+                  .find(element => `${element._id}` === req.params.im_id);
+                if (!image) {
+                  next([Strings.serviceFail.imageNotFound]);
+                } else {
+                  const newDescr = req.body.description;
+                  image.description = newDescr;
+                  service.save()
+                    .then(() => {
+                      res.json({
+                        message: Strings.serviceSuccess.imageEdit,
+                      });
+                    })
+                    .catch(saveErr => next([saveErr]));
+                }
               } else {
-                res.json({
-                  message: Strings.serviceSuccess.imageEdit,
-                });
+                next([Strings.serviceFail.notYourService]);
               }
-            });
-          }
-        } else {
-          res.json({
-            message: Strings.serviceFail.notYourService,
-          });
-          next(err);
-        }
+            } else {
+              next([Strings.serviceFail.invalidService]);
+            }
+          })
+          .catch(err => next([err]));
       } else {
-        res.json({
-          message: Strings.serviceFail.invalidService,
-        });
-        next(err);
+        next(result.array());
       }
     });
 });
@@ -132,45 +130,39 @@ router.post('/editServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next) =
 Service Image Update
 */
 router.post('/deleteServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next) => { // ensureauthenticated
-  Service.findOne({
-    _id: req.params.ser_id,
-  })
-    .exec((err, service) => {
-      console.log('-----------------service(findone)------------------');
-      console.log(service);
-      if (service) {
-        if (service._business._id === req.user._id) {
-          const newGallery = service.gallery.filter(element => `${element._id}` !== req.params.im_id);
-          if (!newGallery) {
-            console.log('_____________no image returned_______');
-            res.json({
-              message: Strings.serviceFail.invalidImage,
-            });
-            next(err);
-          } else {
-            service.gallery = newGallery;
-            service.save((err3) => {
-              if (err3) {
-                next(err3);
+  req.checkparams(validationSchemas.serviceEditImageValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        Service.findOne({
+          _id: req.params.ser_id,
+        })
+          .then((service) => {
+            if (service) {
+              if (service._business._id === req.user._id) {
+                const newGallery = service.gallery.filter(element => `${element._id}` !== req.params.im_id);
+                if (!newGallery) { // Needs Revising
+                  next([Strings.serviceFail.imageNotFound]);
+                } else {
+                  service.gallery = newGallery;
+                  service.save()
+                    .then(() => {
+                      res.json({
+                        message: Strings.serviceSuccess.imageDelete,
+                      });
+                    })
+                    .catch(saveErr => next([saveErr]));
+                }
               } else {
-                console.log(service);
-                res.json({
-                  message: Strings.serviceSuccess.imageDelete,
-                });
+                next([Strings.serviceFail.notYourService]);
               }
-            });
-          }
-        } else {
-          res.json({
-            message: Strings.serviceFail.notYourService,
-          });
-          next(err);
-        }
+            } else {
+              next([Strings.serviceFail.invalidService]);
+            }
+          })
+          .catch(err => next([err]));
       } else {
-        res.json({
-          message: Strings.serviceFail.invalidService,
-        });
-        next(err);
+        next(result.array());
       }
     });
 });

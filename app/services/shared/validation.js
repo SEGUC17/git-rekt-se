@@ -9,6 +9,7 @@ const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
 const adminValidationErrors = Strings.adminValidationErrors;
+const serviceValidationErrors = Strings.serviceValidationErrors;
 
 /**
  * Client validation
@@ -192,7 +193,6 @@ const businessEditInfoValidation = {
   },
 };
 
-
 const businessAddValidation = {
   branches: {
     notEmpty: {
@@ -242,6 +242,31 @@ const adminLoginValidation = {
   },
 };
 
+/**
+ * Client validation
+ */
+
+const serviceAddImageValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+};
+
+const serviceEditImageValidation = {
+  ser_id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  im_id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidImageID,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
@@ -253,6 +278,8 @@ const validation = {
   businessEditInfoValidation,
   businessAddValidation,
   businessEditValidation,
+  serviceAddImageValidation,
+  serviceEditImageValidation,
 };
 
 module.exports = validation;
