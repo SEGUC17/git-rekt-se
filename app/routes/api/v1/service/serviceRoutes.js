@@ -6,6 +6,8 @@ const Services = require('../../../../models/service/Service');
 const Business = require('../../../../models/business/Business');
 const Review = require('../../../../models/service/Review');
 const Category = require('../../../../models/service/Category');
+const Offering = require('../../../../models/service/Offering');
+
 
 const router = express.Router();
 
@@ -13,11 +15,42 @@ const router = express.Router();
  * View a service route
  */
 
+
 router.get('/:id', (req, res, next) => {
   Service.findOne({
     _id: req.params.id,
+    _deleted: false,
   })
-    .populate('_business branches categories')
+    .populate([{
+      path: '_business',
+      match: {
+        _deleted: false,
+      },
+    },
+    {
+      path: 'branches',
+      match: {
+        _deleted: false,
+      },
+    },
+    {
+      path: 'offerings',
+      match: {
+        _deleted: false,
+      },
+    },
+    {
+      path: 'reviews',
+      match: {
+        _deleted: false,
+      },
+    },
+    {
+      path: 'categories',
+      match: {
+        _deleted: false,
+      },
+    }])
     .exec()
     .then((service) => {
       const returnedService = {
@@ -38,7 +71,7 @@ router.get('/:id', (req, res, next) => {
       };
       res.json(returnedService);
     })
-    .catch((e) => {
+    .catch(() => {
       next(Strings.serviceFailure.serviceNotFound);
     });
 });
