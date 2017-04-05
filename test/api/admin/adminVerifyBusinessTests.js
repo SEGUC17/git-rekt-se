@@ -22,28 +22,30 @@ describe('Administrator Accept/Reject Business Application API', () => {
     Admin.collection.drop(() => {
       Admin.ensureIndexes(() => {
         Business.collection.drop(() => {
-          Business.ensureIndexes(done);
+          Business.ensureIndexes(() => {
+            new Admin(sampleAdmin)
+              .save()
+              .then(() => {
+                req = supertest(app)
+                  .post('/api/v1/Admin/auth/login')
+                  .send({
+                    email: sampleAdmin.email,
+                    password: sampleAdmin.password,
+                  })
+                  .end((err, res) => {
+                    token = res.body.token;
+                    done();
+                  });
+              })
+              .catch(done);
+          });
         });
       });
     });
   });
 
   beforeEach((done) => {
-    new Admin(sampleAdmin)
-      .save()
-      .then(() => {
-        req = supertest(app)
-          .post('/api/v1/Admin/auth/login')
-          .send({
-            email: sampleAdmin.email,
-            password: sampleAdmin.password,
-          })
-          .end((err, res) => {
-            token = res.body.token;
-            done();
-          });
-      })
-      .catch(done);
+
   });
 
   /**

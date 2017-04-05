@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const Strings = require('../../../../services/shared/Strings');
@@ -8,8 +9,14 @@ const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 
-const router = express.Router();
 mongoose.Promise = Promise;
+
+const router = express.Router();
+
+require('dotenv')
+  .config();
+
+const JWT_KEY = process.env.JWT_KEY_BUSSINES;
 
 /**
  * Parsing Middleware(s).
@@ -83,6 +90,49 @@ router.post('/verified/login', (req, res, next) => {
         next(result.array());
       }
     });
+});
+
+/**
+ *
+ */
+
+/**
+ * Business forgot password
+ */
+
+router.post('/forgot', (req, res, next) => {
+  const email = req.body.email;
+  const currentDate = Date.now();
+  const iat = Math.floor(currentDate / 1000);
+  const resetToken = jwt.sign({
+    email,
+    iat,
+  }, JWT_KEY, {
+    expiresIn: '1h',
+  });
+
+  Business.findOne({
+    email: req.body.email,
+  })
+    .exec()
+    .then((business) => {
+      if (!business) { // Business not found, Invalid mail
+        return res.json({
+          message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
+        });
+      }
+      business.passwordResetTokenDate = currentDate;
+
+      return business.save()
+        .then(() => {
+          Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
+            .then(() => res.json({
+              message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
+            }))
+            .catch(err => next([err]));
+        });
+    })
+    .catch(err => next([err]));
 });
 
 /**
