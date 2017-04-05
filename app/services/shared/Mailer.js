@@ -106,7 +106,7 @@ exports.forgotPasswordEmail = (email, host, resetToken) => {
 exports.sendConfirmationMessage = (email) => {
   const mailOptions = {
     to: email,
-    from: 'passwordreset@demo.com',
+    from: 'gitRektMailChange@demo.com',
     subject: 'Node.js email change',
     text: 'You are receiving this because you  have requested to change the email associated with your account.\n\n' +
       'If you did not request this, please contact us.\n',
