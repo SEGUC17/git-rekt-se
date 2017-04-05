@@ -91,8 +91,11 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
                   })
                   .catch(e => next(e));
               } else {
-                res.json({
-                  message: Strings.clientSuccess.editInformation,
+                client.save()
+                .then(() => {
+                  res.json({
+                    message: Strings.clientSuccess.editInformation,
+                  });
                 });
               }
             })
