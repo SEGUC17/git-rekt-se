@@ -243,7 +243,7 @@ const adminLoginValidation = {
 };
 
 const adminConfirmBusinessValidation = {
-  _id: {
+  id: {
     isMongoId: {
       errorMessage: visitorValidationErrors.InvalidID,
     },
