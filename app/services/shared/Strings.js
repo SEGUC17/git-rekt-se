@@ -11,6 +11,7 @@ const locations = require('../../seed/service/locations')
 
 const generalErrors = {
   mailerError: 'An issue occured while sending the email.',
+  generalError: 'An error occurred trying to handle this request.',
 };
 
 /**
@@ -87,6 +88,7 @@ const clientValidationErrors = {
 const clientSuccess = {
   signup: 'Signup Successful, Please check your email for the email confirmation.',
   emailConfirmation: 'Please check your email for the email confirmation.',
+  logout: 'You have been logged out.',
 };
 
 

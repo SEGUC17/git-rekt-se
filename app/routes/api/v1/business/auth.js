@@ -8,6 +8,7 @@ const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 mongoose.Promise = Promise;
 
@@ -85,7 +86,7 @@ router.post('/verified/login', (req, res, next) => {
       if (result.isEmpty()) {
         BusinessAuthenticator.loginBusiness(req.body.email, req.body.password)
           .then(info => res.json(info))
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next(result.array());
       }
@@ -129,21 +130,16 @@ router.post('/forgot', (req, res, next) => {
             .then(() => res.json({
               message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
             }))
-            .catch(err => next([err]));
+            .catch(err => next(err));
         });
     })
-    .catch(err => next([err]));
+    .catch(err => next(err));
 });
 
 /**
  *  Error Handling Middlewares.
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
 
 module.exports = router;
