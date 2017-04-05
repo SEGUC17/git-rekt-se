@@ -25,11 +25,9 @@ describe('Should update business information correctly', () => {
         business1.password = 'Lenovo1100';
         business1.save();
 
-        business1
-          .save()
-          .then(() => {
-            console.log('henaaaaaaaaaaaaaaaaaaaaaa');
-            req = supertest(app)
+
+        console.log('henaaaaaaaaaaaaaaaaaaaaaa');
+        req = supertest(app)
                   .post('api/v1/business/auth/verified/login')
                   .send({
                     email: business1.email,
@@ -46,8 +44,6 @@ describe('Should update business information correctly', () => {
                       done();
                     }
                   });
-          })
-          .catch(done);
       });
     });
   });

@@ -5,7 +5,6 @@
 const Businesses = [{
   name: 'Enhance',
   email: 'hadyyasser23@gmail.com',
-  password: 'keytroniC1100',
   shortDescription: 'Self developpment is our target.',
   categories: null,
   _status: 'verified',
@@ -19,7 +18,6 @@ const Businesses = [{
 },
 {
   name: 'GUC german center',
-  password: 'keytroniC1100',
   email: 'gucgermancenter@gmail.com',
   shortDescription: 'Teaching German Courses',
   categories: null,

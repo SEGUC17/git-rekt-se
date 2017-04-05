@@ -27,6 +27,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
     /**
      * The new data
      */
+
     const userInfo = {
       name: req.body.name,
       email: req.body.email,
@@ -37,7 +38,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
     let emailChanged = false;
 
 
-    req.checkBody(validationSchemas.businessSignupValidation);
+    req.checkBody(validationSchemas.businessUpdateValidation);
     req.checkBody('confirmPassword')
       .equals(req.body.password)
       .withMessage(Strings.bussinessValidationErrors.passwordMismatch);
@@ -67,7 +68,6 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
               business.email = userInfo.email;
 
               if (emailChanged) {
-                business._status = 'unverified';
                 business.save()
                   .then(() => {
                     BusinessAuthenticator.generateConfirmationToken(req.body.email)
@@ -75,7 +75,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
                         Mailer.notifyAdminOfNewBusinessSignup(req.body.email, req.hostname, token)
                           .then(() => {
                             res.json({
-                              message: Strings.clientSuccess.editInformationWithEmail,
+                              message: Strings.businessSuccess.emailConfirmation,
                             });
                           })
                           .catch((e) => {
@@ -89,7 +89,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
                   .catch(e => next(e));
               } else {
                 res.json({
-                  message: Strings.clientSuccess.editInformation,
+                  message: Strings.businessInformationChanged.UPDATE_SUCCESSFULL,
                 });
               }
             })
