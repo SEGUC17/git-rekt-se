@@ -11,6 +11,7 @@ const locations = require('../../seed/service/locations')
 
 const generalErrors = {
   mailerError: 'An issue occured while sending the email.',
+  generalError: 'An error occurred trying to handle this request.',
 };
 
 /**
@@ -87,6 +88,14 @@ const clientValidationErrors = {
 const clientSuccess = {
   signup: 'Signup Successful, Please check your email for the email confirmation.',
   emailConfirmation: 'Please check your email for the email confirmation.',
+  editInformation: 'Your information has been updated successfully.',
+  editInformationWithEmail: 'Your information has been updated successfully. An email has been sent to your new email for the email confirmation.',
+  logout: 'You have been logged out.',
+};
+
+const businessForgotPassword = {
+  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
+  INVALID_RESET_TOKEN: 'Invalid reset token.',
 };
 
 
@@ -102,6 +111,7 @@ const clientLoginMessages = {
   confirmEmail: 'Please confirm your email.',
   bannedClient: 'This user has been banned.',
   invalidToken: 'Invalid Token',
+  notLoggedIN: 'You need to be logged in.',
 };
 
 const clientConfirmation = {
@@ -142,11 +152,6 @@ const visitorValidationErrors = {
   InvalidOffset: 'Invalid Offset',
 };
 
-const businessForgotPassword = {
-  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
-  INVALID_RESET_TOKEN: 'Invalid reset token.',
-  PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
-};
 /**
  * Admin Strings
  */
@@ -176,9 +181,9 @@ module.exports = {
   clientConfirmation,
   bussinessValidationErrors,
   businessSuccess,
+  businessForgotPassword,
   clientForgotPassword,
   businessLoginMessages,
-  businessForgotPassword,
   adminLoginMessages,
   adminValidationErrors,
   visitorErrors,
