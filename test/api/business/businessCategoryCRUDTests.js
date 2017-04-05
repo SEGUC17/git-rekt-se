@@ -123,7 +123,7 @@ describe('Category CRUD Test Suite', () => {
               done(err2);
             } else {
               chai.expect(res.body.message)
-                .to.equal('Category edited succesfully!'); // const chaiCategory = Category.findbyId(element => `${element._id}` === `${newcat._id}`);
+                .to.equal('Category edited succesfully!');
               Category.findOne({
                 _id: `${newcat._id}`,
               }, (err3, category) => {
