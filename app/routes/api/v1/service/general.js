@@ -25,7 +25,6 @@ router.use(expressValidator({}));
  */
 
 router.get('/:id/:offset', (req, res, next) => {
-  console.log(req.params.id);
   req.checkParams(validationSchemas.visitorValidation);
   req.getValidationResult().then((result) => {
     if (result.isEmpty()) {
