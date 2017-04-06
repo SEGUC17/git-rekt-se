@@ -18,8 +18,11 @@ const businessUtils = require('../../../../services/business/businessUtils');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
 mongoose.Promise = Promise;
-
 const router = express.Router();
+
+/**
+ * Parsing Middleware(s).
+ */
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
@@ -27,6 +30,7 @@ router.use(expressValidator({}));
 /**
  * Business Edit Info API Route.
  */
+
 router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
   if (req.user.id !== id) {
@@ -72,6 +76,7 @@ router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
 /**
  * Business Add Branches API Route.
  */
+
 router.post('/:id/add/branches', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
   if (req.user.id !== id) {
@@ -114,6 +119,7 @@ router.post('/:id/add/branches', businessAuthMiddleware, (req, res, next) => {
 /**
  * Business Edit Branch API Route.
  */
+
 router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.business_id;
   if (req.user.id !== id) {
@@ -156,6 +162,7 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
 /**
  * Business Delete Branch API Route.
  */
+
 router.delete('/:business_id/delete/branch/:branch_id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.business_id;
   if (req.user.id !== id) {
