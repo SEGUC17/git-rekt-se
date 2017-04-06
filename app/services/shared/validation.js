@@ -332,6 +332,25 @@ const adminLoginValidation = {
   },
 };
 
+
+const businessUpdateValidation = {
+  name: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyName,
+    },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyDescription,
+    },
+  },
+  phoneNumbers: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyMobile,
+    },
+  },
+};
+
 const validation = {
   clientResetPasswordValidation,
   clientSignupValidation,
@@ -348,6 +367,7 @@ const validation = {
   createReviewValidation,
   updateReviewValidation,
   deleteReviewValidation,
+  businessUpdateValidation,
 };
 
 module.exports = validation;
