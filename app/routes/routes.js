@@ -47,11 +47,8 @@ module.exports = (app) => {
   /**
    * Service Routes.
    */
-<<<<<<< HEAD
-  app.use('/api/v1/business/gallery', BusinessGalleryAPI);
-=======
-  app.use('/api/v1/admin/category', admincatAPI);
 
->>>>>>> e5997df75a0ee640282cecd5cbb6587c32a2f986
+  app.use('/api/v1/business/gallery', BusinessGalleryAPI);
+  app.use('/api/v1/admin/category', admincatAPI);
   app.use('/api/v1/service', reviewCRUDAPI);
 };
