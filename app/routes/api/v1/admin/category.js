@@ -46,10 +46,11 @@ router.post('/add', AdminAuth, upload.single('icon'), (req, res, next) => {
   req.getValidationResult()
   .then((results) => {
     if (results.isEmpty()) {
+      const icon = req.file ? req.file.filename : '';
       const category = new Category({
         type: req.body.type,
         title: req.body.title,
-        icon: req.file.filename,
+        icon,
       });
       category.save((err) => {
         if (err) {
@@ -70,11 +71,12 @@ router.post('/edit/:id', AdminAuth, upload.single('icon'), (req, res, next) => {
   req.checkBody(validationSchemas.adminCategoryValidation);
   req.getValidationResult()
   .then((results) => {
+    const icon = req.file ? req.file.filename : '';
     if (results.isEmpty()) {
       const category = new Category({
         type: req.body.type,
         title: req.body.title,
-        icon: req.file.filename,
+        icon,
       });
       Category.findOne({
         _id: req.params.id,
