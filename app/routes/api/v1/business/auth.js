@@ -100,59 +100,6 @@ router.post('/verified/login', (req, res, next) => {
     });
 });
 
-
-/**
- * Business reset password
- */
-
-router.post('/reset', (req, res, next) => {
-  const resetToken = req.body.token;
-  const password = req.body.password;
-
-  req.checkBody(validationSchemas.businessResetPasswordValidation);
-  req.checkBody('confirmPassword')
-    .equals(req.body.password)
-    .withMessage(Strings.bussinessValidationErrors.passwordMismatch);
-
-  req.getValidationResult()
-    .then((result) => {
-      if (result.isEmpty()) {
-        jwt.verify(resetToken, JWT_KEY, (err, payload) => {
-          if (!payload) {
-            next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
-          } else {
-            const email = payload.email;
-            const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
-
-            Business.findOne({
-              email,
-              passwordChangeDate: {
-                $lte: creationDate,
-              },
-            })
-              .exec()
-              .then((business) => {
-                if (!business) {
-                  return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
-                }
-                business.passwordResetTokenDate = undefined; // Disable the token
-                business.passwordChangeDate = Date.now(); // Invalidate Login Tokens
-                business.password = password; // Reset password
-
-                return business.save()
-                  .then(() => res.json({
-                    message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
-                  }));
-              })
-              .catch(e => next([e]));
-          }
-        });
-      } else {
-        next(result.array());
-      }
-    });
-});
-
 /**
  * Business forgot password
  */
@@ -289,9 +236,6 @@ router.post('/confirm/signup/:token', (req, res, next) => {
         BusinessAuthenticator.verifyBusiness(token)
           .then((payload) => {
             console.log(payload);
-            res.json({
-              message: 'Done',
-            });
             Business.findOne({
               email: payload.email,
               _deleted: false,
@@ -299,21 +243,22 @@ router.post('/confirm/signup/:token', (req, res, next) => {
               .exec()
               .then((business) => {
                 if (business._status === 'pending') {
-                  // BusinessUtils.addBranches(body.branches, business._id)
-                  //   .then((branches) => {
-                  //     business.password = body.password;
-                  //     business.description = body.description;
-                  //     business.workingHours = body.workingHours;
-                  //     business.categories = business.categories.concat(body.categories);
-                  //     business.branches = business.branches.concat(branches);
-                  //     business._status = 'verified';
-                  //     business.save()
-                  //       .then(() => res.json({
-                  //         message: 'Verification Completed Successfully',
-                  //       }))
-                  //       .catch(err => next([err]));
-                  //   })
-                  //   .catch(err => next([err]));
+                  BusinessUtils.addBranches(body.branches, business._id)
+                    .then((branches) => {
+                      business.password = body.password;
+                      business.description = body.description;
+                      business.workingHours = body.workingHours;
+                      business.categories = business.categories.concat(body.categories);
+                      business.branches = business.branches.concat(branches);
+                      business._status = 'verified';
+                      console.log(business);
+                      business.save()
+                        .then(() => res.json({
+                          message: 'Verification Completed Successfully',
+                        }))
+                        .catch(err => next([err]));
+                    })
+                    .catch(err => next([err]));
                 } else if (business._status === 'verified') {
                   next([Strings.businessMessages.alreadyVerified]);
                 } else if (business._status === 'unverified') {
