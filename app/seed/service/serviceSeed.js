@@ -34,7 +34,6 @@ const Services = [{
   description: 'Description',
   _business: null,
   branches: null,
-  offerings: null,
   reviews: [],
   gallery: null,
 }];

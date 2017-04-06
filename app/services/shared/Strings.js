@@ -259,6 +259,14 @@ const adminSuccess = {
   categoryDeleted: 'Category deleted succesfully!',
 };
 
+/**
+ * Search Strings
+ */
+
+const searchErrors = {
+  emptySearchResult: 'No search results match the query.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
@@ -290,4 +298,5 @@ module.exports = {
   reviewErrors,
   reviewSuccess,
   adminSuccess,
+  searchErrors,
 };
