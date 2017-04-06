@@ -52,6 +52,19 @@ exports.loginBusiness = (email, password) => new Promise((resolve, reject) => {
 });
 
 /**
+ * Verify's a token and decodes it.
+ */
+exports.verifyBusiness = token => new Promise((resolve, reject) => {
+  jwt.verify(token, process.env.JWT_KEY_BUSSINES, (err, decoded) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(decoded);
+    }
+  });
+});
+
+/**
  * Generate Verify SignUp Token.
  */
 exports.generateSignUpToken = (email) => {
