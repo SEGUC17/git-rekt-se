@@ -7,6 +7,7 @@ const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 const Strings = require('../../../../services/shared/Strings');
 const authMiddleWare = require('../../../../services/shared/jwtConfig');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 
 const router = express.Router();
@@ -48,9 +49,14 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
         if (result.isEmpty()) {
           Business.findOne({
             _id: req.params.id,
+            _deleted: false,
           })
             .exec()
             .then((business) => {
+              if (!business) {
+                next(Strings.businessMessages.mismatchID);
+                return;
+              }
               if (business.email === userInfo.email) {
                 emailChanged = false;
               } else {
@@ -105,11 +111,6 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
  *  Error Handling Middlewares.
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
 
 module.exports = router;
