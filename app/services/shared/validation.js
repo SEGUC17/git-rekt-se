@@ -105,7 +105,23 @@ const verifiedBusinessValidator = {
       errorMessage: businessValidationErrors.workingHoursRequired,
     },
   },
+  description: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.emptyDescription,
+    },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.categoriesRequired,
+    },
+  },
+  branches: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.branchesRequired,
+    },
+  },
 };
+
 const clientLoginValidation = {
   email: {
     notEmpty: {
@@ -409,6 +425,26 @@ const adminLoginValidation = {
     },
   },
 };
+const businessAddImageValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: bussinessValidationErrors.invalidBusinessID,
+    },
+  },
+};
+
+const businessEditImageValidation = {
+  ser_id: {
+    isMongoId: {
+      errorMessage: bussinessValidationErrors.invalidBusinessID,
+    },
+  },
+  im_id: {
+    isMongoId: {
+      errorMessage: bussinessValidationErrors.invalidBusinessID,
+    },
+  },
+};
 
 /**
  * Client validation
@@ -500,6 +536,8 @@ const validation = {
   updateReviewValidation,
   deleteReviewValidation,
   businessUpdateValidation,
+  businessAddImageValidation,
+  businessEditImageValidation,
   adminCategoryValidation,
 };
 

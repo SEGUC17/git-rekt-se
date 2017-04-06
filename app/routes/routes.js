@@ -12,6 +12,7 @@ const businessServiceAPI = require('./api/v1/business/serviceCRUD');
 const ServiceGalleryAPI = require('./api/v1/service/gallery');
 const ReviewCRUDAPI = require('./api/v1/service/review');
 const AdminCatAPI = require('./api/v1/admin/category');
+const BusinessGalleryAPI = require('./api/v1/business/gallery');
 
 
 module.exports = (app) => {
@@ -37,6 +38,7 @@ module.exports = (app) => {
   app.use('/api/v1/business/auth', BusinessAuthAPI);
   app.use('/api/v1/business/profile', businessProfileAPI);
   app.use('/api/v1/business/info', BusinessEditInformationAPI);
+  app.use('/api/v1/business', BusinessGalleryAPI);
 
   /**
    * Admin Routes.
@@ -49,7 +51,6 @@ module.exports = (app) => {
   /**
    * Service Routes.
    */
-
   app.use('/api/v1/service', ReviewCRUDAPI);
   app.use('/api/v1/service', ServiceGalleryAPI);
 };
