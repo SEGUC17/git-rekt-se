@@ -1,12 +1,15 @@
 /**
  * Express validator schema
  */
+const locations = require('../../seed/service/locations');
+
 const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
-const adminValidationErrors = Strings.adminValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
+const adminValidationErrors = Strings.adminValidationErrors;
+const reviewErrors = Strings.reviewErrors;
 
 /**
  * Client validation
@@ -164,7 +167,9 @@ const visitorValidation = {
   },
   offset: {
     isInt: {
-      options: { min: 1 },
+      options: {
+        min: 1,
+      },
       errorMessage: visitorValidationErrors.InvalidOffset,
     },
   },
@@ -184,6 +189,87 @@ const businessEditInfoValidation = {
   categories: {
     notEmpty: {
       errorMessage: bussinessValidationErrors.categoriesRequired,
+    },
+  },
+};
+
+
+const businessAddValidation = {
+  branches: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.branchesRequired,
+    },
+  },
+};
+
+const businessEditValidation = {
+  'branch.location': {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.locationRequired,
+    },
+    isIn: {
+      options: [locations],
+      errorMessage: bussinessValidationErrors.locationInvalid,
+    },
+  },
+  'branch.address': {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.addressRequired,
+    },
+  },
+};
+
+/**
+ * Review Validation
+ */
+
+const createReviewValidation = {
+  id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  rating: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
+    },
+  },
+};
+
+const updateReviewValidation = {
+  id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  review_id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidReview,
+    },
+  },
+  rating: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
+    },
+  },
+};
+
+const deleteReviewValidation = {
+  id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
+    },
+  },
+  review_id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidReview,
     },
   },
 };
@@ -212,7 +298,6 @@ const adminLoginValidation = {
   },
 };
 
-
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
@@ -222,6 +307,11 @@ const validation = {
   businessLoginValidation,
   visitorValidation,
   businessEditInfoValidation,
+  businessAddValidation,
+  businessEditValidation,
+  createReviewValidation,
+  updateReviewValidation,
+  deleteReviewValidation,
 };
 
 module.exports = validation;
