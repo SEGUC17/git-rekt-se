@@ -9,14 +9,10 @@ const ClientProfileAPI = require('./api/v1/client/profile');
 const ViewServiceAPI = require('./api/v1/service/index');
 const RelatedServiceAPI = require('./api/v1/service/related');
 const reviewCRUDAPI = require('./api/v1/service/review');
-<<<<<<< HEAD
 const businessProfileAPI = require('./api/v1/business/profile');
 const businessServiceAPI = require('./api/v1/business/index');
-=======
 const AdminCatAPI = require('./api/v1/admin/category');
-const BusinessProfileAPI = require('./api/v1/business/profile');
 
->>>>>>> 0df81f1b2846e5ad04cf2cd5d308686a70805135
 
 module.exports = (app) => {
   /**
