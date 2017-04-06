@@ -19,10 +19,6 @@ const Strings = require('../../../app/services/shared/Strings');
 
 const categoriesIDs = [];
 
-/**
- * Database Connection
- */
-
 require('dotenv')
   .config();
 
