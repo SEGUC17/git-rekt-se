@@ -314,7 +314,6 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
         /**
          * Validation passed
          */
-        console.log(2);
         const serviceID = req.params.id1;
         const offeringID = req.params.id2;
         Branch.findOne({
@@ -334,11 +333,8 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
               _deleted: false,
             })
               .then((service) => {
-                console.log(3);
                 if (service) {
-                  console.log(4);
                   if (service._business.equals(req.user._id)) {
-                    console.log(5);
                     const business = req.user;
                     let validBranch = false;
                     business.branches.forEach((branch) => {
@@ -346,8 +342,6 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                         validBranch = true;
                       }
                     });
-                    console.log(validBranch);
-                    console.log(6);
                     if (validBranch) {
                       let validOffering = false;
                       let object;

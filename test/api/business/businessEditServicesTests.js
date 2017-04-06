@@ -386,7 +386,6 @@ describe('Business Edit Categories/Offerings Suite', () => {
         if (err) {
           done(err);
         }
-        console.log(res.body);
         chai.expect(res.body.errors[0])
           .to.equal(Strings.offeringValidationError.invalidBranch);
         done();
