@@ -36,7 +36,6 @@ const Businesses = [{
   email: 'sammas@gmail.com',
   shortDescription: 'Self developpment is our target.',
   categories: null,
-  gallery: [],
   _status: 'verified',
 },
 ];
