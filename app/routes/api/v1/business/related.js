@@ -10,82 +10,16 @@ const errorHandler = require('../../../../services/shared/errorHandler');
 
 mongoose.Promise = Promise;
 const router = express.Router();
-router.use(expressValidator({}));
 
 /**
- * Body-Parser Middleware
+ * Parsing Middleware(s).
  */
 
 router.use(bodyParser.json());
+router.use(expressValidator({}));
 
 /**
- * View business page
- */
-
-router.get('/:id', (req, res, next) => {
-  let returnedBusiness;
-
-  Business.findOne({
-    _id: req.params.id,
-    _status: 'verified',
-  }, {
-    password: false,
-    _deleted: false,
-  })
-    .populate([{
-      path: 'branches',
-      match: {
-        _deleted: false,
-      },
-    }, {
-      path: 'categories',
-      match: {
-        _deleted: false,
-      },
-    }])
-    .exec()
-    .then((business) => {
-      returnedBusiness = {
-        _id: business.id,
-        name: business.name,
-        email: business.email,
-        shortDescription: business.shortDescription,
-        phoneNumbers: business.phoneNumbers,
-        description: business.description,
-        workingHours: business.workingHours,
-        categories: business.categories,
-        branches: business.branches,
-      };
-
-      Service.find({
-        _business: business._id,
-        _deleted: false,
-      })
-        .populate([{
-          path: 'branches',
-          match: {
-            _deleted: false,
-          },
-        }, {
-          path: 'reviews',
-          match: {
-            _deleted: false,
-          },
-        }])
-        .exec()
-        .then((businessServices) => {
-          returnedBusiness.services = businessServices;
-          res.json(returnedBusiness);
-        })
-        .catch(e => next(e));
-    })
-    .catch((err) => {
-      next(err);
-    });
-});
-
-/**
- * View Related Business route
+ * View Related Business route.
  */
 
 router.get('/:id/:offset', (req, res, next) => {

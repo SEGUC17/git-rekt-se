@@ -47,6 +47,7 @@ const businessSuccess = {
   branchAddedSuccess: 'Branch Added Successfully',
   branchEditSuccess: 'Branch Edited Successfully',
   branchDeleteSuccess: 'Branch Deleted Successfully',
+  logout: 'You have been logged out.',
 };
 
 const businessLoginMessages = {
@@ -101,6 +102,9 @@ const clientSuccess = {
   logout: 'You have been logged out.',
 };
 
+const serviceFailure = {
+  serviceNotFound: 'The specified service was not found.',
+};
 
 const clientForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
@@ -120,6 +124,13 @@ const clientLoginMessages = {
 const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
+};
+
+const clientVerfication = {
+  invalidToken: 'This token is invalid or has expired.',
+  verificationSuccess: 'Your e-mail has been successfully confirmed.',
+  alreadyConfirmed: 'Your e-mail is already confirmed.',
+  accountBanned: 'Your account is banned.',
 };
 
 /**
@@ -150,6 +161,10 @@ const visitorErrors = {
   NoRelatedServices: 'No related services',
 };
 
+const businessInformationChanged = {
+  UPDATE_SUCCESSFULL: 'Your information has been updated successfully.',
+};
+
 const visitorValidationErrors = {
   InvalidID: 'Invalid category ID',
   InvalidOffset: 'Invalid Offset',
@@ -160,6 +175,7 @@ const businessForgotPassword = {
   INVALID_RESET_TOKEN: 'Invalid reset token.',
   PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
 };
+
 /**
  * Admin Strings
  */
@@ -180,6 +196,14 @@ const adminValidationErrors = {
   passwordMismatch: 'Password and Password Confirmation must match.',
   adminExists: 'Administrator already exists.',
   invalidBusinessID: 'Invalid Business ID',
+  categoryTypeRequired: 'Category Type is required.',
+  categoryTitleRequired: 'Category Title is required.',
+};
+
+const adminSuccess = {
+  categoryAdded: 'Category added succesfully!',
+  categoryEdited: 'Category edited succesfully!',
+  categoryDeleted: 'Category deleted succesfully!',
 };
 
 module.exports = {
@@ -188,11 +212,14 @@ module.exports = {
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
+  clientVerfication,
   bussinessValidationErrors,
+  serviceFailure,
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
   businessConfirmation,
+  businessInformationChanged,
   businessForgotPassword,
   adminLoginMessages,
   adminValidationErrors,
@@ -201,4 +228,5 @@ module.exports = {
   businessMessages,
   reviewErrors,
   reviewSuccess,
+  adminSuccess,
 };
