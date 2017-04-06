@@ -159,24 +159,6 @@ const businessLoginValidation = {
   },
 };
 
-const businessUpdateValidation = {
-  name: {
-    notEmpty: {
-      errorMessage: bussinessValidationErrors.emptyName,
-    },
-  },
-  shortDescription: {
-    notEmpty: {
-      errorMessage: bussinessValidationErrors.emptyDescription,
-    },
-  },
-  phoneNumbers: {
-    notEmpty: {
-      errorMessage: bussinessValidationErrors.emptyMobile,
-    },
-  },
-};
-
 const visitorValidation = {
   id: {
     isMongoId: {
@@ -316,6 +298,25 @@ const adminLoginValidation = {
   },
 };
 
+
+const businessUpdateValidation = {
+  name: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyName,
+    },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyDescription,
+    },
+  },
+  phoneNumbers: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyMobile,
+    },
+  },
+};
+
 const validation = {
   clientSignupValidation,
   clientConfirmEmailValidation,
@@ -323,7 +324,6 @@ const validation = {
   adminLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
-  businessUpdateValidation,
   visitorValidation,
   businessEditInfoValidation,
   businessAddValidation,
@@ -331,6 +331,7 @@ const validation = {
   createReviewValidation,
   updateReviewValidation,
   deleteReviewValidation,
+  businessUpdateValidation,
 };
 
 module.exports = validation;
