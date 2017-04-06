@@ -139,6 +139,23 @@ const businessSignupValidation = {
   },
 };
 
+const clientResetPasswordValidation = {
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
+    },
+  },
+};
+
 const businessLoginValidation = {
   email: {
     notEmpty: {
@@ -155,6 +172,23 @@ const businessLoginValidation = {
     matches: {
       options: [/^(?=.*\d).{8,15}$/],
       errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
+};
+
+const businessResetPasswordValidation = {
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
     },
   },
 };
@@ -318,12 +352,14 @@ const businessUpdateValidation = {
 };
 
 const validation = {
+  clientResetPasswordValidation,
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
   adminLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+  businessResetPasswordValidation,
   visitorValidation,
   businessEditInfoValidation,
   businessAddValidation,
