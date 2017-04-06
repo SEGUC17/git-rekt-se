@@ -119,10 +119,12 @@ describe('Populating Business Collection', () => {
                             categoriesIDs.push(categoriesDocs[2]._id);
                             categoriesIDs.push(categoriesDocs[3]._id);
                             categoriesIDs.push(categoriesDocs[4]._id);
-                            Category.insertMany([businessCatgeories[0]]).then((docs) => {
-                              invalidCategory = docs[0]._id;
-                              done();
-                            }).catch(e => done([e]));
+                            Category.insertMany([businessCatgeories[0]])
+                              .then((docs) => {
+                                invalidCategory = docs[0]._id;
+                                done();
+                              })
+                              .catch(e => done([e]));
                           })
                           .catch(e => done([e]));
                       })
@@ -309,20 +311,23 @@ describe('Business Add Categories/Offerings Suite', () => {
               .to.have.lengthOf(1);
             Offering.find({
               _id: services[0].offerings[0],
-            }).then((offering) => {
-              chai.expect(offering[0].startDate)
-              .not.to.equal('');
-              chai.expect(offering[0].endDate)
-              .not.to.equal('');
-              chai.expect(offering[0].price)
-              .to.equal(1000);
-              chai.expect(offering[0].location)
-              .to.equal('Nasr City');
-              chai.expect(offering[0].address)
-              .to.equal('abbas elakkad');
-              chai.expect(res.body.message).to.equal(Strings.serviceSuccess.offeringAdded);
-              done();
-            }).catch(e => done([e]));
+            })
+              .then((offering) => {
+                chai.expect(offering[0].startDate)
+                  .not.to.equal('');
+                chai.expect(offering[0].endDate)
+                  .not.to.equal('');
+                chai.expect(offering[0].price)
+                  .to.equal(1000);
+                chai.expect(offering[0].location)
+                  .to.equal('Nasr City');
+                chai.expect(offering[0].address)
+                  .to.equal('abbas elakkad');
+                chai.expect(res.body.message)
+                  .to.equal(Strings.serviceSuccess.offeringAdded);
+                done();
+              })
+              .catch(e => done([e]));
           })
           .catch(e => done([e]));
       });
@@ -354,7 +359,7 @@ describe('Business Add Categories/Offerings Suite', () => {
       });
   });
 
- /**
+  /**
    * Failing Test 2: missing field when adding a serivce without description
    */
 
@@ -380,7 +385,7 @@ describe('Business Add Categories/Offerings Suite', () => {
       });
   });
 
-   /**
+  /**
    * Failing Test 3: invalid category error when choosing an invalid category in the request
    */
 
@@ -447,29 +452,31 @@ describe('Business Add Categories/Offerings Suite', () => {
       shortDescription: 'test1',
       _business: businessesIDs[1],
     });
-    service.save().then((serviceAdded) => {
-      req = supertest(app)
-      .post(`/api/v1/business/service/${serviceAdded._id}/offering/create`);
-      const offeringInfo = {
-        startDate: Date.now(),
-        endDate: Date.now(),
-        branch: businesses[1].branches[0],
-        price: 1000,
-      };
-      req
-      .send(offeringInfo)
-      .set('Authorization', `JWT ${token}`);
+    service.save()
+      .then((serviceAdded) => {
+        req = supertest(app)
+          .post(`/api/v1/business/service/${serviceAdded._id}/offering/create`);
+        const offeringInfo = {
+          startDate: Date.now(),
+          endDate: Date.now(),
+          branch: businesses[1].branches[0],
+          price: 1000,
+        };
+        req
+          .send(offeringInfo)
+          .set('Authorization', `JWT ${token}`);
 
-      req.expect('Content-Type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        }
-        chai.expect(res.body.errors[0])
-          .to.equal(Strings.offeringValidationError.invalidOperation);
-        done();
-      });
-    }).catch(e => done([e]));
+        req.expect('Content-Type', /json/)
+          .expect(400)
+          .end((err, res) => {
+            if (err) {
+              done(err);
+            }
+            chai.expect(res.body.errors[0])
+              .to.equal(Strings.offeringValidationError.invalidOperation);
+            done();
+          });
+      })
+      .catch(e => done([e]));
   });
 });

@@ -141,10 +141,10 @@ describe('Populating Business Collection', () => {
 });
 
 /**
- * Business Edit Catgeories/Offerings Suite
+ * Business Delete Catgeories/Offerings Suite
  */
 
-describe('Business Edit Categories/Offerings Suite', () => {
+describe('Business Delete Categories/Offerings Suite', () => {
   let req;
   let token;
   const servicesAdded = [];
@@ -169,27 +169,20 @@ describe('Business Edit Categories/Offerings Suite', () => {
   });
 
   /**
-   * Passing Test1: Business can edit a service with attributes
+   * Passing Test1: Business can delete a service
    */
 
-  it('should edit an existing service with its attributes', (done) => {
+  it('should delete a service', (done) => {
     const service = new Service({
       name: 'Hello world',
       shortDescription: 'Hello world also !!',
       _business: businessesIDs[0],
     });
     service.save()
-      .then((savedService) => {
+      .then((serviceDoc) => {
         req = supertest(app)
-          .post(`/api/v1/business/service/${savedService._id}/edit`);
-        const serviceInfo = {
-          name: 'Team Managemet',
-          shortDescription: 'Teaching Team Management',
-          description: 'We will make you better',
-          categories: [categoriesIDs[2], categoriesIDs[4]],
-        };
+          .post(`/api/v1/business/service/${serviceDoc._id}/delete`);
         req
-          .send(serviceInfo)
           .set('Authorization', `JWT ${token}`)
           .expect('Content-Type', /json/)
           .expect(200)
@@ -203,24 +196,23 @@ describe('Business Edit Categories/Offerings Suite', () => {
               done(err);
               return;
             }
+
             /**
              * Checking the content of the response
              */
             Service.find({
-              name: 'Team Managemet',
+              name: 'Hello world',
             })
               .then((services) => {
                 chai.expect(services)
                   .to.have.lengthOf(1);
-                chai.expect(services[0].shortDescription)
-                  .to.equal('Teaching Team Management');
-                chai.expect(services[0].description)
-                  .to.equal('We will make you better');
-                chai.expect(services[0].categories)
-                  .to.have.lengthOf(2);
+
+                chai.expect(services[0].name)
+                  .to.equal('Hello world');
+                chai.expect(services[0]._deleted)
+                  .to.equal(true);
                 chai.expect(res.body.message)
-                  .to.equal(Strings.serviceSuccess.serviceEdited);
-                servicesAdded.push(services[0]);
+                  .to.equal(Strings.serviceSuccess.serviceDeleted);
                 done();
               })
               .catch(e => done([e]));
@@ -234,34 +226,30 @@ describe('Business Edit Categories/Offerings Suite', () => {
    */
 
   it('should edit an existing offering with its attributes', (done) => {
-    const offering = new Offering({
-      startDate: Date.now(),
-      endDate: Date.now(),
-      branch: businesses[0].branches[0],
-      location: 'Nasr City',
-      address: 'abbas elakkad',
-      price: 1000,
+    const service = new Service({
+      name: 'Hello world',
+      shortDescription: 'Hello world also !!',
+      _business: businessesIDs[0],
     });
-    offering.save()
-      .then((savedOffering) => {
-        Service.findOne({
-          _id: servicesAdded[0]._id,
-        })
-          .then((serviceDoc) => {
+    service.save()
+      .then((serviceDoc) => {
+        const offering = new Offering({
+          startDate: Date.now(),
+          endDate: Date.now(),
+          branch: businesses[0].branches[0],
+          location: 'Nasr City',
+          address: 'abbas elakkad',
+          price: 1000,
+        });
+        offering.save()
+          .then((savedOffering) => {
             serviceDoc.offerings.push(savedOffering);
             serviceDoc.save()
               .then((serviceDoc2) => {
-                const offering2 = {
-                  startDate: Date.now(),
-                  endDate: Date.now(),
-                  branch: businesses[0].branches[1],
-                  price: 5000,
-                };
                 req = supertest(app)
-                  .post(`/api/v1/business/service/${serviceDoc2._id}/offering/${savedOffering._id}/edit`);
+                  .post(`/api/v1/business/service/${serviceDoc2._id}/offering/${savedOffering._id}/delete`);
 
                 req
-                  .send(offering2)
                   .set('Authorization', `JWT ${token}`)
                   .expect('Content-Type', /json/)
                   .expect(200)
@@ -278,25 +266,23 @@ describe('Business Edit Categories/Offerings Suite', () => {
                     /**
                      * Checking the content of the response
                      */
-                    Offering.find({
-                      _id: savedOffering._id,
+                    Service.find({
+                      _id: serviceDoc2._id,
                     })
-                      .then((offerings) => {
-                        chai.expect(offerings)
+                      .then((serviceDoc3) => {
+                        chai.expect(serviceDoc3)
                           .to.have.lengthOf(1);
-                        chai.expect(offerings[0].startDate)
-                          .not.to.equal('');
-                        chai.expect(offerings[0].endDate)
-                          .not.to.equal('');
-                        chai.expect(offerings[0].price)
-                          .to.equal(5000);
-                        chai.expect(offerings[0].location)
-                          .to.equal('Zamalek');
-                        chai.expect(offerings[0].address)
-                          .to.equal('some address1');
+                        chai.expect(serviceDoc3[0].name)
+                          .to.equal('Hello world');
+
+                        chai.expect(serviceDoc3[0].offerings)
+                          .to.have.lengthOf(1);
+                        chai.expect(serviceDoc3[0].offerings[0]._deleted)
+                          .to.equal(false);
+                        chai.expect(serviceDoc3[0].branches)
+                          .to.have.lengthOf(0);
                         chai.expect(res.body.message)
-                          .to.equal(Strings.serviceSuccess.offeringEdited);
-                        offeringsAdded.push(offerings[0]);
+                          .to.equal(Strings.serviceSuccess.offeringDeleted);
                         done();
                       })
                       .catch(e => done([e]));
@@ -310,93 +296,10 @@ describe('Business Edit Categories/Offerings Suite', () => {
   });
 
   /**
-   * Failing Test 1: missing field when editing a serivce without specifying name
+   * Failing Test 1:deleting a service that doesn't belong to this business
    */
 
-  it('should return missing field when adding a service without name', (done) => {
-    req = supertest(app)
-      .post(`/api/v1/business/service/${servicesAdded[0]._id}/edit`);
-    const serviceInfo = {
-      shortDescription: 'Hi',
-    };
-    req
-      .send(serviceInfo)
-      .set('Authorization', `JWT ${token}`);
-
-    req.expect('Content-Type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        }
-        chai.expect(res.body.errors[0].msg)
-          .to.equal(Strings.serviceValidationCRUDErrors.emptyName);
-        done();
-      });
-  });
-
-  /**
-   * Failing Test 2: invalid category error when choosing an invalid category in the request
-   */
-
-  it('should return invalid category', (done) => {
-    req = supertest(app)
-      .post(`/api/v1/business/service/${servicesAdded[0]._id}/edit`);
-    const serviceInfo = {
-      name: 'Hi',
-      shortDescription: 'Hi',
-      categories: [invalidCategory],
-    };
-    req
-      .send(serviceInfo)
-      .set('Authorization', `JWT ${token}`);
-
-    req.expect('Content-Type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        }
-        chai.expect(res.body.errors[0])
-          .to.equal(Strings.serviceValidationCRUDErrors.invalidCategory);
-        done();
-      });
-  });
-
-  /**
-   * Failing Test 3:editing to a branch that doesn't belong to you
-   */
-
-  it('should return an invalid branch error', (done) => {
-    req = supertest(app)
-      .post(`/api/v1/business/service/${servicesAdded[0]._id}/offering/${offeringsAdded[0]._id}/edit/`);
-    const offeringInfo = {
-      startDate: Date.now(),
-      endDate: Date.now(),
-      branch: businesses[1].branches[0],
-      price: 1000,
-    };
-    req
-      .send(offeringInfo)
-      .set('Authorization', `JWT ${token}`);
-
-    req.expect('Content-Type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        }
-        chai.expect(res.body.errors[0])
-          .to.equal(Strings.offeringValidationError.invalidBranch);
-        done();
-      });
-  });
-
-  /**
-   * Failing Test 4:editing an offering to a service that doesn't belong to this business
-   */
-
-  it('should return an invalid Operation error when trying to edit services for other businesses', (done) => {
+  it('should return an invalid Operation error when trying to delte services for other businesses', (done) => {
     const service = new Service({
       name: 'test1',
       shortDescription: 'test1',
@@ -405,7 +308,7 @@ describe('Business Edit Categories/Offerings Suite', () => {
     service.save()
       .then((serviceAdded) => {
         req = supertest(app)
-          .post(`/api/v1/business/service/${serviceAdded._id}/edit`);
+          .post(`/api/v1/business/service/${serviceAdded._id}/delete`);
         const offeringInfo = {
           name: 'test2',
           shortDescription: 'test2',
@@ -424,6 +327,54 @@ describe('Business Edit Categories/Offerings Suite', () => {
               .to.equal(Strings.offeringValidationError.invalidOperation);
             done();
           });
+      })
+      .catch(e => done([e]));
+  });
+
+  /**
+   * Failing Test 2:deleting an offering to a service that doesn't belong to this business
+   */
+
+  it('should return an invalid Operation error when trying to edit services for other businesses services', (done) => {
+    const service = new Service({
+      name: 'Hello world',
+      shortDescription: 'Hello world also !!',
+      _business: businessesIDs[1],
+    });
+    service.save()
+      .then((serviceDoc) => {
+        const offering = new Offering({
+          startDate: Date.now(),
+          endDate: Date.now(),
+          branch: businesses[1].branches[0],
+          location: 'Nasr City',
+          address: 'abbas elakkad',
+          price: 1000,
+        });
+        offering.save()
+          .then((savedOffering) => {
+            serviceDoc.offerings.push(savedOffering);
+            serviceDoc.save()
+              .then((serviceDoc2) => {
+                req = supertest(app)
+                  .post(`/api/v1/business/service/${serviceDoc2._id}/offering/${savedOffering._id}/delete`);
+                req
+                  .set('Authorization', `JWT ${token}`);
+                req.expect('Content-Type', /json/)
+                  .expect(400)
+                  .end((err, res) => {
+                    if (err) {
+                      done(err);
+                    }
+                    console.log(res.body);
+                    chai.expect(res.body.errors[0])
+                      .to.equal(Strings.offeringValidationError.invalidOperation);
+                    done();
+                  });
+              })
+              .catch(e => done([e]));
+          })
+          .catch(e => done([e]));
       })
       .catch(e => done([e]));
   });

@@ -355,44 +355,48 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                         const oldbranch = object.branch;
                         Offering.findOne({
                           _id: offeringID,
-                        }).then((offeringDoc) => {
-                          offeringDoc.startDate = reqData.startDate;
-                          offeringDoc.endDate = reqData.endDate;
-                          offeringDoc.location = reqData.location;
-                          offeringDoc.branch = reqData.branch;
-                          offeringDoc.price = reqData.price;
-                          offeringDoc.address = reqData.address;
-                          offeringDoc.save().then((offer) => {
-                            let oldexist = false; // old branch before edit exist
+                        })
+                          .then((offeringDoc) => {
+                            offeringDoc.startDate = reqData.startDate;
+                            offeringDoc.endDate = reqData.endDate;
+                            offeringDoc.location = reqData.location;
+                            offeringDoc.branch = reqData.branch;
+                            offeringDoc.price = reqData.price;
+                            offeringDoc.address = reqData.address;
+                            offeringDoc.save()
+                              .then((offer) => {
+                                let oldexist = false; // old branch before edit exist
 
-                            service.offerings.forEach((offering) => {
-                              if (offering.branch === oldbranch && offeringID !== `${offering._id}`) {
-                                oldexist = true;
-                              }
-                            });
-
-                            const newBranches = []; // new list of branches for the service
-                            newBranches.push(reqData.branch);
-                            service.branches.forEach((branch) => {
-                              if (branch.equals(oldbranch)) {
-                                if (oldexist) {
-                                  newBranches.push(branch);
-                                }
-                              } else if (`${branch}` !== reqData.branch) {
-                                newBranches.push(branch);
-                              }
-                            });
-
-                            service.branches = newBranches;
-                            service.save()
-                                .then(addedService => res.json({
-                                  message: Strings.serviceSuccess.offeringEdited,
-                                }))
-                                .catch((e) => {
-                                  next([e]);
+                                service.offerings.forEach((offering) => {
+                                  if (offering.branch === oldbranch && offeringID !== `${offering._id}`) {
+                                    oldexist = true;
+                                  }
                                 });
-                          }).catch(e => next([e]));
-                        }).catch((e => next([e])));
+
+                                const newBranches = []; // new list of branches for the service
+                                newBranches.push(reqData.branch);
+                                service.branches.forEach((branch) => {
+                                  if (branch.equals(oldbranch)) {
+                                    if (oldexist) {
+                                      newBranches.push(branch);
+                                    }
+                                  } else if (`${branch}` !== reqData.branch) {
+                                    newBranches.push(branch);
+                                  }
+                                });
+
+                                service.branches = newBranches;
+                                service.save()
+                                  .then(addedService => res.json({
+                                    message: Strings.serviceSuccess.offeringEdited,
+                                  }))
+                                  .catch((e) => {
+                                    next([e]);
+                                  });
+                              })
+                              .catch(e => next([e]));
+                          })
+                          .catch((e => next([e])));
                       } else {
                         next([Strings.offeringValidationError.invalidOffering]);
                       }
@@ -504,38 +508,40 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                     if (!offering) {
                       next([Strings.offeringValidationError.invalidServiceID]);
                     }
-                    let branchExist = false; // branch of this offering e
-                    service.offerings.forEach((offer) => {
-                      if (`${offer}` === offeringID) {
-                        Offering.findOne({
-                          _id: offer,
+                    Offering.findOne({
+                      _id: offeringID,
+                    })
+                      .then((offeringDoc) => {
+                        offeringDoc._deleted = false;
+                        offeringDoc.save((offeringDoc2) => {
+                          let branchExist = false; // branch of this offering exit
+                          service.offerings.forEach((offer) => {
+                            if (!`${offer}` === offeringID && offer.branch === offering.branch) {
+                              branchExist = true;
+                            }
+                            const newBranches = []; // new list of branches for the service
+                            service.branches.forEach((branch) => {
+                              if (branch.equals(offering.branch)) {
+                                if (branchExist) {
+                                  newBranches.push(branch);
+                                }
+                              } else {
+                                newBranches.push(branch);
+                              }
+                            });
+                            service.save()
+                                .then((savedService) => {
+                                  res.json({
+                                    message: Strings.serviceSuccess.offeringDeleted,
+                                  });
+                                })
+                                .catch(e => next(e));
+                          });
                         })
-                          .then((offerObject) => {
-                            offerObject._deleted = true;
-                            offerObject.save();
-                          })
+                          .then()
                           .catch(e => next([e]));
-                      } else if (offer.branch === offering.branch) {
-                        branchExist = true;
-                      }
-                    });
-                    const newBranches = []; // new list of branches for the service
-                    service.branches.forEach((branch) => {
-                      if (branch.equals(offering.branch)) {
-                        if (branchExist) {
-                          newBranches.push(branch);
-                        }
-                      } else {
-                        newBranches.push(branch);
-                      }
-                    });
-                    service.save()
-                      .then((savedService) => {
-                        res.json({
-                          message: Strings.serviceSuccess.offeringDeleted,
-                        });
                       })
-                      .catch(e => next(e));
+                      .catch(e => next([e]));
                   })
                   .catch(e => next([e]));
               } else {
