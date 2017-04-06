@@ -30,6 +30,13 @@ const Businesses = [{
   categories: null,
   _status: 'verified',
   _deleted: true,
+}, {
+  name: 'Enhance',
+  password: 'Strong#1234',
+  email: 'sammas@gmail.com',
+  shortDescription: 'Self developpment is our target.',
+  categories: null,
+  _status: 'verified',
 },
 ];
 

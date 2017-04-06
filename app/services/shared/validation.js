@@ -9,6 +9,7 @@ const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
 const adminValidationErrors = Strings.adminValidationErrors;
+const serviceValidationErrors = Strings.serviceValidationErrors;
 const reviewErrors = Strings.reviewErrors;
 
 /**
@@ -342,6 +343,31 @@ const adminLoginValidation = {
   },
 };
 
+/**
+ * Client validation
+ */
+
+const serviceAddImageValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+};
+
+const serviceEditImageValidation = {
+  ser_id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  im_id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidImageID,
+    },
+  },
+};
+
 const adminConfirmBusinessValidation = {
   id: {
     isMongoId: {
@@ -396,6 +422,8 @@ const validation = {
   adminConfirmBusinessValidation,
   businessAddValidation,
   businessEditValidation,
+  serviceAddImageValidation,
+  serviceEditImageValidation,
   createReviewValidation,
   updateReviewValidation,
   deleteReviewValidation,
