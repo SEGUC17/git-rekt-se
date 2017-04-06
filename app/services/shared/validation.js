@@ -332,6 +332,18 @@ const adminLoginValidation = {
   },
 };
 
+const adminCategoryValidation = {
+  type: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.categoryTypeRequired,
+    },
+  },
+  title: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.categoryTitleRequired,
+    },
+  },
+};
 
 const businessUpdateValidation = {
   name: {
@@ -368,6 +380,7 @@ const validation = {
   updateReviewValidation,
   deleteReviewValidation,
   businessUpdateValidation,
+  adminCategoryValidation,
 };
 
 module.exports = validation;

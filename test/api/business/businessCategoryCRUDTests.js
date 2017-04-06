@@ -161,8 +161,8 @@ describe('Category CRUD Test Suite', () => {
             if (err2) {
               done(err2);
             } else {
-              chai.expect(res.body.errors[0])
-                .to.equal('Category validation failed');
+              chai.expect(res.body.errors.length)
+                .to.be.greaterThan(0);
               Category.findOne({
                 _id: `${newcat._id}`,
               }, (err3, category) => {
@@ -199,8 +199,8 @@ describe('Category CRUD Test Suite', () => {
             if (err2) {
               done(err2);
             } else {
-              chai.expect(res.body.errors[0])
-                .to.equal('Category validation failed');
+              chai.expect(res.body.errors.length)
+                .to.be.greaterThan(0);
               Category.findOne({
                 _id: `${newcat._id}`,
               }, (err3, category) => {
