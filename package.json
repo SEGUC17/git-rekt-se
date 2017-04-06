@@ -4,7 +4,7 @@
   "description": "SE Course 2017",
   "main": "app/server.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --recursive test",
+    "test": "./node_modules/.bin/mocha --recursive test/api",
     "start": "node app/server.js",
     "debug": "./node_modules/.bin/eslint . && nodemon app/server.js"
   },
@@ -36,6 +36,7 @@
     "dotenv": "^4.0.0",
     "express": "^4.15.2",
     "express-validator": "^3.1.2",
+    "jsonwebtoken": "^7.3.0",
     "moment": "^2.18.1",
     "mongoose": "^4.9.2",
     "mongoose-findorcreate": "^1.0.1",
@@ -44,6 +45,7 @@
     "nodemailer": "^3.1.8",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
     "passport-jwt": "^2.2.1"
   }
 }

@@ -4,7 +4,7 @@ const locations = require('../../seed/service/locations');
 const Schema = mongoose.Schema;
 
 /**
- * Branch Schema
+ * Branch Schema.
  */
 
 const branchSchema = Schema({
@@ -19,7 +19,6 @@ const branchSchema = Schema({
   },
   address: {
     type: String,
-    required: false,
   },
   _deleted: {
     type: Boolean,

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 /**
- * Review Schema
+ * Review Schema.
  */
 
 const reviewSchema = mongoose.Schema({
@@ -17,7 +17,6 @@ const reviewSchema = mongoose.Schema({
   },
   description: {
     type: String,
-    required: false,
   },
   _deleted: {
     type: Boolean,

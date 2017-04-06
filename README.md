@@ -14,12 +14,15 @@ Git-Rekt SE Project
 3. Create a MongoDB title `gitrekt_db`.
 4. Create `.env` file with the following constants:
     - `PORT`, The port number to run the project.
-    - `JWT_KEY`, The secret key used to sign JWT Tokens.
+    - `JWT_KEY_CLIENT`, The secret key used to sign Client JWT Tokens.
+    - `JWT_KEY_BUSSINES`, The secret key used to sign Business JWT Tokens.
+    - `JWT_KEY_ADMINISTRATOR`, The secret key used to sign Admin JWT Tokens.
     - `DB_URL`, The URL to MongoDB database.
-    - `DEBUG_MODE`, SET to 1 to enable debugging middlewares.
     - `SEND_GRID`, Your Send Grid API Key used to set reset password link.
-5. Edit API Base URL in `/public/js/app.js` and `/public/app/helpers/vue-auth.js`.
-6. When in Debug Mode, Visit `http://URL_DEPLOYMENT/api/v1/seed` to seed the database.
+    - `FB_APP_ID`, Facebook Application ID.
+    - `FB_APP_SECRET`, Facebook Application Secret.
+    - `FB_CALLBACK`, Facebook Callback link `http://localhost:3000/api/v1/client/auth/fb/callback`.
+    - `DEBUG_MODE`, SET to 1 to enable debugging middlewares.
 
 ---
 

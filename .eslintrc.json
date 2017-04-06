@@ -10,6 +10,10 @@
   ],
   "rules": {
     "no-console": 0,
-    "no-unused-vars": 1
+    "no-unused-vars": ["warn", {
+      "argsIgnorePattern": "next|res"
+    }],
+    "no-param-reassign": 0,
+    "no-underscore-dangle": 0
   }
 }
