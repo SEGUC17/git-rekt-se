@@ -107,7 +107,7 @@ const services = [{
 },
 {
   name: 'Tagamo3 Pagination Test8',
-  shortDescription: 'Tagamo3 2nd Page',
+  shortDescription: 'Tagamo3 1st Page',
   _avgRating: 7,
   categories: [],
 },

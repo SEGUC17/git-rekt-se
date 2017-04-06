@@ -273,7 +273,7 @@ describe('Search Test Suite', () => {
   });
 
 
-  it('should return a page full of results if no query is specified', (done) => {
+  it('should return the count of all undeleted services and 10 results if no query is specified if there are more than 10 services', (done) => {
     req.expect(200)
       .end((err, res) => {
         if (err) {
@@ -351,7 +351,7 @@ describe('Search Test Suite', () => {
       });
   });
 
-  it('should match by name even if it is partially matching and ignoreing case ', (done) => {
+  it('should match by name even if it is partially matching and ignoring case ', (done) => {
     req
       .query({
         name: 'german',
