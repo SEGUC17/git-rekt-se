@@ -139,7 +139,7 @@ router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => 
               const image = business.gallery
                 .find(element => `${element._id}` === `${req.params.im_id}`);
               if (!image) {
-                next('Not a valid image');
+                next(Strings.businessMessages.invalidIamge);
               } else {
                 const newGallery = business.gallery
                   .filter(element => `${element._id}` !== `${req.params.im_id}`);
@@ -153,12 +153,12 @@ router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => 
                   .catch(saveErr => next(saveErr));
               }
             } else {
-              next('The required id is invalid');
+              next(Strings.businessMessages.invalidID);
             }
           })
           .catch(err => next(err));
       } else {
-        next('The required id is invalid');
+        next(Strings.businessMessages.invalidID);
       }
     })
     .catch(err => next(err));

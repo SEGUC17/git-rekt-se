@@ -74,6 +74,8 @@ const businessMessages = {
   alreadyVerified: 'You have already completed your sign up process',
   alreadyRejected: 'An Admin has rejected your sign up',
   alreadyUnverified: 'Awaiting for an Admin\'s approval',
+  invalidIamge: 'Not a valid image',
+  invalidID: 'The id is invalid',
 };
 
 /**
