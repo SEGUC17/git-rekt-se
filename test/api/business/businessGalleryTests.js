@@ -68,9 +68,9 @@ describe('Business Gallery CRUD Tests', () => {
           .expect('Content-Type', /json/)
           .expect(200)
           .end((err, result) => {
-            // console.log(2);
+            console.log(2);
             if (err) {
-              //   console.log(err);
+              console.log(err);
               done(err);
             } else {
               Business.findOne({
@@ -78,6 +78,7 @@ describe('Business Gallery CRUD Tests', () => {
               })
                 .exec()
                 .then((data) => {
+                  console.log(data);
                   chai.expect(data.gallery.length)
                     .to.equal(1);
                   chai.expect(result.body.message)
