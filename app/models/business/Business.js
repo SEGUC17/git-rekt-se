@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt-nodejs');
 const Schema = mongoose.Schema;
 
 /**
- * Business Schema
+ * Business Schema.
  */
 
 const businessSchema = Schema({
@@ -75,7 +75,7 @@ const businessSchema = Schema({
 });
 
 /**
- * Hash password before saving the document
+ * Hash password before saving the document.
  */
 
 businessSchema.pre('save', function preSave(done) {
@@ -94,7 +94,7 @@ businessSchema.pre('save', function preSave(done) {
 });
 
 /**
- * Check the password
+ * Check the password.
  */
 
 businessSchema.methods.checkPassword = function checkPassword(guess) {

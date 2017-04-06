@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt-nodejs');
 const Schema = mongoose.Schema;
 
 /**
- * Adminstrator Schema
+ * Adminstrator Schema.
  */
 
 const adminSchema = Schema({
@@ -28,7 +28,7 @@ const adminSchema = Schema({
 });
 
 /**
- * Hash password before saving the document
+ * Hash password before saving the document.
  */
 
 adminSchema.pre('save', function isDone(done) {
@@ -47,7 +47,7 @@ adminSchema.pre('save', function isDone(done) {
 });
 
 /**
- * Check the password
+ * Check the password.
  */
 
 adminSchema.methods.checkPassword = function checkPassword(guess) {

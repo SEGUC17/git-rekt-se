@@ -8,7 +8,7 @@ const Admin = require('../../models/admin/Admin');
 const Business = require('../../models/business/Business');
 
 /**
- * Mailer Configuration
+ * Mailer Configuration.
  */
 
 const mailer = nodemailer.createTransport(sgTransport({

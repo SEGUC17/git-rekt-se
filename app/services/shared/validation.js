@@ -1,6 +1,7 @@
 /**
- * Express validator schema
+ * Express validator schema.
  */
+
 const locations = require('../../seed/service/locations');
 
 const Strings = require('./Strings');
@@ -15,7 +16,7 @@ const visitorValidationErrors = Strings.visitorValidationErrors;
 const reviewErrors = Strings.reviewErrors;
 
 /**
- * Client validation
+ * Client validation.
  */
 
 const businessValidationErrors = require('../shared/Strings')
@@ -143,7 +144,7 @@ const clientLoginValidation = {
 };
 
 /**
- * Business validation
+ * Business validation.
  */
 
 const businessSignupValidation = {
@@ -214,7 +215,7 @@ const businessLoginValidation = {
 };
 
 /**
- * Service CRUD Validation
+ * Service CRUD Validation.
  */
 
 const serviceCreateValidation = {
@@ -292,7 +293,7 @@ const businessResetPasswordValidation = {
 };
 
 /**
- * Visitor validation
+ * Visitor validation.
  */
 
 const visitorValidation = {
@@ -355,7 +356,7 @@ const businessEditValidation = {
 };
 
 /**
- * Review Validation
+ * Review Validation.
  */
 
 const createReviewValidation = {
@@ -403,7 +404,7 @@ const deleteReviewValidation = {
 };
 
 /**
- * Administrator validation
+ * Administrator validation.
  */
 
 const adminLoginValidation = {
@@ -425,6 +426,7 @@ const adminLoginValidation = {
     },
   },
 };
+
 const businessAddImageValidation = {
   id: {
     isMongoId: {
@@ -447,7 +449,7 @@ const businessEditImageValidation = {
 };
 
 /**
- * Client validation
+ * Client validation.
  */
 
 const serviceAddImageValidation = {

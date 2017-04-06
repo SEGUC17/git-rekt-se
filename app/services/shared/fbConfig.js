@@ -9,7 +9,7 @@ const Client = require('../../models/client/Client');
 const FBStrategy = passportFB.Strategy;
 
 /**
- * Facebook Strategy
+ * Facebook Strategy.
  */
 
 const facebookStrategy = new FBStrategy({

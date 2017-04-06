@@ -5,7 +5,7 @@ const Offering = require('../service/Offering');
 const Schema = mongoose.Schema;
 
 /**
- * Service Schema
+ * Service Schema.
  */
 
 const serviceSchema = Schema({

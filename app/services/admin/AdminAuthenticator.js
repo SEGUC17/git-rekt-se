@@ -11,7 +11,7 @@ const Strings = require('../shared/Strings');
 mongoose.Promise = Promise;
 
 /**
- * Login Admin
+ * Login Admin.
  */
 
 exports.loginAdmin = (email, password) => new Promise((resolve, reject) => {

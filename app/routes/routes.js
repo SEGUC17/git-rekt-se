@@ -13,7 +13,7 @@ const ServiceGalleryAPI = require('./api/v1/service/gallery');
 const ReviewCRUDAPI = require('./api/v1/service/review');
 const AdminCatAPI = require('./api/v1/admin/category');
 const BusinessGalleryAPI = require('./api/v1/business/gallery');
-const visitorSearchAPI = require('./api/v1/visitor/search');
+const VisitorSearchAPI = require('./api/v1/visitor/search');
 const ViewBussinessAPI = require('./api/v1/business/index');
 
 module.exports = (app) => {
@@ -21,7 +21,7 @@ module.exports = (app) => {
    * Visitor Routes.
    */
 
-  app.use('/api/v1/visitor/search', visitorSearchAPI);
+  app.use('/api/v1/visitor/search', VisitorSearchAPI);
   app.use('/api/v1/service', ViewServiceAPI);
   app.use('/api/v1/service/category', RelatedServiceAPI);
   app.use('/api/v1/business/category', RelatedBusinessAPI);

@@ -1,6 +1,10 @@
 const Category = require('../../models/service/Category');
 const Offering = require('../../models/service/Offering');
 
+/**
+ * Utitlies for creating services.
+ */
+
 const checkCategories = (categories) => {
   const results = categories.map(category => new Promise((resolve, reject) => {
     Category.findOne({
