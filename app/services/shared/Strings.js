@@ -66,10 +66,11 @@ const businessConfirmation = {
   alreadyDenied: 'Business was already rejected.',
   pending: 'Business has already been sent an email',
 };
+
 const businessMessages = {
   allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
   businessDoesntExist: 'Business Doesn\'t Exist',
-  branchDoesntExist: 'Business Doesn\'t Exist',
+  branchDoesntExist: 'Branch Doesn\'t Exist',
   mismatchID: 'You can only edit your Info!',
   alreadyVerified: 'You have already completed your sign up process',
   alreadyRejected: 'An Admin has rejected your sign up',
