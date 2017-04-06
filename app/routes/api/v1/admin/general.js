@@ -22,7 +22,6 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        console.log(11);
         const search = {
           _id: req.params.id,
           _deleted: false,
@@ -38,13 +37,10 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
               } else if (business._status === 'rejected') {
                 next([Strings.businessConfirmation.alreadyDenied]);
               } else {
-                console.log(22);
                 businessAuthenticator.generateSignUpToken(business.email)
                   .then((token) => {
-                    console.log(token);
                     Mailer.notifyBusinessOfConfirmation(req.hostname, business.email, token)
                       .then(() => {
-                        console.log(33);
                         business._status = 'pending';
                         business.save(() => res.json({
                           message: Strings.businessConfirmation.confirmed,
