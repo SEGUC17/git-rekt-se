@@ -11,6 +11,7 @@ const locations = require('../../seed/service/locations')
 
 const generalErrors = {
   mailerError: 'An issue occured while sending the email.',
+  generalError: 'An error occurred trying to handle this request.',
 };
 
 /**
@@ -46,6 +47,7 @@ const businessSuccess = {
   branchAddedSuccess: 'Branch Added Successfully',
   branchEditSuccess: 'Branch Edited Successfully',
   branchDeleteSuccess: 'Branch Deleted Successfully',
+  logout: 'You have been logged out.',
 };
 
 const businessLoginMessages = {
@@ -87,8 +89,14 @@ const clientValidationErrors = {
 const clientSuccess = {
   signup: 'Signup Successful, Please check your email for the email confirmation.',
   emailConfirmation: 'Please check your email for the email confirmation.',
+  editInformation: 'Your information has been updated successfully.',
+  editInformationWithEmail: 'Your information has been updated successfully. An email has been sent to your new email for the email confirmation.',
+  logout: 'You have been logged out.',
 };
 
+const serviceFailure = {
+  serviceNotFound: 'The specified service was not found.',
+};
 
 const clientForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
@@ -102,11 +110,19 @@ const clientLoginMessages = {
   confirmEmail: 'Please confirm your email.',
   bannedClient: 'This user has been banned.',
   invalidToken: 'Invalid Token',
+  notLoggedIN: 'You need to be logged in.',
 };
 
 const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
+};
+
+const clientVerfication = {
+  invalidToken: 'This token is invalid or has expired.',
+  verificationSuccess: 'Your e-mail has been successfully confirmed.',
+  alreadyConfirmed: 'Your e-mail is already confirmed.',
+  accountBanned: 'Your account is banned.',
 };
 
 /**
@@ -137,6 +153,10 @@ const visitorErrors = {
   NoRelatedServices: 'No related services',
 };
 
+const businessInformationChanged = {
+  UPDATE_SUCCESSFULL: 'Your information has been updated successfully.',
+};
+
 const visitorValidationErrors = {
   InvalidID: 'Invalid category ID',
   InvalidOffset: 'Invalid Offset',
@@ -147,6 +167,7 @@ const businessForgotPassword = {
   INVALID_RESET_TOKEN: 'Invalid reset token.',
   PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
 };
+
 /**
  * Admin Strings
  */
@@ -168,16 +189,25 @@ const adminValidationErrors = {
   adminExists: 'Administrator already exists.',
 };
 
+const adminSuccess = {
+  categoryAdded: 'Category added succesfully!',
+  categoryEdited: 'Category edited succesfully!',
+  categoryDeleted: 'Category deleted succesfully!',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
+  clientVerfication,
   bussinessValidationErrors,
+  serviceFailure,
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
+  businessInformationChanged,
   businessForgotPassword,
   adminLoginMessages,
   adminValidationErrors,
@@ -186,4 +216,5 @@ module.exports = {
   businessMessages,
   reviewErrors,
   reviewSuccess,
+  adminSuccess,
 };
