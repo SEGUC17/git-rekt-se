@@ -48,6 +48,11 @@ router.get('/:id', (req, res, next) => {
     }])
     .exec()
     .then((service) => {
+      if (!service) {
+        next(Strings.serviceFailure.serviceNotFound);
+        return;
+      }
+
       const returnedService = {
         name: service.name,
         shortDescription: service.shortDescription,
