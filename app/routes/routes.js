@@ -13,13 +13,14 @@ const ReviewCRUDAPI = require('./api/v1/service/review');
 const AdminCatAPI = require('./api/v1/admin/category');
 const BusinessProfileAPI = require('./api/v1/business/profile');
 const BusinessGalleryAPI = require('./api/v1/business/gallery');
-
+const visitorSearchAPI = require('./api/v1/visitor/search');
 
 module.exports = (app) => {
   /**
    * Visitor Routes.
    */
 
+  app.use('/api/v1/visitor/search', visitorSearchAPI);
   app.use('/api/v1/service', ViewServiceAPI);
   app.use('/api/v1/business', ViewBussinessAPI);
   app.use('/api/v1/service/category', RelatedServiceAPI);

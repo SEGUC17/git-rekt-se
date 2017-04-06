@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const Offering = require('../service/Offering');
+
 const Schema = mongoose.Schema;
 
 /**
@@ -39,10 +41,10 @@ const serviceSchema = Schema({
     ref: 'Branch',
     required: true,
   }],
-  offerings: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Offering',
-  }],
+  offerings: {
+    type: [Offering.offeringSchema],
+    required: false,
+  },
   reviews: [{
     type: Schema.Types.ObjectId,
     ref: 'Review',
