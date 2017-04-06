@@ -263,14 +263,13 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
                 .then((service) => {
                   if (!service) {
                     next([Strings.offeringValidationError.invalidService]);
-                  }
-                  if (service._business.equals(req.user._id)) {
+                  } else if (service._business.equals(req.user._id)) {
                     service.name = reqData.name;
                     service.shortDescription = reqData.shortDescription;
                     service.description = reqData.description;
                     service.categories = reqData.categories;
                     service._business = req.user._id;
-                    service.coverImage = req.file ? req.filename : undefined;
+                    service.coverImage = req.file ? req.file.filename : undefined;
                     service.save()
                       .then((addedService) => {
                         res.json({
