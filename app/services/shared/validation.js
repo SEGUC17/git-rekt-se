@@ -103,7 +103,23 @@ const verifiedBusinessValidator = {
       errorMessage: businessValidationErrors.workingHoursRequired,
     },
   },
+  description: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.emptyDescription,
+    },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.categoriesRequired,
+    },
+  },
+  branches: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.branchesRequired,
+    },
+  },
 };
+
 const clientLoginValidation = {
   email: {
     notEmpty: {
