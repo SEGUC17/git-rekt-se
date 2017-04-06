@@ -26,14 +26,13 @@ router.use(expressValidator({}));
  */
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, '/home/git-rekt-se/app/public');
+    cb(null, path.join(__dirname, '../../../../public/uploads'));
   },
   filename(req, file, cb) {
-    const buf = crypto.randomBytes(48);
+    const buf = crypto.randomBytes(16);
     cb(null, Date.now() + buf.toString('hex') + path.extname(file.originalname));
   },
 });
-
 const upload = multer({
   storage,
 });
@@ -45,6 +44,7 @@ Service Image CRUD section
 /*
 Service Image Create
 */
+
 router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, res, next) => { // ensureauthenticated
   console.log('entering post...');
   req.checkParams(validationSchemas.businessAddImageValidation);
