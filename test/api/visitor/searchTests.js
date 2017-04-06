@@ -180,7 +180,7 @@ describe('Search Test Suite', () => {
                                         services[21]._business = savedBusiness5._id;
                                         services[21].categories.push(savedCategory0._id);
 
-                                        Service.insertMany(services, (errX) => {
+                                        Service.insertMany(services, (errX, docs) => {
                                           if (errX) {
                                             done(errX);
                                             return;
@@ -231,16 +231,18 @@ describe('Search Test Suite', () => {
 
                                             properServices[20].offerings.push(properOfferings[2]);
 
-                                            properServices[21].offerings.push(properOfferings[12]);
-                                            let c = properServices.length;
+                                            properServices[21].offerings
+                                              .push(properOfferings[12]);
+
+                                            let len = properServices.length;
                                             properServices.forEach((properService) => {
                                               properService.save((errZ) => {
+                                                len -= 1;
                                                 if (errZ) {
                                                   done(errZ);
                                                   return;
                                                 }
-                                                c -= 1;
-                                                if (c === 0) {
+                                                if (len === 0) {
                                                   done();
                                                 }
                                               });
@@ -279,7 +281,6 @@ describe('Search Test Suite', () => {
         if (err) {
           return done(err);
         }
-
         chai.expect(res.body.count)
           .to.equal(21);
 

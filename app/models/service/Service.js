@@ -43,6 +43,7 @@ const serviceSchema = Schema({
   }],
   offerings: {
     type: [Offering.offeringSchema],
+    required: false,
   },
   reviews: [{
     type: Schema.Types.ObjectId,
