@@ -7,9 +7,11 @@ const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
-const visitorValidationErrors = Strings.visitorValidationErrors;
-const adminValidationErrors = Strings.adminValidationErrors;
 const serviceValidationErrors = Strings.serviceValidationErrors;
+const serviceValidationCRUDErrors = Strings.serviceValidationCRUDErrors;
+const offeringValidationErrors = Strings.offeringValidationError;
+const adminValidationErrors = Strings.adminValidationErrors;
+const visitorValidationErrors = Strings.visitorValidationErrors;
 const reviewErrors = Strings.reviewErrors;
 
 /**
@@ -211,6 +213,67 @@ const businessLoginValidation = {
   },
 };
 
+/**
+ * Service CRUD Validation
+ */
+
+const serviceCreateValidation = {
+  name: {
+    notEmpty: {
+      errorMessage: serviceValidationCRUDErrors.emptyName,
+    },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: serviceValidationCRUDErrors.emptyShortDescription,
+    },
+  },
+};
+
+const offeringCreateValidationBody = {
+  price: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyPrice,
+    },
+  },
+  startDate: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyStartDate,
+    },
+  },
+  endDate: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyEndDate,
+    },
+  },
+  branch: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidBranchID,
+    },
+  },
+};
+
+const ServiceCreateValidationParams = {
+  id: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidServiceID,
+    },
+  },
+};
+
+
+const offeringEditValidationParmas = {
+  id1: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidServiceID,
+    },
+  },
+  id2: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidOfferingID,
+    },
+  },
+};
 const businessResetPasswordValidation = {
   password: {
     notEmpty: {
@@ -227,6 +290,10 @@ const businessResetPasswordValidation = {
     },
   },
 };
+
+/**
+ * Visitor validation
+ */
 
 const visitorValidation = {
   id: {
@@ -452,6 +519,11 @@ const validation = {
   adminLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+
+  serviceCreateValidation,
+  offeringCreateValidationBody,
+  ServiceCreateValidationParams,
+  offeringEditValidationParmas,
   businessResetPasswordValidation,
   visitorValidation,
   businessEditInfoValidation,
