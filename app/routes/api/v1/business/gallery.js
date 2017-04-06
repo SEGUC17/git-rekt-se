@@ -88,7 +88,7 @@ router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, 
         next(Strings.serviceValidationErrors.invalidServiceID);
       }
     })
-    .catch(err => next(err));
+    .catch(err => next('err'));
 });
 
 
@@ -106,16 +106,19 @@ router.post('/editBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) 
           .exec()
           .then((business) => {
             if (business) {
+              console.log(1);
               //   if (`${business.id}` === `${req.ser._id}`) {
               const image = business.gallery
                 .find(element => `${element._id}` === `${req.params.im_id}`);
               if (!image) {
                 next([Strings.serviceFail.imageNotFound]);
               } else {
+                console.log(2);
                 const newDescr = req.body.description;
                 image.description = newDescr;
                 business.save()
                   .then(() => {
+                    console.log(3);
                     res.json({
                       message: Strings.serviceSuccess.imageEdit,
                     });
