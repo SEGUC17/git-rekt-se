@@ -79,34 +79,36 @@ router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req
         /**
          * Checking category IDs are invalid or not
          */
-        createServiceUtils.checkCategories(reqData.categories).then((categories) => {
-          let valid = true;
-          categories.forEach((category) => {
-            if (!category) {
-              valid = false;
-            }
-          });
-          if (valid) {
-          /**
-           * Saving the serivce to the service collection
-           */
-            const service = new Service({
-              name: reqData.name,
-              shortDescription: reqData.shortDescription,
-              description: reqData.description,
-              categories: reqData.categories,
-              _business: req.user._id,
-              coverImage: req.file ? req.file.filename : undefined,
+        createServiceUtils.checkCategories(reqData.categories)
+          .then((categories) => {
+            let valid = true;
+            categories.forEach((category) => {
+              if (!category) {
+                valid = false;
+              }
             });
-            service.save()
-            .then(doc => res.json({
-              message: Strings.serviceSuccess.serviceAdded,
-            }))
-            .catch(e => next([e]));
-          } else {
-            next([Strings.serviceValidationErrors.invalidCategory]);
-          }
-        }).catch(e => next([e]));
+            if (valid) {
+              /**
+               * Saving the serivce to the service collection
+               */
+              const service = new Service({
+                name: reqData.name,
+                shortDescription: reqData.shortDescription,
+                description: reqData.description,
+                categories: reqData.categories,
+                _business: req.user._id,
+                coverImage: req.file ? req.file.filename : undefined,
+              });
+              service.save()
+                .then(doc => res.json({
+                  message: Strings.serviceSuccess.serviceAdded,
+                }))
+                .catch(e => next([e]));
+            } else {
+              next([Strings.serviceValidationErrors.invalidCategory]);
+            }
+          })
+          .catch(e => next([e]));
       } else {
         next(result.array());
       }
@@ -244,51 +246,48 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
         /**
          * Checking category IDs are invalid or not
          */
-        let valid = true;
-        reqData.categories.forEach((category) => {
-          Category.findOne({
-            _id: category,
-            _deleted: false,
-            type: 'Service',
-          })
-            .then((data) => {
-              if (!data) {
+
+        createServiceUtils.checkCategories(reqData.categories)
+          .then((categories) => {
+            let valid = true;
+            categories.forEach((category) => {
+              if (!category) {
                 valid = false;
               }
-            })
-            .catch(e => next([e]));
-        });
-        if (valid) {
-          Service.findOne({
-            _id: req.params.id,
-            _deleted: false,
+            });
+            if (valid) {
+              Service.findOne({
+                _id: req.params.id,
+                _deleted: false,
+              })
+                .then((service) => {
+                  if (!service) {
+                    next([Strings.offeringValidationError.invalidService]);
+                  }
+                  if (service._business.equals(req.user._id)) {
+                    service.name = reqData.name;
+                    service.shortDescription = reqData.shortDescription;
+                    service.description = reqData.description;
+                    service.categories = reqData.categories;
+                    service._business = req.user._id;
+                    service.coverImage = req.file ? req.filename : undefined;
+                    service.save()
+                      .then((addedService) => {
+                        res.json({
+                          message: Strings.serviceSuccess.serviceEdited,
+                        });
+                      })
+                      .catch(e => next(e));
+                  } else {
+                    next([Strings.offeringValidationError.invalidOperation]);
+                  }
+                })
+                .catch(e => next([e]));
+            } else {
+              next([Strings.serviceValidationErrors.invalidCategory]);
+            }
           })
-            .then((service) => {
-              if (!service) {
-                next([Strings.offeringValidationError.invalidService]);
-              }
-              if (service._business.equals(req.user._id)) {
-                service.name = reqData.name;
-                service.shortDescription = reqData.shortDescription;
-                service.description = reqData.description;
-                service.categories = reqData.categories;
-                service._business = req.user._id;
-                service.coverImage = req.file ? req.filename : undefined;
-                service.save()
-                  .then((addedService) => {
-                    res.json({
-                      message: Strings.serviceSuccess.serviceEdited,
-                    });
-                  })
-                  .catch(e => next(e));
-              } else {
-                next([Strings.offeringValidationError.invalidOperation]);
-              }
-            })
-            .catch(e => next([e]));
-        } else {
-          next([Strings.serviceValidationErrors.invalidCategory]);
-        }
+          .catch(e => next([e]));
       } else {
         next(result.array());
       }
@@ -341,16 +340,10 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                 });
                 if (validBranch) {
                   let validOffering = false;
-                  service.offerings.forEach((args) => {
-                    Offering.findOne({
-                      _id: args,
-                    })
-                      .then((serviceOffering) => {
-                        if (`${serviceOffering}` === offeringID) {
-                          validOffering = true;
-                        }
-                      })
-                      .catch(e => next([e]));
+                  service.offerings.forEach((offering) => {
+                    if (`${offering}` === offeringID) {
+                      validOffering = true;
+                    }
                   });
                   if (validOffering) {
                     Offering.findOne({
@@ -368,41 +361,39 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                           offeringfound.address = reqData.address;
                           offeringfound.save()
                             .then((offer) => {
-                              let oldexist = false; // old branch before edit exist
-                              let newexist = false; // new branch after edit exit
+                              createServiceUtils.returnBranches(service.offerings)
+                                .then((offerings) => {
+                                  let oldexist = false; // old branch before edit exist
+                                  let newexist = false; // new branch after edit exit
 
-                              service.offerings.forEach((args) => {
-                                Offering.findOne({
-                                  _id: args,
-                                })
-                                  .then((offering) => {
+                                  offerings.forEach((offering) => {
                                     if (offering.branch === oldbranch && offeringID !== `${offering._id}`) {
                                       oldexist = true;
                                     } else if (`${offering.branch}` === reqData.branch && offeringID !== `${offering._id}`) {
                                       newexist = true;
                                     }
-                                  })
-                                  .catch(e => next([e]));
-                              });
-                              const newBranches = []; // new list of branches for the service
-                              service.branches.forEach((branch) => {
-                                if (branch.equals(oldbranch)) {
-                                  if (oldexist) {
-                                    newBranches.push(branch);
-                                  }
-                                } else if (`${branch}` === reqData.branch) {
-                                  if (!newexist) {
-                                    newBranches.push(branch);
-                                  }
-                                } else {
-                                  newBranches.push(branch);
-                                }
-                              });
-                              service.branches = newBranches;
-                              service.save()
-                                .then(addedService => res.json({
-                                  message: Strings.serviceSuccess.offeringEdited,
-                                }))
+                                  });
+                                  const newBranches = []; // new list of branches for the service
+                                  service.branches.forEach((branch) => {
+                                    if (branch.equals(oldbranch)) {
+                                      if (oldexist) {
+                                        newBranches.push(branch);
+                                      }
+                                    } else if (`${branch}` === reqData.branch) {
+                                      if (!newexist) {
+                                        newBranches.push(branch);
+                                      }
+                                    } else {
+                                      newBranches.push(branch);
+                                    }
+                                  });
+                                  service.branches = newBranches;
+                                  service.save()
+                                    .then(addedService => res.json({
+                                      message: Strings.serviceSuccess.offeringEdited,
+                                    }))
+                                    .catch(e => next([e]));
+                                })
                                 .catch(e => next([e]));
                             })
                             .catch(e => next([e]));
