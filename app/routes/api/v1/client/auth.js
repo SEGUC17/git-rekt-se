@@ -14,6 +14,7 @@ const jwtConfig = require('../../../../services/shared/jwtConfig');
 const Strings = require('../../../../services/shared/Strings');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
+
 mongoose.Promise = Promise;
 
 const router = express.Router();
@@ -109,6 +110,59 @@ router.post('/confirmation/send', (req, res, next) => {
       }
     });
 });
+
+/**
+ * Client reset password
+ */
+
+router.post('/reset', (req, res, next) => {
+  const resetToken = req.body.token;
+  const password = req.body.password;
+
+  req.checkBody(validationSchemas.clientResetPasswordValidation);
+  req.checkBody('confirmPassword')
+    .equals(req.body.password)
+.withMessage(Strings.clientValidationErrors.passwordMismatch);
+
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        jwt.verify(resetToken, JWT_KEY, (err, payload) => {
+          if (!payload) {
+            next(Strings.clientForgotPassword.INVALID_RESET_TOKEN);
+          } else {
+            const email = payload.email;
+            const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
+
+            Client.findOne({
+              email,
+              passwordChangeDate: {
+                $lte: creationDate,
+              },
+            })
+      .exec()
+      .then((client) => {
+        if (!client) {
+          return next(Strings.clientForgotPassword.INVALID_RESET_TOKEN);
+        }
+        client.passwordResetTokenDate = undefined; // Disable the token
+        client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
+        client.password = password; // Reset password
+
+        return client.save()
+          .then(() => res.json({
+            message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
+          }));
+      })
+      .catch(e => next([e]));
+          }
+        });
+      } else {
+        next(result.array());
+      }
+    });
+});
+
 
 /**
  * Confirm Email Route.

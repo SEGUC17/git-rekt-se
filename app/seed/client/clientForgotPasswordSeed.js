@@ -10,7 +10,6 @@ const clients = [{
   lastName: 'El Zarei',
   mobile: '01193125263',
   gender: 'Male',
-  birthdate: new Date('11-2-1996'),
 }, {
   email: 'melzareios@gmail.com',
   password: 'YEQmxoav4N1K',
@@ -19,7 +18,6 @@ const clients = [{
   lastName: 'Mazen',
   mobile: '01093125263',
   gender: 'Male',
-  birthdate: new Date('11-2-1994'),
 }];
 
 module.exports = clients;

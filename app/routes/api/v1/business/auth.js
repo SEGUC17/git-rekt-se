@@ -9,6 +9,8 @@ const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 const errorHandler = require('../../../../services/shared/errorHandler');
+const InvalidToken = require('../../../../models/shared/InvalidToken');
+const jwtConfig = require('../../../../services/shared/jwtConfig');
 
 mongoose.Promise = Promise;
 
@@ -93,9 +95,6 @@ router.post('/verified/login', (req, res, next) => {
     });
 });
 
-/**
- *
- */
 
 /**
  * Business forgot password
@@ -135,6 +134,81 @@ router.post('/forgot', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+
+
+/**
+ * Business reset password
+ */
+
+router.post('/reset', (req, res, next) => {
+  const resetToken = req.body.token;
+  const password = req.body.password;
+
+  req.checkBody(validationSchemas.businessResetPasswordValidation);
+  req.checkBody('confirmPassword')
+    .equals(req.body.password)
+    .withMessage(Strings.bussinessValidationErrors.passwordMismatch);
+
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        jwt.verify(resetToken, JWT_KEY, (err, payload) => {
+          if (!payload) {
+            next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
+          } else {
+            const email = payload.email;
+            const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
+
+            Business.findOne({
+              email,
+              passwordChangeDate: {
+                $lte: creationDate,
+              },
+            })
+              .exec()
+              .then((business) => {
+                if (!business) {
+                  return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
+                }
+                business.passwordResetTokenDate = undefined; // Disable the token
+                business.passwordChangeDate = Date.now(); // Invalidate Login Tokens
+                business.password = password; // Reset password
+
+                return business.save()
+                  .then(() => res.json({
+                    message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
+                  }));
+              })
+              .catch(e => next([e]));
+          }
+        });
+      } else {
+        next(result.array());
+      }
+    });
+});
+
+/**
+ * Business Logout.
+ * http://stackoverflow.com/questions/3521290/logout-get-or-post
+ */
+
+router.post('/logout', jwtConfig.businessAuthMiddleware, (req, res, next) => {
+  const token = jwtConfig.parseAuthHeader(req.headers.authorization)
+    .value;
+  new InvalidToken({
+    token,
+  })
+    .save((err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.json({
+        message: Strings.businessSuccess.logout,
+      });
+    });
+});
+
 
 /**
  *  Error Handling Middlewares.

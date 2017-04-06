@@ -47,6 +47,7 @@ const businessSuccess = {
   branchAddedSuccess: 'Branch Added Successfully',
   branchEditSuccess: 'Branch Edited Successfully',
   branchDeleteSuccess: 'Branch Deleted Successfully',
+  logout: 'You have been logged out.',
 };
 
 const businessLoginMessages = {
@@ -93,6 +94,9 @@ const clientSuccess = {
   logout: 'You have been logged out.',
 };
 
+const serviceFailure = {
+  serviceNotFound: 'The specified service was not found.',
+};
 
 const clientForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
@@ -189,6 +193,7 @@ module.exports = {
   clientConfirmation,
   clientVerfication,
   bussinessValidationErrors,
+  serviceFailure,
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
