@@ -61,7 +61,6 @@ describe('Category CRUD Test Suite', () => {
         if (err2) {
           done(err2);
         } else {
-          console.log(res.body);
           chai.expect(res.body.message)
             .to.equal('Category added succesfully!');
           Category.findOne({
