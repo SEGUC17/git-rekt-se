@@ -11,7 +11,7 @@ mongoose.Promise = Promise;
  * Search for a service route
  */
 
-router.get('/search', (req, res, next) => {
+router.get('/', (req, res, next) => {
   const inputQuery = req.query;
   const output = {};
   // Build up query
