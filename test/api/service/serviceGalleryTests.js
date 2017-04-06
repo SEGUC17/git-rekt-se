@@ -79,7 +79,7 @@ describe('Service Gallery CRUD Tests', () => {
       .catch(err => done(err));
   });
 
-  it('should not create an image if an invalid id is given, and return error message: Service not found!', (done) => {
+  it('should not create an image if an invalid id is given, and return en error message', (done) => {
     const sampleService = ServiceSeed[0];
     sampleService._business = dbBusiness._id;
     new Service(sampleService)

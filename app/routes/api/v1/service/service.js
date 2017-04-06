@@ -70,10 +70,10 @@ router.post('/addServiceImage/:id', BusinessAuth, upload.single('path'), (req, r
                   })
                   .catch(saveErr => next([saveErr]));
               } else {
-                next([Strings.serviceFail.notYourService]);
+                next([Strings.serviceFailure.notYourService]);
               }
             } else {
-              next([Strings.serviceFail.invalidService]);
+              next([Strings.serviceFailure.invalidService]);
             }
           })
           .catch(err => next([err]));
@@ -103,7 +103,7 @@ router.post('/editServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next) =
                 const image = service.gallery
                   .find(element => `${element._id}` === `${req.params.im_id}`);
                 if (!image) {
-                  next([Strings.serviceFail.imageNotFound]);
+                  next([Strings.serviceFailure.imageNotFound]);
                 } else {
                   const newDescr = req.body.description;
                   image.description = newDescr;
@@ -116,10 +116,10 @@ router.post('/editServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next) =
                     .catch(saveErr => next([saveErr]));
                 }
               } else {
-                next([Strings.serviceFail.notYourService]);
+                next([Strings.serviceFailure.notYourService]);
               }
             } else {
-              next([Strings.serviceFail.invalidService]);
+              next([Strings.serviceFailure.invalidService]);
             }
           })
           .catch(err => next([err]));
@@ -148,7 +148,7 @@ router.post('/deleteServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next)
                 const image = service.gallery
                   .find(element => `${element._id}` === `${req.params.im_id}`);
                 if (!image) {
-                  next([Strings.serviceFail.imageNotFound]);
+                  next([Strings.serviceFailure.imageNotFound]);
                 } else {
                   const newGallery = service.gallery
                     .filter(element => `${element._id}` !== `${req.params.im_id}`);
@@ -162,10 +162,10 @@ router.post('/deleteServiceImage/:ser_id/:im_id', BusinessAuth, (req, res, next)
                     .catch(saveErr => next([saveErr]));
                 }
               } else {
-                next([Strings.serviceFail.notYourService]);
+                next([Strings.serviceFailure.notYourService]);
               }
             } else {
-              next([Strings.serviceFail.invalidService]);
+              next([Strings.serviceFailure.invalidService]);
             }
           })
           .catch(err => next([err]));
