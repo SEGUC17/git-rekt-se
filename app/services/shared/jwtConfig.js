@@ -1,6 +1,5 @@
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
-const passportFB = require('passport-facebook');
 const InvalidToken = require('../../models/shared/InvalidToken');
 const Client = require('../../models/client/Client');
 const Business = require('../../models/business/Business');
@@ -9,7 +8,6 @@ const Strings = require('../../services/shared/Strings');
 
 const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
-const FBStrategy = passportFB.Strategy;
 
 require('dotenv')
   .config();
@@ -213,6 +211,7 @@ const adminAuthMiddleware = (req, res, next) => {
 };
 
 module.exports = {
+  parseAuthHeader,
   clientStrategy,
   clientAuthMiddleware,
   businessStrategy,

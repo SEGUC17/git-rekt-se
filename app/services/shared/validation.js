@@ -139,6 +139,23 @@ const businessSignupValidation = {
   },
 };
 
+const clientResetPasswordValidation = {
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
+    },
+  },
+};
+
 const businessLoginValidation = {
   email: {
     notEmpty: {
@@ -155,6 +172,23 @@ const businessLoginValidation = {
     matches: {
       options: [/^(?=.*\d).{8,15}$/],
       errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
+};
+
+const businessResetPasswordValidation = {
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
     },
   },
 };
@@ -298,13 +332,34 @@ const adminLoginValidation = {
   },
 };
 
+
+const businessUpdateValidation = {
+  name: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyName,
+    },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyDescription,
+    },
+  },
+  phoneNumbers: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyMobile,
+    },
+  },
+};
+
 const validation = {
+  clientResetPasswordValidation,
   clientSignupValidation,
   clientConfirmEmailValidation,
   clientLoginValidation,
   adminLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+  businessResetPasswordValidation,
   visitorValidation,
   businessEditInfoValidation,
   businessAddValidation,
@@ -312,6 +367,7 @@ const validation = {
   createReviewValidation,
   updateReviewValidation,
   deleteReviewValidation,
+  businessUpdateValidation,
 };
 
 module.exports = validation;

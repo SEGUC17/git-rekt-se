@@ -15,10 +15,14 @@ const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
 const businessValidation = require('../../../../services/shared/validation');
 const businessUtils = require('../../../../services/business/businessUtils');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 mongoose.Promise = Promise;
-
 const router = express.Router();
+
+/**
+ * Parsing Middleware(s).
+ */
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
@@ -26,6 +30,7 @@ router.use(expressValidator({}));
 /**
  * Business Edit Info API Route.
  */
+
 router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
   if (req.user.id !== id) {
@@ -56,21 +61,22 @@ router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
                   .then(() => res.json({
                     message: businessSuccess.infoEditSuccess,
                   }))
-                  .catch(err => next([err]));
+                  .catch(err => next(err));
               }
             })
-            .catch(err => next([err]));
+            .catch(err => next(err));
         } else {
           next(result.array());
         }
       })
-      .catch(err => next([err]));
+      .catch(err => next(err));
   }
 });
 
 /**
  * Business Add Branches API Route.
  */
+
 router.post('/:id/add/branches', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
   if (req.user.id !== id) {
@@ -96,23 +102,24 @@ router.post('/:id/add/branches', businessAuthMiddleware, (req, res, next) => {
                       .then(() => res.json({
                         message: businessSuccess.branchAddedSuccess,
                       }))
-                      .catch(err => next([err]));
+                      .catch(err => next(err));
                   }
                 })
-                .catch(err => next([err]));
+                .catch(err => next(err));
             })
-            .catch(err => next([err]));
+            .catch(err => next(err));
         } else {
           next(result.array());
         }
       })
-      .catch(err => next([err]));
+      .catch(err => next(err));
   }
 });
 
 /**
  * Business Edit Branch API Route.
  */
+
 router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.business_id;
   if (req.user.id !== id) {
@@ -138,23 +145,24 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
                   .then(() => res.json({
                     message: businessSuccess.branchEditSuccess,
                   }))
-                  .catch(err => next([err]));
+                  .catch(err => next(err));
               } else {
                 next([businessMessages.mismatchID]);
               }
             })
-            .catch(err => next([err]));
+            .catch(err => next(err));
         } else {
           next(result.array());
         }
       })
-      .catch(err => next([err]));
+      .catch(err => next(err));
   }
 });
 
 /**
  * Business Delete Branch API Route.
  */
+
 router.delete('/:business_id/delete/branch/:branch_id', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.business_id;
   if (req.user.id !== id) {
@@ -174,23 +182,19 @@ router.delete('/:business_id/delete/branch/:branch_id', businessAuthMiddleware, 
             .then(() => res.json({
               message: businessSuccess.branchDeleteSuccess,
             }))
-            .catch(err => next([err]));
+            .catch(err => next(err));
         } else {
           next([businessMessages.mismatchID]);
         }
       })
-      .catch(err => next([err]));
+      .catch(err => next(err));
   }
 });
 
 /**
  * Error Handling Middleware
  */
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+
+router.use(errorHandler);
 
 module.exports = router;
