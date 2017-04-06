@@ -10,6 +10,7 @@ const AdminAuth = require('../../../../services/shared/jwtConfig')
 const AdminValidator = require('../../../../services/shared/validation');
 const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -107,9 +108,9 @@ router.post('/deny/:id', AdminAuth, (req, res, next) => {
                           message: Strings.businessConfirmation.denied,
                         });
                       })
-                      .catch(err => next([err]));
+                      .catch(err => next(err));
                   })
-                  .catch(err => next([err]));
+                  .catch(err => next(err));
               }
             } else {
               res.json({
@@ -122,18 +123,13 @@ router.post('/deny/:id', AdminAuth, (req, res, next) => {
         next(result.array());
       }
     })
-    .catch(err => next([err]));
+    .catch(err => next(err));
 });
 
 /**
  *  Error Handling Middlewares.
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
 
 module.exports = router;
