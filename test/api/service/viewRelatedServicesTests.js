@@ -78,7 +78,6 @@ describe('Populating Business Collection', () => {
       .then((docs) => {
         businessesIDs.push(docs[1]._id);
         businessesIDs.push(docs[2]._id);
-        console.log(businessesIDs);
         done();
       })
       .catch(e => done(e));
@@ -110,7 +109,6 @@ describe('Populating Service Collection', () => {
         done();
       })
       .catch((e) => {
-        console.log(e);
         done(e);
       });
   });
