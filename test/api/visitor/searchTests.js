@@ -185,7 +185,7 @@ describe('Search Test Suite', () => {
                                             done(errX);
                                             return;
                                           }
-                                          Service.find((errP, properServices) => {
+                                          Service.find({}, (errP, properServices) => {
                                             properServices[0].offerings.push(properOfferings[0]);
                                             properServices[0].offerings.push(properOfferings[1]);
 
@@ -231,16 +231,18 @@ describe('Search Test Suite', () => {
 
                                             properServices[20].offerings.push(properOfferings[2]);
 
-                                            properServices[21].offerings
-                                              .push(properOfferings[12]);
-
+                                            properServices[21].offerings.push(properOfferings[12]);
+                                            let c = properServices.length;
                                             properServices.forEach((properService) => {
                                               properService.save((errZ) => {
                                                 if (errZ) {
                                                   done(errZ);
                                                   return;
                                                 }
-                                                done();
+                                                c -= 1;
+                                                if (c === 0) {
+                                                  done();
+                                                }
                                               });
                                             });
                                           });
