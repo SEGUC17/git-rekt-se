@@ -7,6 +7,7 @@ const Business = require('../../../../models/business/Business');
 const Review = require('../../../../models/service/Review');
 const Category = require('../../../../models/service/Category');
 const Offering = require('../../../../models/service/Offering');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 
 const router = express.Router();
@@ -29,12 +30,6 @@ router.get('/:id', (req, res, next) => {
     },
     {
       path: 'branches',
-      match: {
-        _deleted: false,
-      },
-    },
-    {
-      path: 'offerings',
       match: {
         _deleted: false,
       },
@@ -65,7 +60,6 @@ router.get('/:id', (req, res, next) => {
         businessGallery: service._business.gallery,
         businessWorkingHours: service._business.workingHours,
         branches: service.branches,
-        offerings: service.offerings,
         reviews: service.reviews,
         gallery: service.gallery,
       };
@@ -80,11 +74,6 @@ router.get('/:id', (req, res, next) => {
  *  Error Handling Middlewares.
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
 
 module.exports = router;

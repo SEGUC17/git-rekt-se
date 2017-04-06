@@ -76,6 +76,7 @@ describe('View Services Tests', () => {
   it('it should GET a Service by the given id', (done) => {
     Service.findOne({
       name: 'Service1',
+      _deleted: false,
     })
       .exec()
       .then((newService) => {
@@ -94,8 +95,6 @@ describe('View Services Tests', () => {
             chai.expect(res.body)
               .to.have.property('businessWorkingHours');
             chai.expect(res.body)
-              .to.have.property('offerings');
-            chai.expect(res.body)
               .to.have.property('reviews');
             done();
           });
@@ -108,9 +107,10 @@ describe('View Services Tests', () => {
     const route = '/api/v1/service/'.concat(4);
     req.get(route)
       .end((err, res) => {
-        chai.expect(res.body)
-          .to.have.property('errors')
-          .to.equal('The specified service was not found.');
+        chai.expect(res.body).to.have.property('errors');
+
+        const error = res.body.errors[0];
+        chai.expect(error).to.equal('The specified service was not found.');
         done();
       });
   });
