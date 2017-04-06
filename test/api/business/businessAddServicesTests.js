@@ -349,7 +349,7 @@ describe('Business Add Categories/Offerings Suite', () => {
           done(err);
         }
         chai.expect(res.body.errors[0].msg)
-          .to.equal(Strings.serviceValidationErrors.emptyName);
+          .to.equal(Strings.serviceValidationCRUDErrors.emptyName);
         done();
       });
   });
@@ -375,7 +375,7 @@ describe('Business Add Categories/Offerings Suite', () => {
           done(err);
         }
         chai.expect(res.body.errors[0].msg)
-          .to.equal(Strings.serviceValidationErrors.emptyShortDescription);
+          .to.equal(Strings.serviceValidationCRUDErrors.emptyShortDescription);
         done();
       });
   });
@@ -403,7 +403,7 @@ describe('Business Add Categories/Offerings Suite', () => {
           done(err);
         }
         chai.expect(res.body.errors[0])
-          .to.equal(Strings.serviceValidationErrors.invalidCategory);
+          .to.equal(Strings.serviceValidationCRUDErrors.invalidCategory);
         done();
       });
   });

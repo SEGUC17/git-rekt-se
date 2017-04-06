@@ -8,6 +8,7 @@ const Strings = require('./Strings');
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
 const serviceValidationErrors = Strings.serviceValidationErrors;
+const serviceValidationCRUDErrors = Strings.serviceValidationCRUDErrors;
 const offeringValidationErrors = Strings.offeringValidationError;
 const adminValidationErrors = Strings.adminValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
@@ -203,12 +204,12 @@ const businessLoginValidation = {
 const serviceCreateValidation = {
   name: {
     notEmpty: {
-      errorMessage: serviceValidationErrors.emptyName,
+      errorMessage: serviceValidationCRUDErrors.emptyName,
     },
   },
   shortDescription: {
     notEmpty: {
-      errorMessage: serviceValidationErrors.emptyShortDescription,
+      errorMessage: serviceValidationCRUDErrors.emptyShortDescription,
     },
   },
 };

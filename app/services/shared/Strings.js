@@ -109,6 +109,12 @@ const serviceSuccess = {
   imageAdd: 'Image added successfully!',
   imageEdit: 'Description updated succesfully!',
   imageDelete: 'Image deleted succesfully!',
+  serviceAdded: 'Service has been added successfully to your business',
+  serviceEdited: 'Service has been edited successfully to your business',
+  serviceDeleted: 'Service has been deleted successfully',
+  offeringAdded: 'Offering has been added successfully to your business',
+  offeringEdited: 'Offering has been edited successfully to your business',
+  offeringDeleted: 'Offering has been deleted successfully',
 };
 
 const serviceFailure = {
@@ -197,7 +203,7 @@ const businessForgotPassword = {
  * Service Strings
  */
 
-const serviceValidationErrors = {
+const serviceValidationCRUDErrors = {
   emptyName: 'Service Name is a required field',
   emptyShortDescription: 'Service short description is a required field',
   invalidCategory: 'No such a category',
@@ -219,14 +225,6 @@ const offeringValidationError = {
   invalidOffering: 'No such offering',
 };
 
-const serviceSuccess = {
-  serviceAdded: 'Service has been added successfully to your business',
-  serviceEdited: 'Service has been edited successfully to your business',
-  serviceDeleted: 'Service has been deleted successfully',
-  offeringAdded: 'Offering has been added successfully to your business',
-  offeringEdited: 'Offering has been edited successfully to your business',
-  offeringDeleted: 'Offering has been deleted successfully',
-};
 
 /**
  * Admin Strings
@@ -284,9 +282,8 @@ module.exports = {
   visitorValidationErrors,
   businessMessages,
 
-  serviceValidationErrors,
+  serviceValidationCRUDErrors,
   offeringValidationError,
-  serviceSuccess,
   reviewErrors,
   reviewSuccess,
   adminSuccess,

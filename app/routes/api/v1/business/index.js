@@ -105,7 +105,7 @@ router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req
                 }))
                 .catch(e => next([e]));
             } else {
-              next([Strings.serviceValidationErrors.invalidCategory]);
+              next([Strings.serviceValidationCRUDErrors.invalidCategory]);
             }
           })
           .catch(e => next([e]));
@@ -284,7 +284,7 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
                 })
                 .catch(e => next([e]));
             } else {
-              next([Strings.serviceValidationErrors.invalidCategory]);
+              next([Strings.serviceValidationCRUDErrors.invalidCategory]);
             }
           })
           .catch(e => next([e]));
@@ -302,13 +302,11 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
  */
 
 router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next) => {
-  console.log('hi');
   /**
    * Form validation
    */
   req.checkBody(validator.offeringCreateValidationBody);
   req.checkParams(validator.offeringEditValidationParmas);
-  console.log(1);
 
   req.getValidationResult()
     .then((result) => {
@@ -321,119 +319,108 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
         const offeringID = req.params.id2;
         Branch.findOne({
           _id: req.body.branch,
-        }).then((branchDoc) => {
-          const reqData = {
-            startDate: req.body.startDate,
-            endDate: req.body.endDate,
-            location: branchDoc.location,
-            branch: req.body.branch,
-            price: req.body.price,
-            address: branchDoc.address,
-          };
-          Service.findOne({
-            _id: serviceID,
-            _deleted: false,
-          })
-          .then((service) => {
-            console.log(3);
-            if (service) {
-              console.log(4);
-              if (service._business.equals(req.user._id)) {
-                console.log(5);
-                const business = req.user;
-                let validBranch = false;
-                business.branches.forEach((branch) => {
-                  if (reqData.branch === `${branch}`) {
-                    validBranch = true;
-                  }
-                });
-                console.log(validBranch);
-                console.log(6);
-                if (validBranch) {
-                  let validOffering = false;
-                  let offeringfound;
-                  service.offerings.forEach((offering) => {
-                    if (`${offering._id}` === offeringID) {
-                      validOffering = true;
-                      offeringfound = offering;
-                    }
-                  });
-                  console.log(validOffering);
-                  if (validOffering) {
-                    console.log(111);
-                    if (offeringfound) {
-                      const oldbranch = offeringfound.branch;
-                      offeringfound.startDate = reqData.startDate;
-                      offeringfound.endDate = reqData.endDate;
-                      offeringfound.location = reqData.location;
-                      offeringfound.branch = reqData.branch;
-                      offeringfound.price = reqData.price;
-                      offeringfound.address = reqData.address;
-                      console.log(offeringfound);
-                      offeringfound.save()
-                            .then((offer) => {
-                              console.log(2333);
-                              let oldexist = false; // old branch before edit exist
-                              let newexist = false; // new branch after edit exit
+        })
+          .then((branchDoc) => {
+            const reqData = {
+              startDate: req.body.startDate,
+              endDate: req.body.endDate,
+              location: branchDoc.location,
+              branch: req.body.branch,
+              price: req.body.price,
+              address: branchDoc.address,
+            };
+            Service.findOne({
+              _id: serviceID,
+              _deleted: false,
+            })
+              .then((service) => {
+                console.log(3);
+                if (service) {
+                  console.log(4);
+                  if (service._business.equals(req.user._id)) {
+                    console.log(5);
+                    const business = req.user;
+                    let validBranch = false;
+                    business.branches.forEach((branch) => {
+                      if (reqData.branch === `${branch}`) {
+                        validBranch = true;
+                      }
+                    });
+                    console.log(validBranch);
+                    console.log(6);
+                    if (validBranch) {
+                      let validOffering = false;
+                      let object;
+                      service.offerings.forEach((offering) => {
+                        if (`${offering._id}` === offeringID) {
+                          validOffering = true;
+                          object = offering;
+                        }
+                      });
+                      if (validOffering) {
+                        const oldbranch = object.branch;
+                        Offering.findOne({
+                          _id: offeringID,
+                        }).then((offeringDoc) => {
+                          offeringDoc.startDate = reqData.startDate;
+                          offeringDoc.endDate = reqData.endDate;
+                          offeringDoc.location = reqData.location;
+                          offeringDoc.branch = reqData.branch;
+                          offeringDoc.price = reqData.price;
+                          offeringDoc.address = reqData.address;
+                          offeringDoc.save().then((offer) => {
+                            let oldexist = false; // old branch before edit exist
 
-                              service.offerings.forEach((offering) => {
-                                if (offering.branch === oldbranch && offeringID !== `${offering._id}`) {
-                                  oldexist = true;
-                                } else if (`${offering.branch}` === reqData.branch && offeringID !== `${offering._id}`) {
-                                  newexist = true;
-                                }
-
-                                console.log('hii');
-                                const newBranches = []; // new list of branches for the service
-                                service.branches.forEach((branch) => {
-                                  if (branch.equals(oldbranch)) {
-                                    if (oldexist) {
-                                      newBranches.push(branch);
-                                    }
-                                  } else if (`${branch}` === reqData.branch) {
-                                    if (!newexist) {
-                                      newBranches.push(branch);
-                                    }
-                                  } else {
-                                    newBranches.push(branch);
-                                  }
-                                });
-                                service.branches = newBranches;
-                                service.save()
-                                    .then(addedService => res.json({
-                                      message: Strings.serviceSuccess.offeringEdited,
-                                    }))
-                                    .catch(e => next([e]));
-                              });
-                            })
-                            .catch((e) => {
-                              console.log('leeeh');
-                              next([e]);
+                            service.offerings.forEach((offering) => {
+                              if (offering.branch === oldbranch && offeringID !== `${offering._id}`) {
+                                oldexist = true;
+                              }
                             });
+
+                            const newBranches = []; // new list of branches for the service
+                            newBranches.push(reqData.branch);
+                            service.branches.forEach((branch) => {
+                              if (branch.equals(oldbranch)) {
+                                if (oldexist) {
+                                  newBranches.push(branch);
+                                }
+                              } else if (`${branch}` !== reqData.branch) {
+                                newBranches.push(branch);
+                              }
+                            });
+
+                            service.branches = newBranches;
+                            service.save()
+                                .then(addedService => res.json({
+                                  message: Strings.serviceSuccess.offeringEdited,
+                                }))
+                                .catch((e) => {
+                                  next([e]);
+                                });
+                          }).catch(e => next([e]));
+                        }).catch((e => next([e])));
+                      } else {
+                        next([Strings.offeringValidationError.invalidOffering]);
+                      }
                     } else {
-                      next([Strings.offeringValidationError.invalidOffering]);
+                      next([Strings.offeringValidationError.invalidBranch]);
                     }
                   } else {
-                    next([Strings.offeringValidationError.invalidOffering]);
+                    /**
+                     * business doesn't own this particular service to edit it
+                     */
+                    next([Strings.offeringValidationError.invalidOperation]);
                   }
                 } else {
-                  next([Strings.offeringValidationError.invalidBranch]);
+                  /**
+                   * No service with the id in the request params
+                   */
+                  next([Strings.offeringValidationError.invalidService]);
                 }
-              } else {
-                /**
-                 * business doesn't own this particular service to edit it
-                 */
-                next([Strings.offeringValidationError.invalidOperation]);
-              }
-            } else {
-              /**
-               * No service with the id in the request params
-               */
-              next([Strings.offeringValidationError.invalidService]);
-            }
+              })
+              .catch(e => next([e]));
           })
           .catch(e => next([e]));
-        }).catch(e => next([e]));
       } else {
         next(result.array());
       }

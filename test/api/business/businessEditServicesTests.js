@@ -148,6 +148,7 @@ describe('Business Edit Categories/Offerings Suite', () => {
   let req;
   let token;
   const servicesAdded = [];
+  const offeringsAdded = [];
 
   before((done) => {
     const businessLogin = {
@@ -269,7 +270,6 @@ describe('Business Edit Categories/Offerings Suite', () => {
                      * Error happend with request, fail the test
                      * with the error message.
                      */
-                    // console.log(res);
                     if (err) {
                       done(err);
                       return;
@@ -290,12 +290,13 @@ describe('Business Edit Categories/Offerings Suite', () => {
                           .not.to.equal('');
                         chai.expect(offerings[0].price)
                           .to.equal(5000);
-                        chai.expect(offering[0].location)
+                        chai.expect(offerings[0].location)
                           .to.equal('Zamalek');
-                        chai.expect(offering[0].address)
+                        chai.expect(offerings[0].address)
                           .to.equal('some address1');
                         chai.expect(res.body.message)
                           .to.equal(Strings.serviceSuccess.offeringEdited);
+                        offeringsAdded.push(offerings[0]);
                         done();
                       })
                       .catch(e => done([e]));
@@ -306,5 +307,123 @@ describe('Business Edit Categories/Offerings Suite', () => {
           .catch(e => done([e]));
       })
       .catch(e => done([e]));
+  });
+
+  /**
+   * Failing Test 1: missing field when editing a serivce without specifying name
+   */
+
+  it('should return missing field when adding a service without name', (done) => {
+    req = supertest(app)
+      .post(`/api/v1/business/service/${servicesAdded[0]._id}/edit`);
+    const serviceInfo = {
+      shortDescription: 'Hi',
+    };
+    req
+      .send(serviceInfo)
+      .set('Authorization', `JWT ${token}`);
+
+    req.expect('Content-Type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        }
+        chai.expect(res.body.errors[0].msg)
+          .to.equal(Strings.serviceValidationCRUDErrors.emptyName);
+        done();
+      });
+  });
+
+ /**
+   * Failing Test 2: invalid category error when choosing an invalid category in the request
+   */
+
+  it('should return invalid category', (done) => {
+    req = supertest(app)
+      .post(`/api/v1/business/service/${servicesAdded[0]._id}/edit`);
+    const serviceInfo = {
+      name: 'Hi',
+      shortDescription: 'Hi',
+      categories: [invalidCategory],
+    };
+    req
+      .send(serviceInfo)
+      .set('Authorization', `JWT ${token}`);
+
+    req.expect('Content-Type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        }
+        chai.expect(res.body.errors[0])
+          .to.equal(Strings.serviceValidationCRUDErrors.invalidCategory);
+        done();
+      });
+  });
+
+  /**
+   * Failing Test 3:entering a branch that doesn't belong to you
+   */
+
+  it('should return an invalid branch error', (done) => {
+    req = supertest(app)
+      .post(`/api/v1/business/service/${servicesAdded[0]._id}/offering/${offeringsAdded[0]._id}/edit/`);
+    const offeringInfo = {
+      startDate: Date.now(),
+      endDate: Date.now(),
+      branch: businesses[1].branches[0],
+      price: 1000,
+    };
+    req
+      .send(offeringInfo)
+      .set('Authorization', `JWT ${token}`);
+
+    req.expect('Content-Type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        }
+        console.log(res.body);
+        chai.expect(res.body.errors[0])
+          .to.equal(Strings.offeringValidationError.invalidBranch);
+        done();
+      });
+  });
+
+  /**
+   * Failing Test 5:entering an offering to a service that doesn't belong to this business
+   */
+
+  it('should return an invalid Operation error when trying to edit services for other businesses services', (done) => {
+    const service = new Service({
+      name: 'test1',
+      shortDescription: 'test1',
+      _business: businessesIDs[1],
+    });
+    service.save().then((serviceAdded) => {
+      req = supertest(app)
+      .post(`/api/v1/business/service/${serviceAdded._id}/edit`);
+      const offeringInfo = {
+        name: 'test2',
+        shortDescription: 'test2',
+      };
+      req
+      .send(offeringInfo)
+      .set('Authorization', `JWT ${token}`);
+
+      req.expect('Content-Type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        }
+        chai.expect(res.body.errors[0])
+          .to.equal(Strings.offeringValidationError.invalidOperation);
+        done();
+      });
+    }).catch(e => done([e]));
   });
 });
