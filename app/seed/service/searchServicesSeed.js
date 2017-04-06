@@ -1,4 +1,5 @@
 const offeringsSeed = require('./searchOfferingsSeed');
+const Offering = require('../../../app/models/service/Offering');
 /**
  * Services Seed For Search Tests
 */
@@ -8,8 +9,8 @@ const services = [{
   shortDescription: '3000 NC - 2000 Z',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[0],
-    offeringsSeed[1],
+    new Offering(offeringsSeed[0]),
+    new Offering(offeringsSeed[1]),
   ],
 },
 {
@@ -17,8 +18,8 @@ const services = [{
   shortDescription: '5000 T - 7000 T',
   _avgRating: 10,
   offerings: [
-    offeringsSeed[2],
-    offeringsSeed[3],
+    new Offering(offeringsSeed[2]),
+    new Offering(offeringsSeed[3]),
   ],
 },
 {
@@ -26,7 +27,7 @@ const services = [{
   shortDescription: '4000 SZ',
   _avgRating: 10,
   offerings: [
-    offeringsSeed[4],
+    new Offering(offeringsSeed[4]),
   ],
 },
 {
@@ -34,8 +35,8 @@ const services = [{
   shortDescription: '1500 6O - 4000Z',
   _avgRating: 8,
   offerings: [
-    offeringsSeed[5],
-    offeringsSeed[6],
+    new Offering(offeringsSeed[5]),
+    new Offering(offeringsSeed[6]),
   ],
 },
 {
@@ -44,7 +45,7 @@ const services = [{
   _avgRating: 10,
   _deleted: true,
   offerings: [
-    offeringsSeed[7],
+    new Offering(offeringsSeed[7]),
   ],
 },
 {
@@ -52,7 +53,7 @@ const services = [{
   shortDescription: '3000 T',
   _avgRating: 8,
   offerings: [
-    offeringsSeed[8],
+    new Offering(offeringsSeed[8]),
   ],
 },
 {
@@ -60,7 +61,7 @@ const services = [{
   shortDescription: '2000 Z',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[1],
+    new Offering(offeringsSeed[1]),
   ],
 },
 {
@@ -68,7 +69,7 @@ const services = [{
   shortDescription: '10000 Z',
   _avgRating: 9,
   offerings: [
-    offeringsSeed[9],
+    new Offering(offeringsSeed[9]),
   ],
 },
 {
@@ -76,7 +77,7 @@ const services = [{
   shortDescription: '5000 6O',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[10],
+    new Offering(offeringsSeed[10]),
   ],
 },
 {
@@ -84,7 +85,7 @@ const services = [{
   shortDescription: '600 Z',
   _avgRating: 10,
   offerings: [
-    offeringsSeed[11],
+    new Offering(offeringsSeed[11]),
   ],
 },
 {
@@ -92,7 +93,7 @@ const services = [{
   shortDescription: 'Tagamo3 1st Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -100,7 +101,7 @@ const services = [{
   shortDescription: 'Tagamo3 1st Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -108,7 +109,7 @@ const services = [{
   shortDescription: 'Tagamo3 1st Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -116,7 +117,7 @@ const services = [{
   shortDescription: 'Tagamo3 1st Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -124,7 +125,7 @@ const services = [{
   shortDescription: 'Tagamo3 1st Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -132,7 +133,7 @@ const services = [{
   shortDescription: 'Tagamo3 1st Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -140,7 +141,7 @@ const services = [{
   shortDescription: 'Tagamo3 1st Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -148,7 +149,7 @@ const services = [{
   shortDescription: 'Tagamo3 2nd Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -156,7 +157,7 @@ const services = [{
   shortDescription: 'Tagamo3 2nd Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -164,7 +165,7 @@ const services = [{
   shortDescription: 'Tagamo3 2nd Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -172,7 +173,7 @@ const services = [{
   shortDescription: 'Tagamo3 2nd Page',
   _avgRating: 7,
   offerings: [
-    offeringsSeed[2],
+    new Offering(offeringsSeed[2]),
   ],
 },
 {
@@ -180,7 +181,7 @@ const services = [{
   shortDescription: '2000 6O',
   _avgRating: 9,
   offerings: [
-    offeringsSeed[12],
+    new Offering(offeringsSeed[12]),
   ],
 }];
 
