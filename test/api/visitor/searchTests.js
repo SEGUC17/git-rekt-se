@@ -23,6 +23,10 @@ const Strings = require('../../../app/services/shared/Strings');
  * Search Test Suite
  */
 
+/**
+ * Database values https://docs.google.com/spreadsheets/d/1wKof9vtCAZjTy7zxLsaujPrW7oZD50lTnntcwLtxq2M/edit#gid=0
+ */
+
 describe('Search Test Suite', () => {
   let req;
 
@@ -306,7 +310,29 @@ describe('Search Test Suite', () => {
       });
   });
 
-  it('should return only the results matching the location & rating qeury', (done) => {
+  it('should return only the reults needed if an offset is specified', (done) => {
+    req
+      .query({
+        location: 'Tagamo3',
+        offset: 1,
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        chai.expect(res.body.count)
+          .to.equal(13);
+
+        chai.expect(res.body.results.length)
+          .to.equal(3);
+
+        return done();
+      });
+  });
+
+  it('should return only the results matching the location & rating query', (done) => {
     req
       .query({
         location: 'Tagamo3',
@@ -324,6 +350,60 @@ describe('Search Test Suite', () => {
       });
   });
 
+  it('should match by name even if it is partially matching and ignoreing case ', (done) => {
+    req
+      .query({
+        name: 'german',
+      })
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        chai.expect(res.body.count)
+          .to.equal(1);
+        chai.expect(res.body.results[0].name)
+          .to.equal('German Course');
+
+        return done();
+      });
+  });
+
+  it('should not return a result if offerings seperately match the query', (done) => {
+    req
+      .query({
+        location: 'Nasr City',
+        max: 2500,
+      })
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        chai.expect(res.body.errors[0])
+          .to.equal(Strings.searchErrors.emptySearchResult);
+
+        return done();
+      });
+  });
+
+  it('should not return a deleted service', (done) => {
+    req
+      .query({
+        name: 'Italian Lesson',
+      })
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        chai.expect(res.body.errors[0])
+          .to.equal(Strings.searchErrors.emptySearchResult);
+
+        return done();
+      });
+  });
+
   it('should return an error message if the query does not return any results', (done) => {
     req
       .query({
@@ -335,7 +415,6 @@ describe('Search Test Suite', () => {
         if (err) {
           return done(err);
         }
-        console.log(res.body);
         chai.expect(res.body.errors[0])
           .to.equal(Strings.searchErrors.emptySearchResult);
 
