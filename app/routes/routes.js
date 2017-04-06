@@ -1,6 +1,6 @@
 const ClientAuthAPI = require('./api/v1/client/auth');
 const businessAuthAPI = require('./api/v1/business/auth');
-const businessAPI = require('./api/v1/business/business');
+const BusinessEditInformationAPI = require('./api/v1/business/editinformation.js');
 const ViewBussinessAPI = require('./api/v1/business/index');
 const RelatedBusinessAPI = require('./api/v1/business/related');
 const AdminAuthAPI = require('./api/v1/admin/auth');
@@ -34,7 +34,7 @@ module.exports = (app) => {
 
   app.use('/api/v1/business/auth', businessAuthAPI);
   app.use('/api/v1/business/profile', businessProfileAPI);
-  app.use('/api/v1/business', businessAPI);
+  app.use('/api/v1/business/info', BusinessEditInformationAPI);
 
   /**
    * Admin Routes.

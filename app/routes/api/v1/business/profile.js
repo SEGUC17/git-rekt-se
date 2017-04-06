@@ -20,7 +20,7 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * business edit information route
+ * Business edit basic information route.
  */
 
 router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
