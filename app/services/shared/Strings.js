@@ -187,6 +187,14 @@ const adminValidationErrors = {
   passwordLength: 'Password length must be between 8 and 15 and contains at least one number.',
   passwordMismatch: 'Password and Password Confirmation must match.',
   adminExists: 'Administrator already exists.',
+  categoryTypeRequired: 'Category Type is required.',
+  categoryTitleRequired: 'Category Title is required.',
+};
+
+const adminSuccess = {
+  categoryAdded: 'Category added succesfully!',
+  categoryEdited: 'Category edited succesfully!',
+  categoryDeleted: 'Category deleted succesfully!',
 };
 
 module.exports = {
@@ -210,4 +218,5 @@ module.exports = {
   businessMessages,
   reviewErrors,
   reviewSuccess,
+  adminSuccess,
 };

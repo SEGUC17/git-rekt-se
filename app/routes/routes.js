@@ -8,6 +8,7 @@ const ClientProfileAPI = require('./api/v1/client/profile');
 const ViewServiceAPI = require('./api/v1/service/index');
 const RelatedServiceAPI = require('./api/v1/service/related');
 const reviewCRUDAPI = require('./api/v1/service/review');
+const admincatAPI = require('./api/v1/admin/category');
 const BusinessProfileAPI = require('./api/v1/business/profile');
 const BusinessGalleryAPI = require('./api/v1/business/gallery');
 
@@ -46,6 +47,11 @@ module.exports = (app) => {
   /**
    * Service Routes.
    */
+<<<<<<< HEAD
   app.use('/api/v1/business/gallery', BusinessGalleryAPI);
+=======
+  app.use('/api/v1/admin/category', admincatAPI);
+
+>>>>>>> e5997df75a0ee640282cecd5cbb6587c32a2f986
   app.use('/api/v1/service', reviewCRUDAPI);
 };
