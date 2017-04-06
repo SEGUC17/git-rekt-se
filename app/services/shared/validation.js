@@ -9,11 +9,15 @@ const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
 const adminValidationErrors = Strings.adminValidationErrors;
+const serviceValidationErrors = Strings.serviceValidationErrors;
 const reviewErrors = Strings.reviewErrors;
 
 /**
  * Client validation
  */
+
+const businessValidationErrors = require('../shared/Strings')
+  .bussinessValidationErrors;
 
 const clientSignupValidation = {
   email: {
@@ -84,7 +88,22 @@ const clientConfirmEmailValidation = {
   },
 };
 
-
+const verifiedBusinessValidator = {
+  password: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.passwordRequired,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: businessValidationErrors.passwordLength,
+    },
+  },
+  workingHours: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.workingHoursRequired,
+    },
+  },
+};
 const clientLoginValidation = {
   email: {
     notEmpty: {
@@ -227,7 +246,6 @@ const businessEditInfoValidation = {
   },
 };
 
-
 const businessAddValidation = {
   branches: {
     notEmpty: {
@@ -345,6 +363,31 @@ const businessEditImageValidation = {
   },
 };
 
+/**
+ * Client validation
+ */
+
+const serviceAddImageValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+};
+
+const serviceEditImageValidation = {
+  ser_id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  im_id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidImageID,
+    },
+  },
+};
+
 const adminConfirmBusinessValidation = {
   id: {
     isMongoId: {
@@ -388,6 +431,7 @@ const validation = {
   clientResetPasswordValidation,
   clientSignupValidation,
   clientConfirmEmailValidation,
+  verifiedBusinessValidator,
   clientLoginValidation,
   adminLoginValidation,
   businessSignupValidation,
@@ -398,6 +442,8 @@ const validation = {
   adminConfirmBusinessValidation,
   businessAddValidation,
   businessEditValidation,
+  serviceAddImageValidation,
+  serviceEditImageValidation,
   createReviewValidation,
   updateReviewValidation,
   deleteReviewValidation,

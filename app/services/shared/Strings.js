@@ -63,6 +63,9 @@ const businessMessages = {
   businessDoesntExist: 'Business Doesn\'t Exist',
   branchDoesntExist: 'Business Doesn\'t Exist',
   mismatchID: 'You can only edit your Info!',
+  alreadyVerified: 'You have already completed your sign up process',
+  alreadyRejected: 'An Admin has rejected your sign up',
+  alreadyUnverified: 'Awaiting for an Admin\'s approval',
 };
 
 /**
@@ -182,6 +185,15 @@ const businessForgotPassword = {
   PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
 };
 
+const businessConfirmation = {
+  alreadyConfirmed: 'Business was already confirmed.',
+  notFound: 'Business not found.',
+  confirmed: 'Business confirmed successfully!',
+  denied: 'Business request denied.',
+  alreadyDenied: 'Business was already rejected.',
+  pending: 'Business has already been sent an email',
+};
+
 /**
  * Admin Strings
  */
@@ -225,6 +237,7 @@ module.exports = {
   businessLoginMessages,
   serviceSuccess,
   serviceValidationErrors,
+  businessConfirmation,
   businessInformationChanged,
   businessForgotPassword,
   adminLoginMessages,
