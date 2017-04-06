@@ -325,14 +325,12 @@ const businessEditValidation = {
  */
 
 const createReviewValidation = {
-  id: {
-    in: 'params',
+  id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidService,
     },
   },
-  rating: {
-    in: 'body',
+  rating: { in: 'body',
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
     },
@@ -340,20 +338,17 @@ const createReviewValidation = {
 };
 
 const updateReviewValidation = {
-  id: {
-    in: 'params',
+  id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidService,
     },
   },
-  review_id: {
-    in: 'params',
+  review_id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidReview,
     },
   },
-  rating: {
-    in: 'body',
+  rating: { in: 'body',
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
     },
@@ -361,14 +356,12 @@ const updateReviewValidation = {
 };
 
 const deleteReviewValidation = {
-  id: {
-    in: 'params',
+  id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidService,
     },
   },
-  review_id: {
-    in: 'params',
+  review_id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidReview,
     },
@@ -399,6 +392,26 @@ const adminLoginValidation = {
   },
 };
 
+const adminConfirmBusinessValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidBusinessID,
+    },
+  },
+};
+
+const adminCategoryValidation = {
+  type: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.categoryTypeRequired,
+    },
+  },
+  title: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.categoryTitleRequired,
+    },
+  },
+};
 
 const businessUpdateValidation = {
   name: {
@@ -434,12 +447,14 @@ const validation = {
   businessResetPasswordValidation,
   visitorValidation,
   businessEditInfoValidation,
+  adminConfirmBusinessValidation,
   businessAddValidation,
   businessEditValidation,
   createReviewValidation,
   updateReviewValidation,
   deleteReviewValidation,
   businessUpdateValidation,
+  adminCategoryValidation,
 };
 
 module.exports = validation;

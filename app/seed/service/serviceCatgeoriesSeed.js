@@ -5,7 +5,7 @@ const categories = [{
   type: 'Service',
   title: 'Language Courses',
 }, {
-  type: 'Serivce',
+  type: 'Service',
   title: 'Principles of Self Management',
 }, {
   type: 'Service',

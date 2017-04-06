@@ -1,15 +1,22 @@
+const AdminAuthAPI = require('./api/v1/admin/auth');
+const AdminConfirmAPI = require('./api/v1/admin/verify');
 const ClientAuthAPI = require('./api/v1/client/auth');
 const BusinessAuthAPI = require('./api/v1/business/auth');
-const BusinessEditInformationAPI = require('./api/v1/business/editinformation.js');
+const BusinessEditInformationAPI = require('./api/v1/business/editinformation');
 const ViewBussinessAPI = require('./api/v1/business/index');
 const RelatedBusinessAPI = require('./api/v1/business/related');
-const AdminAuthAPI = require('./api/v1/admin/auth');
 const ClientProfileAPI = require('./api/v1/client/profile');
 const ViewServiceAPI = require('./api/v1/service/index');
 const RelatedServiceAPI = require('./api/v1/service/related');
 const reviewCRUDAPI = require('./api/v1/service/review');
+<<<<<<< HEAD
 const businessProfileAPI = require('./api/v1/business/profile');
 const businessServiceAPI = require('./api/v1/business/index');
+=======
+const AdminCatAPI = require('./api/v1/admin/category');
+const BusinessProfileAPI = require('./api/v1/business/profile');
+
+>>>>>>> 0df81f1b2846e5ad04cf2cd5d308686a70805135
 
 module.exports = (app) => {
   /**
@@ -42,6 +49,8 @@ module.exports = (app) => {
    */
 
   app.use('/api/v1/admin/auth', AdminAuthAPI);
+  app.use('/api/v1/admin/general', AdminConfirmAPI);
+  app.use('/api/v1/admin/category', AdminCatAPI);
 
   /**
    * Service Routes.

@@ -23,7 +23,7 @@ router.use(expressValidator({}));
 router.post('/create', (req, res) => {
   new Admin({
     email: 'mohamedelzarei@gmail.com',
-    password: 'helloworld#1234',
+    password: 'Strong#1234',
   })
     .save()
     .then(() => res.json({
