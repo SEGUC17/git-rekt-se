@@ -17,6 +17,12 @@ mongoose.Promise = Promise;
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
+
+/**
+ * Accept the application of the business.
+ * Send an email with token to continue signup.
+ */
+
 router.post('/confirm/:id', AdminAuth, (req, res, next) => {
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
   req.getValidationResult()
@@ -36,6 +42,8 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
                 next([Strings.businessConfirmation.pending]);
               } else if (business._status === 'rejected') {
                 next([Strings.businessConfirmation.alreadyDenied]);
+              } else if (business._status === 'verified') {
+                next([Strings.businessConfirmation.alreadyConfirmed]);
               } else {
                 businessAuthenticator.generateSignUpToken(business.email)
                   .then((token) => {
@@ -65,6 +73,11 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
     .catch(err => next([err]));
 });
 
+/**
+ * Deny the application of the business.
+ * Send an email to inform of denial.
+ */
+
 router.post('/deny/:id', AdminAuth, (req, res, next) => {
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
   req.getValidationResult()
@@ -82,6 +95,8 @@ router.post('/deny/:id', AdminAuth, (req, res, next) => {
                 next([Strings.businessConfirmation.alreadyDenied]);
               } else if (business._status === 'verified') {
                 next([Strings.businessConfirmation.alreadyConfirmed]);
+              } else if (business._status === 'pending') {
+                next([Strings.businessConfirmation.pending]);
               } else {
                 Mailer.notifyBusinessOfDenial(business.email)
                   .then(() => {
