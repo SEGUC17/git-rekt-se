@@ -7,8 +7,6 @@ const expressValidator = require('express-validator');
 const Business = require('../../../../models/business/Business');
 const businessValidator = require('../../../../services/shared/validation')
   .verifiedBusinessValidator;
-const validatorErrors = require('../../../../services/shared/Strings')
-  .bussinessValidationErrors;
 
 const BusinessUtils = require('../../../../services/business/businessUtils');
 const Strings = require('../../../../services/shared/Strings');
@@ -61,11 +59,11 @@ router.post('/unverified/signup', (req, res, next) => {
     .then((result) => {
       if (result.isEmpty()) {
         new Business({
-          name: userInfo.name,
-          email: userInfo.email,
-          shortDescription: userInfo.shortDescription,
-          phoneNumbers: [userInfo.mobile],
-        })
+            name: userInfo.name,
+            email: userInfo.email,
+            shortDescription: userInfo.shortDescription,
+            phoneNumbers: [userInfo.mobile],
+          })
           .save()
           .then(() => {
             Mailer.notifyAdminOfNewBusinessSignup()
@@ -127,11 +125,11 @@ router.post('/reset', (req, res, next) => {
             const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
 
             Business.findOne({
-              email,
-              passwordChangeDate: {
-                $lte: creationDate,
-              },
-            })
+                email,
+                passwordChangeDate: {
+                  $lte: creationDate,
+                },
+              })
               .exec()
               .then((business) => {
                 if (!business) {
@@ -171,8 +169,8 @@ router.post('/forgot', (req, res, next) => {
   });
 
   Business.findOne({
-    email: req.body.email,
-  })
+      email: req.body.email,
+    })
     .exec()
     .then((business) => {
       if (!business) { // Business not found, Invalid mail
@@ -203,8 +201,8 @@ router.post('/logout', jwtConfig.businessAuthMiddleware, (req, res, next) => {
   const token = jwtConfig.parseAuthHeader(req.headers.authorization)
     .value;
   new InvalidToken({
-    token,
-  })
+      token,
+    })
     .save((err) => {
       if (err) {
         return next(err);
@@ -215,17 +213,10 @@ router.post('/logout', jwtConfig.businessAuthMiddleware, (req, res, next) => {
     });
 });
 
-
-/**
- *  Error Handling Middlewares.
- */
-
-router.use(errorHandler);
-
 /**
  * Verified Business Signup
  */
-router.post('/confirm/:token', (req, res, next) => {
+router.post('/confirm/signup/:token', (req, res, next) => {
   /**
    * Form Validation
    */
@@ -234,7 +225,7 @@ router.post('/confirm/:token', (req, res, next) => {
   req.checkBody('confirmPassword')
     .notEmpty()
     .equals(req.body.password)
-    .withMessage(validatorErrors.passwordMismatch);
+    .withMessage(Strings.bussinessValidationErrors.passwordMismatch);
 
   const body = req.body;
   const token = req.params.token;
@@ -243,20 +234,40 @@ router.post('/confirm/:token', (req, res, next) => {
     .then((result) => {
       if (result.isEmpty()) {
         BusinessAuthenticator.verifyBusiness(token)
-          .then((business) => {
-            BusinessUtils.addBranches(body.branches, business._id)
-              .then((branches) => {
-                business.password = body.password;
-                business.description = body.description;
-                business.workingHours = body.workingHours;
-                business.categories = business.categories.concat(body.categories);
-                business.branches = business.branches.concat(branches);
-                business._status = 'verified';
-                business.save()
-                  .then(() => res.json({
-                    message: 'Verification Completed Successfully',
-                  }))
-                  .catch(err => next([err]));
+          .then((payload) => {
+            console.log(payload);
+            res.json({
+              message: 'Done',
+            });
+            Business.findOne({
+                email: payload.email,
+                _deleted: false,
+              })
+              .exec()
+              .then((business) => {
+                if (business._status === 'pending') {
+                  // BusinessUtils.addBranches(body.branches, business._id)
+                  //   .then((branches) => {
+                  //     business.password = body.password;
+                  //     business.description = body.description;
+                  //     business.workingHours = body.workingHours;
+                  //     business.categories = business.categories.concat(body.categories);
+                  //     business.branches = business.branches.concat(branches);
+                  //     business._status = 'verified';
+                  //     business.save()
+                  //       .then(() => res.json({
+                  //         message: 'Verification Completed Successfully',
+                  //       }))
+                  //       .catch(err => next([err]));
+                  //   })
+                  //   .catch(err => next([err]));
+                } else if (business._status === 'verified') {
+                  next([Strings.businessMessages.alreadyVerified]);
+                } else if (business._status === 'unverified') {
+                  next([Strings.businessMessages.alreadyUnverified]);
+                } else {
+                  next([Strings.businessMessages.alreadyRejected]);
+                }
               })
               .catch(err => next([err]));
           })
@@ -269,14 +280,9 @@ router.post('/confirm/:token', (req, res, next) => {
 });
 
 /**
- * Error Handling Middleware
+ *  Error Handling Middlewares.
  */
+router.use(errorHandler);
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
 
 module.exports = router;
