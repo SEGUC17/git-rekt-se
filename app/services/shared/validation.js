@@ -11,7 +11,6 @@ const serviceValidationErrors = Strings.serviceValidationErrors;
 const offeringValidationErrors = Strings.offeringValidationError;
 const adminValidationErrors = Strings.adminValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
-const serviceValidationErrors = Strings.serviceValidationErrors;
 const reviewErrors = Strings.reviewErrors;
 
 /**
