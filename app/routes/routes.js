@@ -9,6 +9,7 @@ const ViewServiceAPI = require('./api/v1/service/index');
 const RelatedServiceAPI = require('./api/v1/service/related');
 const reviewCRUDAPI = require('./api/v1/service/review');
 const BusinessProfileAPI = require('./api/v1/business/profile');
+const BusinessGalleryAPI = require('./api/v1/business/gallery');
 
 
 module.exports = (app) => {
@@ -45,6 +46,6 @@ module.exports = (app) => {
   /**
    * Service Routes.
    */
-
+  app.use('/api/v1/business/gallery', BusinessGalleryAPI);
   app.use('/api/v1/service', reviewCRUDAPI);
 };

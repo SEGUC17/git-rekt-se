@@ -331,6 +331,26 @@ const adminLoginValidation = {
     },
   },
 };
+const businessAddImageValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: bussinessValidationErrors.invalidBusinessID,
+    },
+  },
+};
+
+const businessEditImageValidation = {
+  ser_id: {
+    isMongoId: {
+      errorMessage: bussinessValidationErrors.invalidBusinessID,
+    },
+  },
+  im_id: {
+    isMongoId: {
+      errorMessage: bussinessValidationErrors.invalidBusinessID,
+    },
+  },
+};
 
 
 const businessUpdateValidation = {
@@ -368,6 +388,8 @@ const validation = {
   updateReviewValidation,
   deleteReviewValidation,
   businessUpdateValidation,
+  businessAddImageValidation,
+  businessEditImageValidation,
 };
 
 module.exports = validation;
