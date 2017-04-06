@@ -165,9 +165,9 @@ describe('Business Add Categories/Offerings Suite', () => {
       });
   });
 
-//   /**
-//    * Passing Test1: Business can add a service with its name, short Description only
-//    */
+  /**
+   * Passing Test1: Business can add a service with its name, short Description only
+   */
 
   it('should add service with only name and shortDescription', (done) => {
     req = supertest(app)
@@ -258,8 +258,6 @@ describe('Business Add Categories/Offerings Suite', () => {
               .to.equal('We will make you better');
             chai.expect(services[0].categories)
               .to.have.lengthOf(2);
-            chai.expect(services.coverImage)
-              .not.to.equal('');
             chai.expect(res.body.message)
               .to.equal(Strings.serviceSuccess.serviceAdded);
             srevicesAdded.push(services[0]);

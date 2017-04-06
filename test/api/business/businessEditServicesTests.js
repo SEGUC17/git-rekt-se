@@ -119,10 +119,12 @@ describe('Populating Business Collection', () => {
                             categoriesIDs.push(categoriesDocs[2]._id);
                             categoriesIDs.push(categoriesDocs[3]._id);
                             categoriesIDs.push(categoriesDocs[4]._id);
-                            Category.insertMany([businessCatgeories[0]]).then((docs) => {
-                              invalidCategory = docs[0]._id;
-                              done();
-                            }).catch(e => done([e]));
+                            Category.insertMany([businessCatgeories[0]])
+                              .then((docs) => {
+                                invalidCategory = docs[0]._id;
+                                done();
+                              })
+                              .catch(e => done([e]));
                           })
                           .catch(e => done([e]));
                       })
@@ -141,3 +143,168 @@ describe('Populating Business Collection', () => {
 /**
  * Business Add Catgeories/Offerings Suite
  */
+
+describe('Business Edit Categories/Offerings Suite', () => {
+  let req;
+  let token;
+  const servicesAdded = [];
+
+  before((done) => {
+    const businessLogin = {
+      email: businesses[0].email,
+      password: businesses[0].password,
+    };
+    req = supertest(app)
+      .post('/api/v1/business/auth/verified/login')
+      .send(businessLogin)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          token = res.body.token;
+          done();
+        }
+      });
+  });
+
+  /**
+   * Passing Test1: Business can edit a service with attributes
+   */
+
+  it('should edit an existing service with its attributes', (done) => {
+    const service = new Service({
+      name: 'Hello world',
+      shortDescription: 'Hello world also !!',
+      _business: businessesIDs[0],
+    });
+    service.save()
+      .then((savedService) => {
+        req = supertest(app)
+          .post(`/api/v1/business/service/${savedService._id}/edit`);
+        const serviceInfo = {
+          name: 'Team Managemet',
+          shortDescription: 'Teaching Team Management',
+          description: 'We will make you better',
+          categories: [categoriesIDs[2], categoriesIDs[4]],
+        };
+        req
+          .send(serviceInfo)
+          .set('Authorization', `JWT ${token}`)
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end((err, res) => {
+            /**
+             * Error happend with request, fail the test
+             * with the error message.
+             */
+
+            if (err) {
+              done(err);
+              return;
+            }
+            /**
+             * Checking the content of the response
+             */
+            Service.find({
+              name: 'Team Managemet',
+            })
+              .then((services) => {
+                chai.expect(services)
+                  .to.have.lengthOf(1);
+                chai.expect(services[0].shortDescription)
+                  .to.equal('Teaching Team Management');
+                chai.expect(services[0].description)
+                  .to.equal('We will make you better');
+                chai.expect(services[0].categories)
+                  .to.have.lengthOf(2);
+                chai.expect(res.body.message)
+                  .to.equal(Strings.serviceSuccess.serviceEdited);
+                servicesAdded.push(services[0]);
+                done();
+              })
+              .catch(e => done([e]));
+          });
+      })
+      .catch(e => done([e]));
+  });
+
+  /**
+   * Passing Test2: Business can edit an offering with its attributes
+   */
+
+  it('should edit an existing offering with its attributes', (done) => {
+    const offering = new Offering({
+      startDate: Date.now(),
+      endDate: Date.now(),
+      branch: businesses[0].branches[0],
+      location: 'Nasr City',
+      address: 'abbas elakkad',
+      price: 1000,
+    });
+    offering.save()
+      .then((savedOffering) => {
+        Service.findOne({
+          _id: servicesAdded[0]._id,
+        })
+          .then((serviceDoc) => {
+            serviceDoc.offerings.push(savedOffering);
+            serviceDoc.save()
+              .then((serviceDoc2) => {
+                const offering2 = {
+                  startDate: Date.now(),
+                  endDate: Date.now(),
+                  branch: businesses[0].branches[1],
+                  price: 5000,
+                };
+                req = supertest(app)
+                  .post(`/api/v1/business/service/${serviceDoc2._id}/offering/${savedOffering._id}/edit`);
+
+                req
+                  .send(offering2)
+                  .set('Authorization', `JWT ${token}`)
+                  .expect('Content-Type', /json/)
+                  .expect(200)
+                  .end((err, res) => {
+                    /**
+                     * Error happend with request, fail the test
+                     * with the error message.
+                     */
+                    // console.log(res);
+                    if (err) {
+                      done(err);
+                      return;
+                    }
+
+                    /**
+                     * Checking the content of the response
+                     */
+                    Offering.find({
+                      _id: savedOffering._id,
+                    })
+                      .then((offerings) => {
+                        chai.expect(offerings)
+                          .to.have.lengthOf(1);
+                        chai.expect(offerings[0].startDate)
+                          .not.to.equal('');
+                        chai.expect(offerings[0].endDate)
+                          .not.to.equal('');
+                        chai.expect(offerings[0].price)
+                          .to.equal(5000);
+                        chai.expect(offering[0].location)
+                          .to.equal('Zamalek');
+                        chai.expect(offering[0].address)
+                          .to.equal('some address1');
+                        chai.expect(res.body.message)
+                          .to.equal(Strings.serviceSuccess.offeringEdited);
+                        done();
+                      })
+                      .catch(e => done([e]));
+                  });
+              })
+              .catch(e => done([e]));
+          })
+          .catch(e => done([e]));
+      })
+      .catch(e => done([e]));
+  });
+});

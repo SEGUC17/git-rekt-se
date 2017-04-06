@@ -302,11 +302,13 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
  */
 
 router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next) => {
+  console.log('hi');
   /**
    * Form validation
    */
   req.checkBody(validator.offeringCreateValidationBody);
   req.checkParams(validator.offeringEditValidationParmas);
+  console.log(1);
 
   req.getValidationResult()
     .then((result) => {
@@ -314,23 +316,30 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
         /**
          * Validation passed
          */
+        console.log(2);
         const serviceID = req.params.id1;
         const offeringID = req.params.id2;
-        const reqData = {
-          startDate: req.body.startDate,
-          endDate: req.body.endDate,
-          location: req.body.location,
-          branch: req.body.branch,
-          price: req.body.price,
-          address: req.body.address ? req.body.address : '',
-        };
-        Service.findOne({
-          _id: serviceID,
-          _deleted: false,
-        })
+        Branch.findOne({
+          _id: req.body.branch,
+        }).then((branchDoc) => {
+          const reqData = {
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+            location: branchDoc.location,
+            branch: req.body.branch,
+            price: req.body.price,
+            address: branchDoc.address,
+          };
+          Service.findOne({
+            _id: serviceID,
+            _deleted: false,
+          })
           .then((service) => {
+            console.log(3);
             if (service) {
+              console.log(4);
               if (service._business.equals(req.user._id)) {
+                console.log(5);
                 const business = req.user;
                 let validBranch = false;
                 business.branches.forEach((branch) => {
@@ -338,70 +347,72 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                     validBranch = true;
                   }
                 });
+                console.log(validBranch);
+                console.log(6);
                 if (validBranch) {
                   let validOffering = false;
+                  let offeringfound;
                   service.offerings.forEach((offering) => {
-                    if (`${offering}` === offeringID) {
+                    if (`${offering._id}` === offeringID) {
                       validOffering = true;
+                      offeringfound = offering;
                     }
                   });
+                  console.log(validOffering);
                   if (validOffering) {
-                    Offering.findOne({
-                      _id: offeringID,
-                      _deleted: false,
-                    })
-                      .then((offeringfound) => {
-                        if (offeringfound) {
-                          const oldbranch = offeringfound.branch;
-                          offeringfound.startDate = reqData.startDate;
-                          offeringfound.endDate = reqData.endDate;
-                          offeringfound.location = reqData.location;
-                          offeringfound.branch = reqData.branch;
-                          offeringfound.price = reqData.price;
-                          offeringfound.address = reqData.address;
-                          offeringfound.save()
+                    console.log(111);
+                    if (offeringfound) {
+                      const oldbranch = offeringfound.branch;
+                      offeringfound.startDate = reqData.startDate;
+                      offeringfound.endDate = reqData.endDate;
+                      offeringfound.location = reqData.location;
+                      offeringfound.branch = reqData.branch;
+                      offeringfound.price = reqData.price;
+                      offeringfound.address = reqData.address;
+                      console.log(offeringfound);
+                      offeringfound.save()
                             .then((offer) => {
-                              createServiceUtils.returnBranches(service.offerings)
-                                .then((offerings) => {
-                                  let oldexist = false; // old branch before edit exist
-                                  let newexist = false; // new branch after edit exit
+                              console.log(2333);
+                              let oldexist = false; // old branch before edit exist
+                              let newexist = false; // new branch after edit exit
 
-                                  offerings.forEach((offering) => {
-                                    if (offering.branch === oldbranch && offeringID !== `${offering._id}`) {
-                                      oldexist = true;
-                                    } else if (`${offering.branch}` === reqData.branch && offeringID !== `${offering._id}`) {
-                                      newexist = true;
-                                    }
-                                  });
-                                  const newBranches = []; // new list of branches for the service
-                                  service.branches.forEach((branch) => {
-                                    if (branch.equals(oldbranch)) {
-                                      if (oldexist) {
-                                        newBranches.push(branch);
-                                      }
-                                    } else if (`${branch}` === reqData.branch) {
-                                      if (!newexist) {
-                                        newBranches.push(branch);
-                                      }
-                                    } else {
+                              service.offerings.forEach((offering) => {
+                                if (offering.branch === oldbranch && offeringID !== `${offering._id}`) {
+                                  oldexist = true;
+                                } else if (`${offering.branch}` === reqData.branch && offeringID !== `${offering._id}`) {
+                                  newexist = true;
+                                }
+
+                                console.log('hii');
+                                const newBranches = []; // new list of branches for the service
+                                service.branches.forEach((branch) => {
+                                  if (branch.equals(oldbranch)) {
+                                    if (oldexist) {
                                       newBranches.push(branch);
                                     }
-                                  });
-                                  service.branches = newBranches;
-                                  service.save()
+                                  } else if (`${branch}` === reqData.branch) {
+                                    if (!newexist) {
+                                      newBranches.push(branch);
+                                    }
+                                  } else {
+                                    newBranches.push(branch);
+                                  }
+                                });
+                                service.branches = newBranches;
+                                service.save()
                                     .then(addedService => res.json({
                                       message: Strings.serviceSuccess.offeringEdited,
                                     }))
                                     .catch(e => next([e]));
-                                })
-                                .catch(e => next([e]));
+                              });
                             })
-                            .catch(e => next([e]));
-                        } else {
-                          next([Strings.offeringValidationError.invalidOffering]);
-                        }
-                      })
-                      .catch(e => next([e]));
+                            .catch((e) => {
+                              console.log('leeeh');
+                              next([e]);
+                            });
+                    } else {
+                      next([Strings.offeringValidationError.invalidOffering]);
+                    }
                   } else {
                     next([Strings.offeringValidationError.invalidOffering]);
                   }
@@ -422,6 +433,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
             }
           })
           .catch(e => next([e]));
+        }).catch(e => next([e]));
       } else {
         next(result.array());
       }
