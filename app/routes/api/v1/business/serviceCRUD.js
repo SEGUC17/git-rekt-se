@@ -7,7 +7,6 @@ const crypto = require('crypto');
 const path = require('path');
 
 const Service = require('../../../../models/service/Service');
-const Category = require('../../../../models/service/Category');
 const Offering = require('../../../../models/service/Offering');
 const Branch = require('../../../../models/service/Branch');
 
