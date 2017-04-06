@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const Service = require('../../../../models/service/Service');
 const Strings = require('../../../../services/shared/Strings');
+const errorHandler = require('../../../../services/shared/errorHandler');
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -20,7 +21,7 @@ router.get('/search', (req, res, next) => {
   };
   if (inputQuery.name) {
     mongooseQuery.push({
-      name: new RegExp(inputQuery.name, 'i'),
+      name: new RegExp(inputQuery.name, 'gi'),
     });
   }
   if (inputQuery.rating) {
@@ -58,7 +59,7 @@ router.get('/search', (req, res, next) => {
   if (inputQuery.location) {
     mongooseQuery.offerings.$elemMatch.push({
       branch: {
-        location: inputQuery.location,
+        location: new RegExp(inputQuery.location, 'i'),
       },
     });
   }
@@ -70,7 +71,8 @@ router.get('/search', (req, res, next) => {
     .exec()
     .then((cnt) => {
       if (cnt === 0) {
-        throw (Strings.searchErrors.emptySearchResult);
+        next(Strings.searchErrors.emptySearchResult);
+        return;
       }
       output.count = cnt;
       fullQuery.populate([{
@@ -86,12 +88,12 @@ router.get('/search', (req, res, next) => {
         },
         select: 'type',
       }])
-        .select('name shortDescription _business _avgRating categories')
+        .select('name shortDescription _business _avgRating categories coverImage')
         .skip(offset * 10)
         .limit(10)
         .exec((err, services) => {
           if (err) {
-            next([err]);
+            next(err);
             return;
           }
           output.results = services;
@@ -101,13 +103,9 @@ router.get('/search', (req, res, next) => {
 });
 
 /**
- *  Error Handling Middlewares.
+ *  Error Handling Middleware
  */
 
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      errors: err,
-    });
-});
+router.use(errorHandler);
+
 module.exports = router;
