@@ -15,6 +15,9 @@ const reviewErrors = Strings.reviewErrors;
  * Client validation
  */
 
+const businessValidationErrors = require('../shared/Strings')
+  .bussinessValidationErrors;
+
 const clientSignupValidation = {
   email: {
     notEmpty: {
@@ -84,7 +87,22 @@ const clientConfirmEmailValidation = {
   },
 };
 
-
+const verifiedBusinessValidator = {
+  password: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.passwordRequired,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: businessValidationErrors.passwordLength,
+    },
+  },
+  workingHours: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.workingHoursRequired,
+    },
+  },
+};
 const clientLoginValidation = {
   email: {
     notEmpty: {
@@ -226,7 +244,6 @@ const businessEditInfoValidation = {
     },
   },
 };
-
 
 const businessAddValidation = {
   branches: {
@@ -388,6 +405,7 @@ const validation = {
   clientResetPasswordValidation,
   clientSignupValidation,
   clientConfirmEmailValidation,
+  verifiedBusinessValidator,
   clientLoginValidation,
   adminLoginValidation,
   businessSignupValidation,
