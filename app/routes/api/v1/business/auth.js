@@ -1,5 +1,5 @@
-const express = require('express');
 const mongoose = require('mongoose');
+const express = require('express');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
@@ -9,11 +9,12 @@ const validationSchemas = require('../../../../services/shared/validation');
 const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 const errorHandler = require('../../../../services/shared/errorHandler');
+const InvalidToken = require('../../../../models/shared/InvalidToken');
+const jwtConfig = require('../../../../services/shared/jwtConfig');
 
 mongoose.Promise = Promise;
 
 const router = express.Router();
-
 
 require('dotenv')
   .config();
@@ -96,6 +97,46 @@ router.post('/verified/login', (req, res, next) => {
 
 
 /**
+ * Business forgot password
+ */
+
+router.post('/forgot', (req, res, next) => {
+  const email = req.body.email;
+  const currentDate = Date.now();
+  const iat = Math.floor(currentDate / 1000);
+  const resetToken = jwt.sign({
+    email,
+    iat,
+  }, JWT_KEY, {
+    expiresIn: '1h',
+  });
+
+  Business.findOne({
+    email: req.body.email,
+  })
+    .exec()
+    .then((business) => {
+      if (!business) { // Business not found, Invalid mail
+        return res.json({
+          message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
+        });
+      }
+      business.passwordResetTokenDate = currentDate;
+
+      return business.save()
+        .then(() => {
+          Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
+            .then(() => res.json({
+              message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
+            }))
+            .catch(err => next(err));
+        });
+    })
+    .catch(err => next(err));
+});
+
+
+/**
  * Business reset password
  */
 
@@ -148,53 +189,31 @@ router.post('/reset', (req, res, next) => {
 });
 
 /**
- *
+ * Business Logout.
+ * http://stackoverflow.com/questions/3521290/logout-get-or-post
  */
 
-/**
- * Business forgot password
- */
-
-router.post('/forgot', (req, res, next) => {
-  const email = req.body.email;
-  const currentDate = Date.now();
-  const iat = Math.floor(currentDate / 1000);
-  const resetToken = jwt.sign({
-    email,
-    iat,
-  }, JWT_KEY, {
-    expiresIn: '1h',
-  });
-
-  Business.findOne({
-    email: req.body.email,
+router.post('/logout', jwtConfig.businessAuthMiddleware, (req, res, next) => {
+  const token = jwtConfig.parseAuthHeader(req.headers.authorization)
+    .value;
+  new InvalidToken({
+    token,
   })
-    .exec()
-    .then((business) => {
-      if (!business) { // Business not found, Invalid mail
-        return res.json({
-          message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
-        });
+    .save((err) => {
+      if (err) {
+        return next(err);
       }
-      business.passwordResetTokenDate = currentDate;
-
-      return business.save()
-        .then(() => {
-          Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
-            .then(() => res.json({
-              message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
-            }))
-            .catch(err => next(err));
-        });
-    })
-    .catch(err => next(err));
+      return res.json({
+        message: Strings.businessSuccess.logout,
+      });
+    });
 });
+
 
 /**
  *  Error Handling Middlewares.
  */
 
 router.use(errorHandler);
-
 
 module.exports = router;

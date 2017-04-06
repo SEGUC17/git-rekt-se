@@ -47,6 +47,7 @@ const businessSuccess = {
   branchAddedSuccess: 'Branch Added Successfully',
   branchEditSuccess: 'Branch Edited Successfully',
   branchDeleteSuccess: 'Branch Deleted Successfully',
+  logout: 'You have been logged out.',
 };
 
 const businessLoginMessages = {
@@ -93,9 +94,8 @@ const clientSuccess = {
   logout: 'You have been logged out.',
 };
 
-const businessForgotPassword = {
-  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
-  INVALID_RESET_TOKEN: 'Invalid reset token.',
+const serviceFailure = {
+  serviceNotFound: 'The specified service was not found.',
 };
 
 const clientForgotPassword = {
@@ -116,6 +116,13 @@ const clientLoginMessages = {
 const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
+};
+
+const clientVerfication = {
+  invalidToken: 'This token is invalid or has expired.',
+  verificationSuccess: 'Your e-mail has been successfully confirmed.',
+  alreadyConfirmed: 'Your e-mail is already confirmed.',
+  accountBanned: 'Your account is banned.',
 };
 
 /**
@@ -151,6 +158,11 @@ const visitorValidationErrors = {
   InvalidOffset: 'Invalid Offset',
 };
 
+const businessForgotPassword = {
+  CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
+  INVALID_RESET_TOKEN: 'Invalid reset token.',
+  PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
+};
 
 /**
  * Service Strings
@@ -216,7 +228,9 @@ module.exports = {
   clientConfirmation,
   clientForgotPassword,
 
+  clientVerfication,
   bussinessValidationErrors,
+  serviceFailure,
   businessSuccess,
   businessForgotPassword,
 
