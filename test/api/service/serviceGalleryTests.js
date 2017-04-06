@@ -1,4 +1,5 @@
 const chai = require('chai');
+const path = require('path');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
@@ -9,7 +10,9 @@ const Strings = require('../../../app/services/shared/Strings');
 const BusinessesSeed = require('../../../app/seed/business/verifiedBusinessSeed');
 const ServiceSeed = require('../../../app/seed/service/serviceSeed');
 
-/* eslint-disable no-underscore-dangle */
+/**
+ * Service Gallery CRUD Tests.
+ */
 
 describe('Service Gallery CRUD Tests', () => {
   let req;
@@ -51,9 +54,9 @@ describe('Service Gallery CRUD Tests', () => {
       .save()
       .then((savedSer) => {
         req = supertest(app)
-          .post(`/api/v1/service/addServiceImage/${savedSer._id}`)
+          .post(`/api/v1/service/${savedSer._id}/gallery/add`)
           .field('description', 'sample Image Description')
-          .attach('path', '/home/abdelrahman-a-elshabrawy/Desktop/guc.png')
+          .attach('path', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
           .set('Authorization', `JWT ${token}`)
           .expect('Content-Type', /json/)
           .expect(200)
@@ -86,16 +89,16 @@ describe('Service Gallery CRUD Tests', () => {
       .save()
       .then((savedSer) => {
         req = supertest(app)
-          .post('/api/v1/service/addServiceImage/1x')
+          .post('/api/v1/service/1x/gallery/add')
           .field('description', 'sample Image Description')
-          .attach('path', '/home/abdelrahman-a-elshabrawy/Desktop/guc.png')
+          .attach('path', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
           .set('Authorization', `JWT ${token}`)
           .expect(400)
           .end((err, res) => {
             if (err) {
               done(err);
             } else {
-              chai.expect(res.body.error).to.equal('Invalid Service ID');
+              chai.expect(res.body.errors[0]).to.equal('Invalid Service ID');
               Service.findOne({
                 _id: savedSer._id,
               }, (finderr, data) => {
@@ -112,7 +115,6 @@ describe('Service Gallery CRUD Tests', () => {
       })
       .catch(err => done(err));
   });
-
 
   it('should update an image description, and return success message: Description updated succesfully!', (done) => {
     const newService = new Service({
@@ -133,7 +135,7 @@ describe('Service Gallery CRUD Tests', () => {
       .then((newser) => {
         const newim = newser.gallery.find(element => `${element.path}` === 'sampleImagePath');
         req = supertest(app)
-          .post(`/api/v1/service/editServiceImage/${newser._id}/${newim._id}`)
+          .post(`/api/v1/service/${newser._id}/gallery/edit/${newim._id}`)
           .set('Authorization', `JWT ${token}`)
           .send({
             description: 'API Description is working',
@@ -161,6 +163,7 @@ describe('Service Gallery CRUD Tests', () => {
       })
       .catch(err => done(err));
   });
+
   it('should delete an image description, and return success message: Image deleted succesfully!', (done) => {
     const newService = new Service({
       name: 'Service1',
@@ -180,7 +183,7 @@ describe('Service Gallery CRUD Tests', () => {
       .then((newser) => {
         const newim = newser.gallery.find(element => `${element.path}` === 'sampleImagePath');
         req = supertest(app)
-          .post(`/api/v1/service/deleteServiceImage/${newser._id}/${newim._id}`)
+          .post(`/api/v1/service/${newser._id}/gallery/delete/${newim._id}`)
           .set('Authorization', `JWT ${token}`)
           .expect(200)
           .end((err, res) => {
