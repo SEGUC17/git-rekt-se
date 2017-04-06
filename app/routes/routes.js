@@ -1,39 +1,53 @@
-const clientAuthAPI = require('./api/v1/client/auth');
-const businessAuthAPI = require('./api/v1/business/auth');
-const businessAPI = require('./api/v1/business/business');
-const businessGeneralAPI = require('./api/v1/business/general');
-const adminAuthAPI = require('./api/v1/admin/auth');
-const clientProfileAPI = require('./api/v1/client/profile');
-const ServiceGeneralAPI = require('./api/v1/service/general');
+const AdminAuthAPI = require('./api/v1/admin/auth');
+const AdminConfirmAPI = require('./api/v1/admin/verify');
+const ClientAuthAPI = require('./api/v1/client/auth');
+const BusinessAuthAPI = require('./api/v1/business/auth');
+const BusinessEditInformationAPI = require('./api/v1/business/editinformation');
+const ViewBussinessAPI = require('./api/v1/business/index');
+const RelatedBusinessAPI = require('./api/v1/business/related');
+const ClientProfileAPI = require('./api/v1/client/profile');
+const ViewServiceAPI = require('./api/v1/service/index');
+const RelatedServiceAPI = require('./api/v1/service/related');
 const reviewCRUDAPI = require('./api/v1/service/review');
+const AdminCatAPI = require('./api/v1/admin/category');
+const BusinessProfileAPI = require('./api/v1/business/profile');
 
 
 module.exports = (app) => {
   /**
-   * Visitor Routes
+   * Visitor Routes.
    */
-  app.use('/api/v1/business', businessGeneralAPI);
-  app.use('/api/v1/service/category', ServiceGeneralAPI);
-  app.use('/api/v1/business/category', businessGeneralAPI);
-  /**
-   * Client Routes
-   */
-  app.use('/api/v1/client/auth', clientAuthAPI);
-  app.use('/api/v1/client/profile', clientProfileAPI);
+
+  app.use('/api/v1/service', ViewServiceAPI);
+  app.use('/api/v1/business', ViewBussinessAPI);
+  app.use('/api/v1/service/category', RelatedServiceAPI);
+  app.use('/api/v1/business/category', RelatedBusinessAPI);
 
   /**
-   * Business Routes
+   * Client Routes.
    */
-  app.use('/api/v1/business/auth', businessAuthAPI);
-  app.use('/api/v1/business', businessAPI);
+
+  app.use('/api/v1/client/auth', ClientAuthAPI);
+  app.use('/api/v1/client/profile', ClientProfileAPI);
 
   /**
-   * Admin Routes
+   * Business Routes.
    */
-  app.use('/api/v1/admin/auth', adminAuthAPI);
+
+  app.use('/api/v1/business/auth', BusinessAuthAPI);
+  app.use('/api/v1/business/profile', BusinessProfileAPI);
+  app.use('/api/v1/business/info', BusinessEditInformationAPI);
 
   /**
-   * Service Routes
+   * Admin Routes.
+   */
+
+  app.use('/api/v1/admin/auth', AdminAuthAPI);
+  app.use('/api/v1/admin/general', AdminConfirmAPI);
+  app.use('/api/v1/admin/category', AdminCatAPI);
+
+  /**
+   * Service Routes.
    */
 
   app.use('/api/v1/service', reviewCRUDAPI);

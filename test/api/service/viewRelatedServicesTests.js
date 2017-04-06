@@ -64,7 +64,7 @@ describe('Populating Category Collection', () => {
         categoriesIDs.push(docs[3]._id);
         done();
       })
-      .catch(e => done(e));
+      .catch(done);
   });
 });
 
@@ -102,11 +102,15 @@ describe('Populating Service Collection', () => {
     services[3]._business = businessesIDs[0];
     services[3].categories = [categoriesIDs[3], categoriesIDs[1]];
 
+    services[4]._business = businessesIDs[0];
+
     Service.insertMany(services)
       .then((docs) => {
         done();
       })
-      .catch(e => done(e));
+      .catch((e) => {
+        done(e);
+      });
   });
 });
 
@@ -114,7 +118,7 @@ describe('Populating Service Collection', () => {
  * View Related Services Suite
  */
 
-describe('Client Signup API', () => {
+describe('View Related Services', () => {
   let req;
 
   /**

@@ -10,19 +10,14 @@ const errorHandler = require('../../../../services/shared/errorHandler');
 const router = express.Router();
 
 /**
- * Body Parser Middleware
+ * Parsing Middleware(s).
  */
 
 router.use(bodyParser.json());
-
-/**
- * Express Validator Middleware
- */
-
 router.use(expressValidator({}));
 
 /**
- * Search for a service route
+ * Related Services Route.
  */
 
 router.get('/:id/:offset', (req, res, next) => {
