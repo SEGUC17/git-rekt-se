@@ -2,6 +2,7 @@ const chai = require('chai');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
+const InvalidToken = require('../../../app/models/shared/InvalidToken');
 const Admin = require('../../../app/models/admin/Admin');
 const unverifiedBussiness = require('../../../app/seed/business/unverifiedBusinessSeed');
 
@@ -59,7 +60,7 @@ describe('Unverified Business Signup API', () => {
       });
   });
 
-  it('should register add another business with different email.', (done) => {
+  it('should add another business with different email.', (done) => {
     const business2 = unverifiedBussiness[1];
     req.send(business2)
       .expect('Content-Type', /json/)
@@ -288,6 +289,49 @@ describe('Business Login API', () => {
         },
         ],
       }, done);
+  });
+});
+
+describe('Business Logout API', () => {
+  it('should add token to invalid tokens', (done) => {
+    supertest(app)
+          .post('/api/v1/business/auth/verified/login')
+          .send({
+            email: 'melzareios@gmail.com',
+            password: 'Strong#1234',
+          })
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end((err, res) => {
+            if (err) {
+              done(err);
+            } else {
+              const token = res.body.token;
+              const JWS_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/;
+              chai.expect(token).to.match(JWS_REGEX);
+              supertest(app)
+                    .post('/api/v1/business/auth/logout')
+                    .set('Authorization', `JWT ${token}`)
+                    .end((e, result) => {
+                      if (err) {
+                        done(err);
+                        return;
+                      }
+                      chai.expect(result.body.message).to.equal('You have been logged out.');
+
+                      InvalidToken.findOne({
+                        token,
+                      }, (dberr, data) => {
+                        if (dberr) {
+                          done(dberr);
+                          return;
+                        }
+                        chai.expect(data).not.to.equal(undefined);
+                        done();
+                      });
+                    });
+            }
+          });
   });
 
   after((done) => {

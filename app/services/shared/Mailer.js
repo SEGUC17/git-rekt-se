@@ -5,6 +5,7 @@
 const nodemailer = require('nodemailer');
 const sgTransport = require('nodemailer-sendgrid-transport');
 const Admin = require('../../models/admin/Admin');
+const Business = require('../../models/business/Business');
 
 /**
  * Mailer Configuration
@@ -93,6 +94,70 @@ exports.forgotPasswordEmail = (email, host, resetToken) => {
       'If you did not request this, please ignore this email and your password will remain unchanged.\n',
   };
 
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(mailOptions, (err, information) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(information);
+    });
+  });
+};
+
+exports.notifyBusinessOfConfirmation = (host, mail, token) => {
+  const emailContent = {
+    from: info.from,
+    to: mail,
+    subject: 'Git Rekt Application Accepted',
+    text: `
+       Hello,
+       Your application for our directory [Git-Rekt] has been Accepted.\n\n 
+       Please click on the following link, or paste this into your browser to complete the process:
+       http://${host}/confirm/signup/${token}
+      ---------------------------------
+      This is an automated message.`,
+  };
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(emailContent, (err, information) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(information);
+    });
+  });
+};
+
+exports.notifyBusinessOfDenial = (mail) => {
+  const emailContent = {
+    from: info.from,
+    to: mail,
+    subject: 'Git Rekt Application Denied',
+    text: `
+       Hello,
+       Your application for our directory [Git-Rekt] has been Denied.
+       ---------------------------------
+       This is an automated message.
+      `,
+  };
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(emailContent, (err, information) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(information);
+      }
+    });
+  });
+};
+
+exports.sendConfirmationMessage = (email) => {
+  const mailOptions = {
+    to: email,
+    from: 'gitRektMailChange@demo.com',
+    subject: 'Node.js email change',
+    text: 'You are receiving this because you  have requested to change the email associated with your account.\n\n' +
+      'If you did not request this, please contact us.\n',
+  };
   return new Promise((resolve, reject) => {
     mailer.sendMail(mailOptions, (err, information) => {
       if (err) {

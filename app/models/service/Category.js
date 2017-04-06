@@ -18,7 +18,6 @@ const categorySchema = Schema({
   },
   icon: {
     type: String,
-    required: false,
   },
   _deleted: {
     type: Boolean,

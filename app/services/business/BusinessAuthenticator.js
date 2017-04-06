@@ -50,3 +50,42 @@ exports.loginBusiness = (email, password) => new Promise((resolve, reject) => {
     })
     .catch(reject);
 });
+
+/**
+ * Verify's a token and decodes it.
+ */
+exports.verifyBusiness = token => new Promise((resolve, reject) => {
+  jwt.verify(token, process.env.JWT_KEY_BUSSINES, (err, decoded) => {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(decoded);
+    }
+  });
+});
+
+/**
+ * Generate Verify SignUp Token.
+ */
+exports.generateSignUpToken = (email) => {
+  const token = jwt.sign({
+    email,
+    type: 'Verify SignUp',
+    iat: Math.floor(Math.floor(Date.now() / 1000)),
+  }, process.env.JWT_KEY_BUSSINES, {
+    expiresIn: '7d',
+  });
+  return new Promise((resolve, reject) => {
+    Business.findOne({
+      email,
+    })
+      .exec()
+      .then((business) => {
+        business.confirmationTokenDate = Date.now();
+        business.save()
+          .then(() => resolve(token))
+          .catch(reject);
+      })
+      .catch(reject);
+  });
+};

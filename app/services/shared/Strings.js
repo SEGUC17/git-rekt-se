@@ -47,6 +47,7 @@ const businessSuccess = {
   branchAddedSuccess: 'Branch Added Successfully',
   branchEditSuccess: 'Branch Edited Successfully',
   branchDeleteSuccess: 'Branch Deleted Successfully',
+  logout: 'You have been logged out.',
 };
 
 const businessLoginMessages = {
@@ -57,11 +58,24 @@ const businessLoginMessages = {
   invalidToken: 'Invalid Token',
 };
 
+const businessConfirmation = {
+  alreadyConfirmed: 'Business was already confirmed.',
+  notFound: 'Business not found.',
+  confirmed: 'Business confirmed successfully!',
+  denied: 'Business request denied.',
+  alreadyDenied: 'Business was already rejected.',
+  pending: 'Business has already been sent an email',
+};
 const businessMessages = {
   allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
   businessDoesntExist: 'Business Doesn\'t Exist',
   branchDoesntExist: 'Business Doesn\'t Exist',
   mismatchID: 'You can only edit your Info!',
+  alreadyVerified: 'You have already completed your sign up process',
+  alreadyRejected: 'An Admin has rejected your sign up',
+  alreadyUnverified: 'Awaiting for an Admin\'s approval',
+  invalidIamge: 'Not a valid image',
+  invalidID: 'The id is invalid',
 };
 
 /**
@@ -88,9 +102,28 @@ const clientValidationErrors = {
 const clientSuccess = {
   signup: 'Signup Successful, Please check your email for the email confirmation.',
   emailConfirmation: 'Please check your email for the email confirmation.',
+  editInformation: 'Your information has been updated successfully.',
+  editInformationWithEmail: 'Your information has been updated successfully. An email has been sent to your new email for the email confirmation.',
   logout: 'You have been logged out.',
 };
 
+const serviceSuccess = {
+  imageAdd: 'Image added successfully!',
+  imageEdit: 'Description updated succesfully!',
+  imageDelete: 'Image deleted succesfully!',
+};
+
+const serviceFailure = {
+  serviceNotFound: 'The specified service was not found.',
+  imageNotFound: 'Image not found!',
+  notYourService: 'Can not modify a service that is not owned by your business!',
+  missingField: 'Missing Field(s)!',
+};
+
+const serviceValidationErrors = {
+  invalidServiceID: 'Invalid Service ID',
+  invalidImageID: 'Invalid Image ID',
+};
 
 const clientForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
@@ -104,11 +137,19 @@ const clientLoginMessages = {
   confirmEmail: 'Please confirm your email.',
   bannedClient: 'This user has been banned.',
   invalidToken: 'Invalid Token',
+  notLoggedIN: 'You need to be logged in.',
 };
 
 const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
+};
+
+const clientVerfication = {
+  invalidToken: 'This token is invalid or has expired.',
+  verificationSuccess: 'Your e-mail has been successfully confirmed.',
+  alreadyConfirmed: 'Your e-mail is already confirmed.',
+  accountBanned: 'Your account is banned.',
 };
 
 /**
@@ -139,6 +180,10 @@ const visitorErrors = {
   NoRelatedServices: 'No related services',
 };
 
+const businessInformationChanged = {
+  UPDATE_SUCCESSFULL: 'Your information has been updated successfully.',
+};
+
 const visitorValidationErrors = {
   InvalidID: 'Invalid category ID',
   InvalidOffset: 'Invalid Offset',
@@ -149,6 +194,7 @@ const businessForgotPassword = {
   INVALID_RESET_TOKEN: 'Invalid reset token.',
   PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
 };
+
 /**
  * Admin Strings
  */
@@ -168,6 +214,15 @@ const adminValidationErrors = {
   passwordLength: 'Password length must be between 8 and 15 and contains at least one number.',
   passwordMismatch: 'Password and Password Confirmation must match.',
   adminExists: 'Administrator already exists.',
+  invalidBusinessID: 'Invalid Business ID',
+  categoryTypeRequired: 'Category Type is required.',
+  categoryTitleRequired: 'Category Title is required.',
+};
+
+const adminSuccess = {
+  categoryAdded: 'Category added succesfully!',
+  categoryEdited: 'Category edited succesfully!',
+  categoryDeleted: 'Category deleted succesfully!',
 };
 
 module.exports = {
@@ -176,10 +231,16 @@ module.exports = {
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
+  clientVerfication,
   bussinessValidationErrors,
+  serviceFailure,
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
+  serviceSuccess,
+  serviceValidationErrors,
+  businessConfirmation,
+  businessInformationChanged,
   businessForgotPassword,
   adminLoginMessages,
   adminValidationErrors,
@@ -188,4 +249,5 @@ module.exports = {
   businessMessages,
   reviewErrors,
   reviewSuccess,
+  adminSuccess,
 };

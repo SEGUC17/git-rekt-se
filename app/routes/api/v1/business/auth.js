@@ -3,12 +3,19 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
+
+const Business = require('../../../../models/business/Business');
+const businessValidator = require('../../../../services/shared/validation')
+  .verifiedBusinessValidator;
+
+const BusinessUtils = require('../../../../services/business/businessUtils');
 const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
-const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 const errorHandler = require('../../../../services/shared/errorHandler');
+const InvalidToken = require('../../../../models/shared/InvalidToken');
+const jwtConfig = require('../../../../services/shared/jwtConfig');
 
 mongoose.Promise = Promise;
 
@@ -94,10 +101,6 @@ router.post('/verified/login', (req, res, next) => {
 });
 
 /**
- *
- */
-
-/**
  * Business forgot password
  */
 
@@ -136,10 +139,149 @@ router.post('/forgot', (req, res, next) => {
     .catch(err => next(err));
 });
 
+
+/**
+ * Business reset password
+ */
+
+router.post('/reset', (req, res, next) => {
+  const resetToken = req.body.token;
+  const password = req.body.password;
+
+  req.checkBody(validationSchemas.businessResetPasswordValidation);
+  req.checkBody('confirmPassword')
+    .equals(req.body.password)
+    .withMessage(Strings.bussinessValidationErrors.passwordMismatch);
+
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        jwt.verify(resetToken, JWT_KEY, (err, payload) => {
+          if (!payload) {
+            next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
+          } else {
+            const email = payload.email;
+            const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
+
+            Business.findOne({
+              email,
+              passwordChangeDate: {
+                $lte: creationDate,
+              },
+            })
+              .exec()
+              .then((business) => {
+                if (!business) {
+                  return next(Strings.businessForgotPassword.INVALID_RESET_TOKEN);
+                }
+                business.passwordResetTokenDate = undefined; // Disable the token
+                business.passwordChangeDate = Date.now(); // Invalidate Login Tokens
+                business.password = password; // Reset password
+
+                return business.save()
+                  .then(() => res.json({
+                    message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
+                  }));
+              })
+              .catch(e => next([e]));
+          }
+        });
+      } else {
+        next(result.array());
+      }
+    });
+});
+
+/**
+ * Business Logout.
+ * http://stackoverflow.com/questions/3521290/logout-get-or-post
+ */
+
+router.post('/logout', jwtConfig.businessAuthMiddleware, (req, res, next) => {
+  const token = jwtConfig.parseAuthHeader(req.headers.authorization)
+    .value;
+  new InvalidToken({
+    token,
+  })
+    .save((err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.json({
+        message: Strings.businessSuccess.logout,
+      });
+    });
+});
+
+/**
+ * Verified Business Signup
+ */
+
+router.post('/confirm/signup/:token', (req, res, next) => {
+  /**
+   * Form Validation
+   */
+
+  req.checkBody(businessValidator);
+  req.checkBody('confirmPassword')
+    .notEmpty()
+    .equals(req.body.password)
+    .withMessage(Strings.bussinessValidationErrors.passwordMismatch);
+
+  const body = req.body;
+  const token = req.params.token;
+
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        BusinessAuthenticator.verifyBusiness(token)
+          .then((payload) => {
+            Business.findOne({
+              email: payload.email,
+              _deleted: false,
+            })
+              .exec()
+              .then((business) => {
+                if (business._status === 'pending') {
+                  BusinessUtils.addBranches(body.branches, business._id)
+                    .then((branches) => {
+                      business.password = body.password;
+                      business.description = body.description;
+                      business.workingHours = body.workingHours;
+                      business.categories = business.categories.concat(body.categories);
+                      business.branches = business.branches.concat(branches);
+                      business._status = 'verified';
+                      business.save()
+                        .then(() => res.json({
+                          message: 'Verification Completed Successfully',
+                        }))
+                        .catch((err) => {
+                          next(err);
+                        });
+                    })
+                    .catch(err => next(err));
+                } else if (business._status === 'verified') {
+                  next(Strings.businessMessages.alreadyVerified);
+                } else if (business._status === 'unverified') {
+                  next(Strings.businessMessages.alreadyUnverified);
+                } else {
+                  next(Strings.businessMessages.alreadyRejected);
+                }
+              })
+              .catch(err => next(err));
+          })
+          .catch(err => next(err));
+      } else {
+        next(result.array());
+      }
+    })
+    .catch(err => next(err));
+});
+
 /**
  *  Error Handling Middlewares.
  */
-
 router.use(errorHandler);
+
 
 module.exports = router;

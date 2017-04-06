@@ -9,21 +9,21 @@ const errorHandler = require('../../../../services/shared/errorHandler');
 const router = express.Router();
 
 /**
- * Body Parser Middleware
+ * Parsing Middleware(s).
  */
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Dummy admin registeration route
- * FOR TESTING PURPOSES
+ * Dummy admin registeration route.
+ * FOR TESTING PURPOSES.
  */
 
 router.post('/create', (req, res) => {
   new Admin({
     email: 'mohamedelzarei@gmail.com',
-    password: 'helloworld',
+    password: 'Strong#1234',
   })
     .save()
     .then(() => res.json({
@@ -32,8 +32,9 @@ router.post('/create', (req, res) => {
 });
 
 /*
- * Admin Login route
+ * Admin Login route.
  */
+
 router.post('/login', (req, res, next) => {
   req.checkBody(validationSchemas.adminLoginValidation);
   req.getValidationResult()
