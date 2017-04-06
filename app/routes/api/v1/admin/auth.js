@@ -9,7 +9,7 @@ const errorHandler = require('../../../../services/shared/errorHandler');
 const router = express.Router();
 
 /**
- * Body Parser Middleware
+ * Parsing Middleware(s).
  */
 
 router.use(bodyParser.json());
