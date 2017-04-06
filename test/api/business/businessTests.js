@@ -91,7 +91,7 @@ describe('Should Edit Info Correctly', () => {
 
   beforeEach(() => {
     req = supertest(app)
-      .put(`/api/v1/business/edit/${businessID}`);
+      .put(`/api/v1/business/info/edit/${businessID}`);
   });
 
   it('should edit info correctly', (done) => {
@@ -228,7 +228,7 @@ describe('Should Edit Info Correctly', () => {
       description: 'This is a new description',
     };
     req = supertest(app)
-      .put('/api/v1/business/edit/222');
+      .put('/api/v1/business/info/edit/222');
     req.send(editInfo)
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
@@ -298,7 +298,7 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
       _id: businessID,
     };
     req = supertest(app)
-      .post(`/api/v1/business/${businessID}/add/branches`);
+      .post(`/api/v1/business/info/${businessID}/add/branches`);
     req.send(branchInfo)
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
@@ -336,7 +336,7 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
 
   it('should return an error when request is empty', (done) => {
     req = supertest(app)
-      .post(`/api/v1/business/${businessID}/add/branches`);
+      .post(`/api/v1/business/info/${businessID}/add/branches`);
     req.send({})
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
@@ -356,7 +356,7 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
 
   it('should edit a branch correctly', (done) => {
     req = supertest(app)
-      .put(`/api/v1/business/${businessID}/edit/branch/${branchID}`);
+      .put(`/api/v1/business/info/${businessID}/edit/branch/${branchID}`);
     const newBranchData = {
       branch: {
         location: locations[2],
@@ -398,7 +398,7 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
 
   it('should also return an error when request is empty', (done) => {
     req = supertest(app)
-      .put(`/api/v1/business/${businessID}/edit/branch/${branchID}`);
+      .put(`/api/v1/business/info/${businessID}/edit/branch/${branchID}`);
     req.send({})
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
@@ -418,7 +418,7 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
 
   it('should delete a branch correctly', (done) => {
     req = supertest(app)
-      .delete(`/api/v1/business/${businessID}/delete/branch/${branchID}`);
+      .delete(`/api/v1/business/info/${businessID}/delete/branch/${branchID}`);
     const searchBranchID = {
       _id: branchID,
     };
@@ -445,7 +445,7 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
 
   it('should not allow un-authenticated business from adding branches', (done) => {
     req = supertest(app)
-      .post(`/api/v1/business/${businessID}/add/branches`);
+      .post(`/api/v1/business/info/${businessID}/add/branches`);
     req.send(branchInfo)
       .expect('Content-Type', /json/)
       .expect(400, done);
@@ -453,7 +453,7 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
 
   it('should not allow a logged in business from adding branches to another business', (done) => {
     req = supertest(app)
-      .post('/api/v1/business/222/add/branches');
+      .post('/api/v1/business/info/222/add/branches');
     req.send(branchInfo)
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)

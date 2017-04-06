@@ -12,14 +12,14 @@ const errorHandler = require('../../../../services/shared/errorHandler');
 const router = express.Router();
 
 /**
- * Body Parser Middleware
+ * Parsing Middleware(s).
  */
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Client edit information route
+ * Client edit information route.
  */
 
 router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
