@@ -153,6 +153,10 @@ const visitorErrors = {
   NoRelatedServices: 'No related services',
 };
 
+const businessInformationChanged = {
+  UPDATE_SUCCESSFULL: 'Your information has been updated successfully.',
+};
+
 const visitorValidationErrors = {
   InvalidID: 'Invalid category ID',
   InvalidOffset: 'Invalid Offset',
@@ -232,9 +236,11 @@ module.exports = {
   bussinessValidationErrors,
   serviceFailure,
   businessSuccess,
-  businessForgotPassword,
 
   businessLoginMessages,
+  businessInformationChanged,
+  businessForgotPassword,
+
   adminLoginMessages,
   adminValidationErrors,
   visitorErrors,

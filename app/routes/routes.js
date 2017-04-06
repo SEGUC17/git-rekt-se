@@ -8,6 +8,7 @@ const clientProfileAPI = require('./api/v1/client/profile');
 const ServiceAPI = require('./api/v1/service/serviceRoutes');
 const ServiceGeneralAPI = require('./api/v1/service/general');
 const reviewCRUDAPI = require('./api/v1/service/review');
+const businessProfileAPI = require('./api/v1/business/profile');
 
 
 module.exports = (app) => {
@@ -29,6 +30,7 @@ module.exports = (app) => {
    */
   app.use('/api/v1/business/auth', businessAuthAPI);
   app.use('/api/v1/service', businessServiceAPI);
+  app.use('/api/v1/business/profile', businessProfileAPI);
   app.use('/api/v1/business', businessAPI);
 
   /**
