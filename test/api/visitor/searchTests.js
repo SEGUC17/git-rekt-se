@@ -180,12 +180,12 @@ describe('Search Test Suite', () => {
                                         services[21]._business = savedBusiness5._id;
                                         services[21].categories.push(savedCategory0._id);
 
-                                        Service.insertMany(services, (errX) => {
+                                        Service.insertMany(services, (errX, docs) => {
                                           if (errX) {
                                             done(errX);
                                             return;
                                           }
-                                          Service.find((errP, properServices) => {
+                                          Service.find({}, (errP, properServices) => {
                                             properServices[0].offerings.push(properOfferings[0]);
                                             properServices[0].offerings.push(properOfferings[1]);
 
@@ -234,13 +234,17 @@ describe('Search Test Suite', () => {
                                             properServices[21].offerings
                                               .push(properOfferings[12]);
 
+                                            let len = properServices.length;
                                             properServices.forEach((properService) => {
                                               properService.save((errZ) => {
+                                                len -= 1;
                                                 if (errZ) {
                                                   done(errZ);
                                                   return;
                                                 }
-                                                done();
+                                                if (len === 0) {
+                                                  done();
+                                                }
                                               });
                                             });
                                           });
@@ -277,8 +281,6 @@ describe('Search Test Suite', () => {
         if (err) {
           return done(err);
         }
-        // console.log(res.body);
-
         chai.expect(res.body.count)
           .to.equal(21);
 
