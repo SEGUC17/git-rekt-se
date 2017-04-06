@@ -13,6 +13,9 @@ const categories = [{
 }, {
   type: 'Service',
   title: 'English Conversation Courses',
+}, {
+  type: 'Service',
+  title: 'Self developpment',
 }];
 
 module.exports = categories;

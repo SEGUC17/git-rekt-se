@@ -18,14 +18,6 @@ const Businesses = [{
   _status: 'verified',
   branches: null,
 },
-{
-  name: 'GUC german center',
-  email: 'gucgermancenter@gmail.com',
-  shortDescription: 'Teaching German Courses',
-  password: 'uefn12345678',
-  _status: 'verified',
-  branches: null,
-},
 ];
 
 module.exports = Businesses;

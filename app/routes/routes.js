@@ -3,13 +3,12 @@ const businessAuthAPI = require('./api/v1/business/auth');
 const businessAPI = require('./api/v1/business/business');
 const businessGeneralAPI = require('./api/v1/business/general');
 const adminAuthAPI = require('./api/v1/admin/auth');
-const businessServiceAPI = require('./api/v1/business/index');
 const clientProfileAPI = require('./api/v1/client/profile');
 const ServiceAPI = require('./api/v1/service/serviceRoutes');
 const ServiceGeneralAPI = require('./api/v1/service/general');
 const reviewCRUDAPI = require('./api/v1/service/review');
 const businessProfileAPI = require('./api/v1/business/profile');
-
+const businessServiceAPI = require('./api/v1/business/index');
 
 module.exports = (app) => {
   /**
@@ -29,7 +28,7 @@ module.exports = (app) => {
    * Business Routes
    */
   app.use('/api/v1/business/auth', businessAuthAPI);
-  app.use('/api/v1/service', businessServiceAPI);
+  app.use('/api/v1/business/service', businessServiceAPI);
   app.use('/api/v1/business/profile', businessProfileAPI);
   app.use('/api/v1/business', businessAPI);
 

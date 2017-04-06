@@ -22,10 +22,6 @@ const Branches = [{
   location: 'Tagamo3',
   address: 'eltagmo3 elawl',
   _business: null,
-}, {
-  location: 'Nasr City',
-  address: 'some address2',
-  _business: null,
 }];
 
 module.exports = Branches;
