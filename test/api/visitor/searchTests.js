@@ -16,6 +16,8 @@ const Branch = require('../../../app/models/service/Branch');
 const Service = require('../../../app/models/service/Service');
 const Offering = require('../../../app/models/service/Offering');
 
+const Strings = require('../../../app/services/shared/Strings');
+
 
 /**
  * Search Test Suite
@@ -231,9 +233,10 @@ describe('Search Test Suite', () => {
                                             properServices.forEach((properService) => {
                                               properService.save((errZ) => {
                                                 if (errZ) {
-                                                  return done(errZ);
+                                                  done(errZ);
+                                                  return;
                                                 }
-                                                return done();
+                                                done();
                                               });
                                             });
                                           });
@@ -317,8 +320,24 @@ describe('Search Test Suite', () => {
         chai.expect(res.body.count)
           .to.equal(2);
 
-        chai.expect(res.body.results.length)
-          .to.equal(2);
+        return done();
+      });
+  });
+
+  it('should return an error message if the query does not return any results', (done) => {
+    req
+      .query({
+        location: 'Tagamo3',
+        max: 1000,
+      })
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        console.log(res.body);
+        chai.expect(res.body.errors[0])
+          .to.equal(Strings.searchErrors.emptySearchResult);
 
         return done();
       });

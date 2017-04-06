@@ -68,9 +68,6 @@ router.get('/', (req, res, next) => {
         .find(mongooseQuery)
         .populate([{
           path: '_business',
-          match: {
-            _deleted: false,
-          },
           select: 'name',
         }, {
           path: 'categories',
@@ -79,7 +76,7 @@ router.get('/', (req, res, next) => {
           },
           select: 'title',
         }])
-        .select('name shortDescription _business.name _avgRating categories,title coverImage')
+        .select('name shortDescription _business _avgRating categories coverImage')
         .skip(offset * 10)
         .limit(10)
         .exec((err, services) => {
