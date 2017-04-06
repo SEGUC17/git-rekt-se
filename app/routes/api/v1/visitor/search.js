@@ -79,7 +79,7 @@ router.get('/', (req, res, next) => {
           },
           select: 'title',
         }])
-        // .select('name shortDescription _business.name _avgRating categories,title coverImage')
+        .select('name shortDescription _business.name _avgRating categories,title coverImage')
         .skip(offset * 10)
         .limit(10)
         .exec((err, services) => {

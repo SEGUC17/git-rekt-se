@@ -314,7 +314,6 @@ describe('Search Test Suite', () => {
         if (err) {
           return done(err);
         }
-        console.log(res.body);
         chai.expect(res.body.count)
           .to.equal(2);
 
