@@ -6,10 +6,6 @@ const InvalidToken = require('../../../app/models/shared/InvalidToken');
 const clients = require('../../../app/seed/client/clientSeed');
 
 /**
- * Database Connection
- */
-
-/**
  * Client Signup Suite
  */
 

@@ -100,7 +100,6 @@ describe('Should Edit Info Correctly', () => {
       categories: [categoryID],
       description: 'Test Description',
     };
-    // console.log(editInfo);
     req.send(editInfo)
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)

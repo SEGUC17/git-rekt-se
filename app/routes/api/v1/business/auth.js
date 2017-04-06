@@ -216,6 +216,7 @@ router.post('/logout', jwtConfig.businessAuthMiddleware, (req, res, next) => {
 /**
  * Verified Business Signup
  */
+
 router.post('/confirm/signup/:token', (req, res, next) => {
   /**
    * Form Validation
@@ -254,25 +255,27 @@ router.post('/confirm/signup/:token', (req, res, next) => {
                         .then(() => res.json({
                           message: 'Verification Completed Successfully',
                         }))
-                        .catch(err => next([err]));
+                        .catch((err) => {
+                          next(err);
+                        });
                     })
-                    .catch(err => next([err]));
+                    .catch(err => next(err));
                 } else if (business._status === 'verified') {
-                  next([Strings.businessMessages.alreadyVerified]);
+                  next(Strings.businessMessages.alreadyVerified);
                 } else if (business._status === 'unverified') {
-                  next([Strings.businessMessages.alreadyUnverified]);
+                  next(Strings.businessMessages.alreadyUnverified);
                 } else {
-                  next([Strings.businessMessages.alreadyRejected]);
+                  next(Strings.businessMessages.alreadyRejected);
                 }
               })
-              .catch(err => next([err]));
+              .catch(err => next(err));
           })
           .catch(err => next(err));
       } else {
         next(result.array());
       }
     })
-    .catch(err => next([err]));
+    .catch(err => next(err));
 });
 
 /**

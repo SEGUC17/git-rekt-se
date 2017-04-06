@@ -19,12 +19,6 @@ const Strings = require('../../../app/services/shared/Strings');
 const categoriesIDs = [];
 const businessesIDs = [];
 
-// deleted service - invalid id
-
-/**
- * Database Connection
- */
-
 require('dotenv')
   .config();
 
