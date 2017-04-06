@@ -10,7 +10,7 @@ const categorySchema = Schema({
   type: {
     type: String,
     required: true,
-    enums: ['Service', 'Business'],
+    enum: ['Service', 'Business'],
   },
   title: {
     type: String,
@@ -18,7 +18,6 @@ const categorySchema = Schema({
   },
   icon: {
     type: String,
-    required: false,
   },
   _deleted: {
     type: Boolean,
