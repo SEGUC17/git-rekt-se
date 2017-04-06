@@ -71,6 +71,9 @@ const businessMessages = {
   businessDoesntExist: 'Business Doesn\'t Exist',
   branchDoesntExist: 'Business Doesn\'t Exist',
   mismatchID: 'You can only edit your Info!',
+  alreadyVerified: 'You have already completed your sign up process',
+  alreadyRejected: 'An Admin has rejected your sign up',
+  alreadyUnverified: 'Awaiting for an Admin\'s approval',
 };
 
 /**
@@ -102,8 +105,22 @@ const clientSuccess = {
   logout: 'You have been logged out.',
 };
 
+const serviceSuccess = {
+  imageAdd: 'Image added successfully!',
+  imageEdit: 'Description updated succesfully!',
+  imageDelete: 'Image deleted succesfully!',
+};
+
 const serviceFailure = {
   serviceNotFound: 'The specified service was not found.',
+  imageNotFound: 'Image not found!',
+  notYourService: 'Can not modify a service that is not owned by your business!',
+  missingField: 'Missing Field(s)!',
+};
+
+const serviceValidationErrors = {
+  invalidServiceID: 'Invalid Service ID',
+  invalidImageID: 'Invalid Image ID',
 };
 
 const clientForgotPassword = {
@@ -255,6 +272,8 @@ module.exports = {
   businessSuccess,
 
   businessLoginMessages,
+  serviceSuccess,
+  serviceValidationErrors,
   businessConfirmation,
   businessInformationChanged,
   businessForgotPassword,

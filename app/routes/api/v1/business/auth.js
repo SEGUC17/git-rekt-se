@@ -3,10 +3,15 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
+
+const Business = require('../../../../models/business/Business');
+const businessValidator = require('../../../../services/shared/validation')
+  .verifiedBusinessValidator;
+
+const BusinessUtils = require('../../../../services/business/businessUtils');
 const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
 const validationSchemas = require('../../../../services/shared/validation');
-const Business = require('../../../../models/business/Business');
 const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 const errorHandler = require('../../../../services/shared/errorHandler');
 const InvalidToken = require('../../../../models/shared/InvalidToken');
@@ -94,7 +99,6 @@ router.post('/verified/login', (req, res, next) => {
       }
     });
 });
-
 
 /**
  * Business forgot password
@@ -209,11 +213,75 @@ router.post('/logout', jwtConfig.businessAuthMiddleware, (req, res, next) => {
     });
 });
 
+/**
+ * Verified Business Signup
+ */
+
+router.post('/confirm/signup/:token', (req, res, next) => {
+  /**
+   * Form Validation
+   */
+
+  req.checkBody(businessValidator);
+  req.checkBody('confirmPassword')
+    .notEmpty()
+    .equals(req.body.password)
+    .withMessage(Strings.bussinessValidationErrors.passwordMismatch);
+
+  const body = req.body;
+  const token = req.params.token;
+
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        BusinessAuthenticator.verifyBusiness(token)
+          .then((payload) => {
+            Business.findOne({
+              email: payload.email,
+              _deleted: false,
+            })
+              .exec()
+              .then((business) => {
+                if (business._status === 'pending') {
+                  BusinessUtils.addBranches(body.branches, business._id)
+                    .then((branches) => {
+                      business.password = body.password;
+                      business.description = body.description;
+                      business.workingHours = body.workingHours;
+                      business.categories = business.categories.concat(body.categories);
+                      business.branches = business.branches.concat(branches);
+                      business._status = 'verified';
+                      business.save()
+                        .then(() => res.json({
+                          message: 'Verification Completed Successfully',
+                        }))
+                        .catch((err) => {
+                          next(err);
+                        });
+                    })
+                    .catch(err => next(err));
+                } else if (business._status === 'verified') {
+                  next(Strings.businessMessages.alreadyVerified);
+                } else if (business._status === 'unverified') {
+                  next(Strings.businessMessages.alreadyUnverified);
+                } else {
+                  next(Strings.businessMessages.alreadyRejected);
+                }
+              })
+              .catch(err => next(err));
+          })
+          .catch(err => next(err));
+      } else {
+        next(result.array());
+      }
+    })
+    .catch(err => next(err));
+});
 
 /**
  *  Error Handling Middlewares.
  */
-
 router.use(errorHandler);
+
 
 module.exports = router;
