@@ -357,6 +357,37 @@ const serviceEditImageValidation = {
   },
 };
 
+const adminCategoryValidation = {
+  type: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.categoryTypeRequired,
+    },
+  },
+  title: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.categoryTitleRequired,
+    },
+  },
+};
+
+const businessUpdateValidation = {
+  name: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyName,
+    },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyDescription,
+    },
+  },
+  phoneNumbers: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyMobile,
+    },
+  },
+};
+
 const validation = {
   clientResetPasswordValidation,
   clientSignupValidation,
@@ -375,6 +406,8 @@ const validation = {
   createReviewValidation,
   updateReviewValidation,
   deleteReviewValidation,
+  businessUpdateValidation,
+  adminCategoryValidation,
 };
 
 module.exports = validation;

@@ -3,111 +3,107 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
-const Client = require('../../../../models/client/Client');
-const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
+const Business = require('../../../../models/business/Business');
+const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 const Strings = require('../../../../services/shared/Strings');
 const authMiddleWare = require('../../../../services/shared/jwtConfig');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
+
 const router = express.Router();
 
 /**
- * Parsing Middleware(s).
+ * Body Parser Middleware
  */
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Client edit information route.
+ * Business edit basic information route.
  */
 
-router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
+router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
   if (req.user.id === req.params.id) {
     /**
      * The new data
      */
+
     const userInfo = {
+      name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      mobile: req.body.mobile,
-      gender: req.body.gender,
-      birthdate: req.body.birthdate,
+      shortDescription: req.body.shortDescription,
+      phoneNumbers: req.body.phoneNumbers,
     };
     let emailChanged = false;
 
 
-    req.checkBody(validationSchemas.clientSignupValidation);
+    req.checkBody(validationSchemas.businessUpdateValidation);
     req.checkBody('confirmPassword')
       .equals(req.body.password)
-      .withMessage(Strings.clientValidationErrors.passwordMismatch);
+      .withMessage(Strings.bussinessValidationErrors.passwordMismatch);
 
     req.getValidationResult()
       .then((result) => {
         if (result.isEmpty()) {
-          Client.findOne({
+          Business.findOne({
             _id: req.params.id,
+            _deleted: false,
           })
             .exec()
-            .then((client) => {
-              if (client.email === userInfo.email) {
+            .then((business) => {
+              if (!business) {
+                next(Strings.businessMessages.mismatchID);
+                return;
+              }
+              if (business.email === userInfo.email) {
                 emailChanged = false;
               } else {
                 emailChanged = true;
               }
+
               /**
                * Editing existing information
                */
-
-              client.firstName = userInfo.firstName;
-              client.lastName = userInfo.lastName;
-              client.mobile = userInfo.mobile;
-              client.gender = userInfo.gender;
-              client.birthdate = userInfo.birthdate;
-              client.password = userInfo.password;
-              client.email = userInfo.email;
+              const oldMail = business.email;
+              business.name = userInfo.name;
+              business.shortDescription = userInfo.shortDescription;
+              business.phoneNumbers = userInfo.phoneNumbers;
+              business.password = userInfo.password;
+              business.email = userInfo.email;
 
               if (emailChanged) {
-                client.status = 'unconfirmed';
-                client.save()
-                  .then((clientUnconfirmed) => {
-                    ClientAuthenticator.generateConfirmationToken(req.body.email)
-                      .then((token) => {
-                        Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
+                business.save()
+                  .then(() => {
+                    Mailer.sendConfirmationMessage(oldMail)
                           .then(() => {
                             res.json({
-                              message: Strings.clientSuccess.editInformationWithEmail,
+                              message: Strings.businessSuccess.emailConfirmation,
                             });
                           })
                           .catch((e) => {
-                            next(e);
+                            next([e]);
                           });
-                      })
-                      .catch((e) => {
-                        next(e);
-                      });
                   })
                   .catch(e => next(e));
               } else {
-                client.save()
-                .then(() => {
+                business.save().then(() => {
                   res.json({
-                    message: Strings.clientSuccess.editInformation,
+                    message: Strings.businessInformationChanged.UPDATE_SUCCESSFULL,
                   });
                 });
               }
             })
             .catch((e) => {
-              next(e);
+              next([e]);
             });
         } else {
           next(result.array());
         }
       });
   } else {
-    next(Strings.clientLoginMessages.notLoggedIn);
+    next(Strings.businessMessages.mismatchID);
   }
 });
 
