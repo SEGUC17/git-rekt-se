@@ -9,9 +9,10 @@ const Strings = require('../../../../services/shared/Strings');
 const path = require('path');
 const expressValidator = require('express-validator');
 const Business = require('../../../../models/business/Business');
+const errorHandler = require('../../../../services/shared/errorHandler');
+
 
 const router = express.Router();
-/* eslint-disable no-underscore-dangle */
 
 /**
  * Parsing Middleware(s).
@@ -20,9 +21,10 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
-/*
-    Multer Config.
+/**
+ * Multer Config.
  */
+
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, path.join(__dirname, '../../../../public/uploads'));
@@ -32,15 +34,16 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + buf.toString('hex') + path.extname(file.originalname));
   },
 });
+
 const upload = multer({
   storage,
 });
 
-/*
-Business Image Create
-*/
+/**
+ * Add Image to service gallery.
+ */
 
-router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, res, next) => {
+router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, next) => {
   req.checkParams(validationSchemas.businessAddImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -62,7 +65,7 @@ router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, 
                     message: 'Image added successfully!',
                   });
                 })
-                .catch(saveErr => next([saveErr]));
+                .catch(saveErr => next(saveErr));
             } else {
               next(['The required id is invalid.']);
             }
@@ -72,14 +75,15 @@ router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, 
         next('The required id is invalid.');
       }
     })
-    .catch(err => next([err]));
+    .catch(err => next(err));
 });
 
 
-/*
-Service Image Update
-*/
-router.post('/editBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) => {
+/**
+ * Edit Image in Business gallery.
+ */
+
+router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -103,24 +107,25 @@ router.post('/editBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) 
                       message: 'Image edited successfully',
                     });
                   })
-                  .catch(saveErr => next([saveErr]));
+                  .catch(saveErr => next(saveErr));
               }
             } else {
               next('The required id is invalid.');
             }
           })
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next('The required id is invalid.');
       }
     })
-    .catch(err => next([err]));
+    .catch(err => next(err));
 });
 
-/*
-Business Image Update
-*/
-router.post('/deleteBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) => {
+/**
+ * Delete Image in Business gallery.
+ */
+
+router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => {
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -145,29 +150,25 @@ router.post('/deleteBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next
                       message: Strings.serviceSuccess.imageDelete,
                     });
                   })
-                  .catch(saveErr => next([saveErr]));
+                  .catch(saveErr => next(saveErr));
               }
             } else {
               next('The required id is invalid');
             }
           })
-          .catch(err => next([err]));
+          .catch(err => next(err));
       } else {
         next('The required id is invalid');
       }
     })
-    .catch(err => next([err]));
+    .catch(err => next(err));
 });
 
-/*
-Error handling middleware
-*/
-router.use((err, req, res, next) => {
-  res.status(400)
-    .json({
-      error: err.toString(),
-    });
-});
 
+/**
+ * Error handling middleware.
+ */
+
+router.use(errorHandler);
 
 module.exports = router;

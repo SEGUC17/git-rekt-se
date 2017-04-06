@@ -39,7 +39,7 @@ module.exports = (app) => {
   app.use('/api/v1/business/auth', BusinessAuthAPI);
   app.use('/api/v1/business/profile', BusinessProfileAPI);
   app.use('/api/v1/business/info', BusinessEditInformationAPI);
-  app.use('/api/v1/business/gallery', BusinessGalleryAPI);
+  app.use('/api/v1/business', BusinessGalleryAPI);
 
   /**
    * Admin Routes.

@@ -1,4 +1,5 @@
 const chai = require('chai');
+const path = require('path');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
@@ -12,6 +13,7 @@ describe('Business Gallery CRUD Tests', () => {
   let token;
   let sampleBusiness;
   let dbBusiness;
+
   beforeEach((done) => {
     Business.collection.drop(() => {
       Business.ensureIndexes(() => {
@@ -35,9 +37,9 @@ describe('Business Gallery CRUD Tests', () => {
 
   it('should create an image, and return a confirmation message: Image added succesfully!', (done) => {
     req = supertest(app)
-      .post(`/api/v1/business/gallery/addBusinessImage/${dbBusiness._id}`)
+      .post(`/api/v1/business/${dbBusiness._id}/gallery/add`)
       .field('description', 'sample Image Description')
-      .attach('path', '/home/youssef/Pictures/abc.png')
+      .attach('path', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -65,16 +67,16 @@ describe('Business Gallery CRUD Tests', () => {
 
   it('should not create an image if an invalid id is given, and return error message: Business not found!', (done) => {
     req = supertest(app)
-      .post('/api/v1/business/gallery/addBusinessImage/1x')
+      .post('/api/v1/business/abc/gallery/add')
       .field('description', 'sample Image Description')
-      .attach('path', '/home/youssef/Pictures/abc.png')
+      .attach('path', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
       .set('Authorization', `JWT ${token}`)
       .expect(400)
       .end((err, res) => {
         if (err) {
           done(err);
         } else {
-          chai.expect(res.body.error)
+          chai.expect(res.body.errors[0])
             .to.equal('The required id is invalid.');
           Business.findOne({
             _id: dbBusiness._id,
@@ -91,7 +93,6 @@ describe('Business Gallery CRUD Tests', () => {
       });
   });
 
-
   it('should update an image description, and return success message: Description updated succesfully!', (done) => {
     const newImage = ({
       path: 'sampleImagePath',
@@ -102,7 +103,7 @@ describe('Business Gallery CRUD Tests', () => {
       .then((newbus) => {
         const newim = newbus.gallery.find(element => `${element.path}` === 'sampleImagePath');
         req = supertest(app)
-          .post(`/api/v1/business/gallery/editBusinessImage/${dbBusiness._id}/${newim._id}`)
+          .post(`/api/v1/business/${dbBusiness._id}/gallery/edit/${newim._id}`)
           .set('Authorization', `JWT ${token}`)
           .send({
             description: 'API Description is working',
@@ -131,6 +132,7 @@ describe('Business Gallery CRUD Tests', () => {
       })
       .catch(err => done(err));
   });
+
   it('should delete an image description, and return success message: Image deleted succesfully!', (done) => {
     const newImage = ({
       path: 'sampleImagePath',
@@ -141,7 +143,7 @@ describe('Business Gallery CRUD Tests', () => {
       .then((newbus) => {
         const newim = newbus.gallery.find(element => `${element.path}` === 'sampleImagePath');
         req = supertest(app)
-          .post(`/api/v1/business/gallery/deleteBusinessImage/${dbBusiness._id}/${newim._id}`)
+          .post(`/api/v1/business/${dbBusiness._id}/gallery/delete/${newim._id}`)
           .set('Authorization', `JWT ${token}`)
           .expect(200)
           .end((err, res) => {
