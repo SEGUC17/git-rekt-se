@@ -20,48 +20,37 @@ router.get('/', (req, res, next) => {
     _deleted: false,
   };
   if (inputQuery.name) {
-    mongooseQuery.push({
-      name: new RegExp(inputQuery.name, 'gi'),
-    });
+    mongooseQuery.name = new RegExp(inputQuery.name, 'gi');
   }
   if (inputQuery.rating) {
-    mongooseQuery.push({
-      _avgRating: {
-        $gte: inputQuery.rating,
-      },
-    });
+    mongooseQuery._avgRating = {
+      $gte: inputQuery.rating,
+    };
   }
   // Check if query needs to check the offerings of the service
   if (inputQuery.min || inputQuery.max || inputQuery.location) {
-    mongooseQuery.push({
-      offerings: {
-        $elemMatch: {
-          _deleted: false,
-        },
+    mongooseQuery.offerings = {
+      $elemMatch: {
+        _deleted: false,
       },
-    });
+    };
   }
-  if (inputQuery.min || inputQuery.max) {
-    mongooseQuery.offerings.$elemMatch.push({
-      price: {},
-    });
-  }
-  if (inputQuery.min) {
-    mongooseQuery.offerings.$elemMatch.price.push({
+  if (inputQuery.min && inputQuery.max) {
+    mongooseQuery.offerings.$elemMatch.price = {
       $gte: inputQuery.min,
-    });
-  }
-  if (inputQuery.max) {
-    mongooseQuery.offerings.$elemMatch.price.push({
       $lte: inputQuery.max,
-    });
+    };
+  } else if (inputQuery.min) {
+    mongooseQuery.offerings.$elemMatch.price = {
+      $gte: inputQuery.min,
+    };
+  } else if (inputQuery.max) {
+    mongooseQuery.offerings.$elemMatch.price = {
+      $lte: inputQuery.max,
+    };
   }
   if (inputQuery.location) {
-    mongooseQuery.offerings.$elemMatch.push({
-      branch: {
-        location: new RegExp(inputQuery.location, 'i'),
-      },
-    });
+    mongooseQuery.offerings.$elemMatch.location = new RegExp(inputQuery.location, 'i');
   }
 
   // Executing
@@ -88,9 +77,9 @@ router.get('/', (req, res, next) => {
           match: {
             _deleted: false,
           },
-          select: 'type',
+          select: 'title',
         }])
-        .select('name shortDescription _business _avgRating categories coverImage')
+        // .select('name shortDescription _business.name _avgRating categories,title coverImage')
         .skip(offset * 10)
         .limit(10)
         .exec((err, services) => {
