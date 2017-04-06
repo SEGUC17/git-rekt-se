@@ -235,7 +235,6 @@ router.post('/confirm/signup/:token', (req, res, next) => {
       if (result.isEmpty()) {
         BusinessAuthenticator.verifyBusiness(token)
           .then((payload) => {
-            console.log(payload);
             Business.findOne({
               email: payload.email,
               _deleted: false,
@@ -251,7 +250,6 @@ router.post('/confirm/signup/:token', (req, res, next) => {
                       business.categories = business.categories.concat(body.categories);
                       business.branches = business.branches.concat(branches);
                       business._status = 'verified';
-                      console.log(business);
                       business.save()
                         .then(() => res.json({
                           message: 'Verification Completed Successfully',
