@@ -52,6 +52,5 @@ module.exports = (app) => {
    */
 
   app.use('/api/v1/business/gallery', BusinessGalleryAPI);
-  app.use('/api/v1/admin/category', admincatAPI);
   app.use('/api/v1/service', reviewCRUDAPI);
 };
