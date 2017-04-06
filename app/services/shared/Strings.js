@@ -58,14 +58,6 @@ const businessLoginMessages = {
   invalidToken: 'Invalid Token',
 };
 
-const businessConfirmation = {
-  alreadyConfirmed: 'Business was already confirmed.',
-  notFound: 'Business not found.',
-  confirmed: 'Business confirmed successfully!',
-  denied: 'Business request denied.',
-  alreadyDenied: 'Business was already rejected.',
-  pending: 'Business has already been sent an email',
-};
 const businessMessages = {
   allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
   businessDoesntExist: 'Business Doesn\'t Exist',
@@ -102,8 +94,22 @@ const clientSuccess = {
   logout: 'You have been logged out.',
 };
 
+const serviceSuccess = {
+  imageAdd: 'Image added successfully!',
+  imageEdit: 'Description updated succesfully!',
+  imageDelete: 'Image deleted succesfully!',
+};
+
 const serviceFailure = {
   serviceNotFound: 'The specified service was not found.',
+  imageNotFound: 'Image not found!',
+  notYourService: 'Can not modify a service that is not owned by your business!',
+  missingField: 'Missing Field(s)!',
+};
+
+const serviceValidationErrors = {
+  invalidServiceID: 'Invalid Service ID',
+  invalidImageID: 'Invalid Image ID',
 };
 
 const clientForgotPassword = {
@@ -195,7 +201,6 @@ const adminValidationErrors = {
   passwordLength: 'Password length must be between 8 and 15 and contains at least one number.',
   passwordMismatch: 'Password and Password Confirmation must match.',
   adminExists: 'Administrator already exists.',
-  invalidBusinessID: 'Invalid Business ID',
   categoryTypeRequired: 'Category Type is required.',
   categoryTitleRequired: 'Category Title is required.',
 };
@@ -218,7 +223,8 @@ module.exports = {
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,
-  businessConfirmation,
+  serviceSuccess,
+  serviceValidationErrors,
   businessInformationChanged,
   businessForgotPassword,
   adminLoginMessages,

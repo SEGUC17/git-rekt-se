@@ -51,7 +51,7 @@ router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, 
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        console.log('result empty');
+        console.log('result not empty');
         Business.findOne({
           _id: req.params.id,
         })
@@ -72,7 +72,7 @@ router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, 
                 .then(() => {
                   console.log(7);
                   res.json({
-                    message: Strings.serviceSuccess.imageAdd,
+                    message: 'Image added successfully!',
                   });
                 })
                 .catch(saveErr => next([saveErr]));
@@ -80,15 +80,15 @@ router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, 
               //     next([Strings.serviceFail.notYourService]);
               //   }
             } else {
-              next([Strings.serviceFail.invalidService]);
+              next(['The required id is invalid.']);
             }
           })
           .catch(err => next(err));
       } else {
-        next(Strings.serviceValidationErrors.invalidServiceID);
+        next('The required id is invalid.');
       }
     })
-    .catch(err => next('err'));
+    .catch(err => next([err]));
 });
 
 
@@ -120,7 +120,7 @@ router.post('/editBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) 
                   .then(() => {
                     console.log(3);
                     res.json({
-                      message: Strings.serviceSuccess.imageEdit,
+                      message: 'Image edited successfully',
                     });
                   })
                   .catch(saveErr => next([saveErr]));
@@ -129,12 +129,12 @@ router.post('/editBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) 
               //     next([Strings.serviceFail.notYourService]);
               //   }
             } else {
-              next([Strings.serviceFail.invalidService]);
+              next('The required id is invalid.');
             }
           })
           .catch(err => next([err]));
       } else {
-        next(result.array());
+        next('The required id is invalid.');
       }
     })
     .catch(err => next([err]));
@@ -154,11 +154,11 @@ router.post('/deleteBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next
           .exec()
           .then((business) => {
             if (business) {
-              if (`${business._business}` === `${req.user._id}`) {
+            //   if (`${business._business}` === `${req.user._id}`) {
                 const image = business.gallery
                   .find(element => `${element._id}` === `${req.params.im_id}`);
                 if (!image) {
-                  next([Strings.serviceFail.imageNotFound]);
+                  next('Not a valid image');
                 } else {
                   const newGallery = business.gallery
                     .filter(element => `${element._id}` !== `${req.params.im_id}`);
@@ -171,16 +171,16 @@ router.post('/deleteBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next
                     })
                     .catch(saveErr => next([saveErr]));
                 }
-              } else {
-                next([Strings.serviceFail.notYourService]);
-              }
+            //   } else {
+            //     next([Strings.serviceFail.notYourService]);
+            //   }
             } else {
-              next([Strings.serviceFail.invalidService]);
+              next('The required id is invalid');
             }
           })
           .catch(err => next([err]));
       } else {
-        next(result.array());
+        next('The required id is invalid');
       }
     })
     .catch(err => next([err]));

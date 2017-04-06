@@ -16,14 +16,13 @@ describe('Business Gallery CRUD Tests', () => {
   let token;
   let sampleBusiness;
   let dbBusiness;
-  before((done) => {
+  beforeEach((done) => {
     Business.collection.drop(() => {
       Business.ensureIndexes(() => {
         sampleBusiness = BusinessesSeed[4];
         new Business(sampleBusiness)
           .save()
           .then((data) => {
-            sampleBusiness._id = data._id;
             dbBusiness = data;
             req = supertest(app)
               .post('/api/v1/business/auth/verified/login')
@@ -35,12 +34,6 @@ describe('Business Gallery CRUD Tests', () => {
           })
           .catch(done);
       });
-    });
-  });
-
-  beforeEach((done) => {
-    Business.collection.drop(() => {
-      Business.ensureIndexes(done);
     });
   });
 
@@ -56,75 +49,70 @@ describe('Business Gallery CRUD Tests', () => {
   I6MTQ5MTQ3ODg4NCwiZXhwIjoxNDkyMzQyODg0fQ.p_quye6tWd4755F_cGmRNfW7r_wlRQQvfSHB6fi61ow"
 }
      */
-    new Business(sampleBusiness)
-      .save()
-      .then((savedBus) => {
-        // console.log(savedBus);
-        req = supertest(app)
-          .post(`/api/v1/business/gallery/addBusinessImage/${savedBus._id}`)
-          .field('description', 'sample Image Description')
-          .attach('path', '/home/youssef/Pictures/abc.png')
-          .set('Authorization', `JWT ${token}`)
-          .expect('Content-Type', /json/)
-          .expect(200)
-          .end((err, result) => {
-            // console.log(2);
-            if (err) {
-              //  console.log(err);
+
+    // console.log(savedBus);
+    req = supertest(app)
+      .post(`/api/v1/business/gallery/addBusinessImage/${dbBusiness._id}`)
+      .field('description', 'sample Image Description')
+      .attach('path', '/home/youssef/Pictures/abc.png')
+      .set('Authorization', `JWT ${token}`)
+      .expect('Content-Type', /json/)
+      // .expect(200)
+      .end((err, result) => {
+        // console.log(2);
+        if (err) {
+          console.log(err);
+          done(err);
+        } else {
+          Business.findOne({
+            _id: dbBusiness._id,
+          })
+            .exec()
+            .then((data) => {
+              console.log(data);
+              console.log(result.body);
+              chai.expect(data.gallery.length)
+                .to.equal(1);
+              chai.expect(result.body.message)
+                .to.equal('Image added successfully!');
+              done();
+            })
+            .catch(() => {
+              console.log(err);
               done(err);
-            } else {
-              Business.findOne({
-                _id: savedBus._id,
-              })
-                .exec()
-                .then((data) => {
-                  console.log(data);
-                  chai.expect(data.gallery.length)
-                    .to.equal(1);
-                  chai.expect(result.body.message)
-                    .to.equal('Image added successfully!');
-                  done();
-                })
-                .catch(() => done(err));
-            }
-          });
-      })
-      .catch(err => done(err));
+            });
+        }
+      });
   });
 
   it('should not create an image if an invalid id is given, and return error message: Business not found!', (done) => {
     //  const sampleService = ServiceSeed[0];
     //  sampleService._business = dbBusiness._id;
-    new Business(sampleBusiness)
-      .save()
-      .then((savedBus) => {
-        req = supertest(app)
-          .post('/api/v1/business/gallery/addBusinessImage/1x')
-          .field('description', 'sample Image Description')
-          .attach('path', '/home/youssef/Pictures/abc.png')
-          .set('Authorization', `JWT ${token}`)
-          .expect(400)
-          .end((err, res) => {
-            if (err) {
-              done(err);
+    req = supertest(app)
+      .post('/api/v1/business/gallery/addBusinessImage/1x')
+      .field('description', 'sample Image Description')
+      .attach('path', '/home/youssef/Pictures/abc.png')
+      .set('Authorization', `JWT ${token}`)
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          chai.expect(res.body.error)
+            .to.equal('The required id is invalid.');
+          Business.findOne({
+            _id: dbBusiness._id,
+          }, (finderr, data) => {
+            if (finderr) {
+              done(finderr);
             } else {
-              chai.expect(res.body.error)
-                .to.equal('The required id is invalid.');
-              Business.findOne({
-                _id: savedBus._id,
-              }, (finderr, data) => {
-                if (finderr) {
-                  done(finderr);
-                } else {
-                  chai.expect(data.gallery.length)
-                    .to.equal(0);
-                  done();
-                }
-              });
+              chai.expect(data.gallery.length)
+                .to.equal(0);
+              done();
             }
           });
-      })
-      .catch(err => done(err));
+        }
+      });
   });
 
 
@@ -133,27 +121,30 @@ describe('Business Gallery CRUD Tests', () => {
       path: 'sampleImagePath',
       description: 'sample Image Description',
     });
-    sampleBusiness.gallery.push(newImage);
-    new Business(sampleBusiness)
-      .save()
-      .then((newser) => {
-        const newim = newser.gallery.find(element => `${element.path}` === 'sampleImagePath');
+    dbBusiness.gallery.push(newImage);
+    dbBusiness.save()
+      .then((newbus) => {
+        const newim = newbus.gallery.find(element => `${element.path}` === 'sampleImagePath');
+        console.log(newim);
         req = supertest(app)
-          .post(`/api/v1/business/gallery/editBusinessImage/${newser._id}/${newim._id}`)
+          .post(`/api/v1/business/gallery/editBusinessImage/${dbBusiness._id}/${newim._id}`)
           .set('Authorization', `JWT ${token}`)
           .send({
             description: 'API Description is working',
           })
-          .expect(200)
+            .expect(200)
           .end((err, res) => {
             if (err) {
+              console.log(err);
               done(err);
             } else {
+              console.log('searching');
               Business.findOne({
-                _id: newser._id,
+                _id: dbBusiness._id,
               })
                 .exec()
                 .then((data) => {
+                  console.log(res.body);
                   chai.expect(res.body.message)
                     .to.equal(Strings.serviceSuccess.imageEdit);
                   const chaiImage =
@@ -173,13 +164,13 @@ describe('Business Gallery CRUD Tests', () => {
       path: 'sampleImagePath',
       description: 'sample Image Description',
     });
-    sampleBusiness.gallery.push(newImage);
-    new Business(sampleBusiness)
-      .save()
-      .then((newser) => {
-        const newim = newser.gallery.find(element => `${element.path}` === 'sampleImagePath');
+    dbBusiness.gallery.push(newImage);
+    dbBusiness.save()
+      .then((newbus) => {
+        const newim = newbus.gallery.find(element => `${element.path}` === 'sampleImagePath');
+        console.log(newim);
         req = supertest(app)
-          .post(`/api/v1/business/deleteBusinessImage/${newser._id}/${newim._id}`)
+          .post(`/api/v1/business/gallery/deleteBusinessImage/${dbBusiness._id}/${newim._id}`)
           .set('Authorization', `JWT ${token}`)
           .expect(200)
           .end((err, res) => {
@@ -187,17 +178,18 @@ describe('Business Gallery CRUD Tests', () => {
               done(err);
             } else {
               Business.findOne({
-                _id: newser._id,
+                _id: dbBusiness._id,
               })
                 .exec()
                 .then((data) => {
+                  console.log(res.body);
                   chai.expect(res.body.message)
                     .to.equal(Strings.serviceSuccess.imageDelete);
                   chai.expect(data.gallery.length)
                     .to.equal(0);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(err2 => done(err2));
             }
           });
       })
