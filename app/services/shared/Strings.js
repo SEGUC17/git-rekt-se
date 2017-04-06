@@ -63,6 +63,7 @@ const businessConfirmation = {
   confirmed: 'Business confirmed successfully!',
   denied: 'Business request denied.',
   alreadyDenied: 'Business was already rejected.',
+  pending: 'Business has already been sent an email',
 };
 const businessMessages = {
   allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',

@@ -104,18 +104,18 @@ exports.forgotPasswordEmail = (email, host, resetToken) => {
   });
 };
 
-exports.notifyBusinessOfConfirmation = (host, mail) => {
+exports.notifyBusinessOfConfirmation = (host, mail, token) => {
   const emailContent = {
     from: info.from,
     to: mail,
     subject: 'Git Rekt Application Accepted',
     text: `
-       ${'Hello,\n' +
-       'Your application for our directory [Git-Rekt] has been Accepted.\n\n' +
-       'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-       'http://'}${host}/confirm/signup\n\n` +
-      '--------------------------------- ' +
-      'This is an automated message.',
+       Hello,
+       Your application for our directory [Git-Rekt] has been Accepted.\n\n 
+       Please click on the following link, or paste this into your browser to complete the process:
+       http://${host}/confirm/signup/${token}
+      ---------------------------------
+      This is an automated message.`,
   };
   return new Promise((resolve, reject) => {
     mailer.sendMail(emailContent, (err, information) => {

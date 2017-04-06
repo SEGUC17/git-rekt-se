@@ -1,14 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const expressValidator = require('express-validator');
+
+const businessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 const Business = require('../../../../models/business/Business');
 const AdminAuth = require('../../../../services/shared/jwtConfig')
   .adminAuthMiddleware;
 const AdminValidator = require('../../../../services/shared/validation');
 const Strings = require('../../../../services/shared/Strings');
 const Mailer = require('../../../../services/shared/Mailer');
-const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
-
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -21,6 +22,7 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
+        console.log(11);
         const search = {
           _id: req.params.id,
           _deleted: false,
@@ -29,23 +31,29 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
           .exec()
           .then((business) => {
             if (business) {
-              if (business._status === 'verified') {
-                next([Strings.businessConfirmation.alreadyConfirmed]);
+              if (!business) {
+                next([Strings.businessMessages.businessDoesntExist]);
+              } else if (business._status === 'pending') {
+                next([Strings.businessConfirmation.pending]);
               } else if (business._status === 'rejected') {
                 next([Strings.businessConfirmation.alreadyDenied]);
               } else {
-                business._status = 'verified';
-                business.save()
-                  .then(() => {
-                    Mailer.notifyBusinessOfConfirmation(req.hostname, business.email)
+                console.log(22);
+                businessAuthenticator.generateSignUpToken(business.email)
+                  .then((token) => {
+                    console.log(token);
+                    Mailer.notifyBusinessOfConfirmation(req.hostname, business.email, token)
                       .then(() => {
-                        res.json({
+                        console.log(33);
+                        business._status = 'pending';
+                        business.save(() => res.json({
                           message: Strings.businessConfirmation.confirmed,
-                        });
+                        }))
+                          .catch(err => next([err]));
                       })
                       .catch(err => next([err]));
                   })
-                  .catch(saveErr => next([saveErr]));
+                  .catch(err => next([err]));
               }
             } else {
               res.json({
@@ -79,16 +87,18 @@ router.post('/deny/:id', AdminAuth, (req, res, next) => {
               } else if (business._status === 'verified') {
                 next([Strings.businessConfirmation.alreadyConfirmed]);
               } else {
-                business._status = 'rejected';
-                business.save()
+                Mailer.notifyBusinessOfDenial(business.email)
                   .then(() => {
-                    Mailer.notifyBusinessOfDenial(business.email)
-                      .then(() => res.json({
-                        message: Strings.businessConfirmation.denied,
-                      }))
+                    business._status = 'rejected';
+                    business.save()
+                      .then(() => {
+                        res.json({
+                          message: Strings.businessConfirmation.denied,
+                        });
+                      })
                       .catch(err => next([err]));
                   })
-                  .catch(saveErr => next([saveErr]));
+                  .catch(err => next([err]));
               }
             } else {
               res.json({
@@ -101,7 +111,7 @@ router.post('/deny/:id', AdminAuth, (req, res, next) => {
         next(result.array());
       }
     })
-.catch(err => next([err]));
+    .catch(err => next([err]));
 });
 
 /**
