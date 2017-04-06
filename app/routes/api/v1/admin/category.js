@@ -20,7 +20,7 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, '/home/youssef/git-rekt-se/app/public');
+    cb(null, path.join(__dirname, '../../../../public/uploads'));
   },
   filename(req, file, cb) {
     const buf = crypto.randomBytes(16);

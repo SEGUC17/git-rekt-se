@@ -3,6 +3,7 @@
  */
 
 const chai = require('chai');
+const path = require('path');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Category = require('../../../app/models/service/Category');
@@ -18,8 +19,6 @@ describe('Category CRUD Test Suite', () => {
   let token;
 
   before((done) => {
-    console.log('I create a dummy admin and login.');
-    console.log('I also drop the category collection before each test.');
     sampleAdmin = new Admin({
       email: 'abdobassiony996@hotmail.com',
       password: 'Strong#1234',
@@ -53,15 +52,16 @@ describe('Category CRUD Test Suite', () => {
 
   it('should add a category and return a confirmation message: Category added succesfully!', (done) => {
     req = supertest(app)
-      .post('/api/v1/admin/Category/addCategory')
+      .post('/api/v1/admin/category/add')
       .field('type', 'Business')
       .field('title', 'Sample Title')
-      .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+      .attach('icon', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
       .set('Authorization', `JWT ${token}`)
       .end((err2, res) => {
         if (err2) {
           done(err2);
         } else {
+          console.log(res.body);
           chai.expect(res.body.message)
             .to.equal('Category added succesfully!');
           Category.findOne({
@@ -77,17 +77,17 @@ describe('Category CRUD Test Suite', () => {
 
   it('should not add a category and return an error message about type', (done) => {
     req = supertest(app)
-      .post('/api/v1/admin/Category/addCategory')
+      .post('/api/v1/admin/category/add')
       .field('type', 'bla')
       .field('title', 'Sample Title')
-      .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+      .attach('icon', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
       .set('Authorization', `JWT ${token}`)
       .expect(400)
       .end((err2, res2) => {
         if (err2) {
           done(err2);
         } else {
-          chai.expect(res2.body.errors.message)
+          chai.expect(res2.body.errors[0])
             .to.equal('Category validation failed');
           Category.count((err3, c) => {
             if (err3) {
@@ -113,10 +113,10 @@ describe('Category CRUD Test Suite', () => {
         done(err);
       } else {
         req = supertest(app)
-          .post(`/api/v1/admin/category/editCategory/${newcat._id}`)
+          .post(`/api/v1/admin/category/edit/${newcat._id}`)
           .field('type', 'Business')
           .field('title', '3ala2')
-          .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+          .attach('icon', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
           .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
@@ -140,6 +140,7 @@ describe('Category CRUD Test Suite', () => {
       }
     });
   });
+
   it('should not edit a category and return an error message', (done) => {
     const newCategory = new Category({
       type: 'Business',
@@ -151,16 +152,16 @@ describe('Category CRUD Test Suite', () => {
         done(err);
       } else {
         req = supertest(app)
-          .post(`/api/v1/admin/category/editCategory/${newcat._id}`)
+          .post(`/api/v1/admin/category/edit/${newcat._id}`)
           .field('type', 'bla')
           .field('title', '3ala2')
-          .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+          .attach('icon', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
           .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
               done(err2);
             } else {
-              chai.expect(res.body.errors.message)
+              chai.expect(res.body.errors[0])
                 .to.equal('Category validation failed');
               Category.findOne({
                 _id: `${newcat._id}`,
@@ -178,6 +179,7 @@ describe('Category CRUD Test Suite', () => {
       }
     });
   });
+
   it('should not edit a category and return an error message', (done) => {
     const newCategory = new Category({
       type: 'Business',
@@ -189,15 +191,15 @@ describe('Category CRUD Test Suite', () => {
         done(err);
       } else {
         req = supertest(app)
-          .post(`/api/v1/admin/category/editCategory/${newcat._id}`)
+          .post(`/api/v1/admin/category/edit/${newcat._id}`)
           .field('type', 'Business')
-          .attach('icon', '/home/youssef/git-rekt-se/app/public/abc.jpg')
+          .attach('icon', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
           .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
               done(err2);
             } else {
-              chai.expect(res.body.errors.message)
+              chai.expect(res.body.errors[0])
                 .to.equal('Category validation failed');
               Category.findOne({
                 _id: `${newcat._id}`,
@@ -215,6 +217,7 @@ describe('Category CRUD Test Suite', () => {
       }
     });
   });
+
   it('should delete a category and return a confirmation message', (done) => {
     const newCategory = new Category({
       type: 'Business',
@@ -226,7 +229,7 @@ describe('Category CRUD Test Suite', () => {
         done(err);
       } else {
         req = supertest(app)
-          .post(`/api/v1/admin/category/deleteCategory/${newcat._id}`)
+          .post(`/api/v1/admin/category/delete/${newcat._id}`)
           .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
@@ -248,15 +251,16 @@ describe('Category CRUD Test Suite', () => {
       }
     });
   });
+
   it('should not delete a category and return an error message', (done) => {
     req = supertest(app)
-      .post('/api/v1/admin/category/deleteCategory/4')
+      .post('/api/v1/admin/category/delete/4')
       .set('Authorization', `JWT ${token}`)
       .end((err2, res) => {
         if (err2) {
           done(err2);
         } else {
-          chai.expect(res.body.errors.message)
+          chai.expect(res.body.errors[0])
             .to.equal('Cast to ObjectId failed for value "4" at path "_id" for model "Category"');
           Category.count((err3, c) => {
             if (err3) {
