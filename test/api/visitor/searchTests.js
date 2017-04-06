@@ -261,13 +261,11 @@ describe('Search Test Suite', () => {
         if (err) {
           return done(err);
         }
-
-        chai.expect(res.count)
-          .to.equal(22);
+        chai.expect(res.body.count)
+          .to.equal(21);
 
         chai.expect(res.body.results.length)
           .to.equal(10);
-
 
         return done();
       });

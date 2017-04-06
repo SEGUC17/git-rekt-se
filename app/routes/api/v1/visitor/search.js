@@ -63,11 +63,11 @@ router.get('/', (req, res, next) => {
       },
     });
   }
-  // Query to execute
-  const fullQuery = Service
-    .find(mongooseQuery);
+
   // Executing
-  fullQuery.count()
+  Service
+    .find(mongooseQuery)
+    .count()
     .exec()
     .then((cnt) => {
       if (cnt === 0) {
@@ -75,19 +75,21 @@ router.get('/', (req, res, next) => {
         return;
       }
       output.count = cnt;
-      fullQuery.populate([{
-        path: '_business',
-        match: {
-          _deleted: false,
-        },
-        select: 'name',
-      }, {
-        path: 'categories',
-        match: {
-          _deleted: false,
-        },
-        select: 'type',
-      }])
+      Service
+        .find(mongooseQuery)
+        .populate([{
+          path: '_business',
+          match: {
+            _deleted: false,
+          },
+          select: 'name',
+        }, {
+          path: 'categories',
+          match: {
+            _deleted: false,
+          },
+          select: 'type',
+        }])
         .select('name shortDescription _business _avgRating categories coverImage')
         .skip(offset * 10)
         .limit(10)
