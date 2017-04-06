@@ -48,6 +48,3 @@ jspm_packages
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-# Uploads
-uploads
