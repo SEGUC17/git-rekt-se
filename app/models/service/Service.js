@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const Offering = require('../service/Offering');
+
 const Schema = mongoose.Schema;
 
 /**
@@ -13,6 +15,7 @@ const serviceSchema = Schema({
   },
   shortDescription: {
     type: String,
+    required: true,
   },
   description: {
     type: String,
@@ -39,10 +42,9 @@ const serviceSchema = Schema({
     ref: 'Branch',
     required: true,
   }],
-  offerings: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Offering',
-  }],
+  offerings: {
+    type: [Offering.offeringSchema],
+  },
   reviews: [{
     type: Schema.Types.ObjectId,
     ref: 'Review',
