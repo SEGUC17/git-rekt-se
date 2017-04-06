@@ -59,42 +59,6 @@ router.use(expressValidator({}));
  * Business create a service
  */
 
-router.get('/test', (req, res, next) => {
-  const business1 = new Business({
-    name: 'kojak',
-    email: 'kojak@gmail.com',
-    password: '12345678',
-    _status: 'verified',
-    shortDescription: 'zft',
-  });
-
-  business1.save()
-    .then((newbusiness) => {
-      const branch1 = new Branch({
-        _business: newbusiness._id,
-        location: 'Tagamo3',
-      });
-      branch1.save()
-        .then((newbranch) => {
-          business1.branches = [branch1._id];
-          business1.save()
-            .then(branch2 => res.json({
-              message: 'database updated',
-            }))
-            .catch(e => next([e]));
-        })
-        .catch(e => next([e]));
-    })
-    .catch(e => next(e));
-});
-
-router.get('/testt', (req, res, next) => {
-  Category.insertMany(categories).then(docs => res.json({
-    message: 'database2 updated',
-  })).catch(e => next(e));
-});
-
-
 router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req, res, next) => {
   /**
    * Form validation
