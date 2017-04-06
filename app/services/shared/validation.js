@@ -258,14 +258,12 @@ const businessEditValidation = {
  */
 
 const createReviewValidation = {
-  id: {
-    in: 'params',
+  id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidService,
     },
   },
-  rating: {
-    in: 'body',
+  rating: { in: 'body',
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
     },
@@ -273,20 +271,17 @@ const createReviewValidation = {
 };
 
 const updateReviewValidation = {
-  id: {
-    in: 'params',
+  id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidService,
     },
   },
-  review_id: {
-    in: 'params',
+  review_id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidReview,
     },
   },
-  rating: {
-    in: 'body',
+  rating: { in: 'body',
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
     },
@@ -294,14 +289,12 @@ const updateReviewValidation = {
 };
 
 const deleteReviewValidation = {
-  id: {
-    in: 'params',
+  id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidService,
     },
   },
-  review_id: {
-    in: 'params',
+  review_id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidReview,
     },
@@ -328,6 +321,14 @@ const adminLoginValidation = {
     matches: {
       options: [/^(?=.*\d).{8,15}$/],
       errorMessage: adminValidationErrors.invalidPassword,
+    },
+  },
+};
+
+const adminConfirmBusinessValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidBusinessID,
     },
   },
 };
@@ -374,6 +375,7 @@ const validation = {
   businessResetPasswordValidation,
   visitorValidation,
   businessEditInfoValidation,
+  adminConfirmBusinessValidation,
   businessAddValidation,
   businessEditValidation,
   createReviewValidation,
