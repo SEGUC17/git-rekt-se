@@ -52,7 +52,6 @@ module.exports = (app) => {
   /**
    * Service Routes.
    */
-
   app.use('/api/v1/service', ReviewCRUDAPI);
   app.use('/api/v1/service', ServiceGalleryAPI);
 };
