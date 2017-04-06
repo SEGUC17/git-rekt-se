@@ -94,6 +94,9 @@ const clientSuccess = {
   logout: 'You have been logged out.',
 };
 
+const serviceFailure = {
+  serviceNotFound: 'The specified service was not found.',
+};
 
 const clientForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
@@ -181,6 +184,7 @@ module.exports = {
   clientLoginMessages,
   clientConfirmation,
   bussinessValidationErrors,
+  serviceFailure,
   businessSuccess,
   clientForgotPassword,
   businessLoginMessages,

@@ -81,4 +81,13 @@ module.exports = [{
     location: locations[1],
     address: 'Some Address Here',
   }],
+}, {
+  name: 'Balabizo',
+  email: 'test@gmail.com',
+  shortDescription: 'This item is for testing the Business SignUp API',
+  phoneNumbers: ['01112345677', '01122222222', '01132414553'],
+  password: 'blahblah',
+  confirmPassword: 'blahblah',
+  description: 'This is for testing the API',
+  workingHours: '4AM TO 5AM',
 }];
