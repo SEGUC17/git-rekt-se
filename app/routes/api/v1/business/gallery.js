@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const crypto = require('crypto');
-const Service = require('../../../../models/service/Service');
 const validationSchemas = require('../../../../services/shared/validation');
 const BusinessAuth = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
@@ -38,47 +37,32 @@ const upload = multer({
 });
 
 /*
-Service Image CRUD section
+Business Image Create
 */
 
-/*
-Service Image Create
-*/
-
-router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, res, next) => { // ensureauthenticated
-  console.log('entering post...');
+router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, res, next) => {
   req.checkParams(validationSchemas.businessAddImageValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        console.log('result not empty');
         Business.findOne({
           _id: req.params.id,
         })
           .exec()
           .then((business) => {
             if (business) {
-              /* check whether logged in business matches the service provider.*/
-              console.log(4);
-              // if (`${business._id}` === `${req.user._id}`) {
               const image = ({
                 path: req.file.filename,
                 description: req.body.description,
               });
-              console.log(5);
               business.gallery.push(image);
-              console.log(6);
               business.save()
                 .then(() => {
-                  console.log(7);
                   res.json({
                     message: 'Image added successfully!',
                   });
                 })
                 .catch(saveErr => next([saveErr]));
-              //   } else {
-              //     next([Strings.serviceFail.notYourService]);
-              //   }
             } else {
               next(['The required id is invalid.']);
             }
@@ -95,7 +79,7 @@ router.post('/addBusinessImage/:id', BusinessAuth, upload.single('path'), (req, 
 /*
 Service Image Update
 */
-router.post('/editBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) => { // ensureauthenticated
+router.post('/editBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) => {
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -106,28 +90,21 @@ router.post('/editBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) 
           .exec()
           .then((business) => {
             if (business) {
-              console.log(1);
-              //   if (`${business.id}` === `${req.ser._id}`) {
               const image = business.gallery
                 .find(element => `${element._id}` === `${req.params.im_id}`);
               if (!image) {
                 next([Strings.serviceFail.imageNotFound]);
               } else {
-                console.log(2);
                 const newDescr = req.body.description;
                 image.description = newDescr;
                 business.save()
                   .then(() => {
-                    console.log(3);
                     res.json({
                       message: 'Image edited successfully',
                     });
                   })
                   .catch(saveErr => next([saveErr]));
               }
-              //   } else {
-              //     next([Strings.serviceFail.notYourService]);
-              //   }
             } else {
               next('The required id is invalid.');
             }
@@ -141,9 +118,9 @@ router.post('/editBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) 
 });
 
 /*
-Service Image Update
+Business Image Update
 */
-router.post('/deleteBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) => { // ensureauthenticated
+router.post('/deleteBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next) => {
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -154,26 +131,22 @@ router.post('/deleteBusinessImage/:ser_id/:im_id', BusinessAuth, (req, res, next
           .exec()
           .then((business) => {
             if (business) {
-            //   if (`${business._business}` === `${req.user._id}`) {
-                const image = business.gallery
-                  .find(element => `${element._id}` === `${req.params.im_id}`);
-                if (!image) {
-                  next('Not a valid image');
-                } else {
-                  const newGallery = business.gallery
-                    .filter(element => `${element._id}` !== `${req.params.im_id}`);
-                  business.gallery = newGallery;
-                  business.save()
-                    .then(() => {
-                      res.json({
-                        message: Strings.serviceSuccess.imageDelete,
-                      });
-                    })
-                    .catch(saveErr => next([saveErr]));
-                }
-            //   } else {
-            //     next([Strings.serviceFail.notYourService]);
-            //   }
+              const image = business.gallery
+                .find(element => `${element._id}` === `${req.params.im_id}`);
+              if (!image) {
+                next('Not a valid image');
+              } else {
+                const newGallery = business.gallery
+                  .filter(element => `${element._id}` !== `${req.params.im_id}`);
+                business.gallery = newGallery;
+                business.save()
+                  .then(() => {
+                    res.json({
+                      message: Strings.serviceSuccess.imageDelete,
+                    });
+                  })
+                  .catch(saveErr => next([saveErr]));
+              }
             } else {
               next('The required id is invalid');
             }
