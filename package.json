@@ -54,6 +54,7 @@
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-jwt": "^2.2.1",
+    "stripe": "^4.17.1",
     "vue": "^2.2.6",
     "vue-router": "^2.4.0"
   }

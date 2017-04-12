@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import elementUI from 'element-ui';
 import axios from 'axios';
-import sample from '../../components/sample.vue';
+import header from '../../components/shared/header.vue';
 import router from '../../services/routes.js';
 
 Window.axios = axios;
@@ -14,6 +14,6 @@ new Vue({
   el: '#root',
   router,
   components: {
-    sample,
+    'gr-header': header,
   }
 });
