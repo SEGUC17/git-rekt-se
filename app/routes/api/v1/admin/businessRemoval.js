@@ -4,6 +4,7 @@ const AdminAuth = require('../../../../services/shared/jwtConfig')
   .adminAuthMiddleware;
 const Business = require('../../../../models/business/Business');
 const Service = require('../../../../models/service/Service');
+const Branch = require('../../../../models/service/Branch');
 const Strings = require('../../../../services/shared/Strings.js');
 const errorHandler = require('../../../../services/shared/errorHandler');
 const expressValidator = require('express-validator');
@@ -24,11 +25,19 @@ router.use(bodyParser.json());
 router.post('/delete/:id', AdminAuth, (req, res, next) => {
   /**
    * check for services under this business and delete them first
+   * also delete branches under the service
    */
   let i = 0;
   Service.find({
     _business: req.params.id,
   }, (err, results) => {
+    for (i; i < results.length; i += 1) {
+      results[i].remove();
+    }
+  });
+  Branch.find({
+    _business: req.params.id,
+  }, (err2, results) => {
     for (i; i < results.length; i += 1) {
       results[i].remove();
     }
