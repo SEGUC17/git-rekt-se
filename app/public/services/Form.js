@@ -17,6 +17,7 @@ export default class Form {
   }
 
   /**
+   * Sets the value of a specific attribute.
    * @param {String} key
    * @param {any} value
    *
@@ -30,8 +31,7 @@ export default class Form {
   }
 
   /**
-   *
-   *
+   * Resets the values of this form unless specific attributes were given.
    * @param {Array} keys
    *
    * @memberOf Form
@@ -43,8 +43,7 @@ export default class Form {
   }
 
   /**
-   *
-   *
+   * Returns the data of this form in JSON format.
    * @returns {Object}
    *
    * @memberOf Form
@@ -58,12 +57,14 @@ export default class Form {
   }
 
   /**
+   * Submits this form using the given method and url,
+   * updating the forms state and return a Promise.
    * @param {String} method
    * @param {String} url
-   *
+   * @returns {Promise}
    * @memberOf Form
    */
-  onSubmit(method, url) {
+  submit(method, url) {
     this.errors.clear();
     return new Promise((resolve, reject) => {
       axios[method](url, this.data())
@@ -73,12 +74,13 @@ export default class Form {
         })
         .catch((err) => {
           this.onFailure(err);
-          reject(err.response ? err.response.data : err.message, err);
+          reject(err.response ? err.response.data.errors : err.message, err);
         });
     });
   }
 
   /**
+   * Submits the form to the given url using a GET Request.
    * @param {String} url
    *
    * @memberOf Form
@@ -88,6 +90,7 @@ export default class Form {
   }
 
   /**
+   * Submits the form to the given url using a POST Request.
    * @param {String} url
    *
    * @memberOf Form
@@ -97,6 +100,7 @@ export default class Form {
   }
 
   /**
+   * Submits the form to the given url using a PUT Request.
    * @param {String} url
    *
    * @memberOf Form
@@ -106,6 +110,7 @@ export default class Form {
   }
 
   /**
+   * Submits the form to the given url using a DELETE Request.
    * @param {String} url
    *
    * @memberOf Form
@@ -115,6 +120,7 @@ export default class Form {
   }
 
   /**
+   * Called when request finishes successfully.
    * @param {ResponseSchema} response
    * @see {@link https://github.com/mzabriskie/axios#response-schema}
    * @memberOf Form
@@ -124,13 +130,14 @@ export default class Form {
   }
 
   /**
+   * Called when request finishes with an error.
    * @param {Error} error
    * @see {@link https://github.com/mzabriskie/axios#handling-errors}
    * @memberOf Form
    */
   onFailure(error) {
     if (error.response) {
-      this.errors.append(error.response.data);
+      this.errors.append(error.response.data.errors);
     } else {
       this.errors.append(error.message);
     }

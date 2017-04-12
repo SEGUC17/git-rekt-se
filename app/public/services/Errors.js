@@ -7,20 +7,18 @@ export default class Errors {
    */
   constructor(errors = []) {
     errors.forEach((err) => {
-      if (!this[err.param]) {
-        this[err.param] = [];
-      }
-      this[err.param].push(err.msg);
+      this._add(err);
     }, this);
   }
 
   /**
+   * Adds an error to the current list.
    * @param {String|Array} name
    * @param {String} message
-   *
+   * @throws {TypeError} If name is neither an Array or a String.
    * @memberOf Errors
    */
-  append(name, message = '') {
+  add(name, message = '') {
     if (name instanceof String) {
       if (!this[name]) {
         this[name] = [];
@@ -30,7 +28,7 @@ export default class Errors {
       }
     } else if (name instanceof Array) {
       name.forEach((error) => {
-        this[error.name] = error.msg;
+        this._add(error);
       }, this);
     } else {
       throw new TypeError('"name" must be either an Array or String.');
@@ -38,6 +36,31 @@ export default class Errors {
   }
 
   /**
+   * Adds an error to the current list.
+   * @param {String|Array} error
+   * @throws {TypeError} If error is neither an Array or a String.
+   * @private
+   * @memberOf Errors
+   */
+  _add(error) {
+    if (Object.prototype.hasOwnProperty.call(error, 'msg') &&
+      Object.prototype.hasOwnProperty.call(error, 'param')) {
+      if (!this[error.param]) {
+        this[error.param] = [];
+      }
+      this[error.param].push(error.msg);
+    } else if (error instanceof String) {
+      if (!Object.prototype.hasOwnProperty.call(this, 'serverError')) {
+        this.serverError = [];
+      }
+      this.serverError.push(error);
+    } else {
+      throw new TypeError('Must be either an error thrown by "express-validator" or a String');
+    }
+  }
+
+  /**
+   * Checks if an error for a specific attribute exists.
    * @param {String} name
    * @returns {Boolean}
    *
@@ -48,6 +71,7 @@ export default class Errors {
   }
 
   /**
+   * Retrieves the error list associated with the given attribute.
    * @param {String} name
    * @returns {Array}
    *
@@ -58,6 +82,7 @@ export default class Errors {
   }
 
   /**
+   * Retrieves the first error associated with the given attribute.
    * @param {String} name
    * @returns {String}
    *
@@ -68,6 +93,7 @@ export default class Errors {
   }
 
   /**
+   * Checks if we have any error or no.
    * @returns {Boolean}
    *
    * @memberOf Errors
@@ -78,6 +104,7 @@ export default class Errors {
   }
 
   /**
+   * Removes all errors associated with a given attribute.
    * @param {String} name
    *
    * @memberOf Errors
@@ -87,6 +114,7 @@ export default class Errors {
   }
 
   /**
+   * Clears all errors.
    * @memberOf Errors
    */
   clear() {
