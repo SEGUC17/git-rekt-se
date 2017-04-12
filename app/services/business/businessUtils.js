@@ -6,6 +6,7 @@ const Branch = require('../../models/service/Branch');
  * @param {ObjectId} businessID
  * @returns {Promise}
  */
+
 const addBranches = (branches, businessID) => {
   const resultBranches = branches.map((branch) => {
     const branchData = {

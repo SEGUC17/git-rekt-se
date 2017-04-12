@@ -1,19 +1,22 @@
 /**
- * Express validator schema
+ * Express validator schema.
  */
+
 const locations = require('../../seed/service/locations');
 
 const Strings = require('./Strings');
 
 const clientValidationErrors = Strings.clientValidationErrors;
 const bussinessValidationErrors = Strings.bussinessValidationErrors;
-const visitorValidationErrors = Strings.visitorValidationErrors;
-const adminValidationErrors = Strings.adminValidationErrors;
 const serviceValidationErrors = Strings.serviceValidationErrors;
+const serviceValidationCRUDErrors = Strings.serviceValidationCRUDErrors;
+const offeringValidationErrors = Strings.offeringValidationError;
+const adminValidationErrors = Strings.adminValidationErrors;
+const visitorValidationErrors = Strings.visitorValidationErrors;
 const reviewErrors = Strings.reviewErrors;
 
 /**
- * Client validation
+ * Client validation.
  */
 
 const businessValidationErrors = require('../shared/Strings')
@@ -103,7 +106,23 @@ const verifiedBusinessValidator = {
       errorMessage: businessValidationErrors.workingHoursRequired,
     },
   },
+  description: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.emptyDescription,
+    },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.categoriesRequired,
+    },
+  },
+  branches: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.branchesRequired,
+    },
+  },
 };
+
 const clientLoginValidation = {
   email: {
     notEmpty: {
@@ -125,7 +144,7 @@ const clientLoginValidation = {
 };
 
 /**
- * Business validation
+ * Business validation.
  */
 
 const businessSignupValidation = {
@@ -195,6 +214,67 @@ const businessLoginValidation = {
   },
 };
 
+/**
+ * Service CRUD Validation.
+ */
+
+const serviceCreateValidation = {
+  name: {
+    notEmpty: {
+      errorMessage: serviceValidationCRUDErrors.emptyName,
+    },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: serviceValidationCRUDErrors.emptyShortDescription,
+    },
+  },
+};
+
+const offeringCreateValidationBody = {
+  price: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyPrice,
+    },
+  },
+  startDate: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyStartDate,
+    },
+  },
+  endDate: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyEndDate,
+    },
+  },
+  branch: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidBranchID,
+    },
+  },
+};
+
+const ServiceCreateValidationParams = {
+  id: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidServiceID,
+    },
+  },
+};
+
+
+const offeringEditValidationParmas = {
+  id1: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidServiceID,
+    },
+  },
+  id2: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidOfferingID,
+    },
+  },
+};
 const businessResetPasswordValidation = {
   password: {
     notEmpty: {
@@ -211,6 +291,10 @@ const businessResetPasswordValidation = {
     },
   },
 };
+
+/**
+ * Visitor validation.
+ */
 
 const visitorValidation = {
   id: {
@@ -272,7 +356,7 @@ const businessEditValidation = {
 };
 
 /**
- * Review Validation
+ * Review Validation.
  */
 
 const createReviewValidation = {
@@ -320,7 +404,7 @@ const deleteReviewValidation = {
 };
 
 /**
- * Administrator validation
+ * Administrator validation.
  */
 
 const adminLoginValidation = {
@@ -342,6 +426,7 @@ const adminLoginValidation = {
     },
   },
 };
+
 const businessAddImageValidation = {
   id: {
     isMongoId: {
@@ -364,7 +449,7 @@ const businessEditImageValidation = {
 };
 
 /**
- * Client validation
+ * Client validation.
  */
 
 const serviceAddImageValidation = {
@@ -436,6 +521,11 @@ const validation = {
   adminLoginValidation,
   businessSignupValidation,
   businessLoginValidation,
+
+  serviceCreateValidation,
+  offeringCreateValidationBody,
+  ServiceCreateValidationParams,
+  offeringEditValidationParmas,
   businessResetPasswordValidation,
   visitorValidation,
   businessEditInfoValidation,

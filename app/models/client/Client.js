@@ -3,6 +3,10 @@ const bcrypt = require('bcrypt-nodejs');
 
 const Schema = mongoose.Schema;
 
+/**
+ * Client Schema.
+ */
+
 const clientSchema = Schema({
   _facebookId: {
     type: String,

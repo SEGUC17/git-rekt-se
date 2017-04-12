@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 /**
- * Review Schema
+ * Review Schema.
  */
 
 const reviewSchema = mongoose.Schema({

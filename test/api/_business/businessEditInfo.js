@@ -30,11 +30,6 @@ describe('Should update business information correctly', () => {
   let req;
   let token;
 
-
-  // before((done) => {
-
-  // });
-
   beforeEach((done) => {
     Business.collection.drop(() => {
       Business.ensureIndexes(() => {

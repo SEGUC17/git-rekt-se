@@ -7,7 +7,7 @@ const Admin = require('../../../app/models/admin/Admin');
 const unverifiedBussiness = require('../../../app/seed/business/unverifiedBusinessSeed');
 
 /**
- * Business Signup Suite
+ * Business Signup Suite.
  */
 
 describe('Unverified Business Signup API', () => {
@@ -36,7 +36,7 @@ describe('Unverified Business Signup API', () => {
     const business1 = unverifiedBussiness[0];
     req.send(business1)
       .expect('Content-Type', /json/)
-      // .expect(200)
+      .expect(200)
       .end((err, res) => {
         /**
          * Error happend with request, fail the test
@@ -291,6 +291,10 @@ describe('Business Login API', () => {
       }, done);
   });
 });
+
+/**
+ * Business Logout Suite.
+ */
 
 describe('Business Logout API', () => {
   it('should add token to invalid tokens', (done) => {

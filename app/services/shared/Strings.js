@@ -66,10 +66,11 @@ const businessConfirmation = {
   alreadyDenied: 'Business was already rejected.',
   pending: 'Business has already been sent an email',
 };
+
 const businessMessages = {
   allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
   businessDoesntExist: 'Business Doesn\'t Exist',
-  branchDoesntExist: 'Business Doesn\'t Exist',
+  branchDoesntExist: 'Branch Doesn\'t Exist',
   mismatchID: 'You can only edit your Info!',
   alreadyVerified: 'You have already completed your sign up process',
   alreadyRejected: 'An Admin has rejected your sign up',
@@ -111,6 +112,12 @@ const serviceSuccess = {
   imageAdd: 'Image added successfully!',
   imageEdit: 'Description updated succesfully!',
   imageDelete: 'Image deleted succesfully!',
+  serviceAdded: 'Service has been added successfully to your business',
+  serviceEdited: 'Service has been edited successfully to your business',
+  serviceDeleted: 'Service has been deleted successfully',
+  offeringAdded: 'Offering has been added successfully to your business',
+  offeringEdited: 'Offering has been edited successfully to your business',
+  offeringDeleted: 'Offering has been deleted successfully',
 };
 
 const serviceFailure = {
@@ -196,6 +203,33 @@ const businessForgotPassword = {
 };
 
 /**
+ * Service Strings
+ */
+
+const serviceValidationCRUDErrors = {
+  emptyName: 'Service Name is a required field',
+  emptyShortDescription: 'Service short description is a required field',
+  invalidCategory: 'No such a category',
+};
+
+const offeringValidationError = {
+  emptyPrice: 'Offering Price is a required field',
+  emptyStartDate: 'Offering Start Date is a required field',
+  invalidStartDate: 'Invalid Start Date',
+  emptyEndDate: 'Offering End Date is a required field',
+  invalidEndDate: 'Invalid End Date',
+  emptyLocation: 'Location is a required field',
+  invalidBranchID: 'Branch is invalid',
+  invalidServiceID: 'Service is invalid',
+  invalidService: 'No such a service',
+  invalidOperation: 'Not authorized for doing such an operation',
+  invalidBranch: 'Your business doesnot have this branch',
+  invalidOfferingID: 'Offering is invalid',
+  invalidOffering: 'No such offering',
+};
+
+
+/**
  * Admin Strings
  */
 
@@ -225,29 +259,44 @@ const adminSuccess = {
   categoryDeleted: 'Category deleted succesfully!',
 };
 
+/**
+ * Search Strings
+ */
+
+const searchErrors = {
+  emptySearchResult: 'No search results match the query.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
   clientSuccess,
   clientLoginMessages,
   clientConfirmation,
+  clientForgotPassword,
+
   clientVerfication,
   bussinessValidationErrors,
   serviceFailure,
   businessSuccess,
-  clientForgotPassword,
+
   businessLoginMessages,
   serviceSuccess,
   serviceValidationErrors,
   businessConfirmation,
   businessInformationChanged,
   businessForgotPassword,
+
   adminLoginMessages,
   adminValidationErrors,
   visitorErrors,
   visitorValidationErrors,
   businessMessages,
+
+  serviceValidationCRUDErrors,
+  offeringValidationError,
   reviewErrors,
   reviewSuccess,
   adminSuccess,
+  searchErrors,
 };

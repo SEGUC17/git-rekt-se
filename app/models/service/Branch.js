@@ -4,7 +4,7 @@ const locations = require('../../seed/service/locations');
 const Schema = mongoose.Schema;
 
 /**
- * Branch Schema
+ * Branch Schema.
  */
 
 const branchSchema = Schema({
