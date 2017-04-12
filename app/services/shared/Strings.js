@@ -106,6 +106,7 @@ const clientSuccess = {
   editInformation: 'Your information has been updated successfully.',
   editInformationWithEmail: 'Your information has been updated successfully. An email has been sent to your new email for the email confirmation.',
   logout: 'You have been logged out.',
+  reviewReported: 'Review reported successfully!',
 };
 
 const serviceSuccess = {
@@ -257,8 +258,8 @@ const adminSuccess = {
   categoryAdded: 'Category added succesfully!',
   categoryEdited: 'Category edited succesfully!',
   categoryDeleted: 'Category deleted succesfully!',
-  clientDeleted: 'Client removed succesfully',
-  businessDeleted: 'Business removed succesfully',
+  clientDeleted: 'Client removed successfully!',
+  businessDeleted: 'Business removed successfully!',
 };
 
 /**

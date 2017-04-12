@@ -22,6 +22,11 @@ const reviewSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  reports: [{
+    description: {
+      type: String,
+    },
+  }],
 });
 
 module.exports = mongoose.model('Review', reviewSchema);

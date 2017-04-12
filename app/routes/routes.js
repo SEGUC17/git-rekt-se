@@ -35,6 +35,7 @@ module.exports = (app) => {
 
   app.use('/api/v1/client/auth', ClientAuthAPI);
   app.use('/api/v1/client/profile', ClientProfileAPI);
+  app.use('/api/v1/client/review', ClientReviewAPI);
 
   /**
    * Business Routes.
