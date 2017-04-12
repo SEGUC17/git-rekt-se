@@ -14,7 +14,8 @@ const mix = require('laravel-mix');
 mix
   .js('./public/src/assets/js/app.js', './public/dist/assets/js')
   .js('./public/src/services/routes.js', './public/dist/services')
-  .copy('./public/src/assets/css', './public/dist/assets/css')
+  .copy('./public/src/assets/css', './public/dist/assets/css/', false)
+  .copy('./public/src/assets/css/element-theme/fonts', './public/dist/assets/css/fonts', false)
   .copy('./public/src/assets/imgs', './public/dist/assets/imgs')
   .copy('./public/src/index.html', './public/dist');
 

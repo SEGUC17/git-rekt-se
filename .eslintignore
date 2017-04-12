@@ -1,2 +1,3 @@
 /public/dist/**
 /public/src/assets/js/app.js
+/webpack.config.js

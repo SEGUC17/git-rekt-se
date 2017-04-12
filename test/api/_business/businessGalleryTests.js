@@ -48,8 +48,8 @@ describe('Business Gallery CRUD Tests', () => {
           done(err);
         } else {
           Business.findOne({
-              _id: dbBusiness._id,
-            })
+            _id: dbBusiness._id,
+          })
             .exec()
             .then((data) => {
               chai.expect(data.gallery.length)
@@ -114,8 +114,8 @@ describe('Business Gallery CRUD Tests', () => {
               done(err);
             } else {
               Business.findOne({
-                  _id: dbBusiness._id,
-                })
+                _id: dbBusiness._id,
+              })
                 .exec()
                 .then((data) => {
                   chai.expect(res.body.message)
@@ -151,8 +151,8 @@ describe('Business Gallery CRUD Tests', () => {
               done(err);
             } else {
               Business.findOne({
-                  _id: dbBusiness._id,
-                })
+                _id: dbBusiness._id,
+              })
                 .exec()
                 .then((data) => {
                   chai.expect(res.body.message)
