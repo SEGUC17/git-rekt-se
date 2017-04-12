@@ -56,7 +56,9 @@ export default class Errors {
       if (!Object.prototype.hasOwnProperty.call(this, 'serverError')) {
         this.serverError = [];
       }
-      this.serverError.push(error);
+      if (error.length > 0) {
+        this.serverError.push(error);
+      }
     } else {
       throw new TypeError('Must be either an error thrown by "express-validator" or a String');
     }
