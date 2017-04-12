@@ -86,7 +86,7 @@ export default class Form {
    * @memberOf Form
    */
   get(url) {
-    this.onSubmit('get', url);
+    return this.submit('get', url);
   }
 
   /**
@@ -96,7 +96,7 @@ export default class Form {
    * @memberOf Form
    */
   post(url) {
-    this.onSubmit('post', url);
+    return this.submit('post', url);
   }
 
   /**
@@ -106,7 +106,7 @@ export default class Form {
    * @memberOf Form
    */
   put(url) {
-    this.onSubmit('put', url);
+    return this.submit('put', url);
   }
 
   /**
@@ -116,7 +116,7 @@ export default class Form {
    * @memberOf Form
    */
   delete(url) {
-    this.onSubmit('delete', url);
+    return this.submit('delete', url);
   }
 
   /**
@@ -137,9 +137,9 @@ export default class Form {
    */
   onFailure(error) {
     if (error.response) {
-      this.errors.append(error.response.data.errors);
+      this.errors.add(error.response.data.errors);
     } else {
-      this.errors.append(error.message);
+      this.errors.add(error.message);
     }
   }
 }

@@ -1,6 +1,9 @@
 export default class Errors {
   /**
    * Creates an instance of Errors.
+   * Each error message is associated an attribute.
+   * Errors that are not associated with attributes (example: JWT Errors),
+   * are mapped with serverErrors.
    * @param {Array} errors
    *
    * @memberOf Errors
@@ -19,7 +22,7 @@ export default class Errors {
    * @memberOf Errors
    */
   add(name, message = '') {
-    if (name instanceof String) {
+    if (typeof name === 'string') {
       if (!this[name]) {
         this[name] = [];
       }
@@ -49,7 +52,7 @@ export default class Errors {
         this[error.param] = [];
       }
       this[error.param].push(error.msg);
-    } else if (error instanceof String) {
+    } else if (typeof error === 'string') {
       if (!Object.prototype.hasOwnProperty.call(this, 'serverError')) {
         this.serverError = [];
       }
