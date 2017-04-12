@@ -258,6 +258,7 @@ const adminSuccess = {
   categoryEdited: 'Category edited succesfully!',
   categoryDeleted: 'Category deleted succesfully!',
   clientDeleted: 'Client removed succesfully',
+  businessDeleted: 'Business removed succesfully',
 };
 
 /**
