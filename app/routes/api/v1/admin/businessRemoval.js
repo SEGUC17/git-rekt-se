@@ -25,7 +25,7 @@ router.use(bodyParser.json());
 router.post('/delete/:id', AdminAuth, (req, res, next) => {
   /**
    * check for services under this business and delete them first
-   * also delete branches under the service
+   * also delete branches under the business
    */
   let i = 0;
   Service.find({
