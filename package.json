@@ -6,7 +6,11 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive test/api",
     "start": "node app/server.js",
-    "debug": "./node_modules/.bin/eslint . && nodemon app/server.js"
+    "debug": "./node_modules/.bin/eslint . && nodemon app/server.js",
+    "dev": "cross-env NODE_ENV=development webpack --progress --hide-modules",
+    "watch": "cross-env NODE_ENV=development webpack --watch --progress --hide-modules",
+    "hot": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
+    "production": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "repository": {
     "type": "git",
@@ -31,12 +35,15 @@
     "supertest": "^3.0.0"
   },
   "dependencies": {
+    "axios": "^0.16.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
     "dotenv": "^4.0.0",
+    "element-ui": "^1.2.8",
     "express": "^4.15.2",
     "express-validator": "^3.1.2",
     "jsonwebtoken": "^7.3.0",
+    "laravel-mix": "^0.10.0",
     "moment": "^2.18.1",
     "mongoose": "^4.9.2",
     "mongoose-findorcreate": "^1.0.1",
@@ -46,6 +53,8 @@
     "nodemailer-sendgrid-transport": "^0.2.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
-    "passport-jwt": "^2.2.1"
+    "passport-jwt": "^2.2.1",
+    "vue": "^2.2.6",
+    "vue-router": "^2.4.0"
   }
 }
