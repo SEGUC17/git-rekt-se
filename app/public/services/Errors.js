@@ -15,6 +15,29 @@ export default class Errors {
   }
 
   /**
+   * @param {String|Array} name
+   * @param {String} message
+   *
+   * @memberOf Errors
+   */
+  append(name, message = '') {
+    if (name instanceof String) {
+      if (!this[name]) {
+        this[name] = [];
+      }
+      if (message.length > 0) {
+        this[name].push(message);
+      }
+    } else if (name instanceof Array) {
+      name.forEach((error) => {
+        this[error.name] = error.msg;
+      }, this);
+    } else {
+      throw new TypeError('"name" must be either an Array or String.');
+    }
+  }
+
+  /**
    * @param {String} name
    * @returns {Boolean}
    *
@@ -52,5 +75,22 @@ export default class Errors {
   isEmpty() {
     const keys = Object.keys(this);
     return keys.length === 0;
+  }
+
+  /**
+   * @param {String} name
+   *
+   * @memberOf Errors
+   */
+  remove(name) {
+    delete this[name];
+  }
+
+  /**
+   * @memberOf Errors
+   */
+  clear() {
+    const keys = Object.keys(this);
+    keys.forEach(key => this.remove(key), this);
   }
 }
