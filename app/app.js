@@ -1,5 +1,6 @@
 const express = require('express');
 const logger = require('morgan');
+const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
 
@@ -45,6 +46,14 @@ app.use(passport.initialize());
  */
 
 require('./routes/routes')(app);
+
+/**
+ * Frontend Routes.
+ */
+
+app.use(express.static(path.join(__dirname, '../public/dist/')));
+
+app.get('/*', (req, res) => res.redirect(`/#${req.path}`));
 
 /**
  * Generic Error Handling Middlewares.
