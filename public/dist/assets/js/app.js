@@ -51896,6 +51896,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "router": true
     }
   }, [_c('el-menu-item', {
+    staticClass: "logo",
     attrs: {
       "index": "/"
     }
@@ -51953,7 +51954,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(110)();
-exports.push([module.i, "\n.el-menu-item-right {\n    float: right !important;\n}\n.logo {\n    margin: 5px;\n}\n.el-menu-header {\n    border-radius: 0;\n}\n", ""]);
+exports.push([module.i, "\n.el-menu-item-right {\n    float: right !important;\n}\n.logo {\n    margin-top: 12px;\n}\n.el-menu-header {\n    border-radius: 0;\n}\n.el-menu-item,\n.el-submenu__title {\n    color: #333333;\n    -webkit-transition: background-color .3s, color .3s;\n    transition: background-color .3s, color .3s;\n}\n.el-menu {\n    background-color: #fff;\n}\n.el-menu--horizontal .el-menu-item {\n    border-bottom: 0;\n}\n.el-menu--horizontal .el-menu-item:hover,\n.el-menu--horizontal .el-submenu__title:hover {\n    background-color: inherit;\n    color: #0ebcff;\n}\n.el-menu--horizontal>.el-menu-item:hover,\n.el-menu--horizontal>.el-submenu.is-active .el-submenu__title,\n.el-menu--horizontal>.el-submenu:hover .el-submenu__title {\n    border-bottom: 0;\n}\n.el-submenu.is-active .el-submenu__title {\n    border-bottom-color: 0;\n}\n", ""]);
 
 /***/ }),
 /* 110 */
