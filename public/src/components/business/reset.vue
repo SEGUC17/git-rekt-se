@@ -11,7 +11,6 @@
     
         <el-form-item>
             <el-button type="primary" @click="submitForm('form')">Submit</el-button>
-            <el-button @click="resetForm('form')">Reset</el-button>
         </el-form-item>
     </el-form>
 </template>
@@ -21,7 +20,7 @@
         data() {
             var validatePassword = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('Please input the password'));
+                    callback(new Error('Please input a password'));
                 } else {
                     if (this.form.password.length < 8) {
                         callback(new Error('The password must contain 8 characters'));
@@ -36,9 +35,9 @@
             };
             var validateConfirmPassword = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('Please input the password again'));
+                    callback(new Error('Please insert a password '));
                 } else if (value !== this.form.password) {
-                    callback(new Error('Two inputs don\'t match!'));
+                    callback(new Error('The two inputs don\'t match!'));
                 } else {
                     callback();
                 }

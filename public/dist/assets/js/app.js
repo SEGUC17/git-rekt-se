@@ -18319,7 +18319,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -18327,7 +18326,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         var validatePassword = function validatePassword(rule, value, callback) {
             if (value === '') {
-                callback(new Error('Please input the password'));
+                callback(new Error('Please input a password'));
             } else {
                 if (_this.form.password.length < 8) {
                     callback(new Error('The password must contain 8 characters'));
@@ -18341,9 +18340,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
         var validateConfirmPassword = function validateConfirmPassword(rule, value, callback) {
             if (value === '') {
-                callback(new Error('Please input the password again'));
+                callback(new Error('Please insert a password '));
             } else if (value !== _this.form.password) {
-                callback(new Error('Two inputs don\'t match!'));
+                callback(new Error('The two inputs don\'t match!'));
             } else {
                 callback();
             }
@@ -52685,13 +52684,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.submitForm('form')
       }
     }
-  }, [_vm._v("Submit")]), _vm._v(" "), _c('el-button', {
-    on: {
-      "click": function($event) {
-        _vm.resetForm('form')
-      }
-    }
-  }, [_vm._v("Reset")])], 1)], 1)
+  }, [_vm._v("Submit")])], 1)], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
