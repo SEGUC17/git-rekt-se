@@ -13,10 +13,9 @@
     
                 <div class="columns index-search has-text-centered">
     
-                    <div class="column is-3 is-offset-2">
+                    <div class="column is-3 is-offset-2 is-12-mobile">
                         <el-input placeholder="Keywords" icon="search" v-model="value"  size="large"> </el-input>
                     </div>
-    
     
                     <div class="column is-2">
                         <el-select v-model="location" placeholder="Locations"  size="large">
@@ -67,7 +66,7 @@
                             Find Service
                         </h3>
                         <p>
-                            Discover &amp; connect with great local businesses in your local neighborhood like dentists, hair stylists and more.
+                            Get valuable insights about the services and tell other readers about your experiences by leaving reviews for services.
                         </p>
                     </div>
                 </card>
@@ -78,7 +77,7 @@
                             Book Online
                         </h3>
                         <p>
-                            Discover &amp; connect with great local businesses in your local neighborhood like dentists, hair stylists and more.
+                            Easily setup an appointment directly from the business listing page using our integrated booking options.
                         </p>
                     </div>
                 </card>
