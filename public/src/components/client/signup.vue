@@ -3,9 +3,8 @@
     <div class="column is-half is-offset-one-quarter">
   
       <div v-show="!form.errors.isEmpty()">
-        <div v-for="key in form.keys" v-show="form.errors.has(key)">
-          <el-alert :title="key.toUpperCase()" type="error" :description="form.errors.getFirst(key)" show-icon></el-alert>
-          <br>
+        <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
+          <el-alert @close="form.errors.remove(key)" :title="key.toUpperCase()" type="error" :description="form.errors.getFirst(key)" show-icon></el-alert>
         </div>
       </div>
   
@@ -95,3 +94,9 @@
     },
   }
 </script>
+
+<style>
+  .error + .error {
+    margin-top: 10px;
+  }
+</style>
