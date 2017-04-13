@@ -51,3 +51,6 @@ jspm_packages
 
 #IJ
 .idea
+
+# dist
+public/dist/**
