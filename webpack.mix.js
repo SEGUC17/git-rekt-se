@@ -19,6 +19,8 @@ mix
   .copy('./public/src/assets/imgs', './public/dist/assets/imgs')
   .copy('./public/src/index.html', './public/dist');
 
+mix.sass('./public/src/assets/css/bulma.sass', './public/dist/assets/css');
+
 // Full API
 // mix.js(src, output);
 // mix.react(src, output); <-- Identical to mix.js(), but registers React Babel compilation.
