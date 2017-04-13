@@ -49,8 +49,8 @@ jspm_packages
 !.vscode/launch.json
 !.vscode/extensions.json
 
-#dist
-public/dist
+# dist
+public/dist/**
 
 #IJ
 .idea
