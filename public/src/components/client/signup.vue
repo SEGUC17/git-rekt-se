@@ -2,8 +2,11 @@
   <div class="columns is-mobile">
     <div class="column is-half is-offset-one-quarter">
   
-      <div>
-        <el-alert title="Email" type="error" :description="form.errors.getFirst('email')" show-icon></el-alert>
+      <div v-show="!form.errors.isEmpty()">
+        <div v-for="key in form.keys">
+          <el-alert :title="key.toUpperCase()" type="error" :description="form.errors.getFirst(key)" show-icon></el-alert>
+          <br>
+        </div>
       </div>
   
       <h1 class="title has-text-centered">Sign Up</h1>
@@ -22,11 +25,11 @@
         </el-form-item>
   
         <el-form-item label="Password">
-          <el-input v-model="form.password" placeholder="********"></el-input>
+          <el-input v-model="form.password" type="password" placeholder="********"></el-input>
         </el-form-item>
   
         <el-form-item label="Confirm Password">
-          <el-input v-model="form.confirmPassword" placeholder="********"></el-input>
+          <el-input v-model="form.confirmPassword" type="password" placeholder="********"></el-input>
         </el-form-item>
   
         <el-form-item label="Mobile">

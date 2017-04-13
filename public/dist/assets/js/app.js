@@ -18177,6 +18177,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -52885,14 +52888,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "columns is-mobile"
   }, [_c('div', {
     staticClass: "column is-half is-offset-one-quarter"
-  }, [_c('div', [_c('el-alert', {
-    attrs: {
-      "title": "Email",
-      "type": "error",
-      "description": _vm.form.errors.getFirst('email'),
-      "show-icon": ""
-    }
-  })], 1), _vm._v(" "), _c('h1', {
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.form.errors.isEmpty()),
+      expression: "!form.errors.isEmpty()"
+    }]
+  }, _vm._l((_vm.form.keys), function(key) {
+    return _c('div', [_c('el-alert', {
+      attrs: {
+        "title": key.toUpperCase(),
+        "type": "error",
+        "description": _vm.form.errors.getFirst(key),
+        "show-icon": ""
+      }
+    }), _vm._v(" "), _c('br')], 1)
+  })), _vm._v(" "), _c('h1', {
     staticClass: "title has-text-centered"
   }, [_vm._v("Sign Up")]), _vm._v(" "), _c('el-form', {
     ref: "form",
@@ -52952,6 +52964,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('el-input', {
     attrs: {
+      "type": "password",
       "placeholder": "********"
     },
     model: {
@@ -52967,6 +52980,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('el-input', {
     attrs: {
+      "type": "password",
       "placeholder": "********"
     },
     model: {
