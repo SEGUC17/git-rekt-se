@@ -65,7 +65,6 @@
   } from '../../services/validation';
   export default {
     data() {
-      console.log(clientSignUpValidation);
       return {
         form: new Form({
           email: '',

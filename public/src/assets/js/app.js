@@ -20,7 +20,6 @@ new Vue({
   el: '#root',
   router,
   components: {
-    sample,
     client: require('../../components/client/signup'),
     'gr-header': header,
     'gr-footer': footer,
