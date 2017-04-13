@@ -83,6 +83,9 @@ export default class Errors {
    * @memberOf Errors
    */
   get(name) {
+    if (!this.has(name)) {
+      return null;
+    }
     return this[name];
   }
 
@@ -94,6 +97,9 @@ export default class Errors {
    * @memberOf Errors
    */
   getFirst(name) {
+    if (!this.has(name)) {
+      return null;
+    }
     return this.get(name)[0];
   }
 

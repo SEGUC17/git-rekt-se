@@ -25,7 +25,7 @@ const businessValidationErrors = require('../shared/Strings')
 const clientSignupValidation = {
   email: {
     notEmpty: {
-      errorMessage: clientValidationErrors.emailEmpty,
+      errorMessage: clientValidationErrors.emptyEmail,
     },
     isEmail: {
       errorMessage: clientValidationErrors.invalidEmail,

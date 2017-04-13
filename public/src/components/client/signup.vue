@@ -2,9 +2,13 @@
   <div class="columns is-mobile">
     <div class="column is-half is-offset-one-quarter">
   
+      <div>
+        <el-alert title="Email" type="error" :description="form.errors.getFirst('email')" show-icon></el-alert>
+      </div>
+  
       <h1 class="title has-text-centered">Sign Up</h1>
   
-      <el-form ref="form" :model="form" label-width="120px">
+      <el-form ref="form" :model="form" :label-position="'left'" label-width="120px">
         <el-form-item label="First Name">
           <el-input v-model="form.firstName" placeholder="A Name"></el-input>
         </el-form-item>
@@ -28,14 +32,14 @@
         <el-form-item label="Mobile">
           <el-input v-model="form.mobile" placeholder="01001234567"></el-input>
         </el-form-item>
-        
+  
         <el-form-item label="Gender">
           <el-radio-group v-model="form.gender">
             <el-radio label="Male"></el-radio>
             <el-radio label="Female"></el-radio>
           </el-radio-group>
         </el-form-item>
-
+  
         <el-form-item label="Birthdate">
           <el-date-picker v-model="form.birthdate" type="date" :format="'dd-MM-yyyy'" placeholder="1/1/1990"></el-date-picker>
         </el-form-item>
@@ -51,6 +55,7 @@
 
 <script>
   import Form from '../../services/Form';
+  import EndPoints from '../../services/EndPoints';
   export default {
     data() {
       return {
@@ -64,11 +69,21 @@
           mobile: '',
           birthdate: ''
         }),
+        errors: {
+
+        },
       }
     },
     methods: {
-      onClick(){
+      onClick() {
         console.log(this.form.data());
+        this.form.post(EndPoints.Client().signup)
+          .then((data) => console.log(data))
+          .catch((err) => {
+            console.log(err);
+            console.log(this.form.errors);
+            console.log(this.form.errors.get('email'));
+          });
       },
     },
   }
