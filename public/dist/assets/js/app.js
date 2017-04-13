@@ -18284,8 +18284,19 @@ var BASE = 'http://localhost:3000/api/v1';
     var authBase = BASE + '/client/auth';
     var profileBase = BASE + '/client/profile';
     return {
+      login: authBase + '/login',
       signup: authBase + '/signup',
-      resend: authBase + '/confirmation/send'
+      resend: authBase + '/confirmation/send',
+      reset: authBase + '/reset',
+      forgot: authBase + '/forgot',
+      logout: authBase + '/logout',
+      confirmEmail: function confirmEmail(token) {
+        return authBase + '/confirmation/' + token + '/confirm';
+      },
+
+      editInfo: function editInfo(clientID) {
+        return profileBase + '/' + clientID + '/edit';
+      }
     };
   }
 });
