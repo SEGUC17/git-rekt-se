@@ -18302,6 +18302,8 @@ function mergeFn (a, b) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(124);
 //
 //
 //
@@ -18319,6 +18321,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -18328,8 +18333,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (value === '') {
                 callback(new Error('Please input a password'));
             } else {
-                if (_this.form.password.length < 8) {
-                    callback(new Error('The password must contain 8 characters'));
+                if (!/^(?=.*\d).{8,15}$/.test(value)) {
+                    callback(new Error('Password must be between 8 and 15 characters and contains at least one number.'));
                 } else {
                     if (_this.form.confirmPassword !== '') {
                         _this.$refs.form.validateField('confirmPassword');
@@ -18340,7 +18345,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
         var validateConfirmPassword = function validateConfirmPassword(rule, value, callback) {
             if (value === '') {
-                callback(new Error('Please insert a password '));
+                callback(new Error('Please insert a password!'));
             } else if (value !== _this.form.password) {
                 callback(new Error('The two inputs don\'t match!'));
             } else {
@@ -18348,10 +18353,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         };
         return {
-            form: {
+            form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
                 password: '',
                 confirmPassword: ''
-            },
+            }),
+            errors: {},
             rules: {
                 password: [{
                     validator: validatePassword,
@@ -18367,9 +18373,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         submitForm: function submitForm(formName) {
+            var _this2 = this;
+
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    alert('submit!');
+                    console.log(_this2.form.data);
+                    _this2.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Business().reset).then(function (data) {
+                        return console.log(data);
+                    }).catch(function (err) {
+                        console.log(err);
+                        console.log(_this2.form.errors);
+                        console.log(_this2.form.errors.get('email'));
+                    });
                 } else {
                     console.log('error submit!!');
                     return false;
@@ -52753,6 +52768,450 @@ if(false) {
 __webpack_require__(42);
 module.exports = __webpack_require__(43);
 
+
+/***/ }),
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var BASE = 'http://localhost:3000/api/v1';
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  Client: function Client() {
+    var authBase = BASE + '/client/auth';
+    var profileBase = BASE + '/client/profile';
+    return {
+      signup: authBase + '/signup',
+      resend: authBase + '/confirmation/send'
+    };
+  },
+  Business: function Business() {
+    var authBase = BASE + '/business/auth';
+    return {
+      reset: authBase + '/reset'
+    };
+  }
+});
+
+/***/ }),
+/* 125 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Errors = function () {
+  /**
+   * Creates an instance of Errors.
+   * Each error message is associated an attribute.
+   * Errors that are not associated with attributes (example: JWT Errors),
+   * are mapped with serverErrors.
+   * @param {Array} errors
+   *
+   * @memberOf Errors
+   */
+  function Errors() {
+    var _this = this;
+
+    var errors = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, Errors);
+
+    errors.forEach(function (err) {
+      _this._add(err);
+    }, this);
+  }
+
+  /**
+   * Adds an error to the current list.
+   * @param {String|Array} name
+   * @param {String} message
+   * @throws {TypeError} If name is neither an Array or a String.
+   * @memberOf Errors
+   */
+
+
+  _createClass(Errors, [{
+    key: 'add',
+    value: function add(name) {
+      var _this2 = this;
+
+      var message = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+      if (typeof name === 'string') {
+        if (!this[name]) {
+          this[name] = [];
+        }
+        if (message.length > 0) {
+          this[name].push(message);
+        }
+      } else if (name instanceof Array) {
+        name.forEach(function (error) {
+          _this2._add(error);
+        }, this);
+      } else {
+        throw new TypeError('"name" must be either an Array or String.');
+      }
+    }
+
+    /**
+     * Adds an error to the current list.
+     * @param {String|Array} error
+     * @throws {TypeError} If error is neither an Array or a String.
+     * @private
+     * @memberOf Errors
+     */
+
+  }, {
+    key: '_add',
+    value: function _add(error) {
+      if (Object.prototype.hasOwnProperty.call(error, 'msg') && Object.prototype.hasOwnProperty.call(error, 'param')) {
+        if (!this[error.param]) {
+          this[error.param] = [];
+        }
+        if (error.msg.length > 0) {
+          this[error.param].push(error.msg);
+        }
+      } else if (typeof error === 'string') {
+        if (!Object.prototype.hasOwnProperty.call(this, 'serverError')) {
+          this.serverError = [];
+        }
+        if (error.length > 0) {
+          this.serverError.push(error);
+        }
+      } else {
+        throw new TypeError('Must be either an error thrown by "express-validator" or a String');
+      }
+    }
+
+    /**
+     * Checks if an error for a specific attribute exists.
+     * @param {String} name
+     * @returns {Boolean}
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'has',
+    value: function has(name) {
+      return this[name] && this[name].length > 0;
+    }
+
+    /**
+     * Retrieves the error list associated with the given attribute.
+     * @param {String} name
+     * @returns {Array}
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'get',
+    value: function get(name) {
+      if (!this.has(name)) {
+        return null;
+      }
+      return this[name];
+    }
+
+    /**
+     * Retrieves the first error associated with the given attribute.
+     * @param {String} name
+     * @returns {String}
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'getFirst',
+    value: function getFirst(name) {
+      if (!this.has(name)) {
+        return null;
+      }
+      return this.get(name)[0];
+    }
+
+    /**
+     * Return Errors joined by a delimiter.
+     * @param {any} name
+     * @param {string} delimiter
+     * @returns Errors joined by a delimiter.
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'getAll',
+    value: function getAll(name) {
+      var delimiter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : ' ';
+
+      if (!this.has(name)) {
+        return null;
+      }
+      return this.get(name).join(delimiter);
+    }
+    /**
+     * Checks if we have any error or no.
+     * @returns {Boolean}
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'isEmpty',
+    value: function isEmpty() {
+      var keys = Object.keys(this);
+      return keys.length === 0;
+    }
+
+    /**
+     * Removes all errors associated with a given attribute.
+     * @param {String} name
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'remove',
+    value: function remove(name) {
+      delete this[name];
+    }
+
+    /**
+     * Clears all errors.
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'clear',
+    value: function clear() {
+      var _this3 = this;
+
+      var keys = Object.keys(this);
+      keys.forEach(function (key) {
+        return _this3.remove(key);
+      }, this);
+    }
+  }]);
+
+  return Errors;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Errors);
+
+/***/ }),
+/* 126 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Errors__ = __webpack_require__(125);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+var Form = function () {
+  /**
+   * Creates an instance of Form.
+   * @param {Object} data
+   *
+   * @memberOf Form
+   */
+  function Form() {
+    var _this = this;
+
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, Form);
+
+    this.keys = Object.keys(data);
+    this.keys.forEach(function (key) {
+      _this[key] = data[key];
+    }, this);
+    this.errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */]();
+  }
+
+  /**
+   * Sets the value of a specific attribute.
+   * @param {String} key
+   * @param {any} value
+   *
+   * @memberOf Form
+   */
+
+
+  _createClass(Form, [{
+    key: 'set',
+    value: function set(key, value) {
+      if (!Object.prototype.hasOwnProperty.call(this, key)) {
+        throw new Error('Can only set values to keys that exist after creation!');
+      }
+      this[key] = value;
+    }
+
+    /**
+     * Resets the values of this form unless specific attributes were given.
+     * @param {Array} keys
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'reset',
+    value: function reset() {
+      var _this2 = this;
+
+      var keys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.keys;
+
+      keys.forEach(function (key) {
+        _this2[key] = '';
+      }, this);
+    }
+
+    /**
+     * Returns the data of this form in JSON format.
+     * @returns {Object}
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'data',
+    value: function data() {
+      var _this3 = this;
+
+      var data = {};
+      this.keys.forEach(function (key) {
+        data[key] = _this3[key];
+      }, this);
+      return data;
+    }
+
+    /**
+     * Submits this form using the given method and url,
+     * updating the forms state and return a Promise.
+     * @param {String} method
+     * @param {String} url
+     * @returns {Promise}
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'submit',
+    value: function submit(method, url) {
+      var _this4 = this;
+
+      this.errors.clear();
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_0_axios___default.a[method](url, _this4.data()).then(function (response) {
+          _this4.onSuccess(response);
+          resolve(response.data, response);
+        }).catch(function (err) {
+          _this4.onFailure(err);
+          reject(err.response ? err.response.data.errors : err.message, err);
+        });
+      });
+    }
+
+    /**
+     * Submits the form to the given url using a GET Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'get',
+    value: function get(url) {
+      return this.submit('get', url);
+    }
+
+    /**
+     * Submits the form to the given url using a POST Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'post',
+    value: function post(url) {
+      return this.submit('post', url);
+    }
+
+    /**
+     * Submits the form to the given url using a PUT Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'put',
+    value: function put(url) {
+      return this.submit('put', url);
+    }
+
+    /**
+     * Submits the form to the given url using a DELETE Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'delete',
+    value: function _delete(url) {
+      return this.submit('delete', url);
+    }
+
+    /**
+     * Called when request finishes successfully.
+     * @param {ResponseSchema} response
+     * @see {@link https://github.com/mzabriskie/axios#response-schema}
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'onSuccess',
+    value: function onSuccess(response) {
+      this.reset();
+    }
+
+    /**
+     * Called when request finishes with an error.
+     * @param {Error} error
+     * @see {@link https://github.com/mzabriskie/axios#handling-errors}
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'onFailure',
+    value: function onFailure(error) {
+      var errors = void 0;
+      if (error.response) {
+        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.response.data.errors);
+      } else {
+        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.message);
+      }
+      this.errors = errors;
+    }
+  }]);
+
+  return Form;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Form);
 
 /***/ })
 /******/ ]);

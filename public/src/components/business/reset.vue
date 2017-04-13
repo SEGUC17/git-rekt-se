@@ -16,14 +16,17 @@
 </template>
 
 <script>
+    import Form from '../../services/Form';
+    import EndPoints from '../../services/EndPoints';
+    
     export default {
         data() {
             var validatePassword = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('Please input a password'));
                 } else {
-                    if (this.form.password.length < 8) {
-                        callback(new Error('The password must contain 8 characters'));
+                    if (!(/^(?=.*\d).{8,15}$/.test(value))) {
+                        callback(new Error('Password must be between 8 and 15 characters and contains at least one number.'));
                     } else {
                         if (this.form.confirmPassword !== '') {
                             this.$refs.form.validateField('confirmPassword');
@@ -35,7 +38,7 @@
             };
             var validateConfirmPassword = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('Please insert a password '));
+                    callback(new Error('Please insert a password!'));
                 } else if (value !== this.form.password) {
                     callback(new Error('The two inputs don\'t match!'));
                 } else {
@@ -43,10 +46,11 @@
                 }
             };
             return {
-                form: {
+                form: new Form({
                     password: '',
                     confirmPassword: '',
-                },
+                }),
+                errors: {},
                 rules: {
                     password: [{
                         validator: validatePassword,
@@ -63,7 +67,14 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        console.log(this.form.data);
+                        this.form.post(EndPoints.Business().reset)
+                            .then((data) => console.log(data))
+                            .catch((err) => {
+                                console.log(err);
+                                console.log(this.form.errors);
+                                console.log(this.form.errors.get('email'));
+                            });
                     } else {
                         console.log('error submit!!');
                         return false;
