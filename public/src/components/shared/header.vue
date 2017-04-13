@@ -1,66 +1,58 @@
 <template>
     <header>
-        <el-menu mode="horizontal" class="el-menu-header" :router="true">
-            <el-menu-item index="/" class="logo"><img class="logo" src="assets/imgs/logo.svg" width="200px"></el-menu-item>
-            <el-menu-item index="/about">About Us</el-menu-item>
-            <el-submenu index="/categories">
-                <template slot="title">Categories</template>
-                <el-menu-item index="/categories/services">Services</el-menu-item>
-                <el-menu-item index="/categories/business">Businesses</el-menu-item>
-            </el-submenu>
-            <el-menu-item index="/contact">Contact Us</el-menu-item>
-            <el-menu-item index="/signup" class="el-menu-item-right">Signup</el-menu-item>
-            <el-menu-item index="/login" class="el-menu-item-right">Login</el-menu-item>
-        </el-menu>
+        <nav class="nav">
+    
+            <!-- Navigation bar Center -->
+    
+            <div class="nav-left">
+                <a class="nav-item">
+                    <img src="assets/imgs/logo.svg" alt="Bulma logo">
+                </a>
+            </div>
+            
+            <span class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+
+            <!-- Navigation bar Center -->
+            <div class="nav-center nav-menu">
+                <router-link to="/" class="nav-item">Home</router-link>
+                <router-link to="/about" class="nav-item">About Us</router-link>
+                <router-link to="/categories" class="nav-item">Categories</router-link>
+                <router-link to="/contact" class="nav-item">Contact</router-link>
+            </div>
+    
+            <!-- Navigation bar Right -->
+            <div class="nav-right nav-menu">
+                <a class="button is-default gr-nav-button">
+                    <span class="icon">
+                            <i class="fa fa-user"></i>
+                        </span>
+                    <span>Signup</span>
+                </a>
+    
+                <a class="button is-danger gr-nav-button">
+                    <span class="icon">
+                            <i class="fa fa-sign-in"></i>
+                        </span>
+                    <span>Login</span>
+                </a>
+            </div>
+        </nav>
     </header>
 </template>
 
 <script>
     export default {
-    
+        methods:{
+        }
     };
 </script>
 
 <style>
-    .el-menu-item-right {
-        float: right !important;
-    }
-    
-    .logo {
-        margin-top: 12px;
-    }
-    
-    .el-menu-header {
-        border-radius: 0;
-    }
-    
-    .el-menu-item,
-    .el-submenu__title {
-        color: #333333;
-        transition: background-color .3s, color .3s;
-    }
-    
-    .el-menu {
-        background-color: #fff;
-    }
-    
-    .el-menu--horizontal .el-menu-item {
-        border-bottom: 0;
-    }
-    
-    .el-menu--horizontal .el-menu-item:hover,
-    .el-menu--horizontal .el-submenu__title:hover {
-        background-color: inherit;
-        color: #0ebcff;
-    }
-    
-    .el-menu--horizontal>.el-menu-item:hover,
-    .el-menu--horizontal>.el-submenu.is-active .el-submenu__title,
-    .el-menu--horizontal>.el-submenu:hover .el-submenu__title {
-        border-bottom: 0;
-    }
-    
-    .el-submenu.is-active .el-submenu__title {
-        border-bottom-color: 0;
+    .gr-nav-button {
+        margin: 10px;
     }
 </style>

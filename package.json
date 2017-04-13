@@ -38,6 +38,7 @@
     "axios": "^0.16.1",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
+    "buefy": "^0.1.5",
     "dotenv": "^4.0.0",
     "element-ui": "^1.2.8",
     "express": "^4.15.2",
