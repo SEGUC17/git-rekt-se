@@ -106,6 +106,21 @@ export default class Errors {
   }
 
   /**
+   * Return Errors joined by a delimiter.
+   * @param {any} name
+   * @param {string} delimiter
+   * @returns Errors joined by a delimiter.
+   *
+   * @memberOf Errors
+   */
+  getAll(name, delimiter = ' ') {
+    if (!this.has(name)) {
+      return null;
+    }
+    return this.get(name)
+      .join(delimiter);
+  }
+  /**
    * Checks if we have any error or no.
    * @returns {Boolean}
    *

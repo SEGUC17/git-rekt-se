@@ -112,6 +112,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -119,6 +138,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ 21:
 /***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"!!vue-style-loader!css-loader!../../../../node_modules/vue-loader/lib/style-compiler/index?{\"id\":\"data-v-9d784116\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector?type=styles&index=0!./about.vue\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
 
 var Component = __webpack_require__(7)(
   /* script */
@@ -156,14 +179,16 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "about"
-  }, [_c('h3', [_vm._v("About Page")]), _vm._v(" "), _c('router-link', {
-    attrs: {
-      "to": "/"
-    }
-  }, [_vm._v("Go to Index")])], 1)
-},staticRenderFns: []}
+  }, [_c('div', {
+    staticClass: "content"
+  }, [_c('p', {
+    staticClass: "white"
+  }, [_vm._v("\n        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus illo excepturi delectus molestias ducimus\n    ullam facere quo, eos natus veritatis enim illum nam tempore, labore, voluptatibus ut cumque autem sed.\n\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus illo excepturi delectus molestias ducimus\n    ullam facere quo, eos natus veritatis enim illum nam tempore, labore, voluptatibus ut cumque autem sed.\n\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus illo excepturi delectus molestias ducimus\n    ullam facere quo, eos natus veritatis enim illum nam tempore, labore, voluptatibus ut cumque autem sed.\n\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus illo excepturi delectus molestias ducimus\n    ullam facere quo, eos natus veritatis enim illum nam tempore, labore, voluptatibus ut cumque autem sed.\n\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus illo excepturi delectus molestias ducimus\n    ullam facere quo, eos natus veritatis enim illum nam tempore, labore, voluptatibus ut cumque autem sed.\n\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus illo excepturi delectus molestias ducimus\n    ullam facere quo, eos natus veritatis enim illum nam tempore, labore, voluptatibus ut cumque autem sed.\n        ")])])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
