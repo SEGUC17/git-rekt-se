@@ -58,6 +58,7 @@
     }
 
     .left-footer2{
+        padding-left:30px;
         text-align: left;
     }
 </style>
