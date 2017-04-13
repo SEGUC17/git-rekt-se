@@ -136,10 +136,12 @@ export default class Form {
    * @memberOf Form
    */
   onFailure(error) {
+    let errors;
     if (error.response) {
-      this.errors.add(error.response.data.errors);
+      errors = new Errors(error.response.data.errors);
     } else {
-      this.errors.add(error.message);
+      errors = new Errors(error.message);
     }
+    this.errors = errors;
   }
 }

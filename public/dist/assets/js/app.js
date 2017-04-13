@@ -292,11 +292,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = {
   required: __webpack_require__(23),
-  whitespace: __webpack_require__(45),
-  type: __webpack_require__(44),
-  range: __webpack_require__(43),
-  "enum": __webpack_require__(41),
-  pattern: __webpack_require__(42)
+  whitespace: __webpack_require__(46),
+  type: __webpack_require__(45),
+  range: __webpack_require__(44),
+  "enum": __webpack_require__(42),
+  pattern: __webpack_require__(43)
 };
 module.exports = exports['default'];
 
@@ -9946,7 +9946,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(37)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(38)))
 
 /***/ }),
 /* 4 */
@@ -12942,7 +12942,7 @@ module.exports = exports['default'];
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var normalizeHeaderName = __webpack_require__(74);
+var normalizeHeaderName = __webpack_require__(75);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -13952,7 +13952,7 @@ var _vue = __webpack_require__(3);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _popup = __webpack_require__(34);
+var _popup = __webpack_require__(35);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -14135,7 +14135,7 @@ exports.default = {
 
 /* eslint-disable no-undefined */
 
-var throttle = __webpack_require__(36);
+var throttle = __webpack_require__(37);
 
 /**
  * Debounce execution of a function. Debouncing, unlike throttling,
@@ -14252,7 +14252,7 @@ module.exports = exports['default'];
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(60);
+module.exports = __webpack_require__(61);
 
 /***/ }),
 /* 25 */
@@ -14262,12 +14262,12 @@ module.exports = __webpack_require__(60);
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(2);
-var settle = __webpack_require__(66);
-var buildURL = __webpack_require__(69);
-var parseHeaders = __webpack_require__(75);
-var isURLSameOrigin = __webpack_require__(73);
+var settle = __webpack_require__(67);
+var buildURL = __webpack_require__(70);
+var parseHeaders = __webpack_require__(76);
+var isURLSameOrigin = __webpack_require__(74);
 var createError = __webpack_require__(28);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(68);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(69);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -14363,7 +14363,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(71);
+      var cookies = __webpack_require__(72);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -14486,7 +14486,7 @@ module.exports = function isCancel(value) {
 "use strict";
 
 
-var enhanceError = __webpack_require__(65);
+var enhanceError = __webpack_require__(66);
 
 /**
  * Create an Error with the specified message, config, error code, and response.
@@ -14523,6 +14523,196 @@ module.exports = function bind(fn, thisArg) {
 
 /***/ }),
 /* 30 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Errors = function () {
+  /**
+   * Creates an instance of Errors.
+   * Each error message is associated an attribute.
+   * Errors that are not associated with attributes (example: JWT Errors),
+   * are mapped with serverErrors.
+   * @param {Array} errors
+   *
+   * @memberOf Errors
+   */
+  function Errors() {
+    var _this = this;
+
+    var errors = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+    _classCallCheck(this, Errors);
+
+    errors.forEach(function (err) {
+      _this._add(err);
+    }, this);
+  }
+
+  /**
+   * Adds an error to the current list.
+   * @param {String|Array} name
+   * @param {String} message
+   * @throws {TypeError} If name is neither an Array or a String.
+   * @memberOf Errors
+   */
+
+
+  _createClass(Errors, [{
+    key: 'add',
+    value: function add(name) {
+      var _this2 = this;
+
+      var message = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+      if (typeof name === 'string') {
+        if (!this[name]) {
+          this[name] = [];
+        }
+        if (message.length > 0) {
+          this[name].push(message);
+        }
+      } else if (name instanceof Array) {
+        name.forEach(function (error) {
+          _this2._add(error);
+        }, this);
+      } else {
+        throw new TypeError('"name" must be either an Array or String.');
+      }
+    }
+
+    /**
+     * Adds an error to the current list.
+     * @param {String|Array} error
+     * @throws {TypeError} If error is neither an Array or a String.
+     * @private
+     * @memberOf Errors
+     */
+
+  }, {
+    key: '_add',
+    value: function _add(error) {
+      if (Object.prototype.hasOwnProperty.call(error, 'msg') && Object.prototype.hasOwnProperty.call(error, 'param')) {
+        if (!this[error.param]) {
+          this[error.param] = [];
+        }
+        if (error.msg.length > 0) {
+          this[error.param].push(error.msg);
+        }
+      } else if (typeof error === 'string') {
+        if (!Object.prototype.hasOwnProperty.call(this, 'serverError')) {
+          this.serverError = [];
+        }
+        if (error.length > 0) {
+          this.serverError.push(error);
+        }
+      } else {
+        throw new TypeError('Must be either an error thrown by "express-validator" or a String');
+      }
+    }
+
+    /**
+     * Checks if an error for a specific attribute exists.
+     * @param {String} name
+     * @returns {Boolean}
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'has',
+    value: function has(name) {
+      return this[name] && this[name].length > 0;
+    }
+
+    /**
+     * Retrieves the error list associated with the given attribute.
+     * @param {String} name
+     * @returns {Array}
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'get',
+    value: function get(name) {
+      if (!this.has(name)) {
+        return null;
+      }
+      return this[name];
+    }
+
+    /**
+     * Retrieves the first error associated with the given attribute.
+     * @param {String} name
+     * @returns {String}
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'getFirst',
+    value: function getFirst(name) {
+      if (!this.has(name)) {
+        return null;
+      }
+      return this.get(name)[0];
+    }
+
+    /**
+     * Checks if we have any error or no.
+     * @returns {Boolean}
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'isEmpty',
+    value: function isEmpty() {
+      var keys = Object.keys(this);
+      return keys.length === 0;
+    }
+
+    /**
+     * Removes all errors associated with a given attribute.
+     * @param {String} name
+     *
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'remove',
+    value: function remove(name) {
+      delete this[name];
+    }
+
+    /**
+     * Clears all errors.
+     * @memberOf Errors
+     */
+
+  }, {
+    key: 'clear',
+    value: function clear() {
+      var _this3 = this;
+
+      var keys = Object.keys(this);
+      keys.forEach(function (key) {
+        return _this3.remove(key);
+      }, this);
+    }
+  }]);
+
+  return Errors;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Errors);
+
+/***/ }),
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14545,7 +14735,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports =
@@ -14972,7 +15162,7 @@ module.exports =
 /******/ });
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports =
@@ -15191,7 +15381,7 @@ module.exports =
 /******/ });
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15265,7 +15455,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15567,7 +15757,7 @@ exports.default = {
 exports.PopupManager = _popupManager2.default;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15593,7 +15783,7 @@ function getFirstComponentChild(children) {
 };
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 /* eslint-disable no-undefined,no-param-reassign,no-shadow */
@@ -15690,7 +15880,7 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports) {
 
 var g;
@@ -15717,7 +15907,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15762,7 +15952,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 });
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15778,11 +15968,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _util = __webpack_require__(0);
 
-var _validator = __webpack_require__(51);
+var _validator = __webpack_require__(52);
 
 var _validator2 = _interopRequireDefault(_validator);
 
-var _messages2 = __webpack_require__(40);
+var _messages2 = __webpack_require__(41);
 
 var _rule = __webpack_require__(1);
 
@@ -16040,7 +16230,7 @@ exports["default"] = Schema;
 module.exports = exports['default'];
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16108,7 +16298,7 @@ function newMessages() {
 var messages = exports.messages = newMessages();
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16148,7 +16338,7 @@ exports["default"] = enumerable;
 module.exports = exports['default'];
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16187,7 +16377,7 @@ exports["default"] = pattern;
 module.exports = exports['default'];
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16256,7 +16446,7 @@ exports["default"] = range;
 module.exports = exports['default'];
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16366,7 +16556,7 @@ exports["default"] = type;
 module.exports = exports['default'];
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16403,7 +16593,7 @@ exports["default"] = whitespace;
 module.exports = exports['default'];
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16451,7 +16641,7 @@ exports["default"] = array;
 module.exports = exports['default'];
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16498,7 +16688,7 @@ exports["default"] = boolean;
 module.exports = exports['default'];
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16540,7 +16730,7 @@ exports["default"] = date;
 module.exports = exports['default'];
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16589,7 +16779,7 @@ exports["default"] = enumerable;
 module.exports = exports['default'];
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16637,33 +16827,33 @@ exports["default"] = floatFn;
 module.exports = exports['default'];
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 module.exports = {
-  string: __webpack_require__(59),
-  method: __webpack_require__(53),
-  number: __webpack_require__(54),
-  "boolean": __webpack_require__(47),
-  regexp: __webpack_require__(57),
-  integer: __webpack_require__(52),
-  "float": __webpack_require__(50),
-  array: __webpack_require__(46),
-  object: __webpack_require__(55),
-  "enum": __webpack_require__(49),
-  pattern: __webpack_require__(56),
+  string: __webpack_require__(60),
+  method: __webpack_require__(54),
+  number: __webpack_require__(55),
+  "boolean": __webpack_require__(48),
+  regexp: __webpack_require__(58),
+  integer: __webpack_require__(53),
+  "float": __webpack_require__(51),
+  array: __webpack_require__(47),
+  object: __webpack_require__(56),
+  "enum": __webpack_require__(50),
+  pattern: __webpack_require__(57),
   email: __webpack_require__(11),
   url: __webpack_require__(11),
-  date: __webpack_require__(48),
+  date: __webpack_require__(49),
   hex: __webpack_require__(11),
-  required: __webpack_require__(58)
+  required: __webpack_require__(59)
 };
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16711,7 +16901,7 @@ exports["default"] = integer;
 module.exports = exports['default'];
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16758,7 +16948,7 @@ exports["default"] = method;
 module.exports = exports['default'];
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16806,7 +16996,7 @@ exports["default"] = number;
 module.exports = exports['default'];
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16853,7 +17043,7 @@ exports["default"] = object;
 module.exports = exports['default'];
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16903,7 +17093,7 @@ exports["default"] = pattern;
 module.exports = exports['default'];
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16950,7 +17140,7 @@ exports["default"] = regexp;
 module.exports = exports['default'];
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16979,7 +17169,7 @@ exports["default"] = required;
 module.exports = exports['default'];
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17031,7 +17221,7 @@ exports["default"] = string;
 module.exports = exports['default'];
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17039,7 +17229,7 @@ module.exports = exports['default'];
 
 var utils = __webpack_require__(2);
 var bind = __webpack_require__(29);
-var Axios = __webpack_require__(62);
+var Axios = __webpack_require__(63);
 var defaults = __webpack_require__(12);
 
 /**
@@ -17074,14 +17264,14 @@ axios.create = function create(instanceConfig) {
 
 // Expose Cancel & CancelToken
 axios.Cancel = __webpack_require__(26);
-axios.CancelToken = __webpack_require__(61);
+axios.CancelToken = __webpack_require__(62);
 axios.isCancel = __webpack_require__(27);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(76);
+axios.spread = __webpack_require__(77);
 
 module.exports = axios;
 
@@ -17090,7 +17280,7 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17154,7 +17344,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17162,10 +17352,10 @@ module.exports = CancelToken;
 
 var defaults = __webpack_require__(12);
 var utils = __webpack_require__(2);
-var InterceptorManager = __webpack_require__(63);
-var dispatchRequest = __webpack_require__(64);
-var isAbsoluteURL = __webpack_require__(72);
-var combineURLs = __webpack_require__(70);
+var InterceptorManager = __webpack_require__(64);
+var dispatchRequest = __webpack_require__(65);
+var isAbsoluteURL = __webpack_require__(73);
+var combineURLs = __webpack_require__(71);
 
 /**
  * Create a new instance of Axios
@@ -17246,7 +17436,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17305,14 +17495,14 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(2);
-var transformData = __webpack_require__(67);
+var transformData = __webpack_require__(68);
 var isCancel = __webpack_require__(27);
 var defaults = __webpack_require__(12);
 
@@ -17391,7 +17581,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17417,7 +17607,7 @@ module.exports = function enhanceError(error, config, code, response) {
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17449,7 +17639,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17476,7 +17666,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17519,7 +17709,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17594,7 +17784,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17615,7 +17805,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17675,7 +17865,7 @@ module.exports = (
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17696,7 +17886,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17771,7 +17961,7 @@ module.exports = (
 
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17790,7 +17980,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17834,7 +18024,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17868,7 +18058,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports) {
 
 var nestRE = /^(attrs|props|on|nativeOn|class|style|hook)$/
@@ -17924,13 +18114,14 @@ function mergeFn (a, b) {
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(82);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Errors__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_EndPoints__ = __webpack_require__(81);
 //
 //
 //
@@ -17986,6 +18177,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -18001,8 +18193,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         gender: '',
         mobile: '',
         birthdate: ''
-      }),
-      errors: {}
+      })
     };
   },
 
@@ -18011,19 +18202,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       console.log(this.form.data());
-      this.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Client().signup).then(function (data) {
+      this.form.post(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints__["a" /* default */].Client().signup).then(function (data) {
         return console.log(data);
       }).catch(function (err) {
         console.log(err);
         console.log(_this.form.errors);
         console.log(_this.form.errors.get('email'));
+        _this.errors = _this.form.errors;
+        console.log(_this.errors);
       });
     }
   }
 });
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18051,7 +18244,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18069,201 +18262,13 @@ var BASE = 'http://localhost:3000/api/v1';
 });
 
 /***/ }),
-/* 81 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Errors = function () {
-  /**
-   * Creates an instance of Errors.
-   * Each error message is associated an attribute.
-   * Errors that are not associated with attributes (example: JWT Errors),
-   * are mapped with serverErrors.
-   * @param {Array} errors
-   *
-   * @memberOf Errors
-   */
-  function Errors() {
-    var _this = this;
-
-    var errors = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-    _classCallCheck(this, Errors);
-
-    errors.forEach(function (err) {
-      _this._add(err);
-    }, this);
-  }
-
-  /**
-   * Adds an error to the current list.
-   * @param {String|Array} name
-   * @param {String} message
-   * @throws {TypeError} If name is neither an Array or a String.
-   * @memberOf Errors
-   */
-
-
-  _createClass(Errors, [{
-    key: 'add',
-    value: function add(name) {
-      var _this2 = this;
-
-      var message = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-
-      if (typeof name === 'string') {
-        if (!this[name]) {
-          this[name] = [];
-        }
-        if (message.length > 0) {
-          this[name].push(message);
-        }
-      } else if (name instanceof Array) {
-        name.forEach(function (error) {
-          _this2._add(error);
-        }, this);
-      } else {
-        throw new TypeError('"name" must be either an Array or String.');
-      }
-    }
-
-    /**
-     * Adds an error to the current list.
-     * @param {String|Array} error
-     * @throws {TypeError} If error is neither an Array or a String.
-     * @private
-     * @memberOf Errors
-     */
-
-  }, {
-    key: '_add',
-    value: function _add(error) {
-      if (Object.prototype.hasOwnProperty.call(error, 'msg') && Object.prototype.hasOwnProperty.call(error, 'param')) {
-        if (!this[error.param]) {
-          this[error.param] = [];
-        }
-        this[error.param].push(error.msg);
-      } else if (typeof error === 'string') {
-        if (!Object.prototype.hasOwnProperty.call(this, 'serverError')) {
-          this.serverError = [];
-        }
-        if (error.length > 0) {
-          this.serverError.push(error);
-        }
-      } else {
-        throw new TypeError('Must be either an error thrown by "express-validator" or a String');
-      }
-    }
-
-    /**
-     * Checks if an error for a specific attribute exists.
-     * @param {String} name
-     * @returns {Boolean}
-     *
-     * @memberOf Errors
-     */
-
-  }, {
-    key: 'has',
-    value: function has(name) {
-      return this[name] && this[name].length > 0;
-    }
-
-    /**
-     * Retrieves the error list associated with the given attribute.
-     * @param {String} name
-     * @returns {Array}
-     *
-     * @memberOf Errors
-     */
-
-  }, {
-    key: 'get',
-    value: function get(name) {
-      if (!this.has(name)) {
-        return null;
-      }
-      return this[name];
-    }
-
-    /**
-     * Retrieves the first error associated with the given attribute.
-     * @param {String} name
-     * @returns {String}
-     *
-     * @memberOf Errors
-     */
-
-  }, {
-    key: 'getFirst',
-    value: function getFirst(name) {
-      if (!this.has(name)) {
-        return null;
-      }
-      return this.get(name)[0];
-    }
-
-    /**
-     * Checks if we have any error or no.
-     * @returns {Boolean}
-     *
-     * @memberOf Errors
-     */
-
-  }, {
-    key: 'isEmpty',
-    value: function isEmpty() {
-      var keys = Object.keys(this);
-      return keys.length === 0;
-    }
-
-    /**
-     * Removes all errors associated with a given attribute.
-     * @param {String} name
-     *
-     * @memberOf Errors
-     */
-
-  }, {
-    key: 'remove',
-    value: function remove(name) {
-      delete this[name];
-    }
-
-    /**
-     * Clears all errors.
-     * @memberOf Errors
-     */
-
-  }, {
-    key: 'clear',
-    value: function clear() {
-      var _this3 = this;
-
-      var keys = Object.keys(this);
-      keys.forEach(function (key) {
-        return _this3.remove(key);
-      }, this);
-    }
-  }]);
-
-  return Errors;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (Errors);
-
-/***/ }),
 /* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Errors__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Errors__ = __webpack_require__(30);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18449,11 +18454,13 @@ var Form = function () {
   }, {
     key: 'onFailure',
     value: function onFailure(error) {
+      var errors = void 0;
       if (error.response) {
-        this.errors.add(error.response.data.errors);
+        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.response.data.errors);
       } else {
-        this.errors.add(error.message);
+        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.message);
       }
+      this.errors = errors;
     }
   }]);
 
@@ -20378,7 +20385,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(37)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
 
 /***/ }),
 /* 85 */
@@ -22753,7 +22760,7 @@ module.exports =
 /* 10 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(30);
+	module.exports = __webpack_require__(31);
 
 /***/ },
 /* 11 */
@@ -22955,7 +22962,7 @@ module.exports =
 /* 14 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(34);
+	module.exports = __webpack_require__(35);
 
 /***/ },
 /* 15 */
@@ -23262,7 +23269,7 @@ module.exports =
 /* 21 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(33);
+	module.exports = __webpack_require__(34);
 
 /***/ },
 /* 22 */
@@ -23401,7 +23408,7 @@ module.exports =
 /* 25 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(31);
+	module.exports = __webpack_require__(32);
 
 /***/ },
 /* 26 */
@@ -27578,7 +27585,7 @@ module.exports =
 /* 103 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(32);
+	module.exports = __webpack_require__(33);
 
 /***/ },
 /* 104 */
@@ -28637,7 +28644,7 @@ module.exports =
 /* 125 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(36);
+	module.exports = __webpack_require__(37);
 
 /***/ },
 /* 126 */
@@ -36176,7 +36183,7 @@ module.exports =
 /* 187 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(35);
+	module.exports = __webpack_require__(36);
 
 /***/ },
 /* 188 */
@@ -37446,7 +37453,7 @@ module.exports =
 /* 208 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(39);
+	module.exports = __webpack_require__(40);
 
 /***/ },
 /* 209 */
@@ -45904,7 +45911,7 @@ module.exports =
 /* 349 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(77);
+	module.exports = __webpack_require__(78);
 
 /***/ },
 /* 350 */
@@ -48945,7 +48952,7 @@ module.exports =
 /***/ 10:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(33);
+	module.exports = __webpack_require__(34);
 
 /***/ },
 
@@ -48966,7 +48973,7 @@ module.exports =
 /***/ 15:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(31);
+	module.exports = __webpack_require__(32);
 
 /***/ },
 
@@ -48987,7 +48994,7 @@ module.exports =
 /***/ 60:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(30);
+	module.exports = __webpack_require__(31);
 
 /***/ },
 
@@ -50041,7 +50048,7 @@ module.exports =
 /***/ 266:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(32);
+	module.exports = __webpack_require__(33);
 
 /***/ },
 
@@ -50333,7 +50340,7 @@ module.exports =
 /***/ 206:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(35);
+	module.exports = __webpack_require__(36);
 
 /***/ },
 
@@ -52807,7 +52814,7 @@ if(false) {
 
 var Component = __webpack_require__(7)(
   /* script */
-  __webpack_require__(78),
+  __webpack_require__(79),
   /* template */
   __webpack_require__(112),
   /* scopeId */
@@ -52841,7 +52848,7 @@ module.exports = Component.exports
 
 var Component = __webpack_require__(7)(
   /* script */
-  __webpack_require__(79),
+  __webpack_require__(80),
   /* template */
   __webpack_require__(113),
   /* scopeId */
@@ -53101,7 +53108,7 @@ if (false) {
 /* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(38);
+module.exports = __webpack_require__(39);
 
 
 /***/ })

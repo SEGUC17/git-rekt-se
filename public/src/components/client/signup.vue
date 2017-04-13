@@ -55,6 +55,7 @@
 
 <script>
   import Form from '../../services/Form';
+  import Errors from '../../services/Errors';
   import EndPoints from '../../services/EndPoints';
   export default {
     data() {
@@ -69,9 +70,6 @@
           mobile: '',
           birthdate: ''
         }),
-        errors: {
-
-        },
       }
     },
     methods: {
@@ -83,6 +81,8 @@
             console.log(err);
             console.log(this.form.errors);
             console.log(this.form.errors.get('email'));
+            this.errors = this.form.errors;
+            console.log(this.errors);
           });
       },
     },
