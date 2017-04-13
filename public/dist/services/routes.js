@@ -76,12 +76,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_pages_client_Forgot_vue__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_pages_client_Forgot_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_pages_client_Forgot_vue__);
+
 
 
 
 var routes = [{
   path: '/about',
   component: __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue___default.a
+}, {
+  path: '/api/v1/business/auth/forgot',
+  component: __WEBPACK_IMPORTED_MODULE_2__components_pages_client_Forgot_vue___default.a
 }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
@@ -97,6 +103,366 @@ var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
 
 module.exports = __webpack_require__(10);
 
+
+/***/ }),
+
+/***/ 105:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      ruleForm: {
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: ''
+      },
+      rules: {
+        name: [{ required: true, message: 'Please input Activity name', trigger: 'blur' }, { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' }],
+        region: [{ required: true, message: 'Please select Activity zone', trigger: 'change' }],
+        date1: [{ type: 'date', required: true, message: 'Please pick a date', trigger: 'change' }],
+        date2: [{ type: 'date', required: true, message: 'Please pick a time', trigger: 'change' }],
+        type: [{ type: 'array', required: true, message: 'Please select at least one activity type', trigger: 'change' }],
+        resource: [{ required: true, message: 'Please select activity resource', trigger: 'change' }],
+        desc: [{ required: true, message: 'Please input activity form', trigger: 'blur' }]
+      }
+    };
+  },
+
+  methods: {
+    submitForm: function submitForm(formName) {
+      this.$refs[formName].validate(function (valid) {
+        if (valid) {
+          alert('submit!');
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    resetForm: function resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
+  }
+});
+
+/***/ }),
+
+/***/ 106:
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(8)(
+  /* script */
+  __webpack_require__(105),
+  /* template */
+  __webpack_require__(107),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/client/Forgot.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Forgot.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-635fde22", Component.options)
+  } else {
+    hotAPI.reload("data-v-635fde22", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 107:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('el-form', {
+    ref: "ruleForm",
+    staticClass: "demo-ruleForm",
+    attrs: {
+      "model": _vm.ruleForm,
+      "rules": _vm.rules,
+      "label-width": "120px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Activity name",
+      "prop": "name"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.ruleForm.name),
+      callback: function($$v) {
+        _vm.ruleForm.name = $$v
+      },
+      expression: "ruleForm.name"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Activity zone",
+      "prop": "region"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "placeholder": "Activity zone"
+    },
+    model: {
+      value: (_vm.ruleForm.region),
+      callback: function($$v) {
+        _vm.ruleForm.region = $$v
+      },
+      expression: "ruleForm.region"
+    }
+  }, [_c('el-option', {
+    attrs: {
+      "label": "Zone one",
+      "value": "shanghai"
+    }
+  }), _vm._v(" "), _c('el-option', {
+    attrs: {
+      "label": "Zone two",
+      "value": "beijing"
+    }
+  })], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Activity time",
+      "required": ""
+    }
+  }, [_c('el-col', {
+    attrs: {
+      "span": 11
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "prop": "date1"
+    }
+  }, [_c('el-date-picker', {
+    staticStyle: {
+      "width": "100%"
+    },
+    attrs: {
+      "type": "date",
+      "placeholder": "Pick a date"
+    },
+    model: {
+      value: (_vm.ruleForm.date1),
+      callback: function($$v) {
+        _vm.ruleForm.date1 = $$v
+      },
+      expression: "ruleForm.date1"
+    }
+  })], 1)], 1), _vm._v(" "), _c('el-col', {
+    staticClass: "line",
+    attrs: {
+      "span": 2
+    }
+  }, [_vm._v("-")]), _vm._v(" "), _c('el-col', {
+    attrs: {
+      "span": 11
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "prop": "date2"
+    }
+  }, [_c('el-time-picker', {
+    staticStyle: {
+      "width": "100%"
+    },
+    attrs: {
+      "type": "fixed-time",
+      "placeholder": "Pick a time"
+    },
+    model: {
+      value: (_vm.ruleForm.date2),
+      callback: function($$v) {
+        _vm.ruleForm.date2 = $$v
+      },
+      expression: "ruleForm.date2"
+    }
+  })], 1)], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Instant delivery",
+      "prop": "delivery"
+    }
+  }, [_c('el-switch', {
+    attrs: {
+      "on-text": "",
+      "off-text": ""
+    },
+    model: {
+      value: (_vm.ruleForm.delivery),
+      callback: function($$v) {
+        _vm.ruleForm.delivery = $$v
+      },
+      expression: "ruleForm.delivery"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Activity type",
+      "prop": "type"
+    }
+  }, [_c('el-checkbox-group', {
+    model: {
+      value: (_vm.ruleForm.type),
+      callback: function($$v) {
+        _vm.ruleForm.type = $$v
+      },
+      expression: "ruleForm.type"
+    }
+  }, [_c('el-checkbox', {
+    attrs: {
+      "label": "Online activities",
+      "name": "type"
+    }
+  }), _vm._v(" "), _c('el-checkbox', {
+    attrs: {
+      "label": "Promotion activities",
+      "name": "type"
+    }
+  }), _vm._v(" "), _c('el-checkbox', {
+    attrs: {
+      "label": "Offline activities",
+      "name": "type"
+    }
+  }), _vm._v(" "), _c('el-checkbox', {
+    attrs: {
+      "label": "Simple brand exposure",
+      "name": "type"
+    }
+  })], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Resources",
+      "prop": "resource"
+    }
+  }, [_c('el-radio-group', {
+    model: {
+      value: (_vm.ruleForm.resource),
+      callback: function($$v) {
+        _vm.ruleForm.resource = $$v
+      },
+      expression: "ruleForm.resource"
+    }
+  }, [_c('el-radio', {
+    attrs: {
+      "label": "Sponsorship"
+    }
+  }), _vm._v(" "), _c('el-radio', {
+    attrs: {
+      "label": "Venue"
+    }
+  })], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Activity form",
+      "prop": "desc"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "textarea"
+    },
+    model: {
+      value: (_vm.ruleForm.desc),
+      callback: function($$v) {
+        _vm.ruleForm.desc = $$v
+      },
+      expression: "ruleForm.desc"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.submitForm('ruleForm')
+      }
+    }
+  }, [_vm._v("Create")]), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.resetForm('ruleForm')
+      }
+    }
+  }, [_vm._v("Reset")])], 1)], 1)], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-635fde22", module.exports)
+  }
+}
 
 /***/ }),
 
@@ -130,7 +496,7 @@ var Component = __webpack_require__(8)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/pages/about.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/about.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] about.vue: functional components are not supported with templates, they should use render functions.")}
 
