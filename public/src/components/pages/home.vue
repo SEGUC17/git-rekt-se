@@ -13,37 +13,28 @@
     
                 <div class="columns index-search has-text-centered">
     
-                    <div class="column is-1"></div>
-                    <div class="column is-3">
-                        <div class="field has-text-centered">
-                            <p class="control">
-                                <input class="input" type="text" placeholder="Keyword(s) ...">
-                            </p>
-                        </div>
+                    <div class="column is-3 is-offset-2">
+                        <el-input placeholder="Keywords" icon="search" v-model="value"  size="large"> </el-input>
                     </div>
     
     
-                    <div class="column is-3">
-                        <div class="field has-text-centered">
-                            <p class="control">
-                                <input class="input" type="text" placeholder="Location ...">
-                            </p>
-                        </div>
-                    </div>
-    
-                    <div class="column is-3">
-                        <div class="field has-text-centered">
-                            <p class="control">
-                                <input class="input" type="text" placeholder="Price ...">
-                            </p>
-                        </div>
+                    <div class="column is-2">
+                        <el-select v-model="location" placeholder="Locations"  size="large">
+                            <el-option v-for="item in locations" :label="item.label" :value="item.value" :key="item.value">
+                            </el-option>
+                        </el-select>
                     </div>
     
                     <div class="column is-2">
+                        <el-select v-model="price" placeholder="Price range" size="large">
+                            <el-option v-for="item in prices" :label="item.label" :value="item.value" :key="item.value">
+                            </el-option>
+                        </el-select>
+                    </div>
+    
+                    <div class="column is-3">
                         <div class="field has-text-left">
-                            <button class="button is-primary">
-                                                                      Search
-                                                                </button>
+                            <el-button size="large" type="success">Search</el-button>
                         </div>
                     </div>
                 </div>
@@ -100,6 +91,20 @@
 <script>
     import card from '../shared/gr-card.vue';
     export default {
+        data() {
+            return {
+                locations: [{
+                    label: 'Nasr City',
+                    value: 'Nasr City',
+                }],
+                prices: [{
+                    label: '100-200',
+                    value: '100-200',
+                }],
+                price: '',
+                location: '',
+            }
+        },
         components: {
             card,
         }
