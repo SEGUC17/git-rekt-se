@@ -51,7 +51,9 @@ export default class Errors {
       if (!this[error.param]) {
         this[error.param] = [];
       }
-      this[error.param].push(error.msg);
+      if (error.msg.length > 0) {
+        this[error.param].push(error.msg);
+      }
     } else if (typeof error === 'string') {
       if (!Object.prototype.hasOwnProperty.call(this, 'serverError')) {
         this.serverError = [];
