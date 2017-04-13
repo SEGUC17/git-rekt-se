@@ -22,6 +22,24 @@ export const clientSignUpValidation = {
     message: 'Password must be between 8 and 15 characters and contains at least one number.',
     trigger: 'blur',
   }],
+  confirmPassword: [{
+    required: true,
+    message: 'Please Confirm the password',
+    trigger: 'blur',
+  }, {
+    validator(rule, value, callBack) {
+      if (this.form.password.length > 0) {
+        if (this.form.password !== value) {
+          callBack([new Error('Password and Confirm Password must match!')]);
+        } else {
+          callBack();
+        }
+      } else {
+        callBack();
+      }
+    },
+    trigger: 'change',
+  }],
   firstName: [{
     required: true,
     message: 'Please Enter your first name.',

@@ -64,6 +64,7 @@
   } from '../../services/validation';
   export default {
     data() {
+      clientSignUpValidation.confirmPassword[1].validator = clientSignUpValidation.confirmPassword[1].validator.bind(this);
       return {
         form: new Form({
           email: '',
@@ -96,7 +97,7 @@
 </script>
 
 <style>
-  .error + .error {
+  .error+.error {
     margin-top: 10px;
   }
 </style>

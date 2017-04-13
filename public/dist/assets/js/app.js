@@ -18238,6 +18238,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
+    __WEBPACK_IMPORTED_MODULE_3__services_validation__["a" /* clientSignUpValidation */].confirmPassword[1].validator = __WEBPACK_IMPORTED_MODULE_3__services_validation__["a" /* clientSignUpValidation */].confirmPassword[1].validator.bind(this);
     return {
       form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
         email: '',
@@ -18536,6 +18537,25 @@ var clientSignUpValidation = {
     pattern: /^(?=.*\d).{8,15}$/,
     message: 'Password must be between 8 and 15 characters and contains at least one number.',
     trigger: 'blur'
+  }],
+  confirmPassword: [{
+    required: true,
+    message: 'Please Confirm the password',
+    trigger: 'blur'
+  }, {
+    validator: function validator(rule, value, callBack) {
+      if (this.form.password.length > 0) {
+        if (this.form.password !== value) {
+          callBack([new Error('Password and Confirm Password must match!')]);
+        } else {
+          callBack();
+        }
+      } else {
+        callBack();
+      }
+    },
+
+    trigger: 'change'
   }],
   firstName: [{
     required: true,
@@ -53828,7 +53848,7 @@ if(false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(87)();
-exports.push([module.i, "\n.error + .error {\n  margin-top: 10px;\n}\n", ""]);
+exports.push([module.i, "\n.error+.error {\n  margin-top: 10px;\n}\n", ""]);
 
 /***/ }),
 /* 133 */
