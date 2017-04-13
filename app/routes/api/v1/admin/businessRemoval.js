@@ -34,7 +34,7 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
     _business: req.params.id,
   }, (err, results) => {
     for (i; i < results.length; i += 1) {
-      results[i].remove();
+      results[i]._deleted = true;
     }
   });
   Branch.find({
@@ -42,18 +42,20 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
   }, (err2, results) => {
     for (i; i < results.length; i += 1) {
       branchlist[i] = results[i]; // save to a const to not create a function inside this loop
-      results[i].remove();
+      results[i]._deleted = true;
     }
   });
-  for (i; i < branchlist.length; i += 1) {
+
+  branchlist.forEach((branch) => {
     Offering.find({
-      branch: branchlist[i].id,
+      branch: branch.id,
     }, (err3, results2) => {
       for (i; i < results2.length; i += 1) {
-        results2[i].remove();
+        results2[i]._deleted = true;
       }
     });
-  }
+  });
+
   Business.findByIdAndRemove(req.params.id, (err) => {
     if (err) {
       return next(err);
