@@ -52888,15 +52888,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "columns is-mobile"
   }, [_c('div', {
     staticClass: "column is-half is-offset-one-quarter"
-  }, [_c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (!_vm.form.errors.isEmpty()),
-      expression: "!form.errors.isEmpty()"
-    }]
-  }, _vm._l((_vm.form.keys), function(key) {
-    return _c('div', [_c('el-alert', {
+  }, [_c('div', _vm._l((_vm.form.keys), function(key) {
+    return _c('div', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (_vm.form.errors.has(key)),
+        expression: "form.errors.has(key)"
+      }]
+    }, [_c('el-alert', {
       attrs: {
         "title": key.toUpperCase(),
         "type": "error",
@@ -52910,12 +52910,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     ref: "form",
     attrs: {
       "model": _vm.form,
+      "rules": _vm.rules,
       "label-position": 'left',
       "label-width": "120px"
     }
   }, [_c('el-form-item', {
     attrs: {
-      "label": "First Name"
+      "label": "First Name",
+      "prop": "firstName"
     }
   }, [_c('el-input', {
     attrs: {

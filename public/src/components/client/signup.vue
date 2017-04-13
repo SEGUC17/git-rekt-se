@@ -2,8 +2,8 @@
   <div class="columns is-mobile">
     <div class="column is-half is-offset-one-quarter">
   
-      <div v-show="!form.errors.isEmpty()">
-        <div v-for="key in form.keys">
+      <div>
+        <div v-for="key in form.keys" v-show="form.errors.has(key)">
           <el-alert :title="key.toUpperCase()" type="error" :description="form.errors.getFirst(key)" show-icon></el-alert>
           <br>
         </div>
@@ -11,8 +11,8 @@
   
       <h1 class="title has-text-centered">Sign Up</h1>
   
-      <el-form ref="form" :model="form" :label-position="'left'" label-width="120px">
-        <el-form-item label="First Name">
+      <el-form ref="form" :model="form" :rules="rules" :label-position="'left'" label-width="120px">
+        <el-form-item label="First Name" prop="firstName">
           <el-input v-model="form.firstName" placeholder="A Name"></el-input>
         </el-form-item>
   
