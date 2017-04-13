@@ -18,5 +18,6 @@ new Vue({
   components: {
     'gr-header': header,
     'gr-footer': footer,
+    reset: require('../../components/business/reset.vue'),
   }
 });
