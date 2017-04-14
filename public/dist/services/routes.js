@@ -7294,6 +7294,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -7341,8 +7352,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     validator: validateConfirmPassword,
                     trigger: 'blur'
                 }]
-            },
-            disable: false
+            }
         };
     },
 
@@ -7354,9 +7364,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (valid) {
                     console.log(_this2.form.data);
                     _this2.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Client().reset).then(function (data) {
-                        if (data.message === 'Password Changed Successfully.') {} else {
-                            _this2.disable = true;
-                        }
+                        console.log(data);
                     }).catch(function (err) {
                         console.log(err);
                         console.log(_this2.form.errors);
@@ -7364,15 +7372,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     });
                 } else {
                     console.log('error submit!!');
-                    console.log(_this2.disable);
-                    _this2.disable = true;
-                    console.log(_this2.disable);
                     return false;
                 }
             });
-        },
-        enableSubmit: function enableSubmit() {
-            this.disable = false;
         }
     }
 });
@@ -7435,7 +7437,17 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('el-form', {
+  return _c('div', {
+    staticClass: "hero-body"
+  }, [_c('div', {
+    staticClass: "contains"
+  }, [_c('div', {
+    staticClass: "columns"
+  }, [_c('div', {
+    staticClass: "column is-8 is-offset-2"
+  }, [_c('div', {
+    staticClass: "login-form"
+  }, [_c('el-form', {
     ref: "form",
     staticClass: "demo-ruleForm",
     attrs: {
@@ -7452,9 +7464,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "type": "password",
       "auto-complete": "off"
-    },
-    on: {
-      "keydown": _vm.enableSubmit
     },
     model: {
       value: (_vm.form.password),
@@ -7473,9 +7482,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "password",
       "auto-complete": "off"
     },
-    on: {
-      "keydown": _vm.enableSubmit
-    },
     model: {
       value: (_vm.form.confirmPassword),
       callback: function($$v) {
@@ -7485,15 +7491,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
     attrs: {
-      "type": "primary",
-      "disabled": this.disable
+      "type": "primary"
     },
     on: {
       "click": function($event) {
         _vm.submitForm('form')
       }
     }
-  }, [_vm._v("Submit")])], 1)], 1)
+  }, [_vm._v("Submit")])], 1)], 1)], 1)])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

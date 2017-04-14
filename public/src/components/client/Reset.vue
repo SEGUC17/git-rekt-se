@@ -1,17 +1,28 @@
 <template>
-    <el-form :model="form" :rules="rules" ref="form" label-width="120px" class="demo-ruleForm">
-        <el-form-item label="Password" prop="password">
-            <el-input type="password" v-model="form.password" auto-complete="off" @keydown="enableSubmit"></el-input>
-        </el-form-item>
+    <div class="hero-body">
+        <div class="contains">
+            <div class="columns">
+                <div class="column is-8 is-offset-2">
+                    <div class="login-form">
+                        <el-form :model="form" :rules="rules" ref="form" label-width="120px" class="demo-ruleForm">
     
-        <el-form-item label="Confirm Password" prop="confirmPassword">
-            <el-input type="password" v-model="form.confirmPassword" auto-complete="off" @keydown="enableSubmit" ></el-input>
-        </el-form-item>
+                            <el-form-item label="Password" prop="password">
+                                <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
+                            </el-form-item>
+
+                            <el-form-item label="Confirm Password" prop="confirmPassword">
+                                <el-input type="password" v-model="form.confirmPassword" auto-complete="off"></el-input>
+                            </el-form-item>
     
-        <el-form-item>
-            <el-button type="primary" @click="submitForm('form')" :disabled="this.disable">Submit</el-button>
-        </el-form-item>
-    </el-form>
+                            <el-form-item>
+                                <el-button type="primary" @click="submitForm('form')">Submit</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -20,7 +31,7 @@
     
     export default {
         data() {
-
+    
             var validatePassword = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('Please input a password'));
@@ -62,7 +73,6 @@
                         trigger: 'blur'
                     }],
                 },
-                disable : false,
             };
         },
         methods: {
@@ -72,12 +82,7 @@
                         console.log(this.form.data);
                         this.form.post(EndPoints.Client().reset)
                             .then((data) => {
-                                if(data.message === 'Password Changed Successfully.'){
-
-                                }
-                                else{
-                                    this.disable = true;
-                                }
+                                console.log(data);
                             })
                             .catch((err) => {
                                 console.log(err);
@@ -86,16 +91,10 @@
                             });
                     } else {
                         console.log('error submit!!');
-                        console.log(this.disable);
-                        this.disable = true;
-                        console.log(this.disable    );
                         return false;
                     }
                 });
             },
-            enableSubmit(){
-                this.disable = false;
-            }
         }
     }
 </script>
