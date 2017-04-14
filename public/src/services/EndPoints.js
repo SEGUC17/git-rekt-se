@@ -9,4 +9,10 @@ export default {
       resend: `${authBase}/confirmation/send`,
     };
   },
+  Business() {
+    const authBase = `${BASE}/business/auth`;
+    return {
+      forgot: `${authBase}/forgot`,
+    };
+  },
 };

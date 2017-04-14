@@ -6,6 +6,7 @@ import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import router from '../../services/routes.js';
+import forgotPassword from '../../components/business/forgotPassword.vue';
 Window.axios = axios;
 
 Vue.use(VueRouter);
@@ -16,6 +17,7 @@ new Vue({
   el: '#root',
   router,
   components: {
+    'forgot-password': forgotPassword,
     'gr-header': header,
     'gr-footer': footer,
   }
