@@ -5,6 +5,7 @@ import Buefy from 'buefy'
 import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
+import clientLogin from '../../components/Client/login.vue';
 import router from '../../services/routes.js';
 Window.axios = axios;
 
@@ -18,5 +19,6 @@ new Vue({
   components: {
     'gr-header': header,
     'gr-footer': footer,
+    'client-login': clientLogin,
   }
 });

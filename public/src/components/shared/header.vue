@@ -53,13 +53,13 @@
 </template>
 
 <script>
-    import auth from '../../services/client-auth'
+    import auth from '../../services/clientAuth'
     export default {
         data(){
             return {
                 user: auth.user
             }
-        }
+        },
 
         methods:{
         }
