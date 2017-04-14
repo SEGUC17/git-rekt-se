@@ -512,6 +512,17 @@ const businessUpdateValidation = {
   },
 };
 
+const forgotPasswordValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emailEmpty,
+    },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
+};
+
 const validation = {
   clientResetPasswordValidation,
   clientSignupValidation,
@@ -541,6 +552,7 @@ const validation = {
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
+  forgotPasswordValidation,
 };
 
 module.exports = validation;

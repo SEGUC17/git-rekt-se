@@ -242,19 +242,23 @@ router.get('/fb/login', passport.authenticate('facebook_strategy', {
 }));
 
 router.post('/forgot', (req, res, next) => {
-  const email = req.body.email;
-  const currentDate = Date.now();
-  const iat = Math.floor(currentDate / 1000);
-  const resetToken = jwt.sign({
-    email,
-    iat,
-  }, JWT_KEY, {
-    expiresIn: '1h',
-  });
+  req.checkBody(validationSchemas.forgotPasswordValidation);
+  req.getValidationResult()
+  .then((result) => {
+    if (result.isEmpty()) {
+      const email = req.body.email;
+      const currentDate = Date.now();
+      const iat = Math.floor(currentDate / 1000);
+      const resetToken = jwt.sign({
+        email,
+        iat,
+      }, JWT_KEY, {
+        expiresIn: '1h',
+      });
 
-  Client.findOne({
-    email: req.body.email,
-  })
+      Client.findOne({
+        email: req.body.email,
+      })
     .exec()
     .then((client) => {
       if (!client) { // Client not found, Invalid mail
@@ -274,6 +278,8 @@ router.post('/forgot', (req, res, next) => {
         });
     })
     .catch(err => next(err));
+    }
+  });
 });
 
 /**
