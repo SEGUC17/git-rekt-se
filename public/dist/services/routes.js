@@ -1286,40 +1286,7 @@ module.exports = __webpack_require__(23);
 
 /***/ }),
 /* 17 */,
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(7)(
-  /* script */
-  __webpack_require__(40),
-  /* template */
-  __webpack_require__(59),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/Users/Hejazi/Desktop/git-rekt-se/public/src/components/business/reset.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] reset.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b6f20ac6", Component.options)
-  } else {
-    hotAPI.reload("data-v-b6f20ac6", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 18 */,
 /* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3765,7 +3732,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_business_reset_vue__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_business_reset_vue__ = __webpack_require__(127);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_business_reset_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_business_reset_vue__);
 
 
@@ -4624,133 +4591,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 40 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(42);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        var _this = this;
-
-        var validatePassword = function validatePassword(rule, value, callback) {
-            if (value === '') {
-                callback(new Error('Please input a password'));
-            } else {
-                if (!/^(?=.*\d).{8,15}$/.test(value)) {
-                    callback(new Error('Password must be between 8 and 15 characters and contains at least one number.'));
-                } else {
-                    if (_this.form.confirmPassword !== '') {
-                        _this.$refs.form.validateField('confirmPassword');
-                    }
-                    callback();
-                }
-            }
-        };
-        var validateConfirmPassword = function validateConfirmPassword(rule, value, callback) {
-            if (value === '') {
-                callback(new Error('Please insert a password!'));
-            } else if (value !== _this.form.password) {
-                callback(new Error('The two inputs don\'t match!'));
-            } else {
-                callback();
-            }
-        };
-        return {
-            form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
-                password: '',
-                confirmPassword: '',
-                token: this.$route.params.token
-            }),
-            errors: [],
-            rules: {
-                password: [{
-                    validator: validatePassword,
-                    trigger: 'blur'
-                }],
-                confirmPassword: [{
-                    validator: validateConfirmPassword,
-                    trigger: 'blur'
-                }]
-            },
-            message: '',
-            alert_show: false,
-            error_show: false
-        };
-    },
-
-    computed: {
-        tokenGetter: function tokenGetter() {
-            return this.$route.params;
-            console.log(this.$route.params);
-        }
-    },
-    methods: {
-        submitForm: function submitForm(formName) {
-            var _this2 = this;
-
-            console.log(this.form);
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    console.log(_this2.form.data);
-                    _this2.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Business().reset).then(function (data) {
-                        console.log(data);
-                        _this2.message = data.message;
-                        _this2.alert_show = true;
-                    }).catch(function (err) {
-                        console.log(err);
-                        _this2.errors = err;
-                        _this2.error_show = true;
-                    });
-                } else {
-                    _this2.errors = ['Please insert correct inputs'];
-                    _this2.error_show = true;
-                }
-            });
-        }
-    }
-});
-
-/***/ }),
+/* 40 */,
 /* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7271,7 +7112,7 @@ var Component = __webpack_require__(7)(
   /* script */
   __webpack_require__(41),
   /* template */
-  __webpack_require__(58),
+  __webpack_require__(59),
   /* scopeId */
   null,
   /* cssModules */
@@ -7298,7 +7139,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */
+/* 58 */,
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -7317,111 +7159,6 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
      require("vue-hot-reload-api").rerender("data-v-9d784116", module.exports)
-  }
-}
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "columns is-mobile"
-  }, [_c('div', {
-    staticClass: "column is-half is-offset-one-quarter"
-  }, [_c('div', [_c('div', {
-    staticClass: "alert"
-  }, [_c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.alert_show),
-      expression: "alert_show"
-    }],
-    staticClass: "message"
-  }, [_c('el-alert', {
-    attrs: {
-      "title": _vm.message,
-      "type": "success",
-      "show-icon": ""
-    }
-  })], 1), _vm._v(" "), _c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.error_show),
-      expression: "error_show"
-    }],
-    staticClass: "message"
-  }, _vm._l((_vm.errors), function(error) {
-    return _c('el-alert', {
-      key: error,
-      attrs: {
-        "title": error,
-        "type": "error",
-        "show-icon": ""
-      }
-    })
-  }))]), _vm._v(" "), _c('h1', {
-    staticClass: "title has-text-centered"
-  }, [_vm._v("Reset Password")]), _vm._v(" "), _c('el-form', {
-    ref: "form",
-    staticClass: "demo-ruleForm",
-    attrs: {
-      "model": _vm.form,
-      "rules": _vm.rules,
-      "label-width": "120px"
-    }
-  }, [_c('el-form-item', {
-    attrs: {
-      "label": "Password",
-      "prop": "password"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "type": "password",
-      "auto-complete": "off"
-    },
-    model: {
-      value: (_vm.form.password),
-      callback: function($$v) {
-        _vm.form.password = $$v
-      },
-      expression: "form.password"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "Confirm Password",
-      "prop": "confirmPassword"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "type": "password",
-      "auto-complete": "off"
-    },
-    model: {
-      value: (_vm.form.confirmPassword),
-      callback: function($$v) {
-        _vm.form.confirmPassword = $$v
-      },
-      expression: "form.confirmPassword"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
-    attrs: {
-      "type": "primary"
-    },
-    on: {
-      "click": function($event) {
-        _vm.submitForm('form')
-      }
-    }
-  }, [_vm._v("Submit")])], 1)], 1)], 1)])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-b6f20ac6", module.exports)
   }
 }
 
@@ -7552,6 +7289,277 @@ module.exports = function listToStyles (parentId, list) {
 
 module.exports = __webpack_require__(21);
 
+
+/***/ }),
+/* 125 */,
+/* 126 */,
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(7)(
+  /* script */
+  __webpack_require__(128),
+  /* template */
+  __webpack_require__(129),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/Hejazi/Desktop/git-rekt-se/public/src/components/business/reset.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] reset.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b6f20ac6", Component.options)
+  } else {
+    hotAPI.reload("data-v-b6f20ac6", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 128 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(42);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        var _this = this;
+
+        var validatePassword = function validatePassword(rule, value, callback) {
+            if (value === '') {
+                callback(new Error('Please input a password'));
+            } else {
+                if (!/^(?=.*\d).{8,15}$/.test(value)) {
+                    callback(new Error('Password must be between 8 and 15 characters and contains at least one number.'));
+                } else {
+                    if (_this.form.confirmPassword !== '') {
+                        _this.$refs.form.validateField('confirmPassword');
+                    }
+                    callback();
+                }
+            }
+        };
+        var validateConfirmPassword = function validateConfirmPassword(rule, value, callback) {
+            if (value === '') {
+                callback(new Error('Please insert a password!'));
+            } else if (value !== _this.form.password) {
+                callback(new Error('The two inputs don\'t match!'));
+            } else {
+                callback();
+            }
+        };
+        return {
+            form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
+                password: '',
+                confirmPassword: '',
+                token: this.$route.params.token
+            }),
+            errors: [],
+            rules: {
+                password: [{
+                    validator: validatePassword,
+                    trigger: 'blur'
+                }],
+                confirmPassword: [{
+                    validator: validateConfirmPassword,
+                    trigger: 'blur'
+                }]
+            },
+            message: '',
+            alert_show: false,
+            error_show: false
+        };
+    },
+
+    computed: {
+        tokenGetter: function tokenGetter() {
+            return this.$route.params;
+            console.log(this.$route.params);
+        }
+    },
+    methods: {
+        submitForm: function submitForm(formName) {
+            var _this2 = this;
+
+            console.log(this.form);
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    console.log(_this2.form.data);
+                    _this2.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Business().reset).then(function (data) {
+                        console.log(data);
+                        _this2.message = data.message;
+                        _this2.alert_show = true;
+                        _this2.error_show = false;
+                    }).catch(function (err) {
+                        console.log(err);
+                        _this2.errors = err;
+                        _this2.error_show = true;
+                        _this2.alert_show = false;
+                    });
+                } else {
+                    _this2.errors = ['Please insert correct inputs'];
+                    _this2.error_show = true;
+                    _this2.alert_show = false;
+                }
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "columns is-mobile"
+  }, [_c('div', {
+    staticClass: "column is-half is-offset-one-quarter"
+  }, [_c('div', [_c('div', {
+    staticClass: "alert"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.alert_show),
+      expression: "alert_show"
+    }],
+    staticClass: "message"
+  }, [_c('el-alert', {
+    attrs: {
+      "title": _vm.message,
+      "type": "success",
+      "show-icon": ""
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.error_show),
+      expression: "error_show"
+    }],
+    staticClass: "message"
+  }, _vm._l((_vm.errors), function(error) {
+    return _c('el-alert', {
+      key: error,
+      attrs: {
+        "title": error,
+        "type": "error",
+        "show-icon": ""
+      }
+    })
+  }))]), _vm._v(" "), _c('h1', {
+    staticClass: "title has-text-centered"
+  }, [_vm._v("Reset Password")]), _vm._v(" "), _c('el-form', {
+    ref: "form",
+    staticClass: "demo-ruleForm",
+    attrs: {
+      "model": _vm.form,
+      "rules": _vm.rules,
+      "label-width": "120px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Password",
+      "prop": "password"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "password",
+      "auto-complete": "off"
+    },
+    model: {
+      value: (_vm.form.password),
+      callback: function($$v) {
+        _vm.form.password = $$v
+      },
+      expression: "form.password"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Confirm Password",
+      "prop": "confirmPassword"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "password",
+      "auto-complete": "off"
+    },
+    model: {
+      value: (_vm.form.confirmPassword),
+      callback: function($$v) {
+        _vm.form.confirmPassword = $$v
+      },
+      expression: "form.confirmPassword"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.submitForm('form')
+      }
+    }
+  }, [_vm._v("Submit")])], 1)], 1)], 1)])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b6f20ac6", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

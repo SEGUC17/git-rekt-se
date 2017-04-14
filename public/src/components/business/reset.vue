@@ -100,15 +100,18 @@
                                 console.log(data);
                                 this.message = data.message;
                                 this.alert_show = true;
+                                this.error_show = false;
                             })
                             .catch((err) => {
                                 console.log(err);
                                 this.errors = err;
                                 this.error_show = true;
+                                this.alert_show = false;
                             });
                     } else {
                         this.errors = ['Please insert correct inputs'];
                         this.error_show = true;
+                        this.alert_show = false;
                     }
                 });
             },
