@@ -10,7 +10,7 @@ const ServiceSeed = require('../../../app/seed/service/serviceSeed');
 const CouponSeed = require('../../../app/seed/service/couponSeeds');
 
 /**
- * Service Gallery CRUD Tests.
+ * Service Coupon CRUD Tests.
  */
 
 describe('Service Coupon CRUD Tests', () => {
