@@ -54,3 +54,6 @@ public/dist/**
 
 #IJ
 .idea
+mix-manifest.json
+public/dist/services
+public/dist/assets
