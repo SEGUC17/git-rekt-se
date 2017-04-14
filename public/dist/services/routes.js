@@ -4654,6 +4654,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -7007,7 +7014,7 @@ function isnan (val) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(6)();
-exports.push([module.i, "\n.grey-background {\n  background-color : grey;\n}\n", ""]);
+exports.push([module.i, "\n.grey-background {\n  background-color: grey;\n}\nhtml,\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n  height: 100%;\n  padding: 0;\n  margin: 0;\n}\n.email-input,\n.password-input {\n  border-radius: 40px;\n  font-size: 20px;\n  padding-left: 15px;\n  color: #95A5A6;\n}\n.icon.user,\n.icon.password {\n  margin: 5px 10px 0 0;\n}\n.avatar img {\n  border-radius: 100px;\n  padding: 5px;\n  border: 1px solid #dbdbdb;\n}\n.forgot-password a {\n  color: #95A5A6;\n  font-weight: bold;\n  padding-right: 20px;\n}\n.login {\n  padding-top: 20px;\n}\n.login button {\n  border-radius: 40px;\n  font-weight: bold;\n}\n.hero-body .container {\n  margin-top: -100px;\n}\n.hero.is-dark .section {\n  background-color: transparent;\n}\n.login-wrapper {\n  margin: -0.75rem;\n  overflow-y: hidden;\n}\n.hero-banner .hero {\n  background: url('https://unsplash.it/2000/1000');\n  background-position: center;\n  background-size: cover;\n  background-blend-mode: screen;\n}\n.hero-banner .title {\n  display: inline-block;\n  background-color: rgba(0, 0, 0, 0.6);\n  padding: 5px;\n}\n", ""]);
 
 /***/ }),
 /* 46 */
@@ -7206,17 +7213,19 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "columns is-mobile grey-background",
+    staticClass: "hero-body",
     staticStyle: {
       "padding": "200px"
     }
   }, [_c('div', {
-    staticClass: "column is-half is-offset-one-quarter"
+    staticClass: "container"
   }, [_c('div', {
-    staticClass: "box"
+    staticClass: "columns"
+  }, [_c('div', {
+    staticClass: "column is-8 is-offset-2"
   }, [_c('el-form', {
     ref: "form",
-    staticClass: "demo-dynamic",
+    staticClass: "login-form",
     attrs: {
       "model": _vm.form,
       "label-width": "120px"
@@ -7237,6 +7246,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       ]
     }
+  }, [_c('p', {
+    staticClass: "control has-icon has-icon-right"
   }, [_c('el-input', {
     model: {
       value: (_vm.form.email),
@@ -7245,7 +7256,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "form.email"
     }
-  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
+  }), _vm._v(" "), _c('span', {
+    staticClass: "icon user"
+  }, [_c('i', {
+    staticClass: "fa fa-user"
+  })])], 1)]), _vm._v(" "), _c('el-form-item', [_c('el-button', {
     staticClass: "button is-info is-fullwidth",
     attrs: {
       "type": "primary"
@@ -7255,7 +7270,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.submit('post', '/api/v1/client/auth/forgot')
       }
     }
-  }, [_vm._v("Forgot Password")])], 1)], 1)], 1)])])
+  }, [_vm._v("Forgot Password")])], 1)], 1)], 1)])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
