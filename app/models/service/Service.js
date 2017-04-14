@@ -66,6 +66,16 @@ const serviceSchema = Schema({
   coverImage: {
     type: String,
   },
+  coupons: [{
+    code: {
+      type: String,
+      required: true,
+    },
+    value: {
+      type: Number,
+      required: true,
+    },
+  }],
   _deleted: {
     type: Boolean,
     default: false,
