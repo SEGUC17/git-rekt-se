@@ -1,23 +1,30 @@
 <template>
-    <div class="hero-body">
-        <div class="contains">
-            <div class="columns">
-                <div class="column is-8 is-offset-2">
-                    <div class="login-form">
-                        <el-form :model="form" :rules="rules" ref="form" label-width="120px" class="demo-ruleForm">
+    <div>
+        <article class="message is-primary" v-show="form.success" style="padding : 50px">
+            <div class="message-header">
+                <p>Password changes succesfully</p>
+            </div>
+        </article>
+        <div class="hero-body">
+            <div class="contains">
+                <div class="columns">
+                    <div class="column is-8 is-offset-2">
+                        <div class="login-form">
+                            <el-form :model="form" :rules="rules" ref="form" label-width="120px" class="demo-ruleForm">
     
-                            <el-form-item label="Password" prop="password">
-                                <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
-                            </el-form-item>
-
-                            <el-form-item label="Confirm Password" prop="confirmPassword">
-                                <el-input type="password" v-model="form.confirmPassword" auto-complete="off"></el-input>
-                            </el-form-item>
+                                <el-form-item label="Password" prop="password">
+                                    <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
+                                </el-form-item>
     
-                            <el-form-item>
-                                <el-button type="primary" @click="submitForm('form')">Submit</el-button>
-                            </el-form-item>
-                        </el-form>
+                                <el-form-item label="Confirm Password" prop="confirmPassword">
+                                    <el-input type="password" v-model="form.confirmPassword" auto-complete="off"></el-input>
+                                </el-form-item>
+    
+                                <el-form-item>
+                                    <el-button type="primary" @click="submitForm('form')">Submit</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -31,7 +38,7 @@
     
     export default {
         data() {
-    
+            
             var validatePassword = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('Please input a password'));
@@ -61,6 +68,7 @@
                     token: this.$route.params.token,
                     password: '',
                     confirmPassword: '',
+                    success: false,
                 }),
                 errors: {},
                 rules: {
@@ -82,12 +90,11 @@
                         console.log(this.form.data);
                         this.form.post(EndPoints.Client().reset)
                             .then((data) => {
-                                console.log(data);
+                                this.form.success = true;
                             })
                             .catch((err) => {
                                 console.log(err);
                                 console.log(this.form.errors);
-                                console.log(this.form.errors.get('email'));
                             });
                     } else {
                         console.log('error submit!!');
