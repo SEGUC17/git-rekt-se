@@ -14,14 +14,12 @@
                 <div class="columns index-search has-text-centered">
     
                     <div class="column is-3 is-offset-2 is-12-mobile">
-                        <el-input placeholder="Keywords" icon="search" v-model="value"  size="large"> </el-input>
+                        <el-input placeholder="Name" icon="search" v-model="name" size="large"> </el-input>
                     </div>
     
                     <div class="column is-2">
-                        <el-select v-model="location" placeholder="Locations"  size="large">
-                            <el-option v-for="item in locations" :label="item.label" :value="item.value" :key="item.value">
-                            </el-option>
-                        </el-select>
+                        <el-autocomplete v-model="location" :fetch-suggestions="querySearch" placeholder="Locations" size="large">
+                        </el-autocomplete>
                     </div>
     
                     <div class="column is-2">
@@ -88,24 +86,51 @@
 </template>
 
 <script>
-    import card from '../shared/gr-card.vue';
+    import card from '../../shared/gr-card.vue';
+    import locs from './mainLocations.js';
+    import endpoints from '../../../services/EndPoints.js';
+    
     export default {
         data() {
             return {
-                locations: [{
-                    label: 'Nasr City',
-                    value: 'Nasr City',
-                }],
+                locations: locs,
                 prices: [{
                     label: '100-200',
                     value: '100-200',
                 }],
+                name: '',
                 price: '',
                 location: '',
             }
         },
+        methods: {
+            getLocations() {
+                axios
+                    .get(endpoints.Search().locations)
+                    .then((res) => {
+                        this.locations = res.data;
+                    })
+                    .catch((e) => {
+                        this.locations = locs;
+                    });
+            },
+            querySearch(query, cb) {
+                const locations = this.locations;
+                const results = [];
+                locations.forEach((loc) =>{
+                    if(loc.value.toLowerCase().indexOf(query.toLowerCase()) !== -1){
+                        results.push(loc);
+                    }
+                });
+                cb(results);
+            },
+        },
         components: {
             card,
+        },
+    
+        mounted() {
+            this.locations = this.getLocations();
         }
     };
 </script>

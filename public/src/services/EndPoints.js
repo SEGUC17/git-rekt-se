@@ -9,4 +9,11 @@ export default {
       resend: `${authBase}/confirmation/send`,
     };
   },
+
+  Search() {
+    const base = `${BASE}/visitor/search`;
+    return {
+      locations: `${base}/locations`,
+    };
+  },
 };
