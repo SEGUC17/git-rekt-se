@@ -7,6 +7,7 @@ export default {
     return {
       signup: `${authBase}/signup`,
       resend: `${authBase}/confirmation/send`,
+      reset: `${authBase}/reset`,
     };
   },
 };

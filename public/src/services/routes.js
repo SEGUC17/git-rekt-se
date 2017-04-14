@@ -1,10 +1,18 @@
 import VueRouter from 'vue-router';
 import About from '../components/pages/about.vue';
+import Reset from '../components/client/Reset.vue';
 
-const routes = [{
-  path: '/about',
-  component: About,
-}];
+const routes = [
+  {
+    path: '/about',
+    component: About,
+  },
+  {
+    path: '/api/v1/client/auth/reset/:token',
+    component: Reset,
+  },
+
+];
 
 const router = new VueRouter({
   routes,
