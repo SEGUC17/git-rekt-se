@@ -88,16 +88,14 @@
 <script>
     import card from '../../shared/gr-card.vue';
     import locs from './mainLocations.js';
+    import priceRanges from './priceRanges.js';
     import endpoints from '../../../services/EndPoints.js';
     
     export default {
         data() {
             return {
                 locations: locs,
-                prices: [{
-                    label: '100-200',
-                    value: '100-200',
-                }],
+                prices: priceRanges,
                 name: '',
                 price: '',
                 location: '',
