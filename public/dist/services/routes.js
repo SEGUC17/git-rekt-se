@@ -4697,6 +4697,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         console.log(data);
                         _this.message = data.message;
                         _this.alert_show = true;
+                        _this.error_show = false;
                     }).catch(function (err) {
                         console.log(err);
                         _this.errors = err;

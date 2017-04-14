@@ -64,6 +64,7 @@
                                 console.log(data);
                                 this.message = data.message;
                                 this.alert_show = true;
+                                this.error_show = false;
                             })
                             .catch((err) => {
                                 console.log(err);
