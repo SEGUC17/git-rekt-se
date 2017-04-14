@@ -36,22 +36,27 @@ router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
             if (service) {
               // check whether logged in business matches the service provider
               if (`${service._business}` === `${req.user._id}`) {
-                // TODO check that the given date is in the future
-                const coupon = ({
-                  _service: req.params.id,
-                  startDate: new Date(req.body.startDate),
-                  endDate: new Date(req.body.endDate),
-                  code: req.body.code,
-                  discount: req.body.discount,
-                });
-                new Coupon(coupon)
-                  .save()
-                  .then(() => {
-                    res.json({
-                      message: Strings.serviceSuccess.couponAdd,
-                    });
-                  })
-                  .catch(saveErr => next(saveErr));
+                // check that the given expiration date is in the future
+                if (new Date(req.body.endDate)
+                  .getTime() < Date.now()) {
+                  next(Strings.couponValidationError.invalidEndDate);
+                } else {
+                  const coupon = ({
+                    _service: req.params.id,
+                    startDate: new Date(req.body.startDate),
+                    endDate: new Date(req.body.endDate),
+                    code: req.body.code,
+                    discount: req.body.discount,
+                  });
+                  new Coupon(coupon)
+                    .save()
+                    .then(() => {
+                      res.json({
+                        message: Strings.serviceSuccess.couponAdd,
+                      });
+                    })
+                    .catch(saveErr => next(saveErr));
+                }
               } else {
                 next(Strings.serviceFailure.notYourService);
               }

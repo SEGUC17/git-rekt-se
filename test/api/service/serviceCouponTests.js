@@ -108,6 +108,45 @@ describe('Service Coupon CRUD Tests', () => {
     const sampleService = ServiceSeed[0];
     sampleService._business = dbBusiness._id;
     const coupon = {
+      code: 'discount10',
+      discount: '10',
+      startDate: '11/1/2020',
+      endDate: '11/13/2010',
+    };
+    new Service(sampleService)
+      .save()
+      .then((savedSer) => {
+        req = supertest(app)
+          .post(`/api/v1/service/${savedSer._id}/coupons/add`)
+          .set('Authorization', `JWT ${token}`)
+          .send(coupon)
+          .expect('Content-Type', /json/)
+          .expect(400)
+          .end((err, result) => {
+            if (err) {
+              done(err);
+            } else {
+              Coupon.findOne({
+                _service: savedSer._id,
+              })
+                .exec()
+                .then((data) => {
+                  chai.expect(data)
+                    .to.equal(null);
+                  chai.expect(result.body.errors[0])
+                    .to.equal(Strings.couponValidationError.invalidEndDate);
+                  done();
+                })
+                .catch(() => done(err));
+            }
+          });
+      })
+      .catch(err => done(err));
+  });
+  it('should not create a coupon if the code is missing, and return an error message', (done) => {
+    const sampleService = ServiceSeed[0];
+    sampleService._business = dbBusiness._id;
+    const coupon = {
       // code: 'discount10',
       discount: '10',
       startDate: '11/1/2020',
