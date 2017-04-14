@@ -10,6 +10,7 @@ const RelatedServiceAPI = require('./api/v1/service/related');
 const businessProfileAPI = require('./api/v1/business/profile');
 const businessServiceAPI = require('./api/v1/business/serviceCRUD');
 const ServiceGalleryAPI = require('./api/v1/service/gallery');
+const ServiceCouponsAPI = require('./api/v1/service/coupons');
 const ReviewCRUDAPI = require('./api/v1/service/review');
 const AdminCatAPI = require('./api/v1/admin/category');
 const BusinessGalleryAPI = require('./api/v1/business/gallery');
@@ -56,4 +57,5 @@ module.exports = (app) => {
    */
   app.use('/api/v1/service', ReviewCRUDAPI);
   app.use('/api/v1/service', ServiceGalleryAPI);
+  app.use('/api/v1/service', ServiceCouponsAPI);
 };
