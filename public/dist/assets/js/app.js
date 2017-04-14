@@ -53036,6 +53036,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -53071,7 +53078,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
                 token: this.$route.params.token,
                 password: '',
-                confirmPassword: ''
+                confirmPassword: '',
+                success: false
             }),
             errors: {},
             rules: {
@@ -53095,11 +53103,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (valid) {
                     console.log(_this2.form.data);
                     _this2.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Client().reset).then(function (data) {
-                        console.log(data);
+                        _this2.form.success = true;
                     }).catch(function (err) {
                         console.log(err);
                         console.log(_this2.form.errors);
-                        console.log(_this2.form.errors.get('email'));
                     });
                 } else {
                     console.log('error submit!!');
@@ -53168,7 +53175,18 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  return _c('div', [_c('article', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.form.success),
+      expression: "form.success"
+    }],
+    staticClass: "message is-primary",
+    staticStyle: {
+      "padding": "50px"
+    }
+  }, [_vm._m(0)]), _vm._v(" "), _c('div', {
     staticClass: "hero-body"
   }, [_c('div', {
     staticClass: "contains"
@@ -53229,8 +53247,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.submitForm('form')
       }
     }
-  }, [_vm._v("Submit")])], 1)], 1)], 1)])])])])
-},staticRenderFns: []}
+  }, [_vm._v("Submit")])], 1)], 1)], 1)])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-header"
+  }, [_c('p', [_vm._v("Password changes succesfully")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
