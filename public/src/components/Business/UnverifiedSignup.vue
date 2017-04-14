@@ -42,30 +42,6 @@
                     callback();
                 }
             };
-            var validatePass = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error('Please input a password'));
-                } else {
-                    if (!(/^(?=.*\d).{8,15}$/.test(value))) {
-                        callback(new Error('Password must be between 8 and 15 characters and contains at least one number.'));
-                    } else {
-                        if (this.form.confirmPassword !== '') {
-                            this.$refs.form.validateField('confirmPassword');
-                        }
-                        callback();
-                    }
-    
-                }
-            };
-            var validaePass2 = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error('Please input the password again'));
-                } else if (value !== this.ruleForm2.pass) {
-                    callback(new Error('Two inputs don\'t match!'));
-                } else {
-                    callback();
-                }
-            };
             var checkPhoneNumber = (rule, value, callback) => {
                 if (!value) {
                     callback(new Error('Please input the phone number'));
@@ -117,10 +93,9 @@
         },
         methods: {
             submitForm(formName) {
-                console.log(formName);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        
                     } else {
                         console.log('error submit!!');
                         return false;

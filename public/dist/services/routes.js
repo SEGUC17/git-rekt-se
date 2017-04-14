@@ -6916,8 +6916,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        var _this = this;
-
         var checkDescription = function checkDescription(rule, value, callback) {
             if (!value) {
                 callback(new Error('Please input the description'));
@@ -6933,29 +6931,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 callback(new Error('Please input the Name'));
             } else if (value === '') {
                 callback(new Error('Please input the Name'));
-            } else {
-                callback();
-            }
-        };
-        var validatePass = function validatePass(rule, value, callback) {
-            if (value === '') {
-                callback(new Error('Please input a password'));
-            } else {
-                if (!/^(?=.*\d).{8,15}$/.test(value)) {
-                    callback(new Error('Password must be between 8 and 15 characters and contains at least one number.'));
-                } else {
-                    if (_this.form.confirmPassword !== '') {
-                        _this.$refs.form.validateField('confirmPassword');
-                    }
-                    callback();
-                }
-            }
-        };
-        var validaePass2 = function validaePass2(rule, value, callback) {
-            if (value === '') {
-                callback(new Error('Please input the password again'));
-            } else if (value !== _this.ruleForm2.pass) {
-                callback(new Error('Two inputs don\'t match!'));
             } else {
                 callback();
             }
@@ -7012,11 +6987,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         submitForm: function submitForm(formName) {
-            console.log(formName);
             this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    alert('submit!');
-                } else {
+                if (valid) {} else {
                     console.log('error submit!!');
                     return false;
                 }
