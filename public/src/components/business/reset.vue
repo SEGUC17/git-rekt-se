@@ -1,18 +1,34 @@
 
 <<template>
-    <el-form :model="form" :rules="rules" ref="form" label-width="120px" class="demo-ruleForm">
-        <el-form-item label="Password" prop="password">
-            <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
-        </el-form-item>
+    <div class="columns is-mobile">
+        <div class="column is-half is-offset-one-quarter">
+            <div>
+                <div class="alert" >
+                    <div class="message" v-show="alert_show">
+                        <el-alert :title="message" type="success" show-icon></el-alert>
+                    </div>
+                    <div class="message" v-show="error_show">
+                        <el-alert v-for="error in errors" :key="error" :title="error" type="error" show-icon></el-alert>
+                    </div>
+                </div>
     
-        <el-form-item label="Confirm Password" prop="confirmPassword">
-            <el-input type="password" v-model="form.confirmPassword" auto-complete="off"></el-input>
-        </el-form-item>
+                <h1 class="title has-text-centered">Forgot Password</h1>
+                <el-form :model="form" :rules="rules" ref="form" label-width="120px" class="demo-ruleForm">
+                    <el-form-item label="Password" prop="password">
+                        <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
+                    </el-form-item>
     
-        <el-form-item>
-            <el-button type="primary" @click="submitForm('form')">Submit</el-button>
-        </el-form-item>
-    </el-form>
+                    <el-form-item label="Confirm Password" prop="confirmPassword">
+                        <el-input type="password" v-model="form.confirmPassword" auto-complete="off"></el-input>
+                    </el-form-item>
+    
+                    <el-form-item>
+                        <el-button type="primary" @click="submitForm('form')">Submit</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -49,8 +65,9 @@
                 form: new Form({
                     password: '',
                     confirmPassword: '',
+                    token: this.$route.params.token,
                 }),
-                errors: {},
+                errors: [],
                 rules: {
                     password: [{
                         validator: validatePassword,
@@ -60,24 +77,38 @@
                         validator: validateConfirmPassword,
                         trigger: 'blur'
                     }],
-                }
+                },
+                message: '',
+                alert_show: false,
+                error_show: false,
             };
+        },
+        computed: {
+            tokenGetter: function() {
+                return this.$route.params;
+                console.log(this.$route.params);
+            }
         },
         methods: {
             submitForm(formName) {
+                console.log(this.form);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         console.log(this.form.data);
                         this.form.post(EndPoints.Business().reset)
-                            .then((data) => console.log(data))
+                            .then((data) => {
+                                console.log(data);
+                                this.message = data.message;
+                                this.alert_show = true;
+                            })
                             .catch((err) => {
                                 console.log(err);
-                                console.log(this.form.errors);
-                                console.log(this.form.errors.get('email'));
+                                this.errors = err;
+                                this.error_show = true;
                             });
                     } else {
-                        console.log('error submit!!');
-                        return false;
+                        this.errors = ['Please insert correct inputs'];
+                        this.error_show = true;
                     }
                 });
             },
