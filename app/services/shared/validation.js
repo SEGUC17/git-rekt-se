@@ -304,7 +304,7 @@ const couponAddValidation = {
       errorMessage: couponValidationErrors.emptyCode,
     },
   },
-  value: { in: 'body',
+  discount: { in: 'body',
     notEmpty: {
       errorMessage: couponValidationErrors.emptyValue,
     },
@@ -313,9 +313,14 @@ const couponAddValidation = {
       errorMessage: couponValidationErrors.invalidValue,
     },
   },
-  expiration: { in: 'body',
+  startDate: { in: 'body',
     notEmpty: {
-      errorMessage: couponValidationErrors.emptyExpiration,
+      errorMessage: couponValidationErrors.emptyStartDate,
+    },
+  },
+  endDate: { in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyEndDate,
     },
   },
 };

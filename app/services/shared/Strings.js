@@ -232,11 +232,12 @@ const offeringValidationError = {
 
 const couponValidationError = {
   emptyCode: 'Coupon Code is a required field',
-  emptyValue: 'Coupon Value is a required field',
-  emptyExpiration: 'Coupon Expiration date is a required field',
-  invalidValue: 'Coupon Value must be between 1-100 %',
+  emptyValue: 'Coupon Discount is a required field',
+  emptyStartDate: 'Coupon Start date is a required field',
+  emptyEndDate: 'Coupon End date is a required field',
+  invalidValue: 'Coupon Discount must be between 1-100 %',
   invalidDateFormat: 'Date must be in the format dd/mm/yyyy,dd-mm-yyyy or dd.mm.yyyy',
-  invalidDate: 'Expiration date must be in the future!',
+  invalidEndDate: 'Expiration date must be in the future!',
   invalidCoupon: 'No such coupon',
   invalidCouponID: 'Coupon is invalid',
 };

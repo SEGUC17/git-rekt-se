@@ -3,15 +3,17 @@ const supertest = require('supertest');
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
 const Service = require('../../../app/models/service/Service');
+const Coupon = require('../../../app/models/service/Coupon');
 const Strings = require('../../../app/services/shared/Strings');
 const BusinessesSeed = require('../../../app/seed/business/verifiedBusinessSeed');
 const ServiceSeed = require('../../../app/seed/service/serviceSeed');
+const CouponSeed = require('../../../app/seed/service/couponSeeds');
 
 /**
  * Service Gallery CRUD Tests.
  */
 
-describe('Service Gallery CRUD Tests', () => {
+describe('Service Coupon CRUD Tests', () => {
   let req;
   let token;
   let sampleBusiness;
@@ -40,18 +42,18 @@ describe('Service Gallery CRUD Tests', () => {
 
   beforeEach((done) => {
     Service.collection.drop(() => {
-      Service.ensureIndexes(done);
+      Service.ensureIndexes(() => {
+        Coupon.collection.drop(() => {
+          Coupon.ensureIndexes((done));
+        });
+      });
     });
   });
 
   it('should create a coupon, and return a confirmation message: Coupon added succesfully!', (done) => {
     const sampleService = ServiceSeed[0];
     sampleService._business = dbBusiness._id;
-    const coupon = {
-      code: 'free1222222',
-      value: '10',
-      expiration: '11/13/2020',
-    };
+    const coupon = CouponSeed[0];
     new Service(sampleService)
       .save()
       .then((savedSer) => {
@@ -65,12 +67,14 @@ describe('Service Gallery CRUD Tests', () => {
             if (err) {
               done(err);
             } else {
-              Service.findOne({
-                _id: savedSer._id,
+              Coupon.findOne({
+                code: coupon.code,
+                _deleted: false,
               })
                 .exec()
                 .then((data) => {
-                  chai.expect(data.coupons.length).to.equal(1);
+                  chai.expect(`${data._service}`)
+                    .to.equal(`${savedSer._id}`);
                   chai.expect(result.body.message)
                     .to.equal(Strings.serviceSuccess.couponAdd);
                   done();
@@ -82,51 +86,32 @@ describe('Service Gallery CRUD Tests', () => {
       .catch(err => done(err));
   });
 
-  it('should not create an image if an invalid id is given, and return en error message', (done) => {
-    const sampleService = ServiceSeed[0];
-    sampleService._business = dbBusiness._id;
-    new Service(sampleService)
-      .save()
-      .then((savedSer) => {
-        const coupon = {
-          code: 'free1222222',
-          value: '10',
-          expiration: '11/13/2020',
-        };
-        req = supertest(app)
-          .post('/api/v1/service/1x/coupons/add')
-          .set('Authorization', `JWT ${token}`)
-          .send(coupon)
-          .expect(400)
-          .end((err, res) => {
-            if (err) {
-              done(err);
-            } else {
-              chai.expect(res.body.errors[0].msg)
-                .to.equal('Invalid Service ID');
-              Service.findOne({
-                _id: savedSer._id,
-              }, (finderr, data) => {
-                if (finderr) {
-                  done(finderr);
-                } else {
-                  chai.expect(data.coupons.length)
-                    .to.equal(0);
-                  done();
-                }
-              });
-            }
-          });
-      })
-      .catch(err => done(err));
+  it('should not create an Coupon if an invalid id is given, and return en error message', (done) => {
+    const coupon = CouponSeed[0];
+    req = supertest(app)
+      .post('/api/v1/service/1x/coupons/add')
+      .set('Authorization', `JWT ${token}`)
+      .send(coupon)
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          chai.expect(res.body.errors[0].msg)
+            .to.equal('Invalid Service ID');
+          chai.expect();
+          done();
+        }
+      });
   });
   it('should not create a coupon if the code is missing, and return an error message', (done) => {
     const sampleService = ServiceSeed[0];
     sampleService._business = dbBusiness._id;
     const coupon = {
-      // code: 'free1222222',
-      value: '10',
-      expiration: '11/13/2020',
+      // code: 'discount10',
+      discount: '10',
+      startDate: '11/1/2020',
+      endDate: '11/13/2020',
     };
     new Service(sampleService)
       .save()
@@ -141,12 +126,13 @@ describe('Service Gallery CRUD Tests', () => {
             if (err) {
               done(err);
             } else {
-              Service.findOne({
-                _id: savedSer._id,
+              Coupon.findOne({
+                _service: savedSer._id,
               })
                 .exec()
                 .then((data) => {
-                  chai.expect(data.coupons.length).to.equal(0);
+                  chai.expect(data)
+                    .to.equal(null);
                   chai.expect(result.body.errors[0].msg)
                     .to.equal(Strings.couponValidationError.emptyCode);
                   done();
@@ -161,11 +147,7 @@ describe('Service Gallery CRUD Tests', () => {
   it('should not create a coupon if the discount value is 0%, and return an error message', (done) => {
     const sampleService = ServiceSeed[0];
     sampleService._business = dbBusiness._id;
-    const coupon = {
-      code: 'free1222222',
-      value: '0',
-      expiration: '11/13/2020',
-    };
+    const coupon = CouponSeed[1];
     new Service(sampleService)
       .save()
       .then((savedSer) => {
@@ -179,12 +161,14 @@ describe('Service Gallery CRUD Tests', () => {
             if (err) {
               done(err);
             } else {
-              Service.findOne({
-                _id: savedSer._id,
+              Coupon.findOne({
+                code: 'discount0',
+                _service: savedSer._id,
               })
                 .exec()
                 .then((data) => {
-                  chai.expect(data.coupons.length).to.equal(0);
+                  chai.expect(data)
+                    .to.equal(null);
                   chai.expect(result.body.errors[0].msg)
                     .to.equal(Strings.couponValidationError.invalidValue);
                   done();
@@ -198,11 +182,7 @@ describe('Service Gallery CRUD Tests', () => {
   it('should not create a coupon if the discount value is more than 100%, and return an error message', (done) => {
     const sampleService = ServiceSeed[0];
     sampleService._business = dbBusiness._id;
-    const coupon = {
-      code: 'free1222222',
-      value: '101',
-      expiration: '11/13/2020',
-    };
+    const coupon = CouponSeed[2];
     new Service(sampleService)
       .save()
       .then((savedSer) => {
@@ -216,12 +196,14 @@ describe('Service Gallery CRUD Tests', () => {
             if (err) {
               done(err);
             } else {
-              Service.findOne({
-                _id: savedSer._id,
+              Coupon.findOne({
+                code: 'discount0',
+                _service: savedSer._id,
               })
                 .exec()
                 .then((data) => {
-                  chai.expect(data.coupons.length).to.equal(0);
+                  chai.expect(data)
+                    .to.equal(null);
                   chai.expect(result.body.errors[0].msg)
                     .to.equal(Strings.couponValidationError.invalidValue);
                   done();
@@ -236,9 +218,10 @@ describe('Service Gallery CRUD Tests', () => {
     const sampleService = ServiceSeed[0];
     sampleService._business = dbBusiness._id;
     const coupon = {
-      code: 'free1222222',
-      // value: '10',
-      expiration: '11/13/2020',
+      code: 'discount10',
+      // discount: '10',
+      startDate: '11/1/2020',
+      endDate: '11/13/2020',
     };
     new Service(sampleService)
       .save()
@@ -253,12 +236,14 @@ describe('Service Gallery CRUD Tests', () => {
             if (err) {
               done(err);
             } else {
-              Service.findOne({
-                _id: savedSer._id,
+              Coupon.findOne({
+                code: 'discount0',
+                _service: savedSer._id,
               })
                 .exec()
                 .then((data) => {
-                  chai.expect(data.coupons.length).to.equal(0);
+                  chai.expect(data)
+                    .to.equal(null);
                   chai.expect(result.body.errors[0].msg)
                     .to.equal(Strings.couponValidationError.emptyValue);
                   done();
@@ -274,9 +259,10 @@ describe('Service Gallery CRUD Tests', () => {
     const sampleService = ServiceSeed[0];
     sampleService._business = dbBusiness._id;
     const coupon = {
-      code: 'free1222222',
-      value: '10',
-      // expiration: '11/13/2020',
+      code: 'discount10',
+      discount: '10',
+      // startDate: '11/1/2020',
+      endDate: '11/13/2020',
     };
     new Service(sampleService)
       .save()
@@ -291,14 +277,56 @@ describe('Service Gallery CRUD Tests', () => {
             if (err) {
               done(err);
             } else {
-              Service.findOne({
-                _id: savedSer._id,
+              Coupon.findOne({
+                code: 'discount0',
+                _service: savedSer._id,
               })
                 .exec()
                 .then((data) => {
-                  chai.expect(data.coupons.length).to.equal(0);
+                  chai.expect(data)
+                    .to.equal(null);
                   chai.expect(result.body.errors[0].msg)
-                    .to.equal(Strings.couponValidationError.emptyExpiration);
+                    .to.equal(Strings.couponValidationError.emptyStartDate);
+                  done();
+                })
+                .catch(() => done(err));
+            }
+          });
+      })
+      .catch(err => done(err));
+  });
+  it('should not create a coupon if the expiration date is missing, and return an error message', (done) => {
+    const sampleService = ServiceSeed[0];
+    sampleService._business = dbBusiness._id;
+    const coupon = {
+      code: 'discount10',
+      discount: '10',
+      startDate: '11/1/2020',
+      // endDate: '11/13/2020',
+    };
+    new Service(sampleService)
+      .save()
+      .then((savedSer) => {
+        req = supertest(app)
+          .post(`/api/v1/service/${savedSer._id}/coupons/add`)
+          .set('Authorization', `JWT ${token}`)
+          .send(coupon)
+          .expect('Content-Type', /json/)
+          .expect(400)
+          .end((err, result) => {
+            if (err) {
+              done(err);
+            } else {
+              Coupon.findOne({
+                code: 'discount0',
+                _service: savedSer._id,
+              })
+                .exec()
+                .then((data) => {
+                  chai.expect(data)
+                    .to.equal(null);
+                  chai.expect(result.body.errors[0].msg)
+                    .to.equal(Strings.couponValidationError.emptyEndDate);
                   done();
                 })
                 .catch(() => done(err));
@@ -311,37 +339,44 @@ describe('Service Gallery CRUD Tests', () => {
   it('should delete a coupon, and return success message: coupon deleted succesfully!', (done) => {
     const newService = new Service(ServiceSeed[0]);
     newService._business = dbBusiness._id;
-    const coupon = {
-      code: 'free3',
-      value: '10',
-      expiration: '11/13/2020',
-    };
-    newService.coupons.push(coupon);
     newService.save()
       .then((newser) => {
-        const newcoup = newser.coupons.find(element => `${element.code}` === 'free3');
-        req = supertest(app)
-          .post(`/api/v1/service/${newser._id}/coupons/delete/${newcoup._id}`)
-          .set('Authorization', `JWT ${token}`)
-          .expect(200)
-          .end((err, res) => {
-            if (err) {
-              done(err);
-            } else {
-              Service.findOne({
-                _id: newser._id,
+        const coupon = CouponSeed[0];
+        coupon._service = newser._id;
+        new Coupon(coupon)
+          .save()
+          .then(() => {
+            Coupon.findOne({
+              code: 'discount10',
+            })
+              .exec()
+              .then((newcoup) => {
+                req = supertest(app)
+                  .post(`/api/v1/service/${newser._id}/coupons/delete/${newcoup._id}`)
+                  .set('Authorization', `JWT ${token}`)
+                  .expect(200)
+                  .end((err, res) => {
+                    if (err) {
+                      done(err);
+                    } else {
+                      Coupon.findOne({
+                        _id: newcoup._id,
+                      })
+                        .exec()
+                        .then((data) => {
+                          chai.expect(res.body.message)
+                            .to.equal(Strings.serviceSuccess.couponDelete);
+                          chai.expect(data._deleted)
+                            .to.equal(true);
+                          done();
+                        })
+                        .catch(() => done(err));
+                    }
+                  });
               })
-                .exec()
-                .then((data) => {
-                  chai.expect(res.body.message)
-                    .to.equal(Strings.serviceSuccess.couponDelete);
-                  chai.expect(data.coupons.length)
-                    .to.equal(0);
-                  done();
-                })
-                .catch(() => done(err));
-            }
-          });
+              .catch(err => done(err));
+          })
+          .catch(err => done(err));
       })
       .catch(err => done(err));
   });
@@ -349,80 +384,94 @@ describe('Service Gallery CRUD Tests', () => {
   it('should not delete a coupon if an invalid coupon id is given (correct id format, but no referenced coupon), and return an error message', (done) => {
     const newService = new Service(ServiceSeed[0]);
     newService._business = dbBusiness._id;
-    const coupon = {
-      code: 'free3',
-      value: '10',
-      expiration: '11/13/2020',
-    };
-    newService.coupons.push(coupon);
     newService.save()
       .then((newser) => {
-        req = supertest(app)
-          .post(`/api/v1/service/${newser._id}/coupons/delete/${newser._id}`) // invalid coupon id
-          .set('Authorization', `JWT ${token}`)
-          .expect(400)
-          .end((err, res) => {
-            if (err) {
-              done(err);
-            } else {
-              Service.findOne({
-                _id: newser._id,
+        const coupon = CouponSeed[0];
+        coupon._service = newser._id;
+        new Coupon(coupon)
+          .save()
+          .then(() => {
+            Coupon.findOne({
+              code: 'discount10',
+            })
+              .exec()
+              .then((newcoup) => {
+                req = supertest(app)
+                  .post(`/api/v1/service/${newser._id}/coupons/delete/${newser._id}`) // invalid coupon id
+                  .set('Authorization', `JWT ${token}`)
+                  .expect(400)
+                  .end((err, res) => {
+                    if (err) {
+                      done(err);
+                    } else {
+                      Coupon.findOne({
+                        _id: newcoup._id,
+                      })
+                        .exec()
+                        .then((data) => {
+                          chai.expect(res.body.errors[0])
+                            .to.equal(Strings.couponValidationError.invalidCoupon);
+                          chai.expect(data._deleted)
+                            .to.equal(false);
+                          done();
+                        })
+                        .catch(() => done(err));
+                    }
+                  });
               })
-                .exec()
-                .then((data) => {
-                  chai.expect(res.body.errors[0])
-                    .to.equal(Strings.couponValidationError.invalidCoupon);
-                  chai.expect(data.coupons.length)
-                    .to.equal(1);
-                  done();
-                })
-                .catch(() => done(err));
-            }
-          });
+              .catch(err => done(err));
+          })
+          .catch(err => done(err));
       })
       .catch(err => done(err));
   });
 
   it('should not delete a coupon if it does not belong to my business, and return an error message', (done) => {
     new Business(BusinessesSeed[1])
-          .save()
-          .then((ownerBusiness) => {
-            const newService = new Service(ServiceSeed[0]);
-            newService._business = ownerBusiness;
-            const coupon = {
-              code: 'free3',
-              value: '10',
-              expiration: '11/13/2020',
-            };
-            newService.coupons.push(coupon);
-            newService.save()
-      .then((newser) => {
-        const newcoup = newser.coupons.find(element => `${element.code}` === 'free3');
-        req = supertest(app)
-          .post(`/api/v1/service/${newser._id}/coupons/delete/${newcoup._id}`) // invalid coupon id
-          .set('Authorization', `JWT ${token}`)
-          .expect(400)
-          .end((err, res) => {
-            if (err) {
-              done(err);
-            } else {
-              Service.findOne({
-                _id: newser._id,
-              })
-                .exec()
-                .then((data) => {
-                  chai.expect(res.body.errors[0])
-                    .to.equal(Strings.serviceFailure.notYourService);
-                  chai.expect(data.coupons.length)
-                    .to.equal(1);
-                  done();
+      .save()
+      .then((ownerBusiness) => {
+        const newService = new Service(ServiceSeed[0]);
+        newService._business = ownerBusiness;
+        newService.save()
+          .then((newser) => {
+            const coupon = CouponSeed[0];
+            coupon._service = newser._id;
+            new Coupon(coupon)
+              .save()
+              .then(() => {
+                Coupon.findOne({
+                  code: 'discount10',
                 })
-                .catch(() => done(err));
-            }
-          });
-      })
-      .catch(err => done(err));
+                  .exec()
+                  .then((newcoup) => {
+                    req = supertest(app)
+                      .post(`/api/v1/service/${newser._id}/coupons/delete/${newcoup._id}`)
+                      .set('Authorization', `JWT ${token}`)
+                      .expect(400)
+                      .end((err, res) => {
+                        if (err) {
+                          done(err);
+                        } else {
+                          Coupon.findOne({
+                            _id: newcoup._id,
+                          })
+                            .exec()
+                            .then((data) => {
+                              chai.expect(res.body.errors[0])
+                                .to.equal(Strings.serviceFailure.notYourService);
+                              chai.expect(data._deleted)
+                                .to.equal(false);
+                              done();
+                            })
+                            .catch(() => done(err));
+                        }
+                      });
+                  })
+                  .catch(err => done(err));
+              })
+              .catch(err => done(err));
           }).catch(err => done(err));
+      }).catch(err => done(err));
   });
 
   after((done) => {

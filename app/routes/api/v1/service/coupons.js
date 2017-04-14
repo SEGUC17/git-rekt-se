@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Service = require('../../../../models/service/Service');
+const Coupon = require('../../../../models/service/Coupon');
 const validationSchemas = require('../../../../services/shared/validation');
 const BusinessAuth = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
@@ -16,7 +17,6 @@ const router = express.Router();
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
-
 
 /**
  * Add Coupon to a service.
@@ -36,14 +36,16 @@ router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
             if (service) {
               // check whether logged in business matches the service provider
               if (`${service._business}` === `${req.user._id}`) {
-                // check that the given date is in the future
+                // TODO check that the given date is in the future
                 const coupon = ({
+                  _service: req.params.id,
+                  startDate: new Date(req.body.startDate),
+                  endDate: new Date(req.body.endDate),
                   code: req.body.code,
-                  value: req.body.value,
-                  expiration: new Date(req.body.expiration),
+                  discount: req.body.discount,
                 });
-                service.coupons.push(coupon);
-                service.save()
+                new Coupon(coupon)
+                  .save()
                   .then(() => {
                     res.json({
                       message: Strings.serviceSuccess.couponAdd,
@@ -83,22 +85,26 @@ router.post('/:ser_id/coupons/delete/:coup_id', BusinessAuth, (req, res, next) =
           .then((service) => {
             if (service) {
               if (`${service._business}` === `${req.user._id}`) {
-                const coupon = service.coupons
-                  .find(element => `${element._id}` === `${req.params.coup_id}`);
-                if (!coupon) {
-                  next([Strings.couponValidationError.invalidCoupon]);
-                } else {
-                  const newCoupons = service.coupons
-                    .filter(element => `${element._id}` !== `${req.params.coup_id}`);
-                  service.coupons = newCoupons;
-                  service.save()
-                    .then(() => {
-                      res.json({
-                        message: Strings.serviceSuccess.couponDelete,
-                      });
-                    })
-                    .catch(saveErr => next(saveErr));
-                }
+                // check whether logged in business matches the service provider
+                Coupon.findOne({
+                  _id: req.params.coup_id,
+                  _deleted: false,
+                })
+                  .exec()
+                  .then((coupon) => {
+                    if (!coupon) {
+                      next([Strings.couponValidationError.invalidCoupon]);
+                    } else {
+                      coupon._deleted = true;
+                      coupon.save()
+                        .then(() => {
+                          res.json({
+                            message: Strings.serviceSuccess.couponDelete,
+                          });
+                        })
+                        .catch(saveErr => next(saveErr));
+                    }
+                  }).catch(err => next(err));
               } else {
                 next(Strings.serviceFailure.notYourService);
               }
