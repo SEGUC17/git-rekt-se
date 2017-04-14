@@ -14565,10 +14565,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }).catch(function (err) {
                         console.log(err);
                         _this.errors = err;
+                        _this.alert_show = false;
                         _this.error_show = true;
                     });
                 } else {
                     _this.errors = ['Please insert correct inputs'];
+                    _this.alert_show = false;
                     _this.error_show = true;
                 }
             });

@@ -68,10 +68,12 @@
                             .catch((err) => {
                                 console.log(err);
                                 this.errors = err;
+                                this.alert_show = false;
                                 this.error_show = true;
                             });
                     } else {
                         this.errors = ['Please insert correct inputs'];
+                        this.alert_show = false;
                         this.error_show = true;
                     }
                 });
