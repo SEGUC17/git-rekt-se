@@ -4661,6 +4661,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4669,8 +4676,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       form: new __WEBPACK_IMPORTED_MODULE_1__services_Form_js__["a" /* default */]({
         email: ''
-      })
+      }),
+      success: false
     };
+  },
+
+  methods: {
+    onSubmit: function onSubmit(request, url) {
+      form.submit(request, url).then(function () {
+        console.log('ok?');
+      }).catch(function (err) {
+        return alert(err);
+      });
+    }
   }
 });
 
@@ -7212,10 +7230,21 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
+  return _c('div', [_c('article', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.success),
+      expression: "success"
+    }],
+    staticClass: "message is-primary",
+    staticStyle: {
+      "padding": "50px"
+    }
+  }, [_vm._m(0)]), _vm._v(" "), _c('div', {
     staticClass: "hero-body",
     staticStyle: {
-      "padding": "200px"
+      "padding": "200px 200px 50px 200px"
     }
   }, [_c('div', {
     staticClass: "container"
@@ -7270,8 +7299,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.form.submit('post', '/api/v1/client/auth/forgot')
       }
     }
-  }, [_vm._v("Forgot Password")])], 1)], 1)], 1)])])])
-},staticRenderFns: []}
+  }, [_vm._v("Forgot Password")])], 1)], 1)], 1)])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-header"
+  }, [_c('p', [_vm._v("Please check your e-mail, to login")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
