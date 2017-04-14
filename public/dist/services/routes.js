@@ -7360,6 +7360,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -7370,6 +7373,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
                 email: ''
             }),
+            errors: [],
             rules: [{
                 required: true,
                 message: 'Please input email address',
@@ -7381,7 +7385,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }],
             message: '',
             alert_show: false,
-            btn_disable: false
+            error_show: false
 
         };
     },
@@ -7398,12 +7402,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         _this.alert_show = true;
                     }).catch(function (err) {
                         console.log(err);
-                        _this.message = data.message;
-                        _this.alert_show = true;
+                        _this.errors = err;
+                        _this.error_show = true;
                     });
                 } else {
-                    _this.message = 'Please insert correct inputs';
-                    _this.alert_show = true;
+                    _this.errors = ['Please insert correct inputs'];
+                    _this.error_show = true;
                 }
             });
         }
@@ -7420,14 +7424,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "column is-half is-offset-one-quarter"
   }, [_c('div', [_c('div', {
+    staticClass: "alert"
+  }, [_c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: (_vm.alert_show),
       expression: "alert_show"
     }],
-    staticClass: "alert"
-  }, [_c('div', {
     staticClass: "message"
   }, [_c('el-alert', {
     attrs: {
@@ -7435,7 +7439,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "info",
       "show-icon": ""
     }
-  })], 1)]), _vm._v(" "), _c('h1', {
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.error_show),
+      expression: "error_show"
+    }],
+    staticClass: "message"
+  }, _vm._l((_vm.errors), function(error) {
+    return _c('el-alert', {
+      key: error,
+      attrs: {
+        "title": error,
+        "type": "error",
+        "show-icon": ""
+      }
+    })
+  }))]), _vm._v(" "), _c('h1', {
     staticClass: "title has-text-centered"
   }, [_vm._v("Forgot Password")]), _vm._v(" "), _c('el-form', {
     ref: "form",
@@ -7464,8 +7485,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
     attrs: {
-      "type": "primary",
-      "disabled": _vm.btn_disable
+      "type": "primary"
     },
     on: {
       "click": function($event) {

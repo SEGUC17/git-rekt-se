@@ -2,9 +2,12 @@
     <div class="columns is-mobile">
         <div class="column is-half is-offset-one-quarter">
             <div>
-                <div class="alert" v-show="alert_show">
-                    <div class="message">
+                <div class="alert">
+                    <div class="message" v-show="alert_show">
                         <el-alert :title="message" type="info" show-icon></el-alert>
+                    </div>
+                    <div class="message" v-show="error_show">
+                        <el-alert v-for="error in errors" :key="error" :title="error" type="error" show-icon></el-alert>
                     </div>
                 </div>
     
@@ -16,7 +19,7 @@
                     </el-form-item>
     
                     <el-form-item>
-                        <el-button type="primary" :disabled="btn_disable" @click="submitForm('form')">Submit</el-button>
+                        <el-button type="primary" @click="submitForm('form')">Submit</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -34,6 +37,7 @@
                 form: new Form({
                     email: '',
                 }),
+                errors:[],
                 rules: [{
                         required: true,
                         message: 'Please input email address',
@@ -47,7 +51,7 @@
                 ],
                 message: '',
                 alert_show: false,
-                btn_disable: false,
+                error_show: false,
     
             };
         },
@@ -63,12 +67,12 @@
                             })
                             .catch((err) => {
                                 console.log(err);
-                                this.message = data.message;
-                                this.alert_show = true;
+                                this.errors = err;
+                                this.error_show = true;
                             });
                     } else {
-                        this.message = 'Please insert correct inputs';
-                        this.alert_show = true;
+                        this.errors = ['Please insert correct inputs'];
+                        this.error_show = true;
                     }
                 });
             },
