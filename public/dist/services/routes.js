@@ -7364,7 +7364,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })
   }))]), _vm._v(" "), _c('h1', {
     staticClass: "title has-text-centered"
+<<<<<<< HEAD
   }, [_vm._v("Reset Password")]), _vm._v(" "), _c('el-form', {
+=======
+  }, [_vm._v("Forgot Password")]), _vm._v(" "), _c('el-form', {
+>>>>>>> d65872e0b793582a03da97c209f0a2290e9d35fb
     ref: "form",
     staticClass: "demo-ruleForm",
     attrs: {
