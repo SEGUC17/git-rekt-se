@@ -23,46 +23,33 @@ router.use(expressValidator({}));
  */
 
 router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
-  console.log('authenticated');
-  console.log(req.body);
   req.check(validationSchemas.couponAddValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        console.log('validated');
         Service.findOne({
           _id: req.params.id,
           _deleted: false,
         })
           .exec()
           .then((service) => {
-            console.log('found service');
             if (service) {
               // check whether logged in business matches the service provider
               if (`${service._business}` === `${req.user._id}`) {
                 // check that the given date is in the future
-                console.log('myservice');
-                console.log(req.body.expiration);
-
                 const coupon = ({
                   code: req.body.code,
                   value: req.body.value,
                   expiration: new Date(req.body.expiration),
                 });
-                console.log('gonna push');
                 service.coupons.push(coupon);
-                console.log('push done');
                 service.save()
                   .then(() => {
                     res.json({
                       message: Strings.serviceSuccess.couponAdd,
                     });
                   })
-                  .catch((saveErr) => {
-                    console.log(saveErr);
-                    next(saveErr)
-;
-                  });
+                  .catch(saveErr => next(saveErr));
               } else {
                 next(Strings.serviceFailure.notYourService);
               }
@@ -90,6 +77,7 @@ router.post('/:ser_id/coupons/delete/:coup_id', BusinessAuth, (req, res, next) =
       if (result.isEmpty()) {
         Service.findOne({
           _id: req.params.ser_id,
+          _deleted: false,
         })
           .exec()
           .then((service) => {
