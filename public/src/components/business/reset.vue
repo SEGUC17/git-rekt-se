@@ -12,7 +12,7 @@
                     </div>
                 </div>
     
-                <h1 class="title has-text-centered">Forgot Password</h1>
+                <h1 class="title has-text-centered">Reset Password</h1>
                 <el-form :model="form" :rules="rules" ref="form" label-width="120px" class="demo-ruleForm">
                     <el-form-item label="Password" prop="password">
                         <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
