@@ -1,5 +1,3 @@
-
-
 const coupons = [{
   code: 'discount10',
   discount: '10',

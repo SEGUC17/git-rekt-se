@@ -470,15 +470,21 @@ describe('Service Coupon CRUD Tests', () => {
                   .catch(err => done(err));
               })
               .catch(err => done(err));
-          }).catch(err => done(err));
-      }).catch(err => done(err));
+          })
+          .catch(err => done(err));
+      })
+      .catch(err => done(err));
   });
 
   after((done) => {
     Business.collection.drop(() => {
       Business.ensureIndexes(() => {
         Service.collection.drop(() => {
-          Service.ensureIndexes(done);
+          Service.ensureIndexes(() => {
+            Coupon.collection.drop(() => {
+              Coupon.ensureIndexes((done));
+            });
+          });
         });
       });
     });

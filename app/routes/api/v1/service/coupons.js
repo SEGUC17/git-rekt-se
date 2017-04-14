@@ -69,7 +69,7 @@ router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
 
 
 /**
- * Delete Coupon in a service.
+ * Delete Coupon from a service.
  */
 
 router.post('/:ser_id/coupons/delete/:coup_id', BusinessAuth, (req, res, next) => {
@@ -104,7 +104,8 @@ router.post('/:ser_id/coupons/delete/:coup_id', BusinessAuth, (req, res, next) =
                         })
                         .catch(saveErr => next(saveErr));
                     }
-                  }).catch(err => next(err));
+                  })
+                  .catch(err => next(err));
               } else {
                 next(Strings.serviceFailure.notYourService);
               }
