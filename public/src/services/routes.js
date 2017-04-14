@@ -8,7 +8,6 @@ const routes = [{
 }, {
   path: '/visitor/search',
   component: SearchPage,
-  props: (route => ({ query: route.query })),
 },
 ];
 

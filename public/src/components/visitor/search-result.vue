@@ -3,12 +3,12 @@
     <el-row type="flex" class="row-bg">
       <el-col :span="6">
         <h2>
-          <router-link :to=" {{serviceURL}} ">{{serviceName}}</router-link>
+          <router-link :to="serviceURL">{{serviceName}}</router-link>
         </h2>
       </el-col>
       <el-col :span="6">
         <h4>
-          <router-link :to="{{businessURL}}"> by {{businessName}}</router-link>
+          <router-link :to="businessURL"> by {{businessName}}</router-link>
         </h4>
       </el-col>
       <el-col :span="6">
@@ -22,8 +22,8 @@
     </el-row>
     <el-row type="flex" class="row-bg">
       <span>
-          {{shortDescription}}
-        </span>
+              {{shortDescription}}
+            </span>
     </el-row>
   </el-card>
 </template>
@@ -32,25 +32,16 @@
   export default {
     data() {
       return {
-        serviceName: service.name,
-        serviceID: service._id,
-        businessName: service._business.name,
-        businessID: service._business._id,
-        rating: service._avgRating,
-        categories: service.categories,
-        shortDescription: service.shortDescription,
-        coverImage: service.coverImage,
+        serviceName: this.service.name,
+        serviceURL: `/service/${this.service._id}`,
+        businessName: this.service._business.name,
+        businessURL: `/business/${this.service._business._id}`,
+        rating: this.service._avgRating,
+        categories: this.service.categories,
+        shortDescription: this.service.shortDescription,
+        coverImage: this.service.coverImage,
       };
     },
-    props: 'service',
-    computed: {
-      serviceURL: (() => {
-        return (`/service/${this.serviceID}`);
-      }),
-      businessURL: (() => {
-        return (`/business/${this.businessID}`);
-      }),
-    },
-  
+    props: ['service'],
   };
 </script>
