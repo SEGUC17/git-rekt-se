@@ -16,8 +16,8 @@ const ranges = [{
   value: '501-600',
 },
 {
-  label: '600+',
-  value: '600+',
+  label: '600-1000',
+  value: '600-1000',
 }];
 
 module.exports = ranges;

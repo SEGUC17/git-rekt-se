@@ -5,9 +5,7 @@
             <!-- Navigation bar Center -->
     
             <div class="nav-left">
-                <a class="nav-item">
-                    <img src="assets/imgs/logo.svg" alt="Bulma logo">
-                </a>
+                <router-link to="/#" class="nav-item"><img src="assets/imgs/logo.svg" alt="Bulma logo"></router-link>
             </div>
             
             <span class="nav-toggle">

@@ -31,7 +31,7 @@
     
                     <div class="column is-3">
                         <div class="field has-text-left">
-                            <el-button size="large" type="success">Search</el-button>
+                            <el-button size="large" type="success" @click="searchClicked">Search</el-button>
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,8 @@
     import locs from './mainLocations.js';
     import priceRanges from './priceRanges.js';
     import endpoints from '../../../services/EndPoints.js';
-    
+    import { Loading } from 'element-ui';
+
     export default {
         data() {
             return {
@@ -102,7 +103,7 @@
             }
         },
         methods: {
-            getLocations() {
+            getLocations(ls) {
                 axios
                     .get(endpoints.Search().locations)
                     .then((res) => {
@@ -122,6 +123,31 @@
                 });
                 cb(results);
             },
+            searchClicked(e){
+
+                
+                if(!this.name){
+                    this.$message.error('Service name cann\'t be empty.');
+                    return;
+                }
+
+                let url = `/search?name=${this.name}`;
+                const priceRange = this.price.split('-');
+                
+                if(priceRange.length === 2){
+                    const min = parseInt(priceRange[0]);
+                    const max = parseInt(priceRange[1]);
+                    if(min !== NaN && max !== NaN){
+                        url += `&min=${min}&max=${max}`;
+                    }
+                }
+                
+                if(this.location){
+                    url += `&location=${this.location}`;
+                }
+
+                this.$router.push(url);
+            }
         },
         components: {
             card,
