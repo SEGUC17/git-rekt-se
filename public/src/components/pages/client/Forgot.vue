@@ -23,7 +23,7 @@
               </el-form-item>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="form.submit('post','/api/v1/client/auth/forgot')" class="button is-info is-fullwidth">Forgot Password</el-button>
+                <el-button type="primary" @click="onSubmit('/api/v1/client/auth/forgot')" class="button is-info is-fullwidth">Forgot Password</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -46,9 +46,9 @@
       };
     },
     methods: {
-      onSubmit(request,url){
-        form.submit(request,url).then(() => {
-          console.log('ok?');
+      onSubmit(url){
+        this.form.post(url).then(() => {
+          this.success = true;
         }).catch(err => alert(err));
       }
     }
