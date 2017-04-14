@@ -69,6 +69,7 @@ const serviceSchema = Schema({
   coupons: [{
     code: {
       type: String,
+      unique: true,
       required: true,
     },
     value: {

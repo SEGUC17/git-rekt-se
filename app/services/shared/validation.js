@@ -308,10 +308,10 @@ const couponAddValidation = {
     notEmpty: {
       errorMessage: couponValidationErrors.emptyValue,
     },
-    matches: {
-      options: [/^0*(100|[1-9][0-9]|[1-9]?)$/],
-      errorMessage: couponValidationErrors.invalidValue,
-    },
+    // matches: {
+    //   options: [/^0*(100|[1-9][0-9]|[1-9])$/],
+    //   errorMessage: couponValidationErrors.invalidValue,
+    // },
   },
   expiration: { in: 'body',
     notEmpty: {
@@ -325,7 +325,7 @@ const couponDeleteValidation = {
       errorMessage: serviceValidationErrors.invalidServiceID,
     },
   },
-  coup_id: { in: 'oarams',
+  coup_id: { in: 'params',
     isMongoId: {
       errorMessage: couponValidationErrors.invalidCouponID,
     },
