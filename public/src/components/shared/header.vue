@@ -26,26 +26,41 @@
     
             <!-- Navigation bar Right -->
             <div class="nav-right nav-menu">
-                <a class="button is-default gr-nav-button">
+                <a class="button is-default gr-nav-button" v-if="!user.authenticated">
                     <span class="icon">
                             <i class="fa fa-user"></i>
                         </span>
                     <span>Signup</span>
                 </a>
     
-                <a class="button is-danger gr-nav-button">
+                <a class="button is-danger gr-nav-button" v-if="!user.authenticated">
                     <span class="icon">
                             <i class="fa fa-sign-in"></i>
                         </span>
                     <span>Login</span>
                 </a>
+
+                <a class="button is-danger gr-nav-button" v-if="user.authenticated">
+                    <span class="icon">
+                            <i class="fa fa-logout"></i>
+                        </span>
+                    <span>Logout</span>
+                </a>
+
             </div>
         </nav>
     </header>
 </template>
 
 <script>
+    import auth from '../../services/client-auth'
     export default {
+        data(){
+            return {
+                user: auth.user
+            }
+        }
+
         methods:{
         }
     };
