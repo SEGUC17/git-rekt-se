@@ -14,6 +14,7 @@ const offeringValidationErrors = Strings.offeringValidationError;
 const adminValidationErrors = Strings.adminValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
 const reviewErrors = Strings.reviewErrors;
+const couponValidationErrors = Strings.couponValidationError;
 
 /**
  * Client validation.
@@ -292,6 +293,45 @@ const businessResetPasswordValidation = {
   },
 };
 
+const couponAddValidation = {
+  id: { in: 'params',
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  code: { in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyCode,
+    },
+  },
+  value: { in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyValue,
+    },
+    matches: {
+      options: [/^0*(100|[1-9][0-9]|[1-9]?)$/],
+      errorMessage: couponValidationErrors.invalidValue,
+    },
+  },
+  expiration: { in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyExpiration,
+    },
+  },
+};
+const couponDeleteValidation = {
+  ser_id: { in: 'params',
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  coup_id: { in: 'oarams',
+    isMongoId: {
+      errorMessage: couponValidationErrors.invalidCouponID,
+    },
+  },
+};
+
 /**
  * Visitor validation.
  */
@@ -541,6 +581,8 @@ const validation = {
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
+  couponAddValidation,
+  couponDeleteValidation,
 };
 
 module.exports = validation;

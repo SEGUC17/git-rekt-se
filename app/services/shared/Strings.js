@@ -118,6 +118,8 @@ const serviceSuccess = {
   offeringAdded: 'Offering has been added successfully to your business',
   offeringEdited: 'Offering has been edited successfully to your business',
   offeringDeleted: 'Offering has been deleted successfully',
+  couponAdd: 'Coupon added successfully!',
+  couponDelete: 'Coupon deleted succesfully!',
 };
 
 const serviceFailure = {
@@ -228,6 +230,15 @@ const offeringValidationError = {
   invalidOffering: 'No such offering',
 };
 
+const couponValidationError = {
+  emptyCode: 'Coupon Code is a required field',
+  emptyValue: 'Coupon Value is a required field',
+  emptyExpiration: 'Coupon Expiration date is a required field',
+  invalidValue: 'Coupon Value must be between 1-100 %',
+  invalidCoupon: 'No such coupon',
+  invalidCouponID: 'Coupon is invalid',
+};
+
 
 /**
  * Admin Strings
@@ -299,4 +310,6 @@ module.exports = {
   reviewSuccess,
   adminSuccess,
   searchErrors,
+
+  couponValidationError,
 };

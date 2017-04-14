@@ -75,6 +75,10 @@ const serviceSchema = Schema({
       type: Number,
       required: true,
     },
+    expiration: {
+      type: Date,
+      required: true,
+    },
   }],
   _deleted: {
     type: Boolean,
