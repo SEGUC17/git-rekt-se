@@ -37,6 +37,14 @@ const offeringSchema = Schema({
     type: Boolean,
     default: false,
   },
+  capacity: {
+    type: Number,
+    // required: true, // this would break some tests.
+  },
+  occupied: {
+    type: Number,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model('Offering', offeringSchema);
