@@ -1,25 +1,32 @@
 <template>
-  <div class="hero-body" style="padding : 200px">
-    <div class="container">
-      <div class="columns">
-        <div class="column is-8 is-offset-2">
-          <el-form :model="form" ref="form" label-width="120px" class="login-form">
-            <el-form-item prop="email" label="Email" :rules="[
-                    { required: true, message: 'Please input email address', trigger: 'blur' },
-                    { type: 'email', message: 'Please input correct email address', trigger: 'blur,change' }
-                  ]">
-              <p class="control has-icon has-icon-right">
-                <el-input v-model="form.email"></el-input>
-                <span class="icon user">
-                    <i class="fa fa-user"></i>
-                  </span>
-              </p>
-            </el-form-item>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="form.submit('post','/api/v1/client/auth/forgot')" class="button is-info is-fullwidth">Forgot Password</el-button>
-            </el-form-item>
-          </el-form>
+  <div>
+    <article class="message is-primary" v-show="success" style="padding : 50px">
+      <div class="message-header">
+        <p>Please check your e-mail, to login</p>
+      </div>
+    </article>
+    <div class="hero-body" style="padding : 200px 200px 50px 200px">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-8 is-offset-2">
+            <el-form :model="form" ref="form" label-width="120px" class="login-form">
+              <el-form-item prop="email" label="Email" :rules="[
+                        { required: true, message: 'Please input email address', trigger: 'blur' },
+                        { type: 'email', message: 'Please input correct email address', trigger: 'blur,change' }
+                      ]">
+                <p class="control has-icon has-icon-right">
+                  <el-input v-model="form.email"></el-input>
+                  <span class="icon user">
+                        <i class="fa fa-user"></i>
+                      </span>
+                </p>
+              </el-form-item>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="form.submit('post','/api/v1/client/auth/forgot')" class="button is-info is-fullwidth">Forgot Password</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
         </div>
       </div>
     </div>
@@ -34,8 +41,16 @@
       return {
         form: new Form({
           email: '',
-        })
+        }),
+         success: false,
       };
+    },
+    methods: {
+      onSubmit(request,url){
+        form.submit(request,url).then(() => {
+          console.log('ok?');
+        }).catch(err => alert(err));
+      }
     }
   }
 </script>
