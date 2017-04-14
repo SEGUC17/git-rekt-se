@@ -20,12 +20,17 @@ router.post('/report/:id', authMiddleWare.clientAuthMiddleware, (req, res, next)
   Review.findOne({
     _id: req.params.ser_id,
   }, (err, result) => {
-    if (err) {
-      return next(err);
-    }
+    // if (err) {
+    //    return next(err);
+    // }
     result.reports.push(req.body.description);
-    return res.json({
-      message: Strings.clientSuccess.reviewReported,
+    result.save((err2) => {
+      if (err2) {
+        return next(err2);
+      }
+      return res.json({
+        message: Strings.clientSuccess.reviewReported,
+      });
     });
   });
 });
