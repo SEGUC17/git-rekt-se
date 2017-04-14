@@ -21,10 +21,13 @@ router.use(expressValidator({}));
 router.use(bodyParser.json());
 
 router.post('/delete/:id', AdminAuth, (req, res, next) => {
-  Client.findByIdAndRemove(req.params.id, (err) => {
+  Client.find({
+    _id: req.params.id,
+  }, (err, result) => {
     if (err) {
       return next(err);
     }
+    result._deleted = true;
     return res.json({
       message: Strings.adminSuccess.clientDeleted,
     });
