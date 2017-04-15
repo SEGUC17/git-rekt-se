@@ -68,10 +68,13 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
     });
   });
 
-  Business.findByIdAndRemove(req.params.id, (err4) => {
+  Business.find({
+    _id: req.params.id,
+  }, (err4, bus) => {
     if (err4) {
       return next(err4);
     }
+    bus._deleted = true;
     return res.json({
       message: Strings.adminSuccess.businessDeleted,
     });
