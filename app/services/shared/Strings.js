@@ -251,7 +251,7 @@ const adminValidationErrors = {
   invalidBusinessID: 'Invalid Business ID',
   categoryTypeRequired: 'Category Type is required.',
   categoryTitleRequired: 'Category Title is required.',
-  invalidClientID: 'Invalid ClientID',
+  invalidClientID: 'Invalid Client ID',
 };
 
 const adminSuccess = {

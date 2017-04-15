@@ -25,7 +25,7 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
   req.checkParams(validator.adminClientValidation);
   req.getValidationResult()
     .then((result) => {
-      if (result) {
+      if (result.isEmpty()) {
         Client.find({
           _id: req.params.id,
         }, (err, result2) => {
@@ -37,6 +37,8 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
             message: Strings.adminSuccess.clientDeleted,
           });
         });
+      } else {
+        next(result.array());
       }
     })
     .catch(e => next([e]));
