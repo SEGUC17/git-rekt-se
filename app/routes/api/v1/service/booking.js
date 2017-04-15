@@ -23,7 +23,7 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Book a service API.
+ * Book a service Route.
  */
 
 router.post('/', jwtConfig.clientAuthMiddleware, (req, res, next) => {
@@ -121,6 +121,27 @@ router.post('/', jwtConfig.clientAuthMiddleware, (req, res, next) => {
         next(results.array());
       }
     });
+});
+
+/**
+ * Validate Coupon Route.
+ */
+
+router.post('/coupon/validate', jwtConfig.clientAuthMiddleware, (req, res, next) => {
+  Coupon.findOne({
+    code: req.body.code,
+    _service: req.body.serviceId,
+    _deleted: false,
+  })
+    .exec()
+    .then((coupon) => {
+      if (!coupon) {
+        next('Invalid Coupon.');
+        return;
+      }
+      res.json(coupon);
+    })
+    .catch(next);
 });
 
 /**
