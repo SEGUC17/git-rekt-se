@@ -21,18 +21,19 @@ router.use(expressValidator({}));
 
 router.use(bodyParser.json());
 
-router.post('/delete/:id', AdminAuth, (req, res, next) => {
+router.get('/delete/:id', AdminAuth, (req, res, next) => {
   req.checkParams(validator.adminClientValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        Client.find({
+        Client.findOne({
           _id: req.params.id,
-        }, (err, result2) => {
+        }, (err, client) => {
           if (err) {
             return next(err);
           }
-          result2._deleted = true;
+          client._deleted = true;
+          client.save();
           return res.json({
             message: Strings.adminSuccess.clientDeleted,
           });

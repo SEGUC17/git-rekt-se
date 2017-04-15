@@ -57,7 +57,7 @@ describe('Client Removal Test Suite', () => {
       .save()
       .then((client2) => {
         req = supertest(app)
-          .post(`/api/v1/admin/client/delete/${client2._id}`)
+          .get(`/api/v1/admin/client/delete/${client2._id}`)
           .expect('Content-Type', /json/)
           .set('Authorization', `JWT ${token}`)
           .send()
@@ -66,14 +66,7 @@ describe('Client Removal Test Suite', () => {
             if (err) {
               done(err);
             } else {
-              Client.count((err3, c) => {
-                if (err3) {
-                  done(err3);
-                } else {
-                  chai.expect(c)
-                    .to.equal(1);
-                }
-              });
+              chai.expect(client2._deleted);
               chai.expect(res.body.message)
                 .to.equal(Strings.adminSuccess.clientDeleted);
               done();
@@ -85,7 +78,7 @@ describe('Client Removal Test Suite', () => {
 
   it('should not delete a client and return an error message', (done) => {
     req = supertest(app)
-      .post('/api/v1/admin/client/delete/4')
+      .get('/api/v1/admin/client/delete/4')
       .set('Authorization', `JWT ${token}`)
       .send()
       .expect('Content-Type', /json/)
