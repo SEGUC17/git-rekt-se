@@ -1,4 +1,3 @@
-import Bulma from 'bulma';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import elementUI from 'element-ui';
@@ -7,7 +6,9 @@ import Buefy from 'buefy'
 import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
+import ClientSignUp from '../../components/client/signup.vue';
 import router from '../../services/routes.js';
+
 Window.axios = axios;
 
 Vue.use(VueRouter);
@@ -20,8 +21,8 @@ new Vue({
   el: '#root',
   router,
   components: {
-    client: require('../../components/client/signup'),
     'gr-header': header,
     'gr-footer': footer,
+    client: ClientSignUp,
   }
 });

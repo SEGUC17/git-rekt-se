@@ -30,7 +30,7 @@
                     <span class="icon">
                             <i class="fa fa-user"></i>
                         </span>
-                    <span>Signup</span>
+                    <span><router-link to="/client/signup" class="nav-item">Signup</router-link></span>
                 </a>
     
                 <a class="button is-danger gr-nav-button">
