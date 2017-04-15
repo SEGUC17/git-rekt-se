@@ -8,13 +8,14 @@ export default {
   },
   login(data, callBack) {
     axios
-    .post(`${authBASE}/login`, data)
-    .then((response) => {
-      this.user.authenticated = true;
-      localStorage.setItem('JWT-token', response.data.token);
-      return callBack(response, null);
-    })
-    .catch(err => callBack(null, err));
+      .post(`${authBASE}/login`, data)
+      .then((response) => {
+        this.user.authenticated = true;
+        localStorage.setItem('JWT-token', response.data.token);
+        return callBack(null, response.data);
+      })
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
   },
-}
-;
+};

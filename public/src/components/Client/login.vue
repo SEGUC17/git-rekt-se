@@ -2,15 +2,22 @@
     <div class="columns is-mobile">
         <div class="column is-half is-offset-one-quarter">
     
-            <div v-show="!form.errors.isEmpty()">
-                <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
-                    <el-alert @close="form.errors.remove(key)" :title="key.toUpperCase()" type="error" :description="form.errors.getFirst(key)" show-icon></el-alert>
+            <div v-show="this.errors.length > 0">
+                <div class="error" v-for="error in this.errors">
+                    <el-alert title="error alert" type="error" :description="error" show-icon>
+                    </el-alert>
                 </div>
             </div>
     
+            <div v-show="logged_in">
+                <el-alert title="success alert" type="success" :description="loginSuccess" show-icon>
+                </el-alert>
+            </div>
+    
+    
             <h1 class="title has-text-centered">Login</h1>
     
-            <el-form :model="form" :rules="rules" ref="form" label-width="100px" label-position="top" class="demo-ruleForm">
+            <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top" class="demo-ruleForm">
                 <el-form-item label="Email" prop="email">
                     <el-input v-model="form.email" placeholder="Email"></el-input>
                 </el-form-item>
@@ -18,10 +25,10 @@
                 <el-form-item label="Password" prop="password">
                     <el-input v-model="form.password" placeholder="Password" type="password"></el-input>
                 </el-form-item>
-                <el-form-item>
     
-                    <el-button type="primary" @click="submitForm">Create</el-button>
-                    <el-button @click="resetForm">Reset</el-button>
+                <el-form-item>
+                    <el-button type="primary" @click="submitForm('form')">Login</el-button>
+                    <el-button @click="resetForm('form')">Reset</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -29,15 +36,15 @@
 </template>
 
 <script>
-    import Form from '../../services/Form.js';
-    import Errors from '../../services/Errors.js';
-    import clientAuth from '../../services/clientAuth.js';    
+    import clientAuth from '../../services/clientAuth';
+    import Form from '../../services/Form'
+    
     export default {
         data() {
             return {
                 form: new Form({
                     email: '',
-                    password: ''
+                    password: '',
                 }),
                 rules: {
                     email: [{
@@ -51,28 +58,34 @@
                         trigger: 'blur'
                     }]
                 },
+                logged_in: false,
+                loginSuccess: '',
+                errors: [],
             }
         },
         methods: {
-            submitForm() {
+            submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
-                    if(valid){
-                        clientAuth.login(form.data(), (err, response) => {
-                            if(err){
-                                this.form.onFailue(err);
+                    if (valid) {
+                        clientAuth.login(this.form.data(), (err, response) => {
+                            if (err) {
+                               this.errors.push(err.errors[0]);
                             } else {
-                                console.log('Hello World');
-                                console.log(response);
+                                this.logged_in = true;
+                                this.loginSuccess = response.body.message;
+                                setTimeout(() => {
+                                    this.$router.push('/')
+                                }, 500);
                             }
                         });
                     } else {
-                        this.form.onFailue('Please fill the missing fields');
+                        this.errors.push('Please fill in all the fields');
                     }
                 });
-               
+    
             },
-            resetForm() {
-                this.form.reset();
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
             }
         }
     }

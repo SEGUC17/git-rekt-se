@@ -9,13 +9,13 @@
                     <img src="assets/imgs/logo.svg" alt="Bulma logo">
                 </a>
             </div>
-            
+    
             <span class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
+                        <span></span>
+            <span></span>
+            <span></span>
             </span>
-
+    
             <!-- Navigation bar Center -->
             <div class="nav-center nav-menu">
                 <router-link to="/" class="nav-item">Home</router-link>
@@ -28,25 +28,29 @@
             <div class="nav-right nav-menu">
                 <a class="button is-default gr-nav-button" v-if="!user.authenticated">
                     <span class="icon">
-                            <i class="fa fa-user"></i>
-                        </span>
+                                    <i class="fa fa-user"></i>
+                                </span>
                     <span>Signup</span>
                 </a>
     
                 <a class="button is-danger gr-nav-button" v-if="!user.authenticated">
                     <span class="icon">
-                            <i class="fa fa-sign-in"></i>
+                                    <i class="fa fa-sign-in"></i>
+                                </span>
+                    <span>
+                            <router-link to="clientlogin">
+                                Login
+                            </router-link>
                         </span>
-                    <span>Login</span>
                 </a>
-
+    
                 <a class="button is-danger gr-nav-button" v-if="user.authenticated">
                     <span class="icon">
-                            <i class="fa fa-logout"></i>
-                        </span>
+                                    <i class="fa fa-logout"></i>
+                                </span>
                     <span>Logout</span>
                 </a>
-
+    
             </div>
         </nav>
     </header>
@@ -55,14 +59,13 @@
 <script>
     import auth from '../../services/clientAuth'
     export default {
-        data(){
+        data() {
             return {
                 user: auth.user
             }
         },
-
-        methods:{
-        }
+    
+        methods: {}
     };
 </script>
 
