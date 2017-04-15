@@ -8,7 +8,7 @@ const routes = [
     component: About,
   },
   {
-    path: '/api/v1/client/auth/reset/:token',
+    path: '/client/auth/reset/:token',
     component: Reset,
   },
 

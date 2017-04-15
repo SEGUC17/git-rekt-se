@@ -2,7 +2,12 @@
     <div>
         <article class="message is-primary" v-show="form.success" style="padding : 50px">
             <div class="message-header">
-                <p>Password changes succesfully</p>
+                <p>Password changed succesfully</p>
+            </div>
+        </article>
+         <article class="message is-danger" v-show="form.fail" style="padding : 50px">
+            <div class="message-header">
+                <p>Token expired.</p>
             </div>
         </article>
         <div class="hero-body">
@@ -10,7 +15,7 @@
                 <div class="columns">
                     <div class="column is-8 is-offset-2">
                         <div class="login-form">
-                            <el-form :model="form" :rules="rules" ref="form" label-width="120px" class="demo-ruleForm">
+                            <el-form :model="form" :rules="rules" ref="form">
     
                                 <el-form-item label="Password" prop="password">
                                     <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
@@ -69,6 +74,7 @@
                     password: '',
                     confirmPassword: '',
                     success: false,
+                    fail:false,
                 }),
                 errors: {},
                 rules: {
@@ -93,6 +99,7 @@
                                 this.form.success = true;
                             })
                             .catch((err) => {
+                                this.form.fail = true;
                                 console.log(err);
                                 console.log(this.form.errors);
                             });
