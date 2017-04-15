@@ -94,8 +94,12 @@ describe('Category CRUD Test Suite', () => {
           param: 'id',
           msg: 'Invalid Client ID',
           value: '4',
-        },
-        ],
+        }],
       }, done);
+  });
+  after((done) => {
+    Client.collection.drop(() => {
+      Client.ensureIndexes(done);
+    });
   });
 });
