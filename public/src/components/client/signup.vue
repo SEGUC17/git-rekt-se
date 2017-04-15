@@ -2,6 +2,13 @@
   <div class="columns is-mobile">
     <div class="column is-half is-offset-one-quarter">
   
+      <div v-show="success">
+        <el-alert title="Success" type="success" :description="successMessage" show-icon></el-alert>
+        <div class="has-text-centered">
+          <el-button type="text" @click="resendMail">Resend Mail!</el-button>
+        </div>
+      </div>
+  
       <div v-show="!form.errors.isEmpty()">
         <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
           <el-alert @close="form.errors.remove(key)" :title="key.toUpperCase()" type="error" :description="form.errors.getAll(key, ' | ')" show-icon></el-alert>
@@ -55,7 +62,7 @@
         </el-form-item>
   
         <el-form-item class="has-text-centered">
-          <el-button type="primary" icon="circle-check" @click="onClick">Sign Up</el-button>
+          <el-button type="primary" icon="circle-check" @click="onClick" :loading="loading">Sign Up</el-button>
           <el-button icon="circle-cross" @click="onReset">Reset</el-button>
         </el-form-item>
       </el-form>
@@ -90,7 +97,11 @@
         }),
         rules: clientSignUpValidation,
         showPassword: 'password',
-        showConfirm: 'password'
+        showConfirm: 'password',
+        success: false,
+        successMessage: '',
+        clientEmail: '',
+        loading: false,
       }
     },
     methods: {
@@ -98,16 +109,16 @@
         if (this.hasErrors()) {
           return;
         }
-        console.log(this.form.data());
+        this.success = false;
+        this.successMessage = '';
+        this.clientEmail = this.form.email;
+        this.loading = true;
         this.form.post(EndPoints.Client().signup)
-          .then((data) => console.log(data))
-          .catch((err) => {
-            console.log(err);
-            console.log(this.form.errors);
-            console.log(this.form.errors.get('email'));
-            this.errors = this.form.errors;
-            console.log(this.errors);
-          });
+          .then((data) => {
+            this.loading = false;
+            this.success = true;
+            this.successMessage = data.message;
+          }).catch(() => this.loading = false);
       },
       onReset() {
         this.$refs.form.resetFields();
@@ -115,6 +126,9 @@
       hasErrors() {
         const errors = this.$refs.form.$children.filter(el => el.validateMessage.length > 0);
         return errors.length > 0;
+      },
+      resendMail() {
+        console.log(this.clientEmail);
       },
     },
   }

@@ -18589,6 +18589,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -18611,7 +18618,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }),
       rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["a" /* clientSignUpValidation */],
       showPassword: 'password',
-      showConfirm: 'password'
+      showConfirm: 'password',
+      success: false,
+      successMessage: '',
+      clientEmail: '',
+      loading: false
     };
   },
 
@@ -18622,15 +18633,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       if (this.hasErrors()) {
         return;
       }
-      console.log(this.form.data());
+      this.success = false;
+      this.successMessage = '';
+      this.clientEmail = this.form.email;
+      this.loading = true;
       this.form.post(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints__["a" /* default */].Client().signup).then(function (data) {
-        return console.log(data);
-      }).catch(function (err) {
-        console.log(err);
-        console.log(_this.form.errors);
-        console.log(_this.form.errors.get('email'));
-        _this.errors = _this.form.errors;
-        console.log(_this.errors);
+        _this.loading = false;
+        _this.success = true;
+        _this.successMessage = data.message;
+      }).catch(function () {
+        return _this.loading = false;
       });
     },
     onReset: function onReset() {
@@ -18641,6 +18653,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return el.validateMessage.length > 0;
       });
       return errors.length > 0;
+    },
+    resendMail: function resendMail() {
+      console.log(this.clientEmail);
     }
   }
 });
@@ -53649,6 +53664,29 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "show",
       rawName: "v-show",
+      value: (_vm.success),
+      expression: "success"
+    }]
+  }, [_c('el-alert', {
+    attrs: {
+      "title": "Success",
+      "type": "success",
+      "description": _vm.successMessage,
+      "show-icon": ""
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "has-text-centered"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "text"
+    },
+    on: {
+      "click": _vm.resendMail
+    }
+  }, [_vm._v("Resend Mail!")])], 1)], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
       value: (!_vm.form.errors.isEmpty()),
       expression: "!form.errors.isEmpty()"
     }]
@@ -53867,7 +53905,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('el-button', {
     attrs: {
       "type": "primary",
-      "icon": "circle-check"
+      "icon": "circle-check",
+      "loading": _vm.loading
     },
     on: {
       "click": _vm.onClick
