@@ -6,6 +6,10 @@
         <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
           <el-alert @close="form.errors.remove(key)" :title="key.toUpperCase()" type="error" :description="form.errors.getFirst(key)" show-icon></el-alert>
         </div>
+
+        <div class="error" v-show="form.errors.has('serverError')">
+          <el-alert @close="" :title="" :description="form.errors.get" type="error"></el-alert>
+        </div>
       </div>
   
       <h1 class="title has-text-centered">Sign Up</h1>
@@ -48,6 +52,7 @@
   
         <el-form-item class="has-text-centered">
           <el-button type="primary" icon="circle-check" @click="onClick">Sign Up</el-button>
+          <el-button icon="circle-cross" @click="onReset">Reset</el-button>
         </el-form-item>
       </el-form>
   
@@ -64,7 +69,10 @@
   } from '../../services/validation';
   export default {
     data() {
-      clientSignUpValidation.confirmPassword[1].validator = clientSignUpValidation.confirmPassword[1].validator.bind(this);
+      clientSignUpValidation.confirmPassword[1].validator = clientSignUpValidation.confirmPassword[1]
+        .validator.bind(this);
+        clientSignUpValidation.password[2].validator = clientSignUpValidation.password[2]
+        .validator.bind(this);
       return {
         form: new Form({
           email: '',
@@ -92,6 +100,9 @@
             console.log(this.errors);
           });
       },
+      onReset(){
+        this.$refs.form.resetFields();
+      }
     },
   }
 </script>

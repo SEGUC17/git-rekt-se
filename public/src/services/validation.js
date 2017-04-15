@@ -2,7 +2,6 @@ export default {
 
 };
 
-// TODO Custom Validation for confirmPassword
 export const clientSignUpValidation = {
   email: [{
     required: true,
@@ -21,6 +20,12 @@ export const clientSignUpValidation = {
     pattern: /^(?=.*\d).{8,15}$/,
     message: 'Password must be between 8 and 15 characters and contains at least one number.',
     trigger: 'blur',
+  }, {
+    validator(rule, value, callBack) {
+      this.$refs.form.validateField('confirmPassword');
+      callBack();
+    },
+    trigger: ['blur', 'change'],
   }],
   confirmPassword: [{
     required: true,
@@ -38,7 +43,7 @@ export const clientSignUpValidation = {
         callBack();
       }
     },
-    trigger: 'change',
+    trigger: ['blur', 'change'],
   }],
   firstName: [{
     required: true,
