@@ -18596,6 +18596,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -18655,7 +18663,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       return errors.length > 0;
     },
     resendMail: function resendMail() {
-      console.log(this.clientEmail);
+      var _this2 = this;
+
+      this.loading = true;
+      this.form.email = this.clientEmail;
+      this.form.post(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints__["a" /* default */].Client().resend).then(function (data) {
+        _this2.loading = false;
+        _this2.success = true;
+        _this2.successMessage = data.message;
+      }).catch(function (err) {
+        return _this2.loading = false;
+      });
     }
   }
 });
@@ -53678,7 +53696,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "has-text-centered"
   }, [_c('el-button', {
     attrs: {
-      "type": "text"
+      "type": "text",
+      "loading": _vm.loading
     },
     on: {
       "click": _vm.resendMail
@@ -53805,6 +53824,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "form.password"
     }
+  }, [_c('div', {
+    slot: "append"
+  }, [_c('el-tooltip', {
+    attrs: {
+      "content": "See Password",
+      "placement": "right"
+    }
   }, [_c('el-button', {
     nativeOn: {
       "mousedown": function($event) {
@@ -53813,11 +53839,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "mouseup": function($event) {
         _vm.showPassword = 'password'
       }
-    },
-    slot: "append"
+    }
   }, [_c('i', {
     staticClass: "fa fa-eye"
-  })])], 1)], 1), _vm._v(" "), _c('el-form-item', {
+  })])], 1)], 1)])], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
       "label": "Confirm Password",
       "prop": "confirmPassword"
@@ -53834,6 +53859,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       },
       expression: "form.confirmPassword"
     }
+  }, [_c('div', {
+    slot: "append"
+  }, [_c('el-tooltip', {
+    attrs: {
+      "content": "See Confirm Password",
+      "placement": "right"
+    }
   }, [_c('el-button', {
     nativeOn: {
       "mousedown": function($event) {
@@ -53842,11 +53874,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "mouseup": function($event) {
         _vm.showConfirm = 'password'
       }
-    },
-    slot: "append"
+    }
   }, [_c('i', {
     staticClass: "fa fa-eye"
-  })])], 1)], 1), _vm._v(" "), _c('el-form-item', {
+  })])], 1)], 1)])], 1), _vm._v(" "), _c('el-form-item', {
     attrs: {
       "label": "Mobile",
       "prop": "mobile"

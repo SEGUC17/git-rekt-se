@@ -5,7 +5,7 @@
       <div v-show="success">
         <el-alert title="Success" type="success" :description="successMessage" show-icon></el-alert>
         <div class="has-text-centered">
-          <el-button type="text" @click="resendMail">Resend Mail!</el-button>
+          <el-button type="text" :loading="loading" @click="resendMail">Resend Mail!</el-button>
         </div>
       </div>
   
@@ -36,13 +36,21 @@
   
         <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" :type="showPassword" placeholder="********">
-            <el-button slot="append" @mousedown.native="showPassword = 'text'" @mouseup.native="showPassword = 'password'"><i class="fa fa-eye"></i></el-button>
+            <div slot="append">
+              <el-tooltip content="See Password" placement="right">
+                <el-button @mousedown.native="showPassword = 'text'" @mouseup.native="showPassword = 'password'"><i class="fa fa-eye"></i></el-button>
+              </el-tooltip>
+            </div>
           </el-input>
         </el-form-item>
   
         <el-form-item label="Confirm Password" prop="confirmPassword">
           <el-input v-model="form.confirmPassword" :type="showConfirm" placeholder="********">
-            <el-button slot="append" @mousedown.native="showConfirm = 'text'" @mouseup.native="showConfirm = 'password'"><i class="fa fa-eye"></i></el-button>
+            <div slot="append">
+              <el-tooltip content="See Confirm Password" placement="right">
+                <el-button @mousedown.native="showConfirm = 'text'" @mouseup.native="showConfirm = 'password'"><i class="fa fa-eye"></i></el-button>
+              </el-tooltip>
+            </div>
           </el-input>
         </el-form-item>
   
@@ -128,7 +136,14 @@
         return errors.length > 0;
       },
       resendMail() {
-        console.log(this.clientEmail);
+        this.loading = true;
+        this.form.email = this.clientEmail;
+        this.form.post(EndPoints.Client().resend)
+          .then((data) => {
+            this.loading = false;
+            this.success = true;
+            this.successMessage = data.message;
+          }).catch(err => this.loading = false);
       },
     },
   }
