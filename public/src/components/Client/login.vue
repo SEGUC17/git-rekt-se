@@ -37,7 +37,8 @@
 
 <script>
     import clientAuth from '../../services/clientAuth';
-    import Form from '../../services/Form'
+    import Form from '../../services/Form';
+    import { clientLoginRules } from '../../services/validation';
     
     export default {
         data() {
@@ -46,18 +47,7 @@
                     email: '',
                     password: '',
                 }),
-                rules: {
-                    email: [{
-                        required: true,
-                        message: 'Please enter your email',
-                        trigger: 'blur'
-                    }],
-                    password: [{
-                        required: true,
-                        message: 'Please enter your password',
-                        trigger: 'blur'
-                    }]
-                },
+                rules: clientLoginRules,
                 logged_in: false,
                 loginSuccess: '',
                 errors: [],
@@ -67,9 +57,9 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        clientAuth.login(this.form.data(), (err, response) => {
-                            if (err) {
-                               this.errors.push(err.errors[0]);
+                        clientAuth.login(this.form.data(), (responseErrors, response) => {
+                            if (responseErrors) {
+                               this.errors = responseErrors.errors;
                             } else {
                                 this.logged_in = true;
                                 this.loginSuccess = response.message;

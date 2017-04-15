@@ -1,33 +1,44 @@
 <template>
-    <div v-show="this.errors.length > 0">
-        <div class="error" v-for="error in this.errors">
-            <el-alert title="error alert" type="error" :description="error" show-icon>
+    <div>
+        <div v-show="this.errors.length > 0">
+            <div class="error" v-for="error in this.errors">
+                <el-alert title="error alert" type="error" :description="error" show-icon>
+                </el-alert>
+            </div>
+        </div>
+    
+        <div v-show="success">
+            <el-alert title="success alert" type="success" :description="logoutSuccess" show-icon>
             </el-alert>
         </div>
+    
     </div>
 </template>
 
 <script>
     import auth from '../../services/clientAuth';
-    import axios from 'axios';
+    
     export default {
         data() {
             return {
                 errors: [],
+                logoutSuccess: '',
+                success: false,
             }
         },
     
         mounted() {
-            axios.post('api/v1/client/auth/logout', null, {
-                headers: {
-                    'Authorization': auth.getJWTtoken()
+            auth.logout((responseErrs, response) => {
+                if (responseErrs) {
+                    this.errors = responseErrs;
+                } else {
+                    this.success = true;
+                    this.logoutSuccess = response.message;
+                    setTimeout(() => {
+                        this.$router.push('/')
+                    }, 500);
                 }
-            }).then(() => {
-                auth.logout();
-                this.$router.push('/');
-            }).catch((err) => {
-                this.errors.push(err.response.data);
-            })
+            });
         }
     }
 </script>
