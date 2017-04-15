@@ -11,7 +11,7 @@
             </div>
     
             <span class="nav-toggle">
-                        <span></span>
+                            <span></span>
             <span></span>
             <span></span>
             </span>
@@ -28,27 +28,29 @@
             <div class="nav-right nav-menu">
                 <a class="button is-default gr-nav-button" v-if="!user.authenticated">
                     <span class="icon">
-                                    <i class="fa fa-user"></i>
-                                </span>
+                                        <i class="fa fa-user"></i>
+                                    </span>
                     <span>Signup</span>
                 </a>
     
                 <a class="button is-danger gr-nav-button" v-if="!user.authenticated">
                     <span class="icon">
-                                    <i class="fa fa-sign-in"></i>
-                                </span>
+                                        <i class="fa fa-sign-in"></i>
+                                    </span>
                     <span>
-                            <router-link to="clientlogin">
-                                Login
-                            </router-link>
-                        </span>
+                                <router-link to="clientlogin">
+                                    Login
+                                </router-link>
+                            </span>
                 </a>
     
                 <a class="button is-danger gr-nav-button" v-if="user.authenticated">
                     <span class="icon">
-                                    <i class="fa fa-logout"></i>
-                                </span>
-                    <span>Logout</span>
+                        <i class="fa fa-logout"></i>
+                    </span>
+                    <span> <router-link to="clientlogout">
+                                    Logout
+                                </router-link></span>
                 </a>
     
             </div>

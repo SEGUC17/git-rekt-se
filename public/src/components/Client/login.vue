@@ -72,7 +72,7 @@
                                this.errors.push(err.errors[0]);
                             } else {
                                 this.logged_in = true;
-                                this.loginSuccess = response.body.message;
+                                this.loginSuccess = response.message;
                                 setTimeout(() => {
                                     this.$router.push('/')
                                 }, 500);

@@ -18,4 +18,11 @@ export default {
         callBack(err.response.data, null);
       });
   },
+  logout() {
+    this.user.authenticated = false;
+    localStorage.removeItem('JWT-token');
+  },
+  getJWTtoken() {
+    return `JWT ${localStorage.getItem('JWT-token')}`;
+  },
 };
