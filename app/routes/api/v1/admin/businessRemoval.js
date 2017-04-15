@@ -43,14 +43,14 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
   });
   Branch.find({
     _business: req.params.id,
-  }, (err2, results) => {
+  }, (err2, results3) => {
     if (err2) {
       next(err2);
       return;
     }
-    for (i; i < results.length; i += 1) {
-      branchlist[i] = results[i]; // save to a const to not create a function inside this loop
-      results[i]._deleted = true;
+    for (i; i < results3.length; i += 1) {
+      branchlist[i] = results3[i]; // save to a const to not create a function inside this loop
+      results3[i]._deleted = true;
     }
   });
 
