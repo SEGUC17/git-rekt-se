@@ -13,11 +13,11 @@
           </div>
           <div class="block">
             <span class="search-label">Min. Rating</span>
-            <el-slider v-model="newQuery.rating" max=10></el-slider>
+            <el-slider v-model="newQuery.rating" :max="10"></el-slider>
           </div>
           <div class="block">
             <span class="search-label">Price Range</span>
-            <el-slider v-model="priceRange" range max=10000></el-slider>
+            <el-slider v-model="priceRange" range :step="100" :max="10000"></el-slider>
           </div>
             <span class="search-label">Location</span>
             <el-autocomplete class="inline-input" v-model="newQuery.location" :fetch-suggestions="locationSearch" placeholder="Select Location"></el-autocomplete>
