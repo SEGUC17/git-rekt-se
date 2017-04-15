@@ -317,10 +317,16 @@ const couponAddValidation = {
     notEmpty: {
       errorMessage: couponValidationErrors.emptyStartDate,
     },
+    isDate: {
+      errorMessage: couponValidationErrors.invalidDateFormat,
+    },
   },
   endDate: { in: 'body',
     notEmpty: {
       errorMessage: couponValidationErrors.emptyEndDate,
+    },
+    isDate: {
+      errorMessage: couponValidationErrors.invalidDateFormat,
     },
   },
 };

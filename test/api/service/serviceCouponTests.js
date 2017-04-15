@@ -104,7 +104,47 @@ describe('Service Coupon CRUD Tests', () => {
         }
       });
   });
-  it('should not create a coupon if the code is missing, and return an error message', (done) => {
+  it('should not create a coupon if the date format is incorrect, and return an error message', (done) => {
+    const sampleService = ServiceSeed[0];
+    sampleService._business = dbBusiness._id;
+    const coupon = {
+      code: 'discount10',
+      discount: '10',
+      startDate: '1/1/2020',
+      endDate: '13/11/2020', // not mm/dd/yyyy ,mm-dd-yyyy or mm.dd.yyyy
+    };
+    new Service(sampleService)
+      .save()
+      .then((savedSer) => {
+        req = supertest(app)
+          .post(`/api/v1/service/${savedSer._id}/coupons/add`)
+          .set('Authorization', `JWT ${token}`)
+          .send(coupon)
+          .expect('Content-Type', /json/)
+          .expect(400)
+          .end((err, result) => {
+            if (err) {
+              done(err);
+            } else {
+              Coupon.findOne({
+                _service: savedSer._id,
+              })
+                .exec()
+                .then((data) => {
+                  chai.expect(data)
+                    .to.equal(null);
+                  chai.expect(result.body.errors[0].msg)
+                    .to.equal(Strings.couponValidationError.invalidDateFormat);
+                  done();
+                })
+                .catch(() => done(err));
+            }
+          });
+      })
+      .catch(err => done(err));
+  });
+
+  it('should not create a coupon if the expiration date is incorrect (in the past or before the start date), and return an error message', (done) => {
     const sampleService = ServiceSeed[0];
     sampleService._business = dbBusiness._id;
     const coupon = {

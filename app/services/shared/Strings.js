@@ -236,8 +236,8 @@ const couponValidationError = {
   emptyStartDate: 'Coupon Start date is a required field',
   emptyEndDate: 'Coupon End date is a required field',
   invalidValue: 'Coupon Discount must be between 1-100 %',
-  invalidDateFormat: 'Date must be in the format dd/mm/yyyy,dd-mm-yyyy or dd.mm.yyyy',
-  invalidEndDate: 'Expiration date must be in the future!',
+  invalidDateFormat: 'Date must be in the format mm/dd/yyyy,mm-dd-yyyy or mm.dd.yyyy',
+  invalidEndDate: 'Expiration date must be after the start date and after today!',
   invalidCoupon: 'No such coupon',
   invalidCouponID: 'Coupon is invalid',
 };

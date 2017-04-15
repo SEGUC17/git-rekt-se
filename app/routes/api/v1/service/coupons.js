@@ -36,9 +36,12 @@ router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
             if (service) {
               // check whether logged in business matches the service provider
               if (`${service._business}` === `${req.user._id}`) {
-                // check that the given expiration date is in the future
+                // check that the given expiration date is not in the past nor before the start date
                 if (new Date(req.body.endDate)
-                  .getTime() < Date.now()) {
+                  .getTime() < Date.now() ||
+                  new Date(req.body.endDate)
+                  .getTime() < new Date(req.body.startDate)
+                  .getTime()) {
                   next(Strings.couponValidationError.invalidEndDate);
                 } else {
                   const coupon = ({
