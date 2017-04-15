@@ -23,7 +23,7 @@
     
         <div class="columns checkout-boxes">
     
-            <div class="column is-10 is-offset-1" v-if="active === 1">
+            <div class="column is-10 is-offset-1" v-if="active === 2">
     
                 <div class="box">
                     <h1 class="title is-4">Booking Information</h1>
@@ -46,28 +46,32 @@
                 </div>
             </div>
     
-            <div class="column is-12 columns"v-if="active === 2">
+            <div class="column is-12 columns" v-if="active === 1">
                 <div class="column is-6 is-offset-1">
     
                     <div class="box">
                         <h1 class="title is-4">Booking Information</h1>
                         <hr />
     
+                        
                         <div class="field">
-                            <p class="label">Coupon</p>
-                            <el-select class="seventy-width" v-model="form.branch" placeholder="Select Branch">
-                                <el-option v-for="branch in service.branches" :key="branch._id" :label="branch.address" :value="branch._id"></el-option>
-                            </el-select>
+                            <p class="label">Credit or debit card</p>
+                            <div id="card-element" class="seventy-width el-input__inner"></div>    
+                            <div id="card-errors"></div>
                         </div>
-    
+                        
+                        <div class="field">
+                            <p class="label">Coupon (optional)</p>
+                            <el-input placeholder="coupon code" class="seventy-width"></el-input>
+                            <el-button type="primary">Validate</el-button>
+                        </div>
+
                     </div>
     
                 </div>
     
                 <div class="column is-4">
                     <div class="box">
-                        <h1 class="title is-bold is-4"> Booking Information</h1>
-                        <hr />
                         <div class="service">
                             <div class="media service-info">
                                 <div class="media-left">
@@ -107,10 +111,51 @@
                 },
                 service: '',
                 loader: '',
+                card: '',
             }
         },
     
         methods: {
+            initStripe() {
+                const stripe = Stripe('pk_test_BAf83Axjq8bck9Pbd36seTPS');
+                const elements = stripe.elements();
+    
+                this.card = elements.create('card');
+                
+                const card = this.card;
+                const style = {
+                    base: {
+                        color: '#32325d',
+                        lineHeight: '24px',
+                        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                        fontSmoothing: 'antialiased',
+                        fontSize: '16px',
+                        '::placeholder': {
+                            color: '#aab7c4'
+                        }
+                    },
+                    invalid: {
+                        color: '#fa755a',
+                        iconColor: '#fa755a'
+                    }
+                };
+    
+                card.mount('#card-element', {
+                    style: style
+                });
+    
+                // Handle real-time validation errors from the card Element.
+                card.addEventListener('change', function(event) {
+                    var displayError = document.getElementById('card-errors');
+                    if (event.error) {
+                        displayError.textContent = event.error.message;
+                    } else {
+                        displayError.textContent = '';
+                    }
+                });
+
+    
+            },
             getService() {
                 const url = Endpoints.Visitor().viewService(this.$route.params.ser_id);
                 axios
@@ -140,6 +185,8 @@
             this.loader = this.$loading({
                 fullscreen: true,
             });
+    
+            this.initStripe();
             this.getService();
         },
     }
@@ -175,10 +222,18 @@
         width: 100%;
         margin-bottom: 0.3em;
     }
+
+    .StripeElement{
+        background-color: #fff;
+        padding: 10px 8px;
+    }
     
     @media screen and (max-width: 999px) {
         .service-info-header {
             padding: 2em;
+        }
+        .box{
+            margin: 0.3em;
         }
     }
 </style>
