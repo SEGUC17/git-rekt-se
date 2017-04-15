@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const authBASE = 'http://localhost:3000/api/v1/client/auth';
+import { Client } from '../services/EndPoints';
 
 export default {
   user: {
@@ -8,29 +7,38 @@ export default {
   },
   login(data, callBack) {
     axios
-      .post(`${authBASE}/login`, data)
+      .post(Client().login, data)
       .then((response) => {
         this.user.authenticated = true;
-        localStorage.setItem('clientJWTtoken', response.data.token);
+        localStorage.setItem('client-token', response.data.token);
         return callBack(null, response.data);
       })
       .catch((err) => {
-        callBack(err.response.data, null);
+        callBack(err, null);
       });
   },
   confirmEmail(token, callBack) {
     axios
-      .post(`${authBASE}/confirmation/${token}/confirm`)
+      .post(Client().confirmEmail(token))
       .then(response => callBack(null, response.data))
       .catch((err) => {
         callBack(err.response.data, null);
       });
   },
-  logout() {
-    this.user.authenticated = false;
-    localStorage.removeItem('clientJWTtoken');
+  logout(callBack) {
+    axios.post(Client().logout, null, {
+      headers: {
+        Authorization: this.getJWTtoken(),
+      },
+    }).then((response) => {
+      this.user.authenticated = false;
+      localStorage.removeItem('client-token');
+      callBack(null, response.data);
+    }).catch((err) => {
+      callBack(err, null);
+    });
   },
   getJWTtoken() {
-    return `JWT ${localStorage.getItem('clientJWTtoken')}`;
+    return `JWT ${localStorage.getItem('client-token')}`;
   },
 };

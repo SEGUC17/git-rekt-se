@@ -27,13 +27,16 @@
         },
         mounted() {
             clientAuth.confirmEmail(this.$route.params.token, (responseErrs, response) => {
+                console.log(11);
                 if (responseErrs) {
-                    responseErrs.errors.forEach((err) => {
-                        this.errors.push(err);
-                    });
+                    this.errors = responseErrs.errors;
                 } else {
+                    console.log(response.message);
                     this.confirmationSuccess = response.message;
                     this.confirmed = true;
+                    setTimeout(() => {
+                        this.$router.push('/');
+                    }, 500);
                 }
             });
         }
