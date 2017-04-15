@@ -9,4 +9,11 @@ export default {
       resend: `${authBase}/confirmation/send`,
     };
   },
+  Business() {
+    const authBase = `${BASE}/business/auth`;
+    const profileBase = `${BASE}/business/profile`;
+    return {
+      unverfiedSignup: `${authBase}/unverified/signup`,
+    };
+  },
 };
