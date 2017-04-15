@@ -18585,6 +18585,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -18605,7 +18609,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         mobile: '',
         birthdate: ''
       }),
-      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["a" /* clientSignUpValidation */]
+      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["a" /* clientSignUpValidation */],
+      showPassword: 'password',
+      showConfirm: 'password'
     };
   },
 
@@ -18613,6 +18619,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     onClick: function onClick() {
       var _this = this;
 
+      if (this.hasErrors()) {
+        return;
+      }
       console.log(this.form.data());
       this.form.post(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints__["a" /* default */].Client().signup).then(function (data) {
         return console.log(data);
@@ -18626,6 +18635,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     onReset: function onReset() {
       this.$refs.form.resetFields();
+    },
+    hasErrors: function hasErrors() {
+      var errors = this.$refs.form.$children.filter(function (el) {
+        return el.validateMessage.length > 0;
+      });
+      return errors.length > 0;
     }
   }
 });
@@ -53623,9 +53638,256 @@ if (false) {
 
 /***/ }),
 /* 126 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-throw new Error("Module build failed: SyntaxError: Unexpected token (45:15)\n    at Parser.pp$4.raise (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:2231:15)\n    at Parser.pp.unexpected (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:613:10)\n    at Parser.pp$3.parseExprAtom (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1832:12)\n    at Parser.parseExprAtom (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:3800:24)\n    at Parser.pp$3.parseExprSubscripts (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1725:21)\n    at Parser.pp$3.parseMaybeUnary (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1702:19)\n    at Parser.pp$3.parseExprOps (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1647:21)\n    at Parser.pp$3.parseMaybeConditional (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1630:21)\n    at Parser.pp$3.parseMaybeAssign (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1607:21)\n    at Parser.pp$3.parsePropertyValue (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:2008:89)\n    at Parser.parseObj (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:3895:14)\n    at Parser.pp$3.parseExprAtom (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1815:19)\n    at Parser.parseExprAtom (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:3800:24)\n    at Parser.pp$3.parseExprSubscripts (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1725:21)\n    at Parser.pp$3.parseMaybeUnary (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1702:19)\n    at Parser.pp$3.parseExprOps (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1647:21)\n    at Parser.pp$3.parseMaybeConditional (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1630:21)\n    at Parser.pp$3.parseMaybeAssign (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1607:21)\n    at Parser.pp$3.parsePropertyValue (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:2008:89)\n    at Parser.parseObj (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:3895:14)\n    at Parser.pp$3.parseExprAtom (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1815:19)\n    at Parser.parseExprAtom (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:3800:24)\n    at Parser.pp$3.parseExprSubscripts (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1725:21)\n    at Parser.pp$3.parseMaybeUnary (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1702:19)\n    at Parser.pp$3.parseExprOps (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1647:21)\n    at Parser.pp$3.parseMaybeConditional (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1630:21)\n    at Parser.pp$3.parseMaybeAssign (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1607:21)\n    at Parser.pp$3.parseExprList (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:2175:22)\n    at Parser.pp$3.parseSubscripts (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1751:35)\n    at Parser.pp$3.parseExprSubscripts (/home/mazen/git-rekt-se/node_modules/vue-template-es2015-compiler/buble.js:1728:17)");
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "columns is-mobile"
+  }, [_c('div', {
+    staticClass: "column is-half is-offset-one-quarter"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (!_vm.form.errors.isEmpty()),
+      expression: "!form.errors.isEmpty()"
+    }]
+  }, [_vm._l((_vm.form.keys), function(key) {
+    return _c('div', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (_vm.form.errors.has(key)),
+        expression: "form.errors.has(key)"
+      }],
+      staticClass: "error"
+    }, [_c('el-alert', {
+      attrs: {
+        "title": key.toUpperCase(),
+        "type": "error",
+        "description": _vm.form.errors.getAll(key, ' | '),
+        "show-icon": ""
+      },
+      on: {
+        "close": function($event) {
+          _vm.form.errors.remove(key)
+        }
+      }
+    })], 1)
+  }), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.form.errors.has('serverError')),
+      expression: "form.errors.has('serverError')"
+    }],
+    staticClass: "error"
+  }, [_c('el-alert', {
+    attrs: {
+      "title": "Server Errors",
+      "description": _vm.form.errors.getAll('serverError'),
+      "type": "error",
+      "show-icon": ""
+    },
+    on: {
+      "close": function($event) {}
+    }
+  })], 1)], 2), _vm._v(" "), _c('h1', {
+    staticClass: "title has-text-centered"
+  }, [_vm._v("Sign Up")]), _vm._v(" "), _c('el-form', {
+    ref: "form",
+    attrs: {
+      "model": _vm.form,
+      "rules": _vm.rules,
+      "label-position": 'left',
+      "label-width": "120px"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "First Name",
+      "prop": "firstName"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "A Name"
+    },
+    model: {
+      value: (_vm.form.firstName),
+      callback: function($$v) {
+        _vm.form.firstName = $$v
+      },
+      expression: "form.firstName"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Last Name",
+      "prop": "lastName"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "Another Name"
+    },
+    model: {
+      value: (_vm.form.lastName),
+      callback: function($$v) {
+        _vm.form.lastName = $$v
+      },
+      expression: "form.lastName"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Email",
+      "prop": "email"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "generic_email@somedomain.com"
+    },
+    model: {
+      value: (_vm.form.email),
+      callback: function($$v) {
+        _vm.form.email = $$v
+      },
+      expression: "form.email"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Password",
+      "prop": "password"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": _vm.showPassword,
+      "placeholder": "********"
+    },
+    model: {
+      value: (_vm.form.password),
+      callback: function($$v) {
+        _vm.form.password = $$v
+      },
+      expression: "form.password"
+    }
+  }, [_c('el-button', {
+    nativeOn: {
+      "mousedown": function($event) {
+        _vm.showPassword = 'text'
+      },
+      "mouseup": function($event) {
+        _vm.showPassword = 'password'
+      }
+    },
+    slot: "append"
+  }, [_c('i', {
+    staticClass: "fa fa-eye"
+  })])], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Confirm Password",
+      "prop": "confirmPassword"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": _vm.showConfirm,
+      "placeholder": "********"
+    },
+    model: {
+      value: (_vm.form.confirmPassword),
+      callback: function($$v) {
+        _vm.form.confirmPassword = $$v
+      },
+      expression: "form.confirmPassword"
+    }
+  }, [_c('el-button', {
+    nativeOn: {
+      "mousedown": function($event) {
+        _vm.showConfirm = 'text'
+      },
+      "mouseup": function($event) {
+        _vm.showConfirm = 'password'
+      }
+    },
+    slot: "append"
+  }, [_c('i', {
+    staticClass: "fa fa-eye"
+  })])], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Mobile",
+      "prop": "mobile"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "placeholder": "01001234567"
+    },
+    model: {
+      value: (_vm.form.mobile),
+      callback: function($$v) {
+        _vm.form.mobile = $$v
+      },
+      expression: "form.mobile"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Gender",
+      "prop": "gender"
+    }
+  }, [_c('el-radio-group', {
+    model: {
+      value: (_vm.form.gender),
+      callback: function($$v) {
+        _vm.form.gender = $$v
+      },
+      expression: "form.gender"
+    }
+  }, [_c('el-radio', {
+    attrs: {
+      "label": "Male"
+    }
+  }), _vm._v(" "), _c('el-radio', {
+    attrs: {
+      "label": "Female"
+    }
+  })], 1)], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Birthdate"
+    }
+  }, [_c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "format": 'dd-MM-yyyy',
+      "placeholder": "1/1/1990"
+    },
+    model: {
+      value: (_vm.form.birthdate),
+      callback: function($$v) {
+        _vm.form.birthdate = $$v
+      },
+      expression: "form.birthdate"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    staticClass: "has-text-centered"
+  }, [_c('el-button', {
+    attrs: {
+      "type": "primary",
+      "icon": "circle-check"
+    },
+    on: {
+      "click": _vm.onClick
+    }
+  }, [_vm._v("Sign Up")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "icon": "circle-cross"
+    },
+    on: {
+      "click": _vm.onReset
+    }
+  }, [_vm._v("Reset")])], 1)], 1)], 1)])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-5e10160f", module.exports)
+  }
+}
 
 /***/ }),
 /* 127 */

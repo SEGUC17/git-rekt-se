@@ -4,11 +4,11 @@
   
       <div v-show="!form.errors.isEmpty()">
         <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
-          <el-alert @close="form.errors.remove(key)" :title="key.toUpperCase()" type="error" :description="form.errors.getFirst(key)" show-icon></el-alert>
+          <el-alert @close="form.errors.remove(key)" :title="key.toUpperCase()" type="error" :description="form.errors.getAll(key, ' | ')" show-icon></el-alert>
         </div>
-
+  
         <div class="error" v-show="form.errors.has('serverError')">
-          <el-alert @close="" :title="" :description="form.errors.get" type="error"></el-alert>
+          <el-alert @close="" title="Server Errors" :description="form.errors.getAll('serverError')" type="error" show-icon></el-alert>
         </div>
       </div>
   
@@ -28,11 +28,15 @@
         </el-form-item>
   
         <el-form-item label="Password" prop="password">
-          <el-input v-model="form.password" type="password" placeholder="********"></el-input>
+          <el-input v-model="form.password" :type="showPassword" placeholder="********">
+            <el-button slot="append" @mousedown.native="showPassword = 'text'" @mouseup.native="showPassword = 'password'"><i class="fa fa-eye"></i></el-button>
+          </el-input>
         </el-form-item>
   
         <el-form-item label="Confirm Password" prop="confirmPassword">
-          <el-input v-model="form.confirmPassword" type="password" placeholder="********"></el-input>
+          <el-input v-model="form.confirmPassword" :type="showConfirm" placeholder="********">
+            <el-button slot="append" @mousedown.native="showConfirm = 'text'" @mouseup.native="showConfirm = 'password'"><i class="fa fa-eye"></i></el-button>
+          </el-input>
         </el-form-item>
   
         <el-form-item label="Mobile" prop="mobile">
@@ -71,7 +75,7 @@
     data() {
       clientSignUpValidation.confirmPassword[1].validator = clientSignUpValidation.confirmPassword[1]
         .validator.bind(this);
-        clientSignUpValidation.password[2].validator = clientSignUpValidation.password[2]
+      clientSignUpValidation.password[2].validator = clientSignUpValidation.password[2]
         .validator.bind(this);
       return {
         form: new Form({
@@ -85,10 +89,15 @@
           birthdate: ''
         }),
         rules: clientSignUpValidation,
+        showPassword: 'password',
+        showConfirm: 'password'
       }
     },
     methods: {
       onClick() {
+        if (this.hasErrors()) {
+          return;
+        }
         console.log(this.form.data());
         this.form.post(EndPoints.Client().signup)
           .then((data) => console.log(data))
@@ -100,9 +109,13 @@
             console.log(this.errors);
           });
       },
-      onReset(){
+      onReset() {
         this.$refs.form.resetFields();
-      }
+      },
+      hasErrors() {
+        const errors = this.$refs.form.$children.filter(el => el.validateMessage.length > 0);
+        return errors.length > 0;
+      },
     },
   }
 </script>
