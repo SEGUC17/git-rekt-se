@@ -124,7 +124,7 @@
         cb(results);
       },
       createFilter(queryString) {
-        return location => (location.value.indexOf(queryString.toLowerCase()) === 0);
+        return location => ((location.value).toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       },
       performSearch() {
         this.newQuery.min = Math.min(this.priceRange);
