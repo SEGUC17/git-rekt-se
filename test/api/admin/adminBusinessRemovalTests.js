@@ -2,7 +2,7 @@ const chai = require('chai');
 const path = require('path');
 const supertest = require('supertest');
 const app = require('../../../app/app');
-const Category = require('../../../app/models/service/Category');
+const Business = require('../../../app/models/business/Business');
 const Admin = require('../../../app/models/admin/Admin');
 
 /**
@@ -41,31 +41,22 @@ describe('Category CRUD Test Suite', () => {
   });
 
   beforeEach((done) => {
-    Category.collection.drop(() => {
-      Category.ensureIndexes(done);
+    Business.collection.drop(() => {
+      Business.ensureIndexes(done);
     });
   });
-  it('should delete a business and return a confirmation message: Business added succesfully!', (done) => {
+  it('should not do anything on invalid ID input', (done) => {
     req = supertest(app)
-      .post('/api/v1/admin/category/add')
-      .field('type', 'Business')
-      .field('title', 'Sample Title')
-      .attach('icon', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
+      .post('/api/v1/admin/business/delete/x1')
       .set('Authorization', `JWT ${token}`)
-      .end((err2, res) => {
-        if (err2) {
-          done(err2);
-        } else {
-          chai.expect(res.body.message)
-            .to.equal('Category added succesfully!');
-          Category.findOne({
-            title: 'Sample Title',
-          }, (err3, category3) => {
-            chai.expect(category3.type)
-              .to.equal('Business');
-          });
-          done();
-        }
-      });
+      .send()
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [{
+          param: 'id',
+          msg: 'Invalid Business ID',
+          value: 'x1',
+        }, ],
+      }, done);
   });
 });
