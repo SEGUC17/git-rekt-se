@@ -35,7 +35,7 @@ describe('Service Coupon CRUD Tests', () => {
                 done();
               });
           })
-          .catch(done);
+          .catch(e => done(e));
       });
     });
   });
@@ -79,7 +79,7 @@ describe('Service Coupon CRUD Tests', () => {
                     .to.equal(Strings.serviceSuccess.couponAdd);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -137,7 +137,7 @@ describe('Service Coupon CRUD Tests', () => {
                     .to.equal(Strings.couponValidationError.invalidDateFormat);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -177,7 +177,7 @@ describe('Service Coupon CRUD Tests', () => {
                     .to.equal(Strings.couponValidationError.invalidEndDate);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -216,7 +216,7 @@ describe('Service Coupon CRUD Tests', () => {
                     .to.equal(Strings.couponValidationError.emptyCode);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -252,7 +252,7 @@ describe('Service Coupon CRUD Tests', () => {
                     .to.equal(Strings.couponValidationError.invalidValue);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -287,7 +287,7 @@ describe('Service Coupon CRUD Tests', () => {
                     .to.equal(Strings.couponValidationError.invalidValue);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -327,7 +327,7 @@ describe('Service Coupon CRUD Tests', () => {
                     .to.equal(Strings.couponValidationError.emptyValue);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -368,7 +368,7 @@ describe('Service Coupon CRUD Tests', () => {
                     .to.equal(Strings.couponValidationError.emptyStartDate);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -408,7 +408,7 @@ describe('Service Coupon CRUD Tests', () => {
                     .to.equal(Strings.couponValidationError.emptyEndDate);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -449,7 +449,7 @@ describe('Service Coupon CRUD Tests', () => {
                             .to.equal(true);
                           done();
                         })
-                        .catch(() => done(err));
+                        .catch(e => done(e));
                     }
                   });
               })
@@ -494,7 +494,7 @@ describe('Service Coupon CRUD Tests', () => {
                             .to.equal(false);
                           done();
                         })
-                        .catch(() => done(err));
+                        .catch(e => done(e));
                     }
                   });
               })
@@ -542,7 +542,7 @@ describe('Service Coupon CRUD Tests', () => {
                                 .to.equal(false);
                               done();
                             })
-                            .catch(() => done(err));
+                            .catch(e => done(e));
                         }
                       });
                   })
