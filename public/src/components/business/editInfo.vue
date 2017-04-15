@@ -103,6 +103,8 @@
             this.form.phoneNumbers = this.phoneNumbers.map(el => el.number);
             this.form.password = this.form.password === '***************' ? '' : this.form.password;
             console.log(this.form.data());
+            this.success = false;
+            this.error = false;
             this.loading = true;
             this.form.post(Business().editBasicInfo(this.business._id), {
                 headers: {

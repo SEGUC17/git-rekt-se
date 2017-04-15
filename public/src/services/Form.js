@@ -64,7 +64,7 @@ export default class Form {
    * @returns {Promise}
    * @memberOf Form
    */
-  submit(method, url, headers) {
+  submit(method, url, headers = {}) {
     this.errors.clear();
     return new Promise((resolve, reject) => {
       axios[method](url, this.data(), headers)
@@ -85,7 +85,7 @@ export default class Form {
    *
    * @memberOf Form
    */
-  get(url, headers) {
+  get(url, headers = {}) {
     return this.submit('get', url, headers);
   }
 
@@ -95,7 +95,7 @@ export default class Form {
    *
    * @memberOf Form
    */
-  post(url, headers) {
+  post(url, headers = {}) {
     return this.submit('post', url, headers);
   }
 
@@ -105,7 +105,7 @@ export default class Form {
    *
    * @memberOf Form
    */
-  put(url, headers) {
+  put(url, headers = {}) {
     return this.submit('put', url, headers);
   }
 
@@ -115,7 +115,7 @@ export default class Form {
    *
    * @memberOf Form
    */
-  delete(url, headers) {
+  delete(url, headers = {}) {
     return this.submit('delete', url, headers);
   }
 
