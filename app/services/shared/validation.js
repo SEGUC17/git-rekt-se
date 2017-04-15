@@ -512,6 +512,24 @@ const businessUpdateValidation = {
   },
 };
 
+const serviceBookingValidation = {
+  service: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  offering: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidOffering,
+    },
+  },
+  token: {
+    notEmpty: {
+      errorMessage: serviceValidationErrors.invalidStripeToken,
+    },
+  },
+};
+
 const validation = {
   clientResetPasswordValidation,
   clientSignupValidation,
@@ -541,6 +559,7 @@ const validation = {
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
+  serviceBookingValidation,
 };
 
 module.exports = validation;
