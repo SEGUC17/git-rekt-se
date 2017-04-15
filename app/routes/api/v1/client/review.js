@@ -22,7 +22,7 @@ router.post('/report/:id', authMiddleWare.clientAuthMiddleware, (req, res, next)
     .then((result) => {
       if (result.isEmpty()) {
         Review.findOne({
-          _id: req.params.ser_id,
+          _id: req.params.id,
         }, (err, result2) => {
           if (err) {
             next(err);
