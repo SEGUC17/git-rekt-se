@@ -92,21 +92,21 @@
         if (!query.offset) {
           query.offset = 1;
         }
-        queryString = `${queryString}offset=${query.offset}`;
+        queryString += `offset=${query.offset}`;
         if (query.name) {
-          queryString = `${queryString}&name=${query.name}`;
+          queryString += `&name=${query.name}`;
         }
         if (query.rating) {
-          queryString = `${queryString}&rating=${query.rating}`;
+          queryString += `&rating=${query.rating}`;
         }
         if (query.min) {
-          queryString = `${queryString}&min=${query.min}`;
+          queryString += `&min=${query.min}`;
         }
         if (query.max) {
-          queryString = `${queryString}&max=${query.max}`;
+          queryString += `&max=${query.max}`;
         }
         if (query.location) {
-          queryString = `${queryString}&location=${query.location}`;
+          queryString += `&location=${query.location}`;
         }
         return queryString;
       },
