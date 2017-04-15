@@ -3,7 +3,6 @@
     <div class="page-container page-component">
       <div class="el-row">
         <div class="el-col el-col-24 el-col-xs-24 el-col-sm-4 search-tools">
-          <!---TODO Search Tools-->
           <div class="block">
             <h4 class="subtitle is-4">Filters</h4>
           </div>
@@ -19,12 +18,21 @@
             <span class="search-label">Price Range</span>
             <el-slider v-model="priceRange" range :step="100" :max="10000"></el-slider>
           </div>
+          <div class="block">
             <span class="search-label">Location</span>
             <el-autocomplete class="inline-input" v-model="newQuery.location" :fetch-suggestions="locationSearch" placeholder="Select Location"></el-autocomplete>
-          <div class="block">
-            <el-button class="search-button" type="primary"@click="performSearch">Search</el-button>
           </div>
-
+          <div class="block">
+            <span class="search-label">Sort By</span>
+            <el-select v-model="newQuery.sort" clearable placeholder="Select">
+              <el-option v-for="item in sortOptions" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="block">
+            <el-button class="search-button" type="primary" @click="performSearch">Search</el-button>
+          </div>
+  
         </div>
         <div class="el-col el-col-24 el-col-xs-24 el-col-sm-20">
           <search-result v-for="result in results" :service="result" :key="result._id"></search-result>
@@ -54,6 +62,15 @@
         results: [],
         locationsDB: [],
         count: 0,
+        sortOptions: [{
+          value: 1,
+          label: 'A-Z',
+        },
+        {
+          value: 2,
+          label: 'Highest Rating',
+  
+        }],
         currentQuery: this.$route.query,
         priceRange: [(this.$route.query.min) ? parseInt(this.$route.query.min, 10) : 0,
           (this.$route.query.max) ? parseInt(this.$route.query.max, 10) : 10000,
@@ -63,8 +80,9 @@
           name: (this.$route.query.name) ? this.$route.query.name : '',
           rating: (this.$route.query.rating) ? parseInt(this.$route.query.rating, 10) : 0,
           min: 0,
-          max: 0,
+          max: 10000,
           location: (this.$route.query.location) ? this.$route.query.location : '',
+          sort: (this.$route.query.sort) ? this.$route.query.sort : '',
         },
       };
     },
@@ -108,6 +126,9 @@
         if (query.location) {
           queryString += `&location=${query.location}`;
         }
+        if (query.sort) {
+          queryString += `&sort=${query.sort}`;
+        }
         return queryString;
       },
       changePage(newPage) {
@@ -127,16 +148,17 @@
         return location => ((location.value).toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       },
       performSearch() {
+        this.newQuery.offset = 1;
         this.newQuery.min = Math.min(...this.priceRange);
         this.newQuery.max = Math.max(...this.priceRange);
         this.currentQuery = this.newQuery;
         Axios.get(`${EndPoints.Visitor().search}/${this.stringifyQuery(this.currentQuery)}`)
-        .then((response) => {
-          this.results = response.data.results;
-          this.count = response.data.count;
-        })
-        .catch(err => console.log(err));
-      // TODO proper error handling
+          .then((response) => {
+            this.results = response.data.results;
+            this.count = response.data.count;
+          })
+          .catch(err => console.log(err));
+        // TODO proper error handling
       },
     },
   };

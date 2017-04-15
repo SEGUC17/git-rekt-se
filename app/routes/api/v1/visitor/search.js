@@ -52,6 +52,17 @@ router.get('/', (req, res, next) => {
   if (inputQuery.location) {
     mongooseQuery.offerings.$elemMatch.location = new RegExp(inputQuery.location, 'i');
   }
+  /**
+   * Sorting Options (1: A-Z, 2:Desc. Rating)
+   */
+  let sort = '';
+  if (inputQuery.sort) {
+    if (inputQuery.sort === '1') {
+      sort = 'name';
+    } else if (inputQuery.sort === '2') {
+      sort = '-_avgRating';
+    }
+  }
 
   // Executing
   Service
@@ -77,6 +88,7 @@ router.get('/', (req, res, next) => {
           select: 'title',
         }])
         .select('name shortDescription _business _avgRating categories coverImage')
+        .sort(sort)
         .skip((offset - 1) * 10)
         .limit(10)
         .exec((err, services) => {
