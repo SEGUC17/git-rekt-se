@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const Review = require('../../../../models/service/Review');
-const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const Strings = require('../../../../services/shared/Strings');
 const authMiddleWare = require('../../../../services/shared/jwtConfig');
 const errorHandler = require('../../../../services/shared/errorHandler');
@@ -20,9 +19,10 @@ router.post('/report/:id', authMiddleWare.clientAuthMiddleware, (req, res, next)
   Review.findOne({
     _id: req.params.ser_id,
   }, (err, result) => {
-    // if (err) {
-    //    return next(err);
-    // }
+    if (err) {
+      next(err);
+      return;
+    }
     result.reports.push(req.body.description);
     result.save((err2) => {
       if (err2) {
