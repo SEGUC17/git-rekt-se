@@ -48,3 +48,12 @@ jspm_packages
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# dist
+public/dist/**
+
+#IJ
+.idea
+mix-manifest.json
+public/dist/services
+public/dist/assets
