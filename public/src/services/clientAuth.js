@@ -11,7 +11,7 @@ export default {
       .post(`${authBASE}/login`, data)
       .then((response) => {
         this.user.authenticated = true;
-        localStorage.setItem('JWT-token', response.data.token);
+        localStorage.setItem('clientJWTtoken', response.data.token);
         return callBack(null, response.data);
       })
       .catch((err) => {
@@ -28,9 +28,9 @@ export default {
   },
   logout() {
     this.user.authenticated = false;
-    localStorage.removeItem('JWT-token');
+    localStorage.removeItem('clientJWTtoken');
   },
   getJWTtoken() {
-    return `JWT ${localStorage.getItem('JWT-token')}`;
+    return `JWT ${localStorage.getItem('clientJWTtoken')}`;
   },
 };
