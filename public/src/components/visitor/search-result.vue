@@ -1,20 +1,19 @@
 <template>
   <el-card class="box-card">
     <el-row type="flex" class="row-bg">
-      <el-col :span="6">
-        <h2>
+      <el-col :span="8">
+        <h4 class="title is-4">
           <router-link :to="serviceURL">{{serviceName}}</router-link>
-        </h2>
+        </h4>
       </el-col>
-      <el-col :span="6">
-        <h4>
+      <el-col :span="8">
+        <h6 class="subtitle is-6">
           <router-link :to="businessURL"> by {{businessName}}</router-link>
-        </h4>
+        </h6>
       </el-col>
-      <el-col :span="6">
-        <h4>
-          rating: {{rating}}
-        </h4>
+      <el-col :span="8">
+        <el-rate v-model="rating" disabled show-text text-color="#ff9900" text-template="{value} points">
+        </el-rate>
       </el-col>
     </el-row>
     <el-row type="flex" class="row-bg">
@@ -22,8 +21,8 @@
     </el-row>
     <el-row type="flex" class="row-bg">
       <span>
-              {{shortDescription}}
-            </span>
+          {{shortDescription}}
+       </span>
     </el-row>
   </el-card>
 </template>
@@ -53,3 +52,9 @@
     },
   };
 </script>
+
+<style>
+  .el-tag {
+    margin: 0 1px;
+  }
+</style>

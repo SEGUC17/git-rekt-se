@@ -11,7 +11,7 @@ const services = [{
 {
   name: 'English Course',
   shortDescription: '5000 T - 7000 T',
-  _avgRating: 10,
+  _avgRating: 6,
   categories: [],
 },
 {
