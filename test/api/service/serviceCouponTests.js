@@ -16,16 +16,14 @@ const CouponSeed = require('../../../app/seed/service/couponSeeds');
 describe('Service Coupon CRUD Tests', () => {
   let req;
   let token;
-  let sampleBusiness;
   let dbBusiness;
   before((done) => {
     Business.collection.drop(() => {
       Business.ensureIndexes(() => {
-        sampleBusiness = BusinessesSeed[4];
+        const sampleBusiness = BusinessesSeed[4];
         new Business(sampleBusiness)
           .save()
           .then((data) => {
-            sampleBusiness._id = data._id;
             dbBusiness = data;
             req = supertest(app)
               .post('/api/v1/business/auth/verified/login')
