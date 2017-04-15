@@ -68,4 +68,14 @@ export default {
       deleteCategory: categoryID => `${categoryBase}/delete/${categoryID}`,
     };
   },
+  Service() {
+    const serviceBase = `${BASE}/service`;
+    return {
+      createReview: serviceID => `${serviceBase}/${serviceID}/review`,
+      updateReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
+      deleteReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/delete`,
+
+      addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,
+    };
+  },
 };
