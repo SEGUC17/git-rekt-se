@@ -15,7 +15,7 @@ const Strings = require('../../../app/services/shared/Strings.js');
  * Test Suite
  */
 
-describe('Category CRUD Test Suite', () => {
+describe('Client Removal Test Suite', () => {
   let req;
   let sampleAdmin;
   let token;
@@ -51,7 +51,7 @@ describe('Category CRUD Test Suite', () => {
       Client.ensureIndexes(done);
     });
   });
-  it('Delete a client and return a confirmation message', (done) => {
+  it('should delete a client and return a confirmation message', (done) => {
     const client1 = clients[0];
     new Client(client1)
       .save()
