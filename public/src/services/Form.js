@@ -64,10 +64,10 @@ export default class Form {
    * @returns {Promise}
    * @memberOf Form
    */
-  submit(method, url) {
+  submit(method, url, headers) {
     this.errors.clear();
     return new Promise((resolve, reject) => {
-      axios[method](url, this.data())
+      axios[method](url, this.data(), headers)
         .then((response) => {
           this.onSuccess(response);
           resolve(response.data, response);
@@ -85,8 +85,8 @@ export default class Form {
    *
    * @memberOf Form
    */
-  get(url) {
-    return this.submit('get', url);
+  get(url, headers) {
+    return this.submit('get', url, headers);
   }
 
   /**
@@ -95,8 +95,8 @@ export default class Form {
    *
    * @memberOf Form
    */
-  post(url) {
-    return this.submit('post', url);
+  post(url, headers) {
+    return this.submit('post', url, headers);
   }
 
   /**
@@ -105,8 +105,8 @@ export default class Form {
    *
    * @memberOf Form
    */
-  put(url) {
-    return this.submit('put', url);
+  put(url, headers) {
+    return this.submit('put', url, headers);
   }
 
   /**
@@ -115,8 +115,8 @@ export default class Form {
    *
    * @memberOf Form
    */
-  delete(url) {
-    return this.submit('delete', url);
+  delete(url, headers) {
+    return this.submit('delete', url, headers);
   }
 
   /**

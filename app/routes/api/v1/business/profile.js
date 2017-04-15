@@ -33,7 +33,6 @@ router.get('/profile', authMiddleWare.businessAuthMiddleware, (req, res, next) =
     email: true,
     shortDescription: true,
     phoneNumbers: true,
-    _id: false,
   };
   Business.findOne(searchID, projection)
     .exec()
