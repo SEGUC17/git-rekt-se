@@ -90,7 +90,6 @@
     import locs from './mainLocations.js';
     import priceRanges from './priceRanges.js';
     import endpoints from '../../../services/EndPoints.js';
-    import { Loading } from 'element-ui';
 
     export default {
         data() {
@@ -103,6 +102,11 @@
             }
         },
         methods: {
+
+            /*
+            * Get list of locations from API.
+            */
+
             getLocations(ls) {
                 axios
                     .get(endpoints.Search().locations)
@@ -113,6 +117,7 @@
                         this.locations = locs;
                     });
             },
+
             querySearch(query, cb) {
                 const locations = this.locations;
                 const results = [];
@@ -123,39 +128,52 @@
                 });
                 cb(results);
             },
-            searchClicked(e){
+            
+            /*
+            * Generate search URI.
+            */
 
+            searchClicked(e){
+                let url = `/search`;
                 
-                if(!this.name){
-                    this.$message.error('Service name cann\'t be empty.');
-                    return;
+                if(this.name){
+                    url += `?name=${this.name}`;
                 }
 
-                let url = `/search?name=${this.name}`;
                 const priceRange = this.price.split('-');
                 
                 if(priceRange.length === 2){
                     const min = parseInt(priceRange[0]);
                     const max = parseInt(priceRange[1]);
                     if(min !== NaN && max !== NaN){
-                        url += `&min=${min}&max=${max}`;
+                        if(this.name){
+                            url += `&min=${min}&max=${max}`;
+                        }else{
+                            url += `?min=${min}&max=${max}`;
+                        }
                     }
                 }
                 
                 if(this.location){
-                    url += `&location=${this.location}`;
+                    if(this.name || priceRange.length === 2){
+                        url += `&location=${this.location}`;
+                    }else{
+                        url += `?location=${this.location}`;
+                    }
                 }
 
                 this.$router.push(url);
             }
         },
+        
+        mounted() {
+            this.locations = this.getLocations();
+        },
+
         components: {
             card,
         },
     
-        mounted() {
-            this.locations = this.getLocations();
-        }
     };
 </script>
 
