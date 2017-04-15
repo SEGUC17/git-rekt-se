@@ -36,7 +36,7 @@ describe('Service Gallery CRUD Tests', () => {
                 done();
               });
           })
-          .catch(done);
+          .catch(e => done(e));
       });
     });
   });
@@ -75,7 +75,7 @@ describe('Service Gallery CRUD Tests', () => {
                     .to.equal('Image added successfully!');
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -158,7 +158,7 @@ describe('Service Gallery CRUD Tests', () => {
                     .to.equal('API Description is working');
                   done();
                 })
-                .catch(() => done(err));
+               .catch(e => done(e));
             }
           });
       })
@@ -202,7 +202,7 @@ describe('Service Gallery CRUD Tests', () => {
                     .to.equal(0);
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
