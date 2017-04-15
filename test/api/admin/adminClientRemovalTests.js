@@ -66,6 +66,14 @@ describe('Category CRUD Test Suite', () => {
             if (err) {
               done(err);
             } else {
+              Client.count((err3, c) => {
+                if (err3) {
+                  done(err3);
+                } else {
+                  chai.expect(c)
+                    .to.equal(1);
+                }
+              });
               chai.expect(res.body.message)
                 .to.equal(Strings.adminSuccess.clientDeleted);
               done();
@@ -73,5 +81,30 @@ describe('Category CRUD Test Suite', () => {
           });
       })
       .catch(done);
+  });
+
+  it('should not delete a client and return an error message', (done) => {
+    req = supertest(app)
+      .post('/api/v1/admin/client/delete/4')
+      .expect('Content-Type', /json/)
+      .set('Authorization', `JWT ${token}`)
+      .send()
+      .expect(400)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          Client.count((err3, c) => {
+            if (err3) {
+              done(err3);
+            } else {
+              chai.expect(c)
+                .to.equal(0); // check count just in case
+            }
+          });
+          console.log(res.body);
+          done();
+        }
+      });
   });
 });

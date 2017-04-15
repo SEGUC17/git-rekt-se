@@ -7,6 +7,7 @@ const Strings = require('../../../../services/shared/Strings.js');
 const errorHandler = require('../../../../services/shared/errorHandler');
 const expressValidator = require('express-validator');
 const mongoose = require('mongoose');
+const validator = require('../../../../services/shared/validation');
 
 mongoose.Promise = Promise;
 
@@ -21,17 +22,24 @@ router.use(expressValidator({}));
 router.use(bodyParser.json());
 
 router.post('/delete/:id', AdminAuth, (req, res, next) => {
-  Client.find({
-    _id: req.params.id,
-  }, (err, result) => {
-    if (err) {
-      return next(err);
-    }
-    result._deleted = true;
-    return res.json({
-      message: Strings.adminSuccess.clientDeleted,
-    });
-  });
+  req.checkParams(validator.adminClientValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result) {
+        Client.find({
+          _id: req.params.id,
+        }, (err, result2) => {
+          if (err) {
+            return next(err);
+          }
+          result2._deleted = true;
+          return res.json({
+            message: Strings.adminSuccess.clientDeleted,
+          });
+        });
+      }
+    })
+    .catch(e => next([e]));
 });
 
 /**
