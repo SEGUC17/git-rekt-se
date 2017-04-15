@@ -14,16 +14,16 @@
                 <div class="columns index-search has-text-centered">
     
                     <div class="column is-3 is-offset-2 is-12-mobile">
-                        <el-input placeholder="Name" icon="search" v-model="name" size="large"> </el-input>
+                        <el-input class="full-width" placeholder="Name" icon="search" v-model="name" size="large"> </el-input>
                     </div>
     
                     <div class="column is-2">
-                        <el-autocomplete v-model="location" :fetch-suggestions="querySearch" placeholder="Locations" size="large">
+                        <el-autocomplete class="full-width" v-model="location" :fetch-suggestions="querySearch" placeholder="Locations" size="large">
                         </el-autocomplete>
                     </div>
     
                     <div class="column is-2">
-                        <el-select v-model="price" placeholder="Price range" size="large">
+                        <el-select class="full-width" v-model="price" placeholder="Price range" size="large">
                             <el-option v-for="item in prices" :label="item.label" :value="item.value" :key="item.value">
                             </el-option>
                         </el-select>
@@ -203,4 +203,8 @@
         margin-top: 2em;
         margin-bottom: 2em;
     }
+    .full-width{
+        width: 100%;
+    }
+}
 </style>
