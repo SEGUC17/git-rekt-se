@@ -12,7 +12,7 @@
         </h6>
       </el-col>
       <el-col :span="8">
-        <el-rate v-model="rating" disabled show-text text-color="#ff9900" text-template="{value} points">
+        <el-rate v-model="rating" disabled show-text :max="10" text-color="#ff9900" text-template="{value} points">
         </el-rate>
       </el-col>
     </el-row>
