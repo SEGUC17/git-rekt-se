@@ -51,6 +51,7 @@ describe('Client Removal Test Suite', () => {
       Client.ensureIndexes(done);
     });
   });
+  
   it('should delete a client and return a confirmation message', (done) => {
     const client1 = clients[0];
     new Client(client1)
