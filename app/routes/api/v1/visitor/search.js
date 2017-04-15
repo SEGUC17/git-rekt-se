@@ -97,14 +97,10 @@ router.get('/', (req, res, next) => {
  */
 
 router.get('/locations', (req, res, next) => {
-  const locKeyValue = [];
-
-  locations.forEach((loc) => {
-    locKeyValue.push({
-      label: loc,
-      value: loc,
-    });
-  });
+  const locKeyValue = locations.map(loc => ({
+    label: loc,
+    value: loc,
+  }));
 
   return res.json(locKeyValue);
 });
