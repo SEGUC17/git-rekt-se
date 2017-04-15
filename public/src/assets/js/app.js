@@ -5,6 +5,7 @@ import Buefy from 'buefy'
 import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
+import verifiedBusinessSignup from '../../components/Business/verifiedBusinessSignup.vue';
 import router from '../../services/routes.js';
 Window.axios = axios;
 
@@ -18,5 +19,6 @@ new Vue({
   components: {
     'gr-header': header,
     'gr-footer': footer,
+    'verified-business-signup': verifiedBusinessSignup,
   }
 });
