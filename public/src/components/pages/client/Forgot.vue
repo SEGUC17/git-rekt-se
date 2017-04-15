@@ -23,7 +23,7 @@
               </el-form-item>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="onSubmit('/api/v1/client/auth/forgot')" class="button is-info is-fullwidth">Forgot Password</el-button>
+                <el-button type="primary" @click="onSubmit()" class="button is-info is-fullwidth">Forgot Password</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -35,7 +35,9 @@
 
 <script>
   import axios from 'axios';
-  import Form from '../../../services/Form.js'
+  import Form from '../../../services/Form.js';
+  import Endpoints from '../../../services/EndPoints.js';
+
   export default {
     data() {
       return {
@@ -46,8 +48,8 @@
       };
     },
     methods: {
-      onSubmit(url){
-        this.form.post(url).then(() => {
+      onSubmit(){
+        this.form.post(Endpoints.Client().forgot).then(() => {
           this.success = true;
         }).catch(err => alert(err));
       }
@@ -113,13 +115,6 @@
   .login-wrapper {
     margin: -0.75rem;
     overflow-y: hidden;
-  }
-  
-  .hero-banner .hero {
-    background: url('https://unsplash.it/2000/1000');
-    background-position: center;
-    background-size: cover;
-    background-blend-mode: screen;
   }
   
   .hero-banner .title {

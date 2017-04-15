@@ -3731,7 +3731,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_pages_client_Forgot_vue__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_pages_client_Forgot_vue__ = __webpack_require__(134);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_pages_client_Forgot_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_pages_client_Forgot_vue__);
 
 
@@ -3741,7 +3741,7 @@ var routes = [{
   path: '/about',
   component: __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue___default.a
 }, {
-  path: '/api/v1/client/auth/forgot',
+  path: '/client/auth/forgot',
   component: __WEBPACK_IMPORTED_MODULE_2__components_pages_client_Forgot_vue___default.a
 }];
 
@@ -4626,7 +4626,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 41 */,
+/* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var BASE = 'http://localhost:3000/api/v1';
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  Client: function Client() {
+    var authBase = BASE + '/client/auth';
+    var profileBase = BASE + '/client/profile';
+    return {
+      signup: authBase + '/signup',
+      resend: authBase + '/confirmation/send',
+      forgot: authBase + '/forgot'
+    };
+  }
+});
+
+/***/ }),
 /* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -7270,7 +7288,12 @@ module.exports = __webpack_require__(20);
 /***/ }),
 /* 125 */,
 /* 126 */,
-/* 127 */
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7278,6 +7301,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__ = __webpack_require__(41);
 //
 //
 //
@@ -7313,6 +7337,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
 
 
 
@@ -7327,10 +7353,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
-    onSubmit: function onSubmit(url) {
+    onSubmit: function onSubmit() {
       var _this = this;
 
-      this.form.post(url).then(function () {
+      this.form.post(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* default */].Client().forgot).then(function () {
         _this.success = true;
       }).catch(function (err) {
         return alert(err);
@@ -7340,25 +7366,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 128 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(14)();
-exports.push([module.i, "\n.grey-background {\n  background-color: grey;\n}\nhtml,\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n  height: 100%;\n  padding: 0;\n  margin: 0;\n}\n.email-input,\n.password-input {\n  border-radius: 40px;\n  font-size: 20px;\n  padding-left: 15px;\n  color: #95A5A6;\n}\n.icon.user,\n.icon.password {\n  margin: 5px 10px 0 0;\n}\n.avatar img {\n  border-radius: 100px;\n  padding: 5px;\n  border: 1px solid #dbdbdb;\n}\n.forgot-password a {\n  color: #95A5A6;\n  font-weight: bold;\n  padding-right: 20px;\n}\n.login {\n  padding-top: 20px;\n}\n.login button {\n  border-radius: 40px;\n  font-weight: bold;\n}\n.hero-body .container {\n  margin-top: -100px;\n}\n.hero.is-dark .section {\n  background-color: transparent;\n}\n.login-wrapper {\n  margin: -0.75rem;\n  overflow-y: hidden;\n}\n.hero-banner .hero {\n  background: url('https://unsplash.it/2000/1000');\n  background-position: center;\n  background-size: cover;\n  background-blend-mode: screen;\n}\n.hero-banner .title {\n  display: inline-block;\n  background-color: rgba(0, 0, 0, 0.6);\n  padding: 5px;\n}\n", ""]);
+exports.push([module.i, "\n.grey-background {\n  background-color: grey;\n}\nhtml,\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\";\n  height: 100%;\n  padding: 0;\n  margin: 0;\n}\n.email-input,\n.password-input {\n  border-radius: 40px;\n  font-size: 20px;\n  padding-left: 15px;\n  color: #95A5A6;\n}\n.icon.user,\n.icon.password {\n  margin: 5px 10px 0 0;\n}\n.avatar img {\n  border-radius: 100px;\n  padding: 5px;\n  border: 1px solid #dbdbdb;\n}\n.forgot-password a {\n  color: #95A5A6;\n  font-weight: bold;\n  padding-right: 20px;\n}\n.login {\n  padding-top: 20px;\n}\n.login button {\n  border-radius: 40px;\n  font-weight: bold;\n}\n.hero-body .container {\n  margin-top: -100px;\n}\n.hero.is-dark .section {\n  background-color: transparent;\n}\n.login-wrapper {\n  margin: -0.75rem;\n  overflow-y: hidden;\n}\n.hero-banner .title {\n  display: inline-block;\n  background-color: rgba(0, 0, 0, 0.6);\n  padding: 5px;\n}\n", ""]);
 
 /***/ }),
-/* 129 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(131)
+__webpack_require__(136)
 
 var Component = __webpack_require__(7)(
   /* script */
-  __webpack_require__(127),
+  __webpack_require__(132),
   /* template */
-  __webpack_require__(130),
+  __webpack_require__(135),
   /* scopeId */
   null,
   /* cssModules */
@@ -7385,7 +7411,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 130 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -7455,7 +7481,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     on: {
       "click": function($event) {
-        _vm.onSubmit('/api/v1/client/auth/forgot')
+        _vm.onSubmit()
       }
     }
   }, [_vm._v("Forgot Password")])], 1)], 1)], 1)])])])])
@@ -7473,13 +7499,13 @@ if (false) {
 }
 
 /***/ }),
-/* 131 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(128);
+var content = __webpack_require__(133);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM

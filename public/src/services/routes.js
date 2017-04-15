@@ -7,7 +7,7 @@ const routes = [{
   component: About,
 },
 {
-  path: '/api/v1/client/auth/forgot',
+  path: '/client/auth/forgot',
   component: Forgot,
 },
 
