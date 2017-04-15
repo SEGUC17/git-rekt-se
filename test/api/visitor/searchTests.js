@@ -316,7 +316,7 @@ describe('Search Test Suite', () => {
     req
       .query({
         location: 'Tagamo3',
-        offset: 1,
+        offset: 2,
       })
       .expect(200)
       .end((err, res) => {

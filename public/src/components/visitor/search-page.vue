@@ -5,10 +5,10 @@
         <!---TODO Search Tools-->
       </div>
       <div class="el-col el-col-24 el-col-xs-24 el-col-sm-18">
-        <search-result v-for="result in results" :service="result"></search-result>
+        <search-result v-for="result in results" :service="result" :key= "result._id"></search-result>
         <el-row :gutter="20">
           <el-col :span="12" :offset="6">
-            <el-pagination layout="prev, pager, next" :total="count">
+            <el-pagination small layout="prev, pager, next" :current-page="parseInt(currentQuery.offset)" :total="count" @current-change="changePage">
             </el-pagination>
           </el-col>
         </el-row>
@@ -30,41 +30,55 @@
       return {
         results: [],
         count: 0,
-        incQuery: '?',
+        currentQuery: this.$route.query,
+        nextQuery: {},
       };
     },
     components: {
       SearchResult,
     },
     mounted() {
-      if (this.$route.query.offset) {
-        this.incQuery = `${this.incQuery}&offset=${this.$route.query.offset}`;
-      }
-      if (this.$route.query.name) {
-        this.incQuery = `${this.incQuery}&name=${this.$route.query.name}`;
-      }
-      if (this.$route.query.rating) {
-        this.incQuery = `${this.incQuery}&rating=${this.$route.query.rating}`;
-      }
-      if (this.$route.query.min) {
-        this.incQuery = `${this.incQuery}&min=${this.$route.query.min}`;
-      }
-      if (this.$route.query.max) {
-        this.incQuery = `${this.incQuery}&max=${this.$route.query.max}`;
-      }
-      if (this.$route.query.location) {
-        this.incQuery = `${this.incQuery}&location=${this.$route.query.location}`;
-      }
-      if (this.incQuery === '?') {
-        this.incQuery = '';
-      }
-      Axios.get(`${EndPoints.Visitor().search}/${this.incQuery}`)
+      Axios.get(`${EndPoints.Visitor().search}/${this.stringifyQuery(this.currentQuery)}`)
         .then((response) => {
           this.results = response.data.results;
           this.count = response.data.count;
         })
         .catch(err => console.log(err));
       // TODO proper error handling
+    },
+    methods: {
+      stringifyQuery(query) {
+        let queryString = '?';
+        if (!query.offset) {
+          query.offset = 1;
+        }
+        queryString = `${queryString}offset=${query.offset}`;
+        if (query.name) {
+          queryString = `${queryString}&name=${query.name}`;
+        }
+        if (query.rating) {
+          queryString = `${queryString}&rating=${query.rating}`;
+        }
+        if (query.min) {
+          queryString = `${queryString}&min=${query.min}`;
+        }
+        if (query.max) {
+          queryString = `${queryString}&max=${query.max}`;
+        }
+        if (query.location) {
+          queryString = `${queryString}&location=${query.location}`;
+        }
+        return queryString;
+      },
+      changePage(newPage) {
+        this.currentQuery.offset = newPage;
+        Axios.get(`${EndPoints.Visitor().search}/${this.stringifyQuery(this.currentQuery)}`)
+        .then((response) => {
+          this.results = [];
+          this.results = response.data.results;
+          this.count = response.data.count;
+        });
+      },
     },
   };
 </script>

@@ -18,7 +18,7 @@
       </el-col>
     </el-row>
     <el-row type="flex" class="row-bg">
-      <el-tag v-for="category in categories">{{category.title}}</el-tag>
+      <el-tag v-for="category in categories" :key="category._id">{{category.title}}</el-tag>
     </el-row>
     <el-row type="flex" class="row-bg">
       <span>
@@ -33,9 +33,9 @@
     data() {
       return {
         serviceName: this.service.name,
-        serviceURL: `/service/${this.service._id}`,
+        serviceID: this.service._id,
         businessName: this.service._business.name,
-        businessURL: `/business/${this.service._business._id}`,
+        businessID: this.service._business._id,
         rating: this.service._avgRating,
         categories: this.service.categories,
         shortDescription: this.service.shortDescription,
@@ -43,5 +43,13 @@
       };
     },
     props: ['service'],
+    computed: {
+      serviceURL() {
+        return `/service/${this.serviceID}`;
+      },
+      businessURL() {
+        return `/business/${this.businessID}`;
+      },
+    },
   };
 </script>

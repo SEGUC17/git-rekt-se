@@ -15,7 +15,7 @@ router.get('/', (req, res, next) => {
   const inputQuery = req.query;
   const output = {};
   // Build up query
-  const offset = (inputQuery.offset) ? inputQuery.offset : 0;
+  const offset = (inputQuery.offset) ? inputQuery.offset : 1;
   const mongooseQuery = {
     _deleted: false,
   };
@@ -77,7 +77,7 @@ router.get('/', (req, res, next) => {
           select: 'title',
         }])
         .select('name shortDescription _business _avgRating categories coverImage')
-        .skip(offset * 10)
+        .skip((offset - 1) * 10)
         .limit(10)
         .exec((err, services) => {
           if (err) {
