@@ -1,14 +1,12 @@
 const BASE = 'http://localhost:3000/api/v1';
 
-export const Visitor = () => {
-  return {
-    search: `${BASE}/visitor/search/`,
-    viewService: serviceID => `${BASE}/service/${serviceID}`,
-    relatedService: (serviceID, offset) => `${BASE}/service/category/${serviceID}/${offset}`,
-    relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/offset`,
-    viewBusiness: businessID => `${BASE}/business/${businessID}`,
-  };
-};
+export const Visitor = () => ({
+  search: `${BASE}/visitor/search/`,
+  viewService: serviceID => `${BASE}/service/${serviceID}`,
+  relatedService: (serviceID, offset) => `${BASE}/service/category/${serviceID}/${offset}`,
+  relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/offset`,
+  viewBusiness: businessID => `${BASE}/business/${businessID}`,
+});
 
 export const Client = () => {
   const authBase = `${BASE}/client/auth`;

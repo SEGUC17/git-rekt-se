@@ -55,4 +55,7 @@
     .gr-nav-button {
         margin: 10px;
     }
+    .nav{
+        border-bottom: 1px solid #eee;
+    }
 </style>

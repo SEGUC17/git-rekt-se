@@ -65,6 +65,7 @@ router.get('/:id', (req, res, next) => {
         businessGallery: service._business.gallery,
         businessWorkingHours: service._business.workingHours,
         branches: service.branches,
+        offerings: service.offerings,
         reviews: service.reviews,
         gallery: service.gallery,
       };

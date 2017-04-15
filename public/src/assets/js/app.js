@@ -3,10 +3,13 @@ import VueRouter from 'vue-router';
 import elementUI from 'element-ui';
 import Buefy from 'buefy'
 import axios from 'axios';
+import moment from 'moment';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import router from '../../services/routes.js';
-Window.axios = axios;
+
+window.axios = axios;
+window.moment = moment;
 
 Vue.use(VueRouter);
 Vue.use(elementUI);
