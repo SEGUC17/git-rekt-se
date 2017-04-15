@@ -435,6 +435,14 @@ const businessAddImageValidation = {
   },
 };
 
+const adminReviewValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidReviewID,
+    },
+  },
+};
+
 const businessEditImageValidation = {
   ser_id: {
     isMongoId: {
@@ -541,6 +549,7 @@ const validation = {
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
+  adminReviewValidation,
 };
 
 module.exports = validation;
