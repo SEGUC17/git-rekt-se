@@ -108,8 +108,9 @@
             */
 
             getLocations(ls) {
+                console.log(endpoints.Visitor().locations);
                 axios
-                    .get(endpoints.Search().locations)
+                    .get(endpoints.Visitor().locations)
                     .then((res) => {
                         this.locations = res.data;
                     })
@@ -203,8 +204,9 @@
         margin-top: 2em;
         margin-bottom: 2em;
     }
+    
     .full-width{
         width: 100%;
     }
-}
+
 </style>
