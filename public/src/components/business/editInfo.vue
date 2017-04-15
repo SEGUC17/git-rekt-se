@@ -34,11 +34,11 @@
         <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" type="password"></el-input>
         </el-form-item>
-
-        <el-form-item label="Confirm Password" prop="password">
+  
+        <el-form-item label="Confirm Password" prop="confirmPassword">
           <el-input v-model="form.confirmPassword" type="password"></el-input>
         </el-form-item>
-
+  
         <el-form-item label="Short Description" prop="shortDescription">
           <el-input v-model="form.shortDescription"></el-input>
         </el-form-item>
@@ -68,6 +68,7 @@
   const dummy_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4ZWQyZmYyMzFiNDI0NGI0ODk5ODJhMiIsImlhdCI6MTQ5MjI3NzAwNCwiZXhwIjoxNDkzMTQxMDA0fQ.wKMV7kYbfMbn44j71OOx8VAUShXHfMGcsiR7pvR4WYc';
   export default {
     data() {
+      businessEditInfoValidation.confirmPassword[0].validator = businessEditInfoValidation.confirmPassword[0].validator.bind(this);
       return {
         form: new Form({
           email: '',
@@ -97,6 +98,7 @@
             this.business = response.data.business;
             this.form.email = this.business.email;
             this.form.password = '***************';
+            this.form.confirmPassword = '***************';
             this.form.shortDescription = this.business.shortDescription;
             this.form.name = this.business.name;
             this.phoneNumbers = this.business.phoneNumbers.map((number, index) => ({
@@ -114,6 +116,7 @@
             // POST Here
             this.form.phoneNumbers = this.phoneNumbers.map(el => el.number);
             this.form.password = this.form.password === '***************' ? '' : this.form.password;
+            this.form.confirmPassword = this.form.confirmPassword === '***************' ? '' : this.form.confirmPassword;
             console.log(this.form.data());
             this.success = false;
             this.error = false;
