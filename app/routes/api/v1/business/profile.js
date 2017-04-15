@@ -45,7 +45,7 @@ router.get('/profile', authMiddleWare.businessAuthMiddleware, (req, res, next) =
         });
       }
     })
-    .catch(err => next(err));
+    .catch(next);
 });
 
 /**
@@ -65,6 +65,12 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
       shortDescription: req.body.shortDescription,
       phoneNumbers: req.body.phoneNumbers,
     };
+
+    const search = {
+      _id: req.params.id,
+      _deleted: false,
+    };
+
     let emailChanged = false;
 
 
@@ -76,10 +82,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
     req.getValidationResult()
       .then((result) => {
         if (result.isEmpty()) {
-          Business.findOne({
-              _id: req.params.id,
-              _deleted: false,
-            })
+          Business.findOne(search)
             .exec()
             .then((business) => {
               if (!business) {

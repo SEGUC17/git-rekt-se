@@ -66,6 +66,7 @@
     businessEditInfoValidation
   } from '../../services/validation';
   const dummy_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4ZWQyZmYyMzFiNDI0NGI0ODk5ODJhMiIsImlhdCI6MTQ5MjI3NzAwNCwiZXhwIjoxNDkzMTQxMDA0fQ.wKMV7kYbfMbn44j71OOx8VAUShXHfMGcsiR7pvR4WYc';
+  const dummy_password = '***************';
   export default {
     data() {
       businessEditInfoValidation.confirmPassword[0].validator = businessEditInfoValidation.confirmPassword[0].validator.bind(this);
@@ -97,8 +98,8 @@
           .then((response) => {
             this.business = response.data.business;
             this.form.email = this.business.email;
-            this.form.password = '***************';
-            this.form.confirmPassword = '***************';
+            this.form.password = dummy_password;
+            this.form.confirmPassword = dummy_password;
             this.form.shortDescription = this.business.shortDescription;
             this.form.name = this.business.name;
             this.phoneNumbers = this.business.phoneNumbers.map((number, index) => ({
@@ -113,11 +114,9 @@
       onSubmit() {
         this.$refs.form.validate((valid) => {
           if (valid) {
-            // POST Here
             this.form.phoneNumbers = this.phoneNumbers.map(el => el.number);
-            this.form.password = this.form.password === '***************' ? '' : this.form.password;
-            this.form.confirmPassword = this.form.confirmPassword === '***************' ? '' : this.form.confirmPassword;
-            console.log(this.form.data());
+            this.form.password = this.form.password === dummy_password ? '' : this.form.password;
+            this.form.confirmPassword = this.form.confirmPassword === dummy_password ? '' : this.form.confirmPassword;
             this.success = false;
             this.error = false;
             this.loading = true;
@@ -136,7 +135,6 @@
                 this.success = false;
               });
           } else {
-            // Error Here
             this.error = true;
             this.message = 'Please Input all required fields!'
           }
@@ -145,7 +143,7 @@
       onReset() {
         //Reset Fields to their ORIGINAL form
         this.form.keys.forEach(el => this.form[el] = this.business[el], this);
-        this.form.password = '***************';
+        this.form.password = dummy_password;
         this.phoneNumbers = this.business.phoneNumbers.map((number, index) => ({
           number,
           index,
