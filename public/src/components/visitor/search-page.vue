@@ -13,7 +13,7 @@
           </div>
           <div class="block">
             <span class="search-label">Min. Rating</span>
-            <el-slider v-model="newQuery.rating" :max="10"></el-slider>
+            <el-slider v-model="newQuery.rating" :max="5"></el-slider>
           </div>
           <div class="block">
             <span class="search-label">Price Range</span>
@@ -127,8 +127,8 @@
         return location => ((location.value).toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       },
       performSearch() {
-        this.newQuery.min = Math.min(this.priceRange);
-        this.newQuery.max = Math.max(this.priceRange);
+        this.newQuery.min = Math.min(...this.priceRange);
+        this.newQuery.max = Math.max(...this.priceRange);
         this.currentQuery = this.newQuery;
         Axios.get(`${EndPoints.Visitor().search}/${this.stringifyQuery(this.currentQuery)}`)
         .then((response) => {

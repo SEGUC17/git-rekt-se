@@ -338,7 +338,7 @@ describe('Search Test Suite', () => {
     req
       .query({
         location: 'Tagamo3',
-        rating: 8,
+        rating: 4,
       })
       .expect(200)
       .end((err, res) => {
@@ -346,7 +346,7 @@ describe('Search Test Suite', () => {
           return done(err);
         }
         chai.expect(res.body.count)
-          .to.equal(2);
+          .to.equal(1);
 
         return done();
       });

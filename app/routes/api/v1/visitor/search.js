@@ -24,7 +24,7 @@ router.get('/', (req, res, next) => {
   }
   if (inputQuery.rating) {
     mongooseQuery._avgRating = {
-      $gte: inputQuery.rating,
+      $gte: parseInt(inputQuery.rating, 10),
     };
   }
   // Check if query needs to check the offerings of the service
@@ -37,16 +37,16 @@ router.get('/', (req, res, next) => {
   }
   if (inputQuery.min && inputQuery.max) {
     mongooseQuery.offerings.$elemMatch.price = {
-      $gte: inputQuery.min,
-      $lte: inputQuery.max,
+      $gte: parseInt(inputQuery.min, 10),
+      $lte: parseInt(inputQuery.max, 10),
     };
   } else if (inputQuery.min) {
     mongooseQuery.offerings.$elemMatch.price = {
-      $gte: inputQuery.min,
+      $gte: parseInt(inputQuery.min, 10),
     };
   } else if (inputQuery.max) {
     mongooseQuery.offerings.$elemMatch.price = {
-      $lte: inputQuery.max,
+      $lte: parseInt(inputQuery.max, 10),
     };
   }
   if (inputQuery.location) {
