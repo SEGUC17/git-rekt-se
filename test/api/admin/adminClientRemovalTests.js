@@ -86,25 +86,16 @@ describe('Category CRUD Test Suite', () => {
   it('should not delete a client and return an error message', (done) => {
     req = supertest(app)
       .post('/api/v1/admin/client/delete/4')
-      .expect('Content-Type', /json/)
       .set('Authorization', `JWT ${token}`)
       .send()
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else {
-          Client.count((err3, c) => {
-            if (err3) {
-              done(err3);
-            } else {
-              chai.expect(c)
-                .to.equal(0); // check count just in case
-            }
-          });
-          console.log(res.body);
-          done();
-        }
-      });
+      .expect('Content-Type', /json/)
+      .expect(400, {
+        errors: [{
+          param: 'id',
+          msg: 'Invalid Client ID',
+          value: '4',
+        },
+        ],
+      }, done);
   });
 });
