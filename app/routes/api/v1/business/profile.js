@@ -33,6 +33,7 @@ router.get('/profile', authMiddleWare.businessAuthMiddleware, (req, res, next) =
     email: true,
     shortDescription: true,
     phoneNumbers: true,
+    _id: false,
   };
   Business.findOne(searchID, projection)
     .exec()
@@ -77,9 +78,9 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
       .then((result) => {
         if (result.isEmpty()) {
           Business.findOne({
-            _id: req.params.id,
-            _deleted: false,
-          })
+              _id: req.params.id,
+              _deleted: false,
+            })
             .exec()
             .then((business) => {
               if (!business) {

@@ -6,7 +6,9 @@ import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import router from '../../services/routes.js';
-Window.axios = axios;
+import EditInfo from '../../components/business/editInfo.vue';
+
+window.axios = axios;
 
 Vue.use(VueRouter);
 Vue.use(elementUI);
@@ -18,5 +20,6 @@ new Vue({
   components: {
     'gr-header': header,
     'gr-footer': footer,
+    'edit-info': EditInfo,
   }
 });
