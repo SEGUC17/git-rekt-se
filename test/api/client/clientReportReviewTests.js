@@ -67,12 +67,15 @@ describe('Review Reporting Test Suite', () => {
 
   it('should add a report and return a confirmation message', (done) => {
     const review1 = reviews[0];
+    const reason = {
+      reason: 'Test',
+    };
     new Review(review1)
       .save()
       .then((review2) => {
         req = supertest(app)
           .post(`/api/v1/client/review/report/${review2._id}`)
-          .field('description', 'Test')
+          .send(reason)
           .expect('Content-Type', /json/)
           .set('Authorization', `JWT ${token}`)
           .expect(200)
@@ -80,12 +83,15 @@ describe('Review Reporting Test Suite', () => {
             if (err) {
               done(err);
             } else {
-              console.log(res.body);
-              chai.expect(review2.reports[0].description)
-                .to.equal('Test');
-              chai.expect(res.body.message)
-                .to.equal(Strings.adminSuccess.reviewReported);
-              done();
+              Review.findOne({
+                _id: review2._id,
+              }, (err2, result2) => {
+                chai.expect(result2.reports[0].reason)
+                  .to.equal('Test');
+                chai.expect(res.body.message)
+                  .to.equal('Review reported successfully!');
+                done();
+              });
             }
           });
       })
@@ -95,8 +101,8 @@ describe('Review Reporting Test Suite', () => {
   it('should not add a report and return an error message', (done) => {
     req = supertest(app)
       .post('/api/v1/client/review/report/4')
+      .field('description', 'Test')
       .set('Authorization', `JWT ${token}`)
-      .send()
       .expect('Content-Type', /json/)
       .expect(400, {
         errors: [{

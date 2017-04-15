@@ -28,7 +28,10 @@ router.post('/report/:id', authMiddleWare.clientAuthMiddleware, (req, res, next)
             next(err);
             return;
           }
-          result2.reports.push(req.body.description);
+          const report = ({
+            reason: req.body.reason,
+          });
+          result2.reports.push(report);
           result2.save((err2) => {
             if (err2) {
               return next(err2);

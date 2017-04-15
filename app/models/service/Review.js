@@ -23,8 +23,9 @@ const reviewSchema = mongoose.Schema({
     default: false,
   },
   reports: [{
-    description: {
+    reason: {
       type: String,
+      required: true,
     },
   }],
 });
