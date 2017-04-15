@@ -22,7 +22,7 @@
   
       <h1 class="title has-text-centered">Edit Basic Information</h1>
   
-      <el-form ref="form" :model="form" label-position="left" label-width="120px">
+      <el-form ref="form" :model="form" :rules="rules" label-position="left" label-width="120px">
         <el-form-item label="Name" prop="name">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
@@ -34,7 +34,11 @@
         <el-form-item label="Password" prop="password">
           <el-input v-model="form.password" type="password"></el-input>
         </el-form-item>
-  
+
+        <el-form-item label="Confirm Password" prop="password">
+          <el-input v-model="form.confirmPassword" type="password"></el-input>
+        </el-form-item>
+
         <el-form-item label="Short Description" prop="shortDescription">
           <el-input v-model="form.shortDescription"></el-input>
         </el-form-item>
@@ -58,6 +62,9 @@
   import {
     Business
   } from '../../services/EndPoints';
+  import {
+    businessEditInfoValidation
+  } from '../../services/validation';
   const dummy_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4ZWQyZmYyMzFiNDI0NGI0ODk5ODJhMiIsImlhdCI6MTQ5MjI3NzAwNCwiZXhwIjoxNDkzMTQxMDA0fQ.wKMV7kYbfMbn44j71OOx8VAUShXHfMGcsiR7pvR4WYc';
   export default {
     data() {
@@ -65,10 +72,12 @@
         form: new Form({
           email: '',
           password: '',
+          confirmPassword: '',
           shortDescription: '',
           name: '',
           phoneNumbers: [],
         }),
+        rules: businessEditInfoValidation,
         phoneNumbers: [],
         business: {},
         success: false,
@@ -94,7 +103,10 @@
               number,
               index,
             }));
-          }).catch(err => console.log(err.response.data));
+          }).catch((err) => {
+            this.error = true;
+            this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+          });
       },
       onSubmit() {
         this.$refs.form.validate((valid) => {
