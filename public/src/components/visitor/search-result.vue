@@ -6,13 +6,13 @@
           <router-link :to="serviceURL">{{serviceName}}</router-link>
         </h4>
       </el-col>
-      <el-col :span="8">
+      <el-col :span="6">
         <h6 class="subtitle is-6">
           <router-link :to="businessURL"> by {{businessName}}</router-link>
         </h6>
       </el-col>
-      <el-col :span="8">
-        <el-rate v-model="rating" disabled show-text :max="10" text-color="#ff9900" text-template="{value} points">
+      <el-col :span="10">
+        <el-rate v-model="rating" disabled show-text :max="10" text-template="{value} points">
         </el-rate>
       </el-col>
     </el-row>
