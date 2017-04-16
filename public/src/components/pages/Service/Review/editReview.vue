@@ -1,7 +1,5 @@
 <template>
 <el-dialog title="Edit Review" v-model="dialogVisible">
-  <el-alert title="Success" type="success" :description="successMessage" show-icon>
-  </el-alert>
   <el-alert title="Error" type="error" show-icon v-for="error in errors" :description="error"></el-alert>
   <el-form ref="editReview" :model="review" :rules="rules" label-width="120px">
     <el-form-item label: "Rating" prop="rating">
@@ -33,8 +31,6 @@
           description: this.oldReview.description,
         },
         rules: ReviewRules,
-        sucess: false,
-        successMessage: '',
         errors: [],
       };
     },
@@ -47,9 +43,7 @@
           if (valid) {
             Axios.post(Service.editReview(this.serviceID, this.reviewID), this.review)
               .then((response) => {
-                this.success = true;
-                this.successMessage = response.message;
-                this.$emit('edited');
+                this.$emit('edited', response.message);
               })
               .catch((err) => {
                 this.errors = err.response.data.errors;
