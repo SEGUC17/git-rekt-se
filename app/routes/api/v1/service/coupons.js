@@ -38,7 +38,6 @@ router.get('/:id/coupons', (req, res, next) => { // BusinessAuth,
             .exec()
             .then((coupons) => {
               if (coupons) {
-                console.log(coupons);
                 res.json(coupons);
               }
             })
@@ -56,11 +55,14 @@ router.get('/:id/coupons', (req, res, next) => { // BusinessAuth,
  * Add Coupon to a service.
  */
 
-router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
+router.post('/:id/coupons/add', (req, res, next) => { // BusinessAuth
+  console.log('entered add');
+  console.log(req.body);
   req.check(validationSchemas.couponAddValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
+        console.log('validated');
         Service.findOne({
           _id: req.params.id,
           _deleted: false,
@@ -68,35 +70,37 @@ router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
           .exec()
           .then((service) => {
             if (service) {
+              console.log('found a service');
               // check whether logged in business matches the service provider
-              if (`${service._business}` === `${req.user._id}`) {
+              // if (`${service._business}` === `${req.user._id}`) {
                 // check that the given expiration date is not in the past nor before the start date
-                if (new Date(req.body.endDate)
+              if (new Date(req.body.endDate)
                   .getTime() < Date.now() ||
                   new Date(req.body.endDate)
                   .getTime() < new Date(req.body.startDate)
                   .getTime()) {
-                  next(Strings.couponValidationError.invalidEndDate);
-                } else {
-                  const coupon = ({
-                    _service: req.params.id,
-                    startDate: new Date(req.body.startDate),
-                    endDate: new Date(req.body.endDate),
-                    code: req.body.code,
-                    discount: req.body.discount,
-                  });
-                  new Coupon(coupon)
+                next(Strings.couponValidationError.invalidEndDate);
+              } else {
+                const coupon = ({
+                  _service: req.params.id,
+                  startDate: new Date(req.body.startDate),
+                  endDate: new Date(req.body.endDate),
+                  code: req.body.code,
+                  discount: req.body.discount,
+                });
+                new Coupon(coupon)
                     .save()
                     .then(() => {
+                      console.log('saved coupon');
                       res.json({
                         message: Strings.serviceSuccess.couponAdd,
                       });
                     })
                     .catch(saveErr => next(saveErr));
-                }
-              } else {
-                next(Strings.serviceFailure.notYourService);
               }
+              // } else {
+              //   next(Strings.serviceFailure.notYourService);
+              // }
             } else {
               next(Strings.serviceFailure.invalidService);
             }
@@ -114,7 +118,7 @@ router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
  * Delete Coupon from a service.
  */
 
-router.post('/:ser_id/coupons/delete/:coup_id', BusinessAuth, (req, res, next) => {
+router.post('/:ser_id/coupons/delete/:coup_id', (req, res, next) => { // BusinessAuth
   req.check(validationSchemas.couponDeleteValidation);
   req.getValidationResult()
     .then((result) => {
@@ -126,12 +130,12 @@ router.post('/:ser_id/coupons/delete/:coup_id', BusinessAuth, (req, res, next) =
           .exec()
           .then((service) => {
             if (service) {
-              if (`${service._business}` === `${req.user._id}`) {
+              // if (`${service._business}` === `${req.user._id}`) {
                 // check whether logged in business matches the service provider
-                Coupon.findOne({
-                  _id: req.params.coup_id,
-                  _deleted: false,
-                })
+              Coupon.findOne({
+                _id: req.params.coup_id,
+                _deleted: false,
+              })
                   .exec()
                   .then((coupon) => {
                     if (!coupon) {
@@ -148,12 +152,12 @@ router.post('/:ser_id/coupons/delete/:coup_id', BusinessAuth, (req, res, next) =
                     }
                   })
                   .catch(err => next(err));
-              } else {
-                next(Strings.serviceFailure.notYourService);
-              }
             } else {
-              next(Strings.serviceFailure.invalidService);
+              next(Strings.serviceFailure.notYourService);
             }
+            // } else {
+            //   next(Strings.serviceFailure.invalidService);
+            // }
           })
           .catch(err => next(err));
       } else {

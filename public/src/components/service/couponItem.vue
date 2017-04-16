@@ -29,7 +29,7 @@
                </span>
                 </h4>
             </el-col>
-            <a class="button is-danger is-outlined" href=deleteURL()>
+            <a class="button is-danger is-outlined" @click="deleteCoupon">
                 <span>Delete</span>
                 <span class="icon is-small">
           <i class="fa fa-times"></i>
@@ -40,7 +40,9 @@
 </template>
 
 <script>
+import EndPoints from '../../services/EndPoints';
     export default {
+        
         data() {
     
             return {
@@ -54,10 +56,15 @@
         },
         props: ['coupon'],
     
-        computed: {
-            deleteURL() {
-                return `/service/${this.serviceID}/coupons/delete/${this.couponID}`;
+        methods: {
+            deleteCoupon() {
+                axios.post(EndPoints.Service().deleteCoupon('58f36821c82d1a37e868866b',this.couponID))
+              .then(() => {
+                  this.$emit('deleted');
+                  alert('Coupon Deleted!');
+                })
+              .catch(err=> console.log(err))
             },
-        },
+        }
     };
 </script>

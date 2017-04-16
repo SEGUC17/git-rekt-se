@@ -82,6 +82,7 @@ export const Service = () => {
 
     viewCoupons: serviceID => `${serviceBase}/${serviceID}/coupons`,
     addCoupon: serviceID => `${serviceBase}/${serviceID}/coupons/add`,
+    deleteCoupon: (serviceID, couponID) => `${serviceBase}/${serviceID}/coupons/delete/${couponID}`,
   };
 };
 
