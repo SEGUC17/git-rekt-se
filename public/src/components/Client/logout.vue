@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div v-show="this.errors.length > 0">
-            <div class="error" v-for="error in this.errors">
+        <div v-show="errors.length > 0">
+            <div class="error" v-for="error in errors">
                 <el-alert :title="error" type="error" show-icon>
                 </el-alert>
             </div>
