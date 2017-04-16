@@ -13,7 +13,8 @@ export default {
   },
   login(data, callBack) {
     axios
-      .post(Business().login, data)
+      .post(Business()
+        .login, data)
       .then((response) => {
         this.user.authenticated = true;
         localStorage.setItem('business_token', response.data.token);
@@ -26,19 +27,22 @@ export default {
       });
   },
   logout(callBack) {
-    axios.post(Business().logout, null, {
-      headers: {
-        Authorization: this.getJWTtoken(),
-      },
-    }).then((response) => {
-      this.user.authenticated = false;
-      localStorage.removeItem('business_token', response.data.token);
-      localStorage.removeItem('business_email', response.data.email);
-      localStorage.removeItem('business_id', response.data.id);
-      callBack(null, response.data);
-    }).catch((err) => {
-      callBack(err.response.data, null);
-    });
+    axios.post(Business()
+        .logout, null, {
+          headers: {
+            Authorization: this.getJWTtoken(),
+          },
+        })
+      .then((response) => {
+        this.user.authenticated = false;
+        localStorage.removeItem(response.data.token);
+        localStorage.removeItem(response.data.email);
+        localStorage.removeItem(response.data.id);
+        return callBack(null, response.data);
+      })
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
   },
   getJWTtoken() {
     return `JWT ${localStorage.getItem('business_token')}`;

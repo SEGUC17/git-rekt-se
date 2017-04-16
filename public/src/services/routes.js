@@ -3,7 +3,6 @@ import Home from '../components/pages/Index/home.vue';
 import clientLogin from '../components/Client/login.vue';
 import clientLogout from '../components/Client/logout.vue';
 import businessLogin from '../components/Business/login.vue';
-import businessLogout from '../components/Business/logout.vue';
 
 
 const routes = [{
@@ -20,7 +19,6 @@ const routes = [{
   component: businessLogin,
 }, {
   path: '/business/logout',
-  component: businessLogout,
 }];
 
 const router = new VueRouter({
