@@ -6,7 +6,7 @@
         <el-alert @close="success = false" title="Success" :description="message" type="success" show-icon></el-alert>
       </div>
   
-      <div v-show="!form.errors.isEmpty()">
+      <div v-show="!form.errors.isEmpty() || error">
         <div v-show="error">
           <el-alert @close="error = false" title="Error" type="error" :description="message" show-icon></el-alert>
         </div>
@@ -81,7 +81,7 @@
   import {
     businessEditInfoValidation
   } from '../../services/validation';
-  const dummy_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4ZWQyZmYyMzFiNDI0NGI0ODk5ODJhMiIsImlhdCI6MTQ5MjI3NzAwNCwiZXhwIjoxNDkzMTQxMDA0fQ.wKMV7kYbfMbn44j71OOx8VAUShXHfMGcsiR7pvR4WYc';
+  const dummy_token = '';
   const dummy_password = '***************';
   export default {
     data() {
