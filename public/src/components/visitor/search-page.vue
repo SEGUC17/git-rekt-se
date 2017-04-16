@@ -2,14 +2,12 @@
   <div class="main-cnt">
     <section class="gr-content hero is-medium is-bold has-text-centered">
       <div class="hero-body">
-        <div class="container">
-          <h1 class="extra-large white">
-            Search For Services
-          </h1>
-          <h2 class="subtitle white">
-            Find services that can help you
-          </h2>
-        </div>
+        <h1 class="extra-large white">
+          Search For Services
+        </h1>
+        <h2 class="subtitle white">
+          Find services that can help you
+        </h2>
       </div>
     </section>
     <div class="container">
@@ -195,13 +193,6 @@
 
   .gr-content{
     background: linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,0)),url('http://localhost:3000/assets/imgs/search/search_BG.JPG') 0 0/cover
-  }
-  
-  .container,
-  .page-container {
-    width: 1140px;
-    padding: 0 30px;
-    margin: 10px auto;
   }
   
   .el-pagination {
