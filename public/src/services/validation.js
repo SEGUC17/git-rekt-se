@@ -33,6 +33,8 @@ export const businessEditInfoValidation = {
     validator(rule, value, callBack) {
       if (value === '***************') {
         callBack();
+      } else if (value.length === 0 && this.form.password.length === 0) {
+        callBack();
       } else if (value === this.form.password) {
         callBack();
       } else {

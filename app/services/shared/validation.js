@@ -510,6 +510,23 @@ const businessUpdateValidation = {
       errorMessage: bussinessValidationErrors.emptyMobile,
     },
   },
+  password: {
+    isPassword: {
+      errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
+};
+
+/**
+ * Checks the given password. If Empty or Can be generated
+ * from the regex then it passes.
+ * @param {String} password
+ */
+const validatePassword = (password) => {
+  if (password.length === 0) {
+    return true;
+  }
+  return /^(?=.*\d).{8,15}$/.test(password);
 };
 
 const validation = {
@@ -538,6 +555,7 @@ const validation = {
   updateReviewValidation,
   deleteReviewValidation,
   businessUpdateValidation,
+  validatePassword,
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,

@@ -43,7 +43,7 @@
           <el-input v-model="form.shortDescription"></el-input>
         </el-form-item>
   
-        <el-form-item v-for="el in phoneNumbers" :key="el.key" label="Phone Numbers" prop="phoneNumber">
+        <el-form-item v-for="el in phoneNumbers" :key="el.key" label="Phone Numbers">
           <el-input v-model="el.number"></el-input>
         </el-form-item>
   
@@ -114,7 +114,7 @@
       onSubmit() {
         this.$refs.form.validate((valid) => {
           if (valid) {
-            this.form.phoneNumbers = this.phoneNumbers.map(el => el.number);
+            this.form.phoneNumbers = this.phoneNumbers.filter(el => el.number.length > 0).map(el => el.number);
             this.form.password = this.form.password === dummy_password ? '' : this.form.password;
             this.form.confirmPassword = this.form.confirmPassword === dummy_password ? '' : this.form.confirmPassword;
             this.success = false;
@@ -144,6 +144,7 @@
         //Reset Fields to their ORIGINAL form
         this.form.keys.forEach(el => this.form[el] = this.business[el], this);
         this.form.password = dummy_password;
+        this.form.confirmPassword = dummy_password;
         this.phoneNumbers = this.business.phoneNumbers.map((number, index) => ({
           number,
           index,

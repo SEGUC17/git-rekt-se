@@ -4,7 +4,8 @@ const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
 const Business = require('../../../../models/business/Business');
-const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
+const customPasswordValidator = require('../../../../services/shared/validation')
+  .validatePassword;
 const Strings = require('../../../../services/shared/Strings');
 const authMiddleWare = require('../../../../services/shared/jwtConfig');
 const errorHandler = require('../../../../services/shared/errorHandler');
@@ -17,7 +18,11 @@ const router = express.Router();
  */
 
 router.use(bodyParser.json());
-router.use(expressValidator({}));
+router.use(expressValidator({
+  customValidators: {
+    isPassword: customPasswordValidator,
+  },
+}));
 
 /**
  * Get Business
