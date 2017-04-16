@@ -28,7 +28,7 @@
                 currid:'',
             }
         },
-        props: [id'];
+        props: ['id'];
         mounted() {
                 this.names = this.getClients();
         },
