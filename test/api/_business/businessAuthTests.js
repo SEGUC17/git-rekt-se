@@ -338,9 +338,9 @@ describe('Business Logout API', () => {
           });
   });
 
-  // after((done) => {
-  //   Business.collection.drop(() => {
-  //     Business.ensureIndexes(done);
-  //   });
-  // });
+  after((done) => {
+    Business.collection.drop(() => {
+      Business.ensureIndexes(done);
+    });
+  });
 });
