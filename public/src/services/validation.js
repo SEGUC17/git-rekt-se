@@ -1,7 +1,3 @@
-export default {
-
-};
-
 export const clientLoginRules = {
   email: [{
     required: true,
@@ -13,4 +9,18 @@ export const clientLoginRules = {
     message: 'Please enter your password',
     trigger: 'blur',
   }],
+};
+
+export const reviewRules = {
+  rating: [{
+    required: true,
+    min: 0,
+    max: 5,
+    message: 'Please enter a rating',
+    trigger: 'blur',
+  }],
+};
+
+export default {
+  reviewRules,
 };
