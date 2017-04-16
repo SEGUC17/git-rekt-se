@@ -27,12 +27,14 @@
   import serviceInfoHeader from './serviceInfoHeader.vue';
   import checkoutStep1 from './checkoutStep1.vue';
   import checkoutStep2 from './checkoutStep2.vue';
+  import checkoutStep3 from './checkoutStep3.vue';
 
   export default {
     components: {
       serviceInfoHeader,
       checkoutStep1,
       checkoutStep2,
+      checkoutStep3,
     },
 
     data() {
