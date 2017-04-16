@@ -74,16 +74,14 @@ describe('Category CRUD Test Suite', () => {
                   address: '16th Avenue',
                 };
                 new Branch(branch)
-                  .save();
-                const newBranchData = {
-                  branch: {
-                    location: locations[0],
-                    address: '16th Avenue',
-                  },
-                };
-                bus.branches = newBranchData;
-                bus.save();
-                console.log(bus);
+                  .save()
+                  .then((branch2) => {
+                    bus.branches.push(branch2);
+                    bus.save()
+                      .then((bus3) => {})
+                      .catch(done);
+                  })
+                  .catch(done);
                 req = supertest(app)
                   .post(`/api/v1/admin/business/delete/${bus._id}`)
                   .set('Authorization', `JWT ${token}`)
@@ -101,7 +99,16 @@ describe('Category CRUD Test Suite', () => {
                           if (Err4) {
                             done(Err4);
                           } else {
-                            console.log(bus2);
+                            Branch.findOne({
+                              location: locations[0],
+                            })
+                              .exec((err9, bran3) => {
+                                if (err9) {
+                                  done(err9);
+                                }
+                                chai.expect(bran3._deleted);
+                              });
+                            chai.expect(bus2._deleted);
                             chai.expect(result2.body.message)
                               .to.equal(Strings.adminSuccess.businessDeleted);
                             done();
