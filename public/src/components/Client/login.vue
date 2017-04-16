@@ -39,9 +39,7 @@
 <script>
     import clientAuth from '../../services/clientAuth';
     import Form from '../../services/Form';
-    import {
-        clientLoginRules
-    } from '../../services/validation';
+    import { clientLoginRules } from '../../services/validation';
     
     export default {
         data() {

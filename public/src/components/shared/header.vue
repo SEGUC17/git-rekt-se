@@ -8,12 +8,6 @@
                 <router-link to="/#" class="logo nav-item"><img src="assets/imgs/logo.svg" alt="logo"></router-link>
             </div>
     
-            <span class="nav-toggle">
-                                <span></span>
-            <span></span>
-            <span></span>
-            </span>
-    
             <!-- Navigation bar Center -->
             <div class="nav-center nav-menu">
                 <router-link to="/#" class="nav-item">Home</router-link>
@@ -50,7 +44,7 @@
 </template>
 
 <script>
-    import clientAuth from '../../services/clientAuth'
+  import clientAuth from '../../services/clientAuth';
     
     export default {
         data() {
@@ -67,16 +61,18 @@
                     clientAuth.logout((responseErrs, response) => {
                         let message;
                         if (responseErrs) {
-                            message = responseErrors.errors[0];
+                            message = responseErrs.errors[0];
                         } else {
                             message = response.message;
                         }
     
                         this.$toast.open({
-                            message: response.message,
+                            message,
                             type: 'is-primary',
                             position: 'bottom',
                         });
+
+                        this.$router.push('/');
                     });
                 }
             },

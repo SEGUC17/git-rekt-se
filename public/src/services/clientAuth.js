@@ -13,6 +13,9 @@ export default {
       return localStorage.getItem('client_email');
     },
   },
+  getJWTtoken() {
+    return `JWT ${localStorage.getItem('client_token')}`;
+  },
   login(data, callBack) {
     axios
       .post(Client()
@@ -30,6 +33,7 @@ export default {
   },
   logout(callBack) {
     this.user.authenticated = false;
+    const currentToken = this.getJWTtoken();
 
     localStorage.removeItem('client_token');
     localStorage.removeItem('client_email');
@@ -38,7 +42,7 @@ export default {
     axios.post(Client()
         .logout, null, {
           headers: {
-            Authorization: this.getJWTtoken(),
+            Authorization: currentToken,
           },
         })
       .then((response) => {
@@ -47,9 +51,6 @@ export default {
       .catch((err) => {
         callBack(err.response.data, null);
       });
-  },
-  getJWTtoken() {
-    return `JWT ${localStorage.getItem('client_token')}`;
   },
   refreshAuth() {
     if (localStorage.getItem('client_token')) {

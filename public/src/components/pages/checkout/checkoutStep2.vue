@@ -98,6 +98,7 @@
 <script>
   import moment from 'moment';
   import axios from 'axios';
+  import clientAuth from '../../../services/clientAuth';
 
   import {Service} from '../../../services/EndPoints';
 
@@ -171,7 +172,11 @@
             .post(url, {
               code: this.coupon,
               serviceId: this.$route.params.ser_id,
-            })
+            },{
+              headers: {
+                  Authorization : clientAuth.getJWTtoken(),
+              }
+          })
             .then((data) => {
               this.form.coupon = data.data;
               this.coupon = data.data.code;
