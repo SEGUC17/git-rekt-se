@@ -8,7 +8,8 @@ import footer from '../../components/shared/footer.vue';
 import clientLogin from '../../components/Client/login.vue';
 import clientLogout from '../../components/Client/logout.vue';
 import router from '../../services/routes.js';
-Window.axios = axios;
+
+window.axios = axios;
 
 Vue.use(VueRouter);
 Vue.use(elementUI);

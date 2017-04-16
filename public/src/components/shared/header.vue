@@ -1,58 +1,49 @@
 <template>
     <header>
         <nav class="nav">
-    
+
             <!-- Navigation bar Center -->
-    
+
             <div class="nav-left">
-                <a class="nav-item">
-                    <img src="assets/imgs/logo.svg" alt="Bulma logo">
-                </a>
+                <router-link to="/#" class="nav-item"><img src="assets/imgs/logo.svg" alt="Bulma logo"></router-link>
             </div>
-    
+
             <span class="nav-toggle">
-                            <span></span>
-            <span></span>
-            <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
             </span>
-    
+
             <!-- Navigation bar Center -->
             <div class="nav-center nav-menu">
-                <router-link to="/" class="nav-item">Home</router-link>
+                <router-link to="/#" class="nav-item">Home</router-link>
                 <router-link to="/about" class="nav-item">About Us</router-link>
                 <router-link to="/categories" class="nav-item">Categories</router-link>
                 <router-link to="/contact" class="nav-item">Contact</router-link>
             </div>
-    
+
             <!-- Navigation bar Right -->
             <div class="nav-right nav-menu">
-                <a class="button is-default gr-nav-button" v-if="!user.authenticated">
+                <a class="button is-default gr-nav-button" v-if:"!user.authenticated">
                     <span class="icon">
-                                        <i class="fa fa-user"></i>
-                                    </span>
-                    <span>Signup</span>
+                            <i class="fa fa-user"></i>
+                        </span>
+                    <router-link to="/signup" class="nav-item">Signup</router-link>
                 </a>
-    
-                <a class="button is-danger gr-nav-button" v-if="!user.authenticated">
+
+                <a class="button is-danger gr-nav-button" v-if:"!user.authenticated">
                     <span class="icon">
-                                        <i class="fa fa-sign-in"></i>
-                                    </span>
-                    <span>
-                                <router-link to="/client/login">
-                                    Login
-                                </router-link>
-                            </span>
+                            <i class="fa fa-sign-in"></i>
+                        </span>
+                    <router-link to="/client/login" class="nav-item no-link">Login</router-link>
                 </a>
-    
-                <a class="button is-danger gr-nav-button" v-if="user.authenticated">
+
+                <a class="button is-danger gr-nav-button" v-if:"user.authenticated">
                     <span class="icon">
-                        <i class="fa fa-logout"></i>
-                    </span>
-                    <span> <router-link to="/client/logout">
-                                    Logout
-                                </router-link></span>
+                            <i class="fa fa-sign-out"></i>
+                        </span>
+                    <router-link to="/client/logout" class="nav-item no-link">Logout</router-link>
                 </a>
-    
             </div>
         </nav>
     </header>
@@ -74,5 +65,9 @@
 <style>
     .gr-nav-button {
         margin: 10px;
+    }
+
+    .no-link {
+        color: white !important;
     }
 </style>

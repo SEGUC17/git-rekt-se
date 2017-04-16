@@ -1,11 +1,12 @@
 import VueRouter from 'vue-router';
-import About from '../components/pages/about.vue';
+import Home from '../components/pages/Index/home.vue';
 import clientLogin from '../components/Client/login.vue';
 import clientLogout from '../components/Client/logout.vue';
 
+
 const routes = [{
-  path: '/about',
-  component: About,
+  path: '/',
+  component: Home,
 }, {
   path: '/client/login',
   component: clientLogin,
@@ -16,6 +17,7 @@ const routes = [{
 
 const router = new VueRouter({
   routes,
+  linkActiveClass: 'is-active',
 });
 
 export default router;

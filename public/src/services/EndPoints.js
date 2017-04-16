@@ -5,6 +5,7 @@ export const Visitor = () => ({
   viewService: serviceID => `${BASE}/service/${serviceID}`,
   relatedService: (serviceID, offset) => `${BASE}/service/category/${serviceID}/${offset}`,
   relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/${offset}`,
+  locations: `${BASE}/visitor/search/locations`,
   viewBusiness: businessID => `${BASE}/business/${businessID}`,
 });
 
