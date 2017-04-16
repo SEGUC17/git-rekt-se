@@ -9,7 +9,7 @@
             </el-dialog>
               
     
-    <el-button class="button is-danger" style="float: right;"@click="deleteclicked(client.label)" >Delete &nbsp; <span class="icon">
+    <el-button class="button is-danger" style="float: right;"@click="deleteclicked(id)" >Delete &nbsp; <span class="icon">
                             <i class="fa fa-trash-o"></i>
                         </span></el-button>
            
@@ -27,19 +27,22 @@
                 errors: [],
                 sure:false,
                 currname:'',
+                currid:'',
             }
         },
+        props: ['name','id'];
         mounted() {
                 this.names = this.getClients();
         },
         methods: {
 
-      deleteclicked(reviewid) {
-          console.log(reviewid);
-          this.currname=reviewid;
+      deleteclicked(id) {
+          console.log(currname);
+          this.currname=name;
+          this.currid =id;
           this.sure =true;
         // axios
-        //     .get(Client().deleteclient/reviewid)
+        //     .get(Client().deleteclient/currid)
         //     .then((res) => {
         //         console.log(res);
         //       this.clients = res.data;
@@ -47,11 +50,11 @@
         //     .catch(() => {
         //       this.clients = [];
         //     });
-      }, confirmeddeletion(reviewid) {
-          console.log(reviewid);
+      }, confirmeddeletion(id) {
+          console.log(id);
           
         // axios
-        //     .get(Client().reportReview/reviewid)
+        //     .get(Client().reportReview/currid)
         //     .then((res) => {
         //         console.log(res);
         //       this.clients = res.data;
