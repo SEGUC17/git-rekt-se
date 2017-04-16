@@ -9,4 +9,10 @@ export default {
       resend: `${authBase}/confirmation/send`,
     };
   },
+  Service() {
+    return {
+      coupons: serviceID => `${BASE}/service/${serviceID}/coupons`,
+      addCoupon: serviceID => `${BASE}/service/${serviceID}/coupons/add`,
+    };
+  },
 };

@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router';
 import About from '../components/pages/about.vue';
 import Sample from '../components/sample.vue';
-import Coupon from '../components/service/addCoupon.vue';
+import Coupon from '../components/service/couponPage.vue';
 
 const routes = [{
   path: '/about',
@@ -12,7 +12,7 @@ const routes = [{
   component: Sample,
 },
 {
-  path: '/coupons/add',
+  path: '/coupons',
   component: Coupon,
 }];
 

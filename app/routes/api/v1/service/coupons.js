@@ -19,6 +19,40 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
+ * view service coupons.
+ */
+router.get('/:id/coupons', (req, res, next) => { // BusinessAuth,
+  Service.findOne({
+    _id: req.params.id,
+    _deleted: false,
+  })
+    .exec()
+    .then((service) => {
+      if (service) {
+        // check whether logged in business matches the service provider
+        // if (`${service._business}` === `${req.user._id}`) {
+        Coupon.find({
+          _service: req.params.id,
+          _deleted: false,
+        })
+            .exec()
+            .then((coupons) => {
+              if (coupons) {
+                console.log(coupons);
+                res.json(coupons);
+              }
+            })
+            .catch(err => next(err));
+        // } else {
+        //   next(Strings.serviceFailure.notYourService);
+        // }
+      } else {
+        next(Strings.serviceFailure.invalidService);
+      }
+    })
+    .catch(err => next(err));
+});
+/**
  * Add Coupon to a service.
  */
 
