@@ -1,7 +1,6 @@
 <template>
     <header>
         <nav class="nav">
-<<<<<<< HEAD
     
             <!-- Navigation bar Center -->
     
@@ -10,9 +9,6 @@
                     <img src="assets/imgs/logo.svg" alt="Bulma logo">
                 </a>
             </div>
-            
-=======
-
             <!-- Navigation bar Center -->
 
             <div class="nav-left">
