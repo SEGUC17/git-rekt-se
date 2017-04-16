@@ -17,7 +17,6 @@
             </div>
     
     
-    
             <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top" class="demo-ruleForm">
                 <el-form-item label="Email" prop="email">
                     <el-input v-model="form.email" placeholder="Email"></el-input>

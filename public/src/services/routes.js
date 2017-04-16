@@ -15,7 +15,7 @@ const routes = [{
   path: '/client/logout',
   component: clientLogout,
 }, {
-  path: '/business/logout',
+  path: '/business/login',
   component: businessLogin,
 }];
 
