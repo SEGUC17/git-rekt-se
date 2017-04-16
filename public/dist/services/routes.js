@@ -8504,6 +8504,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8515,7 +8522,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             errors: [],
             clients: [],
             sure: false,
-            currname: ''
+            currname: '',
+            dialogVisible: false
         };
     },
     mounted: function mounted() {
@@ -8643,7 +8651,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.sure),
       expression: "sure"
     }]
-  }, [_vm._v("\n            are you sure you want to delete " + _vm._s(_vm.currname) + "\n        ")]), _vm._v(" "), _c('div', {
+  }, [_c('el-dialog', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.sure),
+      expression: "sure"
+    }],
+    attrs: {
+      "title": "Confirmation",
+      "size": "tiny",
+      "show-close": "false"
+    }
+  }, [_c('div', [_vm._v("Are you sure you want to delete " + _vm._s(_vm.currname))]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    attrs: {
+      "show-close": "false"
+    },
+    slot: "footer"
+  }, [_c('el-button', {
+    staticClass: "button is-warning",
+    on: {
+      "click": function($event) {
+        _vm.sure = false
+      }
+    }
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c('el-button', {
+    staticClass: "button is-danger",
+    on: {
+      "click": function($event) {
+        _vm.sure = false
+      }
+    }
+  }, [_vm._v("Confirm")])], 1)])], 1), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",

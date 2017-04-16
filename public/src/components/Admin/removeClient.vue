@@ -12,7 +12,14 @@
             </div>
 
              <div v-show="sure">
-                are you sure you want to delete {{currname}}
+             <el-dialog title="Confirmation" v-show="sure" size="tiny" show-close=false>
+                <div>Are you sure you want to delete {{currname}}</div>
+                 <span slot="footer" class="dialog-footer" show-close=false>
+                    <el-button class="button is-warning"@click="sure = false">Cancel</el-button>
+                    <el-button class="button is-danger" @click="sure = false">Confirm</el-button>
+                 </span>
+            </el-dialog>
+              
             </div>
     
             <div v-show="logged_in">
@@ -46,6 +53,7 @@
                 clients:[],
                 sure:false,
                 currname:'',
+                dialogVisible: false,
             }
         },
         mounted() {
