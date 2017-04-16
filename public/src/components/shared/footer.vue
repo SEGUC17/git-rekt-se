@@ -48,17 +48,29 @@
         line-height: 32px;
         font-size: 16px;
         text-align: center;
-    }   
-    .icon-link{
-        border: 1px solid rgba(0, 0, 0, 0.4);
-        padding-top:15px !important;    
     }
-    .right-footer2{
+    
+    .icon-link {
+        border: 1px solid rgba(0, 0, 0, 0.4);
+        padding-top: 15px !important;
+    }
+    
+    .right-footer2 {
         text-align: right;
     }
-
-    .left-footer2{
-        padding-left:30px;
+    
+    .left-footer2 {
+        padding-left: 30px;
         text-align: left;
+    }
+    
+    @media screen and (max-width: 999px) {
+        .right-footer2 {
+            text-align: center;
+        }
+        .left-footer2{
+            text-align: center;
+            padding-left: 0;
+        }
     }
 </style>
