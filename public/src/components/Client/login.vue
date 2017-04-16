@@ -56,6 +56,12 @@
                 errors: [],
             }
         },
+        mounted() {
+            clientAuth.refreshAuth();
+            if(clientAuth.user.authenticated) {
+                this.$router.push('/');
+            }
+        },
         methods: {
             submitForm(formName) {
                 this.errors = [];
@@ -74,8 +80,8 @@
                                 this.logged_in = true;
                                 this.loginSuccess = response.message;
                                 setTimeout(() => {
-                                    this.$router.push('/')
-                                }, 500);
+                                    this.$router.push('/');
+                                }, 1000);
                             }
                         });
                     } else {

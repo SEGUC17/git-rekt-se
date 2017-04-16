@@ -43,4 +43,11 @@ export default {
   getJWTtoken() {
     return `JWT ${localStorage.getItem('client_token')}`;
   },
+  refreshAuth() {
+    if (localStorage.getItem('client_token')) {
+      this.user.authenticated = true;
+    } else {
+      this.user.authenticated = false;
+    }
+  },
 };

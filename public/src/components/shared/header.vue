@@ -35,14 +35,14 @@
                     <span class="icon">
                             <i class="fa fa-sign-in"></i>
                         </span>
-                    <router-link to="/client/login" class="nav-item no-link">Login</router-link>
+                    <router-link to="/login" class="nav-item no-link">Login</router-link>
                 </a>
 
                 <a class="button is-danger gr-nav-button" v-if="user.authenticated">
                     <span class="icon">
                             <i class="fa fa-sign-out"></i>
                         </span>
-                    <router-link to="/client/logout" class="nav-item no-link">Logout</router-link>
+                    <router-link to="/logout" class="nav-item no-link">Logout</router-link>
                 </a>
             </div>
         </nav>
@@ -57,8 +57,9 @@
                 user: auth.user
             }
         },
-    
-        methods: {}
+        mounted() {
+            auth.refreshAuth();
+        }
     };
 </script>
 
