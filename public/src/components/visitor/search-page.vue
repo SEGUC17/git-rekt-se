@@ -158,7 +158,7 @@
         this.execQuery();
       },
       execQuery() {
-        Axios.get(`${Visitor().search}/${this.stringifyQuery(this.currentQuery)}`)
+        Axios.get(`${Visitor().search}${this.stringifyQuery(this.currentQuery)}`)
           .then((response) => {
             this.noResults = false;
             this.results = response.data.results;
