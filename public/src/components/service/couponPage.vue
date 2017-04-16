@@ -121,8 +121,7 @@
       submitForm(myForm) {
         this.$refs[myForm].validate((valid) => {
           if (valid) {
-            axios.post(EndPoints.Service().addCoupons('58f36821c82d1a37e868866b'))
-              .send(couponForm)
+            axios.post(EndPoints.Service().addCoupons('58f36821c82d1a37e868866b'),couponForm)
               .catch(err => console.log(err));
             alert('submit!');
           } else {
@@ -136,7 +135,7 @@
       }
     },
     mounted() { // this.$router.params.id
-      axios.get(EndPoints.Service().coupons('58f36821c82d1a37e868866b'))
+      axios.get(EndPoints.Service().viewCoupons('58f36821c82d1a37e868866b'))
         .then((res) => {
           this.coupons = res.data;
         })
