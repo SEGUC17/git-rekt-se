@@ -3741,7 +3741,7 @@ var routes = [{
   path: '/about',
   component: __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue___default.a
 }, {
-  path: '/business/signup',
+  path: '/business/unverified/signup',
   component: __WEBPACK_IMPORTED_MODULE_2__components_Business_UnverifiedSignup_vue___default.a
 }];
 
@@ -4628,6 +4628,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -4677,7 +4689,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 name: '',
                 email: '',
                 shortDescription: '',
-                mobile: ''
+                mobile: '',
+                success: false,
+                fail: false
             }),
             rules2: {
                 name: [{
@@ -4696,9 +4710,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }],
                 mobile: [{
                     validator: checkPhoneNumber,
-                    trigger: 'blur',
-                    matches: {
-                        options: [/^01[0-2]{1}[0-9]{8}/] }
+                    trigger: 'blur'
                 }]
             }
         };
@@ -4712,8 +4724,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (valid) {
                     _this.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Business().unverfiedSignup).then(function () {
                         //TODO: add message
+                        _this.success = true;
                     }).catch(function (err) {
-                        return console.log(err);
+                        _this.fail = true;
                     });
                 } else {
                     console.log('error submit!!');
@@ -7241,6 +7254,10 @@ module.exports = Array.isArray || function (arr) {
 /* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+/* styles */
+__webpack_require__(128)
+
 var Component = __webpack_require__(7)(
   /* script */
   __webpack_require__(39),
@@ -7315,6 +7332,32 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
+    staticStyle: {
+      "padding": "200px"
+    }
+  }, [_c('article', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.form.success),
+      expression: "form.success"
+    }],
+    staticClass: "message is-primary",
+    staticStyle: {
+      "padding": "50px"
+    }
+  }, [_vm._m(0)]), _vm._v(" "), _c('article', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.form.fail),
+      expression: "form.fail"
+    }],
+    staticClass: "message is-danger",
+    staticStyle: {
+      "padding": "50px"
+    }
+  }, [_vm._m(1)]), _vm._v(" "), _c('div', {
     staticClass: "hero-body"
   }, [_c('div', {
     staticClass: "container"
@@ -7397,8 +7440,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.resetForm('form')
       }
     }
-  }, [_vm._v("Reset")])], 1)], 1)], 1)])])])])
-},staticRenderFns: []}
+  }, [_vm._v("Reset")])], 1)], 1)], 1)])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-header"
+  }, [_c('p', [_vm._v("Signup successfull. Pending admin verification")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-header"
+  }, [_c('p', [_vm._v("Company name .")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -7557,6 +7608,41 @@ module.exports = function listToStyles (parentId, list) {
 
 module.exports = __webpack_require__(20);
 
+
+/***/ }),
+/* 125 */,
+/* 126 */,
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(14)();
+exports.push([module.i, "\nhtml,body {\n  font-family: -apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\";\n  height: 100%;\n  padding: 0;\n  margin: 0;\n}\n.email-input,\n.password-input {\n  border-radius: 40px;\n  font-size: 20px;\n  padding-left: 15px;\n  color: #95A5A6;\n}\n.icon.user,\n.icon.password {\n  margin: 5px 10px 0 0;\n}\n.avatar img {\n  border-radius: 100px;\n  padding: 5px;\n  border: 1px solid #dbdbdb;\n}\n.forgot-password a {\n  color: #95A5A6;\n  font-weight: bold;\n  padding-right: 20px;\n}\n.login {\n  padding-top: 20px;\n}\n.login button {\n  border-radius: 40px;\n  font-weight: bold;\n}\n.hero-body .container {\n  margin-top: -100px;\n}\n.hero.is-dark .section {\n  background-color: transparent;\n}\n.login-wrapper {\n  margin: -0.75rem;\n  overflow-y: hidden;\n}\n.hero-banner .title {\n  display: inline-block;\n  background-color: rgba(0,0,0, 0.6);\n  padding: 5px;\n}\n", ""]);
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(127);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(15)("01f7a952", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-2ec2620a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./UnverifiedSignup.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-2ec2620a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./UnverifiedSignup.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

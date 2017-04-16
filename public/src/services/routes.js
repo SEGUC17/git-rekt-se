@@ -8,7 +8,7 @@ const routes = [
     component: About,
   },
   {
-    path: '/business/signup',
+    path: '/business/unverified/signup',
     component: UnverifiedBusinessSignup,
   },
 ];
