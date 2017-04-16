@@ -10,6 +10,10 @@
                     </el-alert>
                 </div>
             </div>
+
+             <div v-show="sure">
+                are you sure you want to delete {{currname}}
+            </div>
     
             <div v-show="logged_in">
                 <el-alert :title="loginSuccess" type="success" show-icon>
@@ -40,6 +44,8 @@
             return {
                 errors: [],
                 clients:[],
+                sure:false,
+                currname:'',
             }
         },
         mounted() {
@@ -60,6 +66,20 @@
 
       deleteclicked(clientid) {
           console.log(clientid);
+          this.currname=clientid;
+          this.sure =true;
+        // axios
+        //     .get(Admin().deleteclient/clientid)
+        //     .then((res) => {
+        //         console.log(res);
+        //       this.clients = res.data;
+        //     })
+        //     .catch(() => {
+        //       this.clients = [];
+        //     });
+      }, confirmeddeletion(clientid) {
+          console.log(clientid);
+          
         // axios
         //     .get(Admin().deleteclient/clientid)
         //     .then((res) => {

@@ -8500,6 +8500,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -8509,7 +8513,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             errors: [],
-            clients: []
+            clients: [],
+            sure: false,
+            currname: ''
         };
     },
     mounted: function mounted() {
@@ -8529,6 +8535,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         deleteclicked: function deleteclicked(clientid) {
             console.log(clientid);
+            this.currname = clientid;
+            this.sure = true;
+            // axios
+            //     .get(Admin().deleteclient/clientid)
+            //     .then((res) => {
+            //         console.log(res);
+            //       this.clients = res.data;
+            //     })
+            //     .catch(() => {
+            //       this.clients = [];
+            //     });
+        },
+        confirmeddeletion: function confirmeddeletion(clientid) {
+            console.log(clientid);
+
             // axios
             //     .get(Admin().deleteclient/clientid)
             //     .then((res) => {
@@ -8616,6 +8637,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     })], 1)
   })), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.sure),
+      expression: "sure"
+    }]
+  }, [_vm._v("\n            are you sure you want to delete " + _vm._s(_vm.currname) + "\n        ")]), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
