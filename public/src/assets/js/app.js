@@ -9,7 +9,6 @@ import footer from '../../components/shared/footer.vue';
 import router from '../../services/routes.js';
 
 window.axios = axios;
-window.moment = moment;
 
 Vue.use(VueRouter);
 Vue.use(elementUI);
