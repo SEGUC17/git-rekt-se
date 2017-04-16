@@ -6,6 +6,7 @@ import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import router from '../../services/routes.js';
+import reset from '../../components/business/reset.vue';
 Window.axios = axios;
 
 Vue.use(VueRouter);
@@ -18,6 +19,6 @@ new Vue({
   components: {
     'gr-header': header,
     'gr-footer': footer,
-    reset: require('../../components/business/reset.vue'),
+    'reset': reset,
   }
 });

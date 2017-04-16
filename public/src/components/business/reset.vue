@@ -1,9 +1,8 @@
-
-<<template>
+<template>
     <div class="columns is-mobile">
         <div class="column is-half is-offset-one-quarter">
             <div>
-                <div class="alert" >
+                <div class="alert">
                     <div class="message" v-show="alert_show">
                         <el-alert :title="message" type="success" show-icon></el-alert>
                     </div>
@@ -34,33 +33,17 @@
 <script>
     import Form from '../../services/Form';
     import EndPoints from '../../services/EndPoints';
+    import {
+        BusinessResetFormValidation
+    } from '../../services/BusinessResetFormValidation.js';
+    import Errors from '../../services/Errors';
     
     export default {
         data() {
-            var validatePassword = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error('Please input a password'));
-                } else {
-                    if (!(/^(?=.*\d).{8,15}$/.test(value))) {
-                        callback(new Error('Password must be between 8 and 15 characters and contains at least one number.'));
-                    } else {
-                        if (this.form.confirmPassword !== '') {
-                            this.$refs.form.validateField('confirmPassword');
-                        }
-                        callback();
-                    }
-    
-                }
-            };
-            var validateConfirmPassword = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error('Please insert a password!'));
-                } else if (value !== this.form.password) {
-                    callback(new Error('The two inputs don\'t match!'));
-                } else {
-                    callback();
-                }
-            };
+            BusinessResetFormValidation.confirmPassword[1].validator = BusinessResetFormValidation.confirmPassword[1]
+                .validator.bind(this);
+            BusinessResetFormValidation.password[2].validator = BusinessResetFormValidation.password[2]
+                .validator.bind(this);
             return {
                 form: new Form({
                     password: '',
@@ -68,26 +51,11 @@
                     token: this.$route.params.token,
                 }),
                 errors: [],
-                rules: {
-                    password: [{
-                        validator: validatePassword,
-                        trigger: 'blur'
-                    }],
-                    confirmPassword: [{
-                        validator: validateConfirmPassword,
-                        trigger: 'blur'
-                    }],
-                },
+                rules: BusinessResetFormValidation,
                 message: '',
                 alert_show: false,
                 error_show: false,
             };
-        },
-        computed: {
-            tokenGetter: function() {
-                return this.$route.params;
-                console.log(this.$route.params);
-            }
         },
         methods: {
             submitForm(formName) {
@@ -103,8 +71,8 @@
                                 this.error_show = false;
                             })
                             .catch((err) => {
-                                console.log(err);
                                 this.errors = err;
+                                console.log(this.errors);
                                 this.error_show = true;
                                 this.alert_show = false;
                             });
