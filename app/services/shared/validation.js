@@ -391,6 +391,10 @@ const updateReviewValidation = {
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
     },
+    matches: {
+      options: '[0-4]',
+      errorMessage: reviewErrors.outOfRangeRating,
+    },
   },
 };
 
