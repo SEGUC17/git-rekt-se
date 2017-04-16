@@ -17,7 +17,7 @@
             </div>
     
     
-            <li v-for="client in clients" v-text = "client.label"></li>
+            <div v-for="client in clients"><li>{{client.label}}<el-button type="danger" style="float: right;" >Danger</el-button></li></div>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
         methods: {
             getClients() {
         axios
-            .get(Admin().removeClient)
+            .get(Visitor().locations)
             .then((res) => {
                 console.log(res);
               this.clients = res.data;
