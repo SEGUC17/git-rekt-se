@@ -1,5 +1,17 @@
 <template>
   <div class="main-cnt">
+    <section class="gr-content hero is-medium is-bold has-text-centered">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="extra-large white">
+            Search For Services
+          </h1>
+          <h2 class="subtitle white">
+            Find services that can help you
+          </h2>
+        </div>
+      </div>
+    </section>
     <div class="container">
       <div class="el-row">
         <div class="el-col el-col-24 el-col-xs-24 el-col-sm-6 search-tools">
@@ -178,7 +190,11 @@
 
 <style>
   .main-cnt {
-    padding: 10px;
+    padding: 10px 0;
+  }
+
+  .gr-content{
+    background: linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,0)),url('http://localhost:3000/assets/imgs/search/search_BG.JPG') 0 0/cover
   }
   
   .container,
