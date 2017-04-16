@@ -8,6 +8,7 @@ const locations = [
   'Tagamo3',
   'Zamalek',
   'Sheikh Zayed',
+  'Al Rehab City',
 ];
 
 module.exports = locations;
