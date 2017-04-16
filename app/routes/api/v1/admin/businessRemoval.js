@@ -42,8 +42,10 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
             next(err);
             return;
           }
-          for (i; i < results.length; i += 1) {
-            results[i]._deleted = true;
+          if (results) {
+            for (i; i < results.length; i += 1) {
+              results[i]._deleted = true;
+            }
           }
         });
         Branch.find({
@@ -53,10 +55,12 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
             next(err2);
             return;
           }
-          for (i; i < results3.length; i += 1) {
-            branchlist[i] = results3[i]; // save to a const to not
-            // create a function inside this loop
-            results3[i]._deleted = true;
+          if (results3) {
+            for (i; i < results3.length; i += 1) {
+              branchlist[i] = results3[i]; // save to a const to not
+              // create a function inside this loop
+              results3[i]._deleted = true;
+            }
           }
         });
 
@@ -68,8 +72,10 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
               next(err3);
               return;
             }
-            for (i; i < results2.length; i += 1) {
-              results2[i]._deleted = true;
+            if (results2) {
+              for (i; i < results2.length; i += 1) {
+                results2[i]._deleted = true;
+              }
             }
           });
         });
