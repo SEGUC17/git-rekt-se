@@ -3,9 +3,10 @@ const path = require('path');
 const supertest = require('supertest');
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
-const BusinessesSeed = require('../../../app/seed/business/confirmBusinessSeeds');
+const BusinessesSeed = require('../../../app/seed/business/businessSeed');
 const Admin = require('../../../app/models/admin/Admin');
 const Strings = require('../../../app/services/shared/Strings');
+const locations = require('../../../app/seed/service/locations.js');
 
 /**
  * Test Suite
@@ -48,7 +49,8 @@ describe('Category CRUD Test Suite', () => {
     });
   });
   it('should delete a business and return a confirmation message', (done) => {
-    const business = BusinessesSeed[1];
+    const business = BusinessesSeed[4];
+    console.log(business);
     new Business(business)
       .save((err, res) => {
         if (err) {
@@ -71,9 +73,19 @@ describe('Category CRUD Test Suite', () => {
                     if (Err3) {
                       done(Err3);
                     } else {
-                      chai.expect(result2.body.message)
-                        .to.equal(Strings.adminSuccess.businessDeleted);
-                      done();
+                      Business.findOne({
+                        email: business.email,
+                      })
+                        .exec((Err4, bus2) => {
+                          if (Err4) {
+                            done(Err4);
+                          } else {
+                            console.log(bus2);
+                            chai.expect(result2.body.message)
+                              .to.equal(Strings.adminSuccess.businessDeleted);
+                            done();
+                          }
+                        });
                     }
                   });
               }
