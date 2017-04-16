@@ -11117,6 +11117,10 @@ function toObject(arr) {
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+/* styles */
+__webpack_require__(129)
+
 var Component = __webpack_require__(7)(
   /* script */
   __webpack_require__(40),
@@ -14530,6 +14534,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -14546,11 +14553,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 confirmPassword: '',
                 token: this.$route.params.token
             }),
-            errors: [],
+            errors: '',
             rules: __WEBPACK_IMPORTED_MODULE_2__services_BusinessResetFormValidation_js__["a" /* BusinessResetFormValidation */],
             message: '',
             alert_show: false,
-            error_show: false
+            error_show: false,
+            btn_disable: true
         };
     },
 
@@ -14558,23 +14566,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         submitForm: function submitForm(formName) {
             var _this = this;
 
-            console.log(this.form);
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    console.log(_this.form.data);
                     _this.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Business().reset).then(function (data) {
-                        console.log(data);
                         _this.message = data.message;
                         _this.alert_show = true;
                         _this.error_show = false;
                     }).catch(function (err) {
-                        _this.errors = err;
-                        console.log(_this.errors);
-                        _this.error_show = true;
                         _this.alert_show = false;
                     });
                 } else {
-                    _this.errors = ['Please insert correct inputs'];
+                    _this.errors = 'Please insert correct inputs';
                     _this.error_show = true;
                     _this.alert_show = false;
                 }
@@ -14623,23 +14625,153 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export Visitor */
+/* unused harmony export Client */
+/* unused harmony export Business */
+/* unused harmony export Admin */
+/* unused harmony export Service */
 var BASE = 'http://localhost:3000/api/v1';
 
+var Visitor = function Visitor() {
+  return {
+    search: BASE + '/visitor/search/',
+    viewService: function viewService(serviceID) {
+      return BASE + '/service/' + serviceID;
+    },
+    relatedService: function relatedService(serviceID, offset) {
+      return BASE + '/service/category/' + serviceID + '/' + offset;
+    },
+    relatedBusiness: function relatedBusiness(businessID, offset) {
+      return BASE + '/business/category/' + businessID + '/offset';
+    },
+    viewBusiness: function viewBusiness(businessID) {
+      return BASE + '/business/' + businessID;
+    }
+  };
+};
+
+var Client = function Client() {
+  var authBase = BASE + '/client/auth';
+  var profileBase = BASE + '/client/profile';
+  return {
+    login: authBase + '/login',
+    signup: authBase + '/signup',
+    resend: authBase + '/confirmation/send',
+    reset: authBase + '/reset',
+    forgot: authBase + '/forgot',
+    logout: authBase + '/logout',
+    confirmEmail: function confirmEmail(token) {
+      return authBase + '/confirmation/' + token + '/confirm';
+    },
+
+    editInfo: function editInfo(clientID) {
+      return profileBase + '/' + clientID + '/edit';
+    }
+  };
+};
+
+var Business = function Business() {
+  var authBase = BASE + '/business/auth';
+  var serviceBase = BASE + '/business/service';
+  var businessBase = BASE + '/business/info';
+  var galleryBase = BASE + '/business';
+  return {
+    unverfiedSignUp: authBase + '/unverified/signup',
+    login: authBase + '/verified/login',
+    forgot: authBase + '/forgot',
+    reset: authBase + '/reset',
+    logout: authBase + '/logout',
+    verifiedSignUp: function verifiedSignUp(token) {
+      return authBase + '/confirm/signup/' + token;
+    },
+
+    editBasicInfo: function editBasicInfo(businessID) {
+      return BASE + '/business/profile/' + businessID + '/edit';
+    },
+    editInfo: function editInfo(businessID) {
+      return businessBase + '/edit/' + businessID;
+    },
+    addBranch: function addBranch(businessID) {
+      return businessBase + '/' + businessID + '/add/branches';
+    },
+    editBranch: function editBranch(businessID, branchID) {
+      return businessBase + '/' + businessID + '/edit/branch/' + branchID;
+    },
+    deleteBranch: function deleteBranch(businessID, branchID) {
+      return businessBase + '/' + businessID + '/delete/branch/' + branchID;
+    },
+
+    createService: serviceBase + '/create',
+    editService: function editService(serviceID) {
+      return serviceBase + '/' + serviceID + '/edit';
+    },
+    deleteService: function deleteService(serviceID) {
+      return serviceBase + '/' + serviceID + '/delete';
+    },
+    createOffering: function createOffering(serviceID) {
+      return serviceBase + '/' + serviceID + '/offering/create';
+    },
+    editOffering: function editOffering(serviceID, offeringID) {
+      return serviceBase + '/' + serviceID + '/offering/' + offeringID + '/edit';
+    },
+    deleteOffering: function deleteOffering(serviceID, offeringID) {
+      return serviceBase + '/' + serviceID + '/offering/' + offeringID + '/delete';
+    },
+
+    addImage: function addImage(businessID) {
+      return galleryBase + '/' + businessID + '/gallery/add';
+    }
+  };
+};
+
+var Admin = function Admin() {
+  var generalBase = BASE + '/admin/general';
+  var categoryBase = BASE + '/admin/category';
+  return {
+    login: BASE + '/admin/auth/login',
+
+    acceptBusiness: function acceptBusiness(businessID) {
+      return generalBase + '/confirm/' + businessID;
+    },
+    denyBusiness: function denyBusiness(businessID) {
+      return generalBase + '/deny/' + businessID;
+    },
+
+    createCategory: categoryBase + '/add',
+    editCategory: function editCategory(categoryID) {
+      return categoryBase + '/edit/' + categoryID;
+    },
+    deleteCategory: function deleteCategory(categoryID) {
+      return categoryBase + '/delete/' + categoryID;
+    }
+  };
+};
+
+var Service = function Service() {
+  var serviceBase = BASE + '/service';
+  return {
+    createReview: function createReview(serviceID) {
+      return serviceBase + '/' + serviceID + '/review';
+    },
+    updateReview: function updateReview(serviceID, reviewID) {
+      return serviceBase + '/' + serviceID + '/review/' + reviewID + '/edit';
+    },
+    deleteReview: function deleteReview(serviceID, reviewID) {
+      return serviceBase + '/' + serviceID + '/review/' + reviewID + '/delete';
+    },
+
+    addImage: function addImage(serviceID) {
+      return serviceBase + '/' + serviceID + '/gallery/add';
+    }
+  };
+};
+
 /* harmony default export */ __webpack_exports__["a"] = ({
-  Client: function Client() {
-    var authBase = BASE + '/client/auth';
-    var profileBase = BASE + '/client/profile';
-    return {
-      signup: authBase + '/signup',
-      resend: authBase + '/confirmation/send'
-    };
-  },
-  Business: function Business() {
-    var authBase = BASE + '/business/auth';
-    return {
-      reset: authBase + '/reset'
-    };
-  }
+  Visitor: Visitor,
+  Client: Client,
+  Business: Business,
+  Admin: Admin,
+  Service: Service
 });
 
 /***/ }),
@@ -18284,17 +18416,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.error_show),
       expression: "error_show"
     }],
-    staticClass: "message"
-  }, _vm._l((_vm.errors), function(error) {
-    return _c('el-alert', {
-      key: error,
-      attrs: {
-        "title": error,
-        "type": "error",
-        "show-icon": ""
+    staticClass: "error"
+  }, [_c('el-alert', {
+    attrs: {
+      "title": _vm.errors,
+      "type": "error",
+      "show-icon": ""
+    },
+    on: {
+      "close": function($event) {
+        _vm.error_show = false
       }
-    })
-  }))]), _vm._v(" "), _c('h1', {
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.form.errors.has('serverError')),
+      expression: "form.errors.has('serverError')"
+    }],
+    staticClass: "error"
+  }, [_c('el-alert', {
+    attrs: {
+      "title": _vm.form.errors.getAll('serverError'),
+      "type": "error",
+      "show-icon": ""
+    },
+    on: {
+      "close": function($event) {}
+    }
+  })], 1)]), _vm._v(" "), _c('h1', {
     staticClass: "title has-text-centered"
   }, [_vm._v("Reset Password")]), _vm._v(" "), _c('el-form', {
     ref: "form",
@@ -53302,6 +53453,39 @@ var BusinessResetFormValidation = {
     trigger: ['blur', 'change']
   }]
 };
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(14)();
+exports.push([module.i, "\n.error {\n    margin-bottom: 10px;\n}\n", ""]);
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(128);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(15)("7bceeecf", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-b6f20ac6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./reset.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-b6f20ac6\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./reset.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

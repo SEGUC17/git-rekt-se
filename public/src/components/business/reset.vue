@@ -6,8 +6,11 @@
                     <div class="message" v-show="alert_show">
                         <el-alert :title="message" type="success" show-icon></el-alert>
                     </div>
-                    <div class="message" v-show="error_show">
-                        <el-alert v-for="error in errors" :key="error" :title="error" type="error" show-icon></el-alert>
+                    <div class="error" v-show="error_show">
+                        <el-alert @close="error_show = false" :title="errors" type="error" show-icon></el-alert>
+                    </div>
+                    <div class="error" v-show="form.errors.has('serverError')">
+                        <el-alert @close="" :title="form.errors.getAll('serverError')" type="error" show-icon></el-alert>
                     </div>
                 </div>
     
@@ -50,34 +53,29 @@
                     confirmPassword: '',
                     token: this.$route.params.token,
                 }),
-                errors: [],
+                errors: '',
                 rules: BusinessResetFormValidation,
                 message: '',
                 alert_show: false,
                 error_show: false,
+                btn_disable: true,
             };
         },
         methods: {
             submitForm(formName) {
-                console.log(this.form);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log(this.form.data);
                         this.form.post(EndPoints.Business().reset)
                             .then((data) => {
-                                console.log(data);
                                 this.message = data.message;
                                 this.alert_show = true;
                                 this.error_show = false;
                             })
                             .catch((err) => {
-                                this.errors = err;
-                                console.log(this.errors);
-                                this.error_show = true;
                                 this.alert_show = false;
                             });
                     } else {
-                        this.errors = ['Please insert correct inputs'];
+                        this.errors = 'Please insert correct inputs';
                         this.error_show = true;
                         this.alert_show = false;
                     }
@@ -86,3 +84,9 @@
         }
     }
 </script>
+
+<style>
+    .error {
+        margin-bottom: 10px;
+    }
+</style>
