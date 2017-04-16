@@ -447,6 +447,13 @@ const businessEditImageValidation = {
     },
   },
 };
+const businessdeletionValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidBusinessID,
+    },
+  },
+};
 
 /**
  * Client validation.
@@ -541,6 +548,7 @@ const validation = {
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
+  businessdeletionValidation,
 };
 
 module.exports = validation;

@@ -25,10 +25,11 @@ router.use(expressValidator({}));
 router.use(bodyParser.json());
 
 router.post('/delete/:id', AdminAuth, (req, res, next) => {
-  req.checkParams(validationSchemas.businessADDImageValidation);
+  req.checkParams(validationSchemas.businessdeletionValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
+        console.log('what');
         /**
          * check for services under this business and delete them first
          * also delete branches under the business
@@ -93,7 +94,7 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
           });
         });
       } else {
-        next(Strings.businessMessages.invalidID);
+        next(result.array());
       }
     })
     .catch(err => next(err));
