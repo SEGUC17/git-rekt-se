@@ -5,6 +5,7 @@ const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
 const BusinessesSeed = require('../../../app/seed/business/confirmBusinessSeeds');
 const Admin = require('../../../app/models/admin/Admin');
+const Strings = require('../../../app/services/shared/Strings');
 
 /**
  * Test Suite
@@ -56,23 +57,22 @@ describe('Category CRUD Test Suite', () => {
           Business.findOne({
             email: business.email,
           })
-            .exec((findErr, data) => {
-              if (findErr) {
-                done(findErr);
+            .exec((Err2, bus) => {
+              if (Err2) {
+                done(Err2);
               } else {
                 req = supertest(app)
-                  .post(`/api/v1/admin/business/delete/${data._id}`)
+                  .post(`/api/v1/admin/business/delete/${bus._id}`)
                   .set('Authorization', `JWT ${token}`)
                   .send()
                   .expect('Content-Type', /json/)
                   .expect(200)
-                  .end((confirmErr2, result2) => {
-                    if (confirmErr2) {
-                      // chai.expect(result2.body.message)
-                      //   .to.equal('Business was already confirmed.');
-                      done(confirmErr2);
+                  .end((Err3, result2) => {
+                    if (Err3) {
+                      done(Err3);
                     } else {
-                      console.log('working..');
+                      chai.expect(result2.body.message)
+                        .to.equal(Strings.adminSuccess.businessDeleted);
                       done();
                     }
                   });

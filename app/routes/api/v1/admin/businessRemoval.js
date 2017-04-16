@@ -83,9 +83,12 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
           });
         });
 
-        Business.find({
+        Business.findOne({
           _id: req.params.id,
-        }, (bus) => {
+        }, (err7, bus) => {
+          if (err7) {
+            return next(err7);
+          }
           bus._deleted = true;
           bus.save();
           return res.json({
