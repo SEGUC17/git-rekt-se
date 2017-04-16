@@ -6,7 +6,8 @@ import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import router from '../../services/routes.js';
-Window.axios = axios;
+
+window.axios = axios;
 
 Vue.use(VueRouter);
 Vue.use(elementUI);
