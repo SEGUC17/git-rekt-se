@@ -48,6 +48,16 @@ export const businessEditInfoValidation = {
     message: 'Please Enter a Short Description!',
     trigger: ['blur', 'change'],
   }],
+  phoneNumber: [{
+    validator(rule, value, callBack) {
+      if (/^01[0-2]{1}[0-9]{8}/.test(value)) {
+        callBack();
+      } else {
+        callBack([new Error('Phone Number must be in this format 01xxxxxxxxx')]);
+      }
+    },
+    trigger: ['blur', 'change'],
+  }],
 };
 
 export const clientLoginRules = {

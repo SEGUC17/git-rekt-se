@@ -500,6 +500,11 @@ const businessUpdateValidation = {
       errorMessage: bussinessValidationErrors.emptyName,
     },
   },
+  email: {
+    isEmail: {
+      errorMessage: bussinessValidationErrors.invalidEmail,
+    },
+  },
   shortDescription: {
     notEmpty: {
       errorMessage: bussinessValidationErrors.emptyDescription,
@@ -508,6 +513,9 @@ const businessUpdateValidation = {
   phoneNumbers: {
     notEmpty: {
       errorMessage: bussinessValidationErrors.emptyMobile,
+    },
+    arePhoneNumbers: {
+      errorMessage: bussinessValidationErrors.invalidMobile,
     },
   },
   password: {
@@ -528,6 +536,17 @@ const validatePassword = (password) => {
   }
   return /^(?=.*\d).{8,15}$/.test(password);
 };
+
+/**
+ * Checks if the given Array of Phone Numbers contain numbers in the
+ * Egyptian phone number format.
+ * @param {Array} phoneNumber
+ */
+const validatePhoneNumber = (phoneNumbers) => {
+  const valid = phoneNumbers.filter(phoneNumber => /^01[0-2]{1}[0-9]{8}/.test(phoneNumber));
+  return valid.length === phoneNumbers.length;
+};
+
 
 const validation = {
   clientResetPasswordValidation,
@@ -556,6 +575,7 @@ const validation = {
   deleteReviewValidation,
   businessUpdateValidation,
   validatePassword,
+  validatePhoneNumber,
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,

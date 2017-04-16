@@ -32,18 +32,34 @@
         </el-form-item>
   
         <el-form-item label="Password" prop="password">
-          <el-input v-model="form.password" type="password"></el-input>
+          <el-input v-model="form.password" :type="showPassword">
+            <template slot="append">
+              <el-tooltip content="See Password" placement="right">
+                <el-button @mousedown.native="showPassword='text'" @mouseup.native="showPassword='password'">
+                  <i class="fa fa-eye"></i>
+                </el-button>
+              </el-tooltip>
+            </template>
+          </el-input>
         </el-form-item>
   
         <el-form-item label="Confirm Password" prop="confirmPassword">
-          <el-input v-model="form.confirmPassword" type="password"></el-input>
+          <el-input v-model="form.confirmPassword" :type="showConfirm">
+            <template slot="append">
+              <el-tooltip content="See Confirm Password" placement="right">
+                <el-button @mousedown.native="showConfirm='text'" @mouseup.native="showConfirm='password'">
+                  <i class="fa fa-eye"></i>
+                </el-button>
+              </el-tooltip>
+            </template>
+          </el-input>
         </el-form-item>
   
         <el-form-item label="Short Description" prop="shortDescription">
           <el-input v-model="form.shortDescription"></el-input>
         </el-form-item>
   
-        <el-form-item v-for="el in phoneNumbers" :key="el.key" label="Phone Numbers">
+        <el-form-item v-for="el in phoneNumbers" :key="el.key" label="Phone Numbers" :prop="`dd${el.key}`" :rules="rules.phoneNumber">
           <el-input v-model="el.number"></el-input>
         </el-form-item>
   
@@ -86,6 +102,8 @@
         error: false,
         message: '',
         loading: false,
+        showPassword: '',
+        showConfirm: '',
       };
     },
     methods: {
@@ -97,15 +115,8 @@
           })
           .then((response) => {
             this.business = response.data.business;
-            this.form.email = this.business.email;
-            this.form.password = dummy_password;
-            this.form.confirmPassword = dummy_password;
-            this.form.shortDescription = this.business.shortDescription;
-            this.form.name = this.business.name;
-            this.phoneNumbers = this.business.phoneNumbers.map((number, index) => ({
-              number,
-              index,
-            }));
+            this.onReset();
+            this.loading = false;
           }).catch((err) => {
             this.error = true;
             this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
@@ -126,7 +137,6 @@
                 },
               })
               .then((data) => {
-                this.loading = false;
                 this.success = true;
                 this.message = data.message;
                 this.getBusiness();
