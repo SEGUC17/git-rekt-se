@@ -13559,7 +13559,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_client_Reset_vue__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_client_Reset_vue__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_client_Reset_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_client_Reset_vue__);
 
 
@@ -14455,7 +14455,129 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 39 */,
+/* 39 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(41);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        var _this = this;
+
+        var validatePassword = function validatePassword(rule, value, callback) {
+            if (value === '') {
+                callback(new Error('Please input a password'));
+            } else {
+                if (!/^(?=.*\d).{8,15}$/.test(value)) {
+                    callback(new Error('Password must be between 8 and 15 characters and contains at least one number.'));
+                } else {
+                    if (_this.form.confirmPassword !== '') {
+                        _this.$refs.form.validateField('confirmPassword');
+                    }
+                    callback();
+                }
+            }
+        };
+        var validateConfirmPassword = function validateConfirmPassword(rule, value, callback) {
+            if (value === '') {
+                callback(new Error('Please insert a password!'));
+            } else if (value !== _this.form.password) {
+                callback(new Error('The two inputs don\'t match!'));
+            } else {
+                callback();
+            }
+        };
+        return {
+            form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
+                token: this.$route.params.token,
+                password: '',
+                confirmPassword: '',
+                success: false,
+                fail: false
+            }),
+            errors: {},
+            rules: {
+                password: [{
+                    validator: validatePassword,
+                    trigger: 'blur'
+                }],
+                confirmPassword: [{
+                    validator: validateConfirmPassword,
+                    trigger: 'blur'
+                }]
+            }
+        };
+    },
+
+    methods: {
+        submitForm: function submitForm(formName) {
+            var _this2 = this;
+
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    console.log(_this2.form.data);
+                    _this2.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Client().reset).then(function (data) {
+                        _this2.form.success = true;
+                    }).catch(function (err) {
+                        _this2.form.fail = true;
+                        console.log(err);
+                        console.log(_this2.form.errors);
+                    });
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        }
+    }
+});
+
+/***/ }),
 /* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -14495,7 +14617,146 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export Visitor */
+/* unused harmony export Client */
+/* unused harmony export Business */
+/* unused harmony export Admin */
+/* unused harmony export Service */
 var BASE = 'http://localhost:3000/api/v1';
+
+var Visitor = function Visitor() {
+  return {
+    search: BASE + '/visitor/search/',
+    viewService: function viewService(serviceID) {
+      return BASE + '/service/' + serviceID;
+    },
+    relatedService: function relatedService(serviceID, offset) {
+      return BASE + '/service/category/' + serviceID + '/' + offset;
+    },
+    relatedBusiness: function relatedBusiness(businessID, offset) {
+      return BASE + '/business/category/' + businessID + '/offset';
+    },
+    viewBusiness: function viewBusiness(businessID) {
+      return BASE + '/business/' + businessID;
+    }
+  };
+};
+
+var Client = function Client() {
+  var authBase = BASE + '/client/auth';
+  var profileBase = BASE + '/client/profile';
+  return {
+    login: authBase + '/login',
+    signup: authBase + '/signup',
+    resend: authBase + '/confirmation/send',
+    reset: authBase + '/reset',
+    forgot: authBase + '/forgot',
+    logout: authBase + '/logout',
+    confirmEmail: function confirmEmail(token) {
+      return authBase + '/confirmation/' + token + '/confirm';
+    },
+
+    editInfo: function editInfo(clientID) {
+      return profileBase + '/' + clientID + '/edit';
+    }
+  };
+};
+
+var Business = function Business() {
+  var authBase = BASE + '/business/auth';
+  var serviceBase = BASE + '/business/service';
+  var businessBase = BASE + '/business/info';
+  var galleryBase = BASE + '/business';
+  return {
+    unverfiedSignUp: authBase + '/unverified/signup',
+    login: authBase + '/verified/login',
+    forgot: authBase + '/forgot',
+    reset: authBase + '/reset',
+    logout: authBase + '/logout',
+    verifiedSignUp: function verifiedSignUp(token) {
+      return authBase + '/confirm/signup/' + token;
+    },
+
+    editBasicInfo: function editBasicInfo(businessID) {
+      return BASE + '/business/profile/' + businessID + '/edit';
+    },
+    editInfo: function editInfo(businessID) {
+      return businessBase + '/edit/' + businessID;
+    },
+    addBranch: function addBranch(businessID) {
+      return businessBase + '/' + businessID + '/add/branches';
+    },
+    editBranch: function editBranch(businessID, branchID) {
+      return businessBase + '/' + businessID + '/edit/branch/' + branchID;
+    },
+    deleteBranch: function deleteBranch(businessID, branchID) {
+      return businessBase + '/' + businessID + '/delete/branch/' + branchID;
+    },
+
+    createService: serviceBase + '/create',
+    editService: function editService(serviceID) {
+      return serviceBase + '/' + serviceID + '/edit';
+    },
+    deleteService: function deleteService(serviceID) {
+      return serviceBase + '/' + serviceID + '/delete';
+    },
+    createOffering: function createOffering(serviceID) {
+      return serviceBase + '/' + serviceID + '/offering/create';
+    },
+    editOffering: function editOffering(serviceID, offeringID) {
+      return serviceBase + '/' + serviceID + '/offering/' + offeringID + '/edit';
+    },
+    deleteOffering: function deleteOffering(serviceID, offeringID) {
+      return serviceBase + '/' + serviceID + '/offering/' + offeringID + '/delete';
+    },
+
+    addImage: function addImage(businessID) {
+      return galleryBase + '/' + businessID + '/gallery/add';
+    }
+  };
+};
+
+var Admin = function Admin() {
+  var generalBase = BASE + '/admin/general';
+  var categoryBase = BASE + '/admin/category';
+  return {
+    login: BASE + '/admin/auth/login',
+
+    acceptBusiness: function acceptBusiness(businessID) {
+      return generalBase + '/confirm/' + businessID;
+    },
+    denyBusiness: function denyBusiness(businessID) {
+      return generalBase + '/deny/' + businessID;
+    },
+
+    createCategory: categoryBase + '/add',
+    editCategory: function editCategory(categoryID) {
+      return categoryBase + '/edit/' + categoryID;
+    },
+    deleteCategory: function deleteCategory(categoryID) {
+      return categoryBase + '/delete/' + categoryID;
+    }
+  };
+};
+
+var Service = function Service() {
+  var serviceBase = BASE + '/service';
+  return {
+    createReview: function createReview(serviceID) {
+      return serviceBase + '/' + serviceID + '/review';
+    },
+    updateReview: function updateReview(serviceID, reviewID) {
+      return serviceBase + '/' + serviceID + '/review/' + reviewID + '/edit';
+    },
+    deleteReview: function deleteReview(serviceID, reviewID) {
+      return serviceBase + '/' + serviceID + '/review/' + reviewID + '/delete';
+    },
+
+    addImage: function addImage(serviceID) {
+      return serviceBase + '/' + serviceID + '/gallery/add';
+    }
+  };
+};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   Client: function Client() {
@@ -14506,7 +14767,12 @@ var BASE = 'http://localhost:3000/api/v1';
       resend: authBase + '/confirmation/send',
       reset: authBase + '/reset'
     };
-  }
+  },
+
+  Visitor: Visitor,
+  Business: Business,
+  Admin: Admin,
+  Service: Service
 });
 
 /***/ }),
@@ -18059,7 +18325,40 @@ module.exports = function ( delay, atBegin, callback ) {
 
 
 /***/ }),
-/* 56 */,
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(7)(
+  /* script */
+  __webpack_require__(39),
+  /* template */
+  __webpack_require__(58),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/client/Reset.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Reset.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-150eaa08", Component.options)
+  } else {
+    hotAPI.reload("data-v-150eaa08", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18098,7 +18397,110 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */,
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('article', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.form.success),
+      expression: "form.success"
+    }],
+    staticClass: "message is-primary",
+    staticStyle: {
+      "padding": "50px"
+    }
+  }, [_vm._m(0)]), _vm._v(" "), _c('article', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.form.fail),
+      expression: "form.fail"
+    }],
+    staticClass: "message is-danger",
+    staticStyle: {
+      "padding": "50px"
+    }
+  }, [_vm._m(1)]), _vm._v(" "), _c('div', {
+    staticClass: "hero-body"
+  }, [_c('div', {
+    staticClass: "contains"
+  }, [_c('div', {
+    staticClass: "columns"
+  }, [_c('div', {
+    staticClass: "column is-8 is-offset-2"
+  }, [_c('div', {
+    staticClass: "login-form"
+  }, [_c('el-form', {
+    ref: "form",
+    attrs: {
+      "model": _vm.form,
+      "rules": _vm.rules
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Password",
+      "prop": "password"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "password",
+      "auto-complete": "off"
+    },
+    model: {
+      value: (_vm.form.password),
+      callback: function($$v) {
+        _vm.form.password = $$v
+      },
+      expression: "form.password"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Confirm Password",
+      "prop": "confirmPassword"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "password",
+      "auto-complete": "off"
+    },
+    model: {
+      value: (_vm.form.confirmPassword),
+      callback: function($$v) {
+        _vm.form.confirmPassword = $$v
+      },
+      expression: "form.confirmPassword"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.submitForm('form')
+      }
+    }
+  }, [_vm._v("Submit")])], 1)], 1)], 1)])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-header"
+  }, [_c('p', [_vm._v("Password changed succesfully")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-header"
+  }, [_c('p', [_vm._v("Token expired.")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-150eaa08", module.exports)
+  }
+}
+
+/***/ }),
 /* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53014,272 +53416,6 @@ if(false) {
 __webpack_require__(70);
 module.exports = __webpack_require__(71);
 
-
-/***/ }),
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(41);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        var _this = this;
-
-        var validatePassword = function validatePassword(rule, value, callback) {
-            if (value === '') {
-                callback(new Error('Please input a password'));
-            } else {
-                if (!/^(?=.*\d).{8,15}$/.test(value)) {
-                    callback(new Error('Password must be between 8 and 15 characters and contains at least one number.'));
-                } else {
-                    if (_this.form.confirmPassword !== '') {
-                        _this.$refs.form.validateField('confirmPassword');
-                    }
-                    callback();
-                }
-            }
-        };
-        var validateConfirmPassword = function validateConfirmPassword(rule, value, callback) {
-            if (value === '') {
-                callback(new Error('Please insert a password!'));
-            } else if (value !== _this.form.password) {
-                callback(new Error('The two inputs don\'t match!'));
-            } else {
-                callback();
-            }
-        };
-        return {
-            form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
-                token: this.$route.params.token,
-                password: '',
-                confirmPassword: '',
-                success: false,
-                fail: false
-            }),
-            errors: {},
-            rules: {
-                password: [{
-                    validator: validatePassword,
-                    trigger: 'blur'
-                }],
-                confirmPassword: [{
-                    validator: validateConfirmPassword,
-                    trigger: 'blur'
-                }]
-            }
-        };
-    },
-
-    methods: {
-        submitForm: function submitForm(formName) {
-            var _this2 = this;
-
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    console.log(_this2.form.data);
-                    _this2.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Client().reset).then(function (data) {
-                        _this2.form.success = true;
-                    }).catch(function (err) {
-                        _this2.form.fail = true;
-                        console.log(err);
-                        console.log(_this2.form.errors);
-                    });
-                } else {
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 130 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(7)(
-  /* script */
-  __webpack_require__(129),
-  /* template */
-  __webpack_require__(131),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/client/Reset.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Reset.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-150eaa08", Component.options)
-  } else {
-    hotAPI.reload("data-v-150eaa08", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 131 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('article', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.form.success),
-      expression: "form.success"
-    }],
-    staticClass: "message is-primary",
-    staticStyle: {
-      "padding": "50px"
-    }
-  }, [_vm._m(0)]), _vm._v(" "), _c('article', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.form.fail),
-      expression: "form.fail"
-    }],
-    staticClass: "message is-danger",
-    staticStyle: {
-      "padding": "50px"
-    }
-  }, [_vm._m(1)]), _vm._v(" "), _c('div', {
-    staticClass: "hero-body"
-  }, [_c('div', {
-    staticClass: "contains"
-  }, [_c('div', {
-    staticClass: "columns"
-  }, [_c('div', {
-    staticClass: "column is-8 is-offset-2"
-  }, [_c('div', {
-    staticClass: "login-form"
-  }, [_c('el-form', {
-    ref: "form",
-    attrs: {
-      "model": _vm.form,
-      "rules": _vm.rules
-    }
-  }, [_c('el-form-item', {
-    attrs: {
-      "label": "Password",
-      "prop": "password"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "type": "password",
-      "auto-complete": "off"
-    },
-    model: {
-      value: (_vm.form.password),
-      callback: function($$v) {
-        _vm.form.password = $$v
-      },
-      expression: "form.password"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "Confirm Password",
-      "prop": "confirmPassword"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "type": "password",
-      "auto-complete": "off"
-    },
-    model: {
-      value: (_vm.form.confirmPassword),
-      callback: function($$v) {
-        _vm.form.confirmPassword = $$v
-      },
-      expression: "form.confirmPassword"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
-    attrs: {
-      "type": "primary"
-    },
-    on: {
-      "click": function($event) {
-        _vm.submitForm('form')
-      }
-    }
-  }, [_vm._v("Submit")])], 1)], 1)], 1)])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "message-header"
-  }, [_c('p', [_vm._v("Password changed succesfully")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "message-header"
-  }, [_c('p', [_vm._v("Token expired.")])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-150eaa08", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);
