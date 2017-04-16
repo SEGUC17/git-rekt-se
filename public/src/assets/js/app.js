@@ -5,6 +5,8 @@ import Buefy from 'buefy'
 import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
+import clientLogin from '../../components/Client/login.vue';
+import clientLogout from '../../components/Client/logout.vue';
 import router from '../../services/routes.js';
 import EditInfo from '../../components/business/editInfo.vue';
 
@@ -21,5 +23,7 @@ new Vue({
     'gr-header': header,
     'gr-footer': footer,
     'edit-info': EditInfo,
+    'client-login': clientLogin,
+    'client-logout': clientLogout,
   }
 });

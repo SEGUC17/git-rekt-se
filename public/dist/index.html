@@ -14,9 +14,11 @@
 
 <body>
   <div id="root">
-    <gr-header></gr-header>
-    <router-view></router-view>
     <edit-info></edit-info>
+    <div id="grcontent">
+      <gr-header></gr-header>
+      <router-view></router-view>
+    </div>
     <gr-footer></gr-footer>
   </div>
   <script src="./assets/js/app.js"></script>
