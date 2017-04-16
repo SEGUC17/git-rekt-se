@@ -2,6 +2,7 @@ const BASE = 'http://localhost:3000/api/v1';
 
 export const Visitor = () => ({
   search: `${BASE}/visitor/search/`,
+  locations: `${BASE}/visitor/search/locations`,
   viewService: serviceID => `${BASE}/service/${serviceID}`,
   relatedService: (serviceID, offset) => `${BASE}/service/category/${serviceID}/${offset}`,
   relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/offset`,
