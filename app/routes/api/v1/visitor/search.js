@@ -4,11 +4,13 @@ const mongoose = require('mongoose');
 const Service = require('../../../../models/service/Service');
 const Strings = require('../../../../services/shared/Strings');
 const errorHandler = require('../../../../services/shared/errorHandler');
+const locations = require('../../../../seed/service/locations');
 
 const router = express.Router();
 mongoose.Promise = Promise;
+
 /**
- * Search for a service route
+ * Search for a service route.
  */
 
 router.get('/', (req, res, next) => {
@@ -100,6 +102,19 @@ router.get('/', (req, res, next) => {
           res.json(output);
         });
     });
+});
+
+/**
+ * Return a list of avaliable locations.
+ */
+
+router.get('/locations', (req, res, next) => {
+  const locKeyValue = locations.map(loc => ({
+    label: loc,
+    value: loc,
+  }));
+
+  return res.json(locKeyValue);
 });
 
 /**
