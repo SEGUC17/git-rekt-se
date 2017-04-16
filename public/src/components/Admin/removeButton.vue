@@ -1,7 +1,6 @@
 <template>
         <div v-show="sure">
-             <el-dialog title="Confirmation" v-show="sure" size="tiny" show-close=false>
-                <div>Are you sure you want to delete {{currname}}</div>
+             <el-dialog title="Are you sure you want to report this review?" v-show="sure" size="tiny" show-close=false>
                  <span slot="footer" class="dialog-footer" show-close=false>
                     <el-button class="button is-warning"@click="sure = false">Cancel</el-button>
                     <el-button class="button is-danger" @click="sure = false">Confirm</el-button>
@@ -9,7 +8,7 @@
             </el-dialog>
               
     
-    <el-button class="button is-danger" style="float: right;"@click="deleteclicked(id)" >Delete &nbsp; <span class="icon">
+    <el-button class="button is-danger" style="float: right;"@click="reportclicked(id)" >Delete &nbsp; <span class="icon">
                             <i class="fa fa-trash-o"></i>
                         </span></el-button>
            
@@ -26,19 +25,17 @@
             return {
                 errors: [],
                 sure:false,
-                currname:'',
                 currid:'',
             }
         },
-        props: ['name','id'];
+        props: [id'];
         mounted() {
                 this.names = this.getClients();
         },
         methods: {
 
-      deleteclicked(id) {
-          console.log(currname);
-          this.currname=name;
+      reportclicked(id) {
+          console.log(id);
           this.currid =id;
           this.sure =true;
         // axios
@@ -50,7 +47,7 @@
         //     .catch(() => {
         //       this.clients = [];
         //     });
-      }, confirmeddeletion(id) {
+      }, confirmedreport(id) {
           console.log(id);
           
         // axios
