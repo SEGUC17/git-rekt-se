@@ -1,5 +1,5 @@
 <template>
-    <div class="step2" >
+    <div class="step2">
         <div class="column is-6 is-offset-1">
     
             <div class="box">
@@ -25,24 +25,69 @@
     
         <div class="column is-4">
             <div class="box">
-                <div class="service">
-                    <div class="media service-info">
-                        <div class="media-left">
-                            <figure class="image is-64x64">
-                                <img src="http://bulma.io/images/placeholders/128x128.png" alt="Image">
-                            </figure>
-                        </div>
-                        <!-- Service Cover Image-->
+                <h1 class="title is-5">{{ service.name }}</h1>
+                <p class="subtitle is-6">{{ service.businessName }}</p>
     
-                        <div class="media-content">
-                            <strong>German Course #1</strong>
-                            <p class="shortDescription">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore tenetur odio facere nobis nemo adipisci eius sequi, in sint recusandae
-                            </p>
-                            <el-rate class="is-pulled-right" v-model="form.rating" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" disabled></el-rate>
-                        </div>
-                    </div>
+                <div class="timing">
+                    <p class="icon-margin">
+                        <span class="icon">
+                                          <i class="checkout-i fa fa-calendar"></i>
+                </span> {{ form.offering.startDate | moment}}
+                    </p>
+                    <p class="icon-margin">
+                        <span class="icon">
+                <i class="checkout-i fa fa-calendar"></i>
+                </span> {{ form.offering.endDate | moment}}
+                    </p>
+    
+                    <p class="icon-margin">
+                        <span classs="icon">
+                 <i class="checkout-i fa fa-clock-o"></i>
+                </span> {{ getServiceDuration(form.offering.startDate, form.offering.endDate) }}
+                    </p>
+    
                 </div>
+    
+                <div class="serviceloc">
+                    <p class="icon-margin">
+                        <span classs="icon">
+                <i class="checkout-i fa fa-location-arrow"></i>
+                </span> {{ form.offering.location }}
+                    </p>
+    
+                    <p class="icon-margin">
+                        <span classs="icon">
+                <i class="checkout-i fa fa-map-marker"></i>
+                </span> {{ form.offering.address }}
+                    </p>
+                </div>
+    
+                <div class="payment">
+                    <p class="icon-margin">
+                        <span classs="icon">
+                                                    <i class="checkout-i fa fa-money"></i>
+                                        </span> {{ form.offering.price }} EGP
+                    </p>
+                </div>
+    
+                <hr />
+    
+                <div class="coupon" v-show="form.coupon">
+    
+                    <p>
+                        <span classs="icon">
+                             <i class="checkout-i fa fa-tag"></i>
+                        </span> {{ coupon }}:
+                        <span class="is-pulled-right"> -{{ form.offering.price - price }} EGP.</span>
+                    </p>
+                    <hr />
+                </div>
+    
+                <p class="title is-5">
+                    Subtotal:
+                    <span class="is-pulled-right">{{ price }} EGP.</span>
+                </p>
+                <el-button type="success">Confirm Booking</el-button>
             </div>
         </div>
     </div>
@@ -50,19 +95,28 @@
 
 <script>
     import Endpoints from '../../../services/EndPoints.js';
-
+    import moment from 'moment';
+    
     export default {
-        props: ['form'],
-        
+        props: ['form', 'service'],
+    
         data() {
             return {
                 stripeError: '',
                 invalidCoupon: '',
                 validCoupon: '',
-                coupon: '',
+                coupon: undefined,
             }
         },
-
+    
+        computed: {
+            price() {
+                const originalPrice = this.form.offering.price;
+                const coupon = this.form.coupon;
+                return parseFloat(originalPrice) * (coupon ? ((100 - parseInt(coupon.discount)) / 100.0) : 1);
+            }
+        },
+    
         methods: {
             initStripe() {
                 const stripe = Stripe('pk_test_BAf83Axjq8bck9Pbd36seTPS');
@@ -98,30 +152,59 @@
                     self.stripeError = event.error ? event.error.message : '';
                 });
             },
-
-            validateCoupon(){
+    
+            validateCoupon() {
                 const url = Endpoints.Service().validateCoupon;
+                this.form.coupon = '';
                 this.invalidCoupon = '';
                 this.validCoupon = '';
-
+    
                 axios
-                .post(url, {
-                    code: this.coupon,
-                    serviceId: this.$route.params.ser_id,
-                })
-                .then((data) => {
-                    this.form.coupon = data.data;
-                    this.coupon = data.data.code;
-                    this.validCoupon = 'Coupon applied.';
-                })
-                .catch(e =>{
-                     this.invalidCoupon = e.response.data.errors[0];
-                });
+                    .post(url, {
+                        code: this.coupon,
+                        serviceId: this.$route.params.ser_id,
+                    })
+                    .then((data) => {
+                        this.form.coupon = data.data;
+                        this.coupon = data.data.code;
+                        this.validCoupon = 'Coupon applied.';
+                    })
+                    .catch(e => {
+                        this.invalidCoupon = e.response.data.errors[0];
+                    });
+            },
+    
+            getServiceDuration(startDate, endDate) {
+                const momentStartDate = moment(startDate);
+                const momentEndDate = moment(endDate);
+                return `${momentEndDate.diff(momentStartDate, 'days')} days.`;
             }
         },
-
-        mounted(){
+    
+        mounted() {
             this.initStripe();
         },
+    
+        filters: {
+            moment(date) {
+                return moment(date).format("dddd MMMM Do YYYY.");
+            }
+        }
     }
 </script>
+
+<style>
+    .serviceloc,
+    .payment,
+    .timing {
+        margin-bottom: 1em;
+    }
+    
+    .icon-margin {
+        margin-bottom: 0.5em !important;
+    }
+    
+    .checkout-i {
+        font-size: 1.5rem !important;
+    }
+</style>

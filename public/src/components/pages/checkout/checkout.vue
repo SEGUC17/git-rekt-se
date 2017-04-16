@@ -15,7 +15,7 @@
     
             <checkoutStep1 class="column is-10 is-offset-1" :form="form" :service="service"
                            v-show="active === 1" @reviewBooking="goToStep2"></checkoutStep1>    
-            <checkoutStep2 class="column is-12 columns " :form="form" v-show="active === 2"></checkoutStep2>
+            <checkoutStep2 class="column is-12 columns " :service="service" :form="form" v-show="active === 2"></checkoutStep2>
         </div>
     </div>
 </template>
@@ -35,7 +35,7 @@
 
         data() {
             return {
-                active: 2,
+                active: 1,
                 form: {
                     branch: '',
                     offering: '',
