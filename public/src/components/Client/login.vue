@@ -55,6 +55,7 @@
         },
         methods: {
             submitForm(formName) {
+                this.errors = [];
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         clientAuth.login(this.form.data(), (responseErrors, response) => {

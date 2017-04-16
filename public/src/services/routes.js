@@ -7,10 +7,10 @@ const routes = [{
   path: '/about',
   component: About,
 }, {
-  path: '/clientlogin',
+  path: '/client/login',
   component: clientLogin,
 }, {
-  path: '/clientlogout',
+  path: '/client/logout',
   component: clientLogout,
 }];
 
