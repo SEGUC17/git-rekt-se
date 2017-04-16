@@ -45,7 +45,7 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
           if (results) {
             for (i; i < results.length; i += 1) {
               results[i]._deleted = true;
-              results.save();
+              results[i].save();
             }
           }
         });
@@ -61,7 +61,7 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
               branchlist[i] = results3[i]; // save to a const to not
               // create a function inside this loop
               results3[i]._deleted = true;
-              results3.save();
+              results3[i].save();
             }
           }
         });
@@ -77,7 +77,7 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
             if (results2) {
               for (i; i < results2.length; i += 1) {
                 results2[i]._deleted = true;
-                results2.save();
+                results2[i].save();
               }
             }
           });

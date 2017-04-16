@@ -4,7 +4,9 @@ const supertest = require('supertest');
 const app = require('../../../app/app');
 const Business = require('../../../app/models/business/Business');
 const BusinessesSeed = require('../../../app/seed/business/businessSeed');
+const BranchesSeed = require('../../../app/seed/service/branches');
 const Admin = require('../../../app/models/admin/Admin');
+const Branch = require('../../../app/models/service/Branch');
 const Strings = require('../../../app/services/shared/Strings');
 const locations = require('../../../app/seed/service/locations.js');
 
@@ -45,12 +47,15 @@ describe('Category CRUD Test Suite', () => {
 
   beforeEach((done) => {
     Business.collection.drop(() => {
-      Business.ensureIndexes(done);
+      Business.ensureIndexes();
+    });
+    Branch.collection.drop(() => {
+      Branch.ensureIndexes(done);
     });
   });
+
   it('should delete a business and return a confirmation message', (done) => {
     const business = BusinessesSeed[4];
-    console.log(business);
     new Business(business)
       .save((err, res) => {
         if (err) {
@@ -63,6 +68,22 @@ describe('Category CRUD Test Suite', () => {
               if (Err2) {
                 done(Err2);
               } else {
+                const branch = {
+                  _business: bus._id,
+                  location: locations[0],
+                  address: '16th Avenue',
+                };
+                new Branch(branch)
+                  .save();
+                const newBranchData = {
+                  branch: {
+                    location: locations[0],
+                    address: '16th Avenue',
+                  },
+                };
+                bus.branches = newBranchData;
+                bus.save();
+                console.log(bus);
                 req = supertest(app)
                   .post(`/api/v1/admin/business/delete/${bus._id}`)
                   .set('Authorization', `JWT ${token}`)
@@ -106,5 +127,13 @@ describe('Category CRUD Test Suite', () => {
           value: 'x1',
         }],
       }, done);
+  });
+  after((done) => {
+    Business.collection.drop(() => {
+      Business.ensureIndexes();
+    });
+    Branch.collection.drop(() => {
+      Branch.ensureIndexes(done);
+    });
   });
 });
