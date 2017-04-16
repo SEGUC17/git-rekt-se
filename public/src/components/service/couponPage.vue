@@ -32,28 +32,28 @@
     <div>
       <el-card class="box-card">
         <el-row type="flex" class="row-bg">
-          <el-col :span="8">
+          <el-col :span="6">
             <h4 class="title is-4">
               <span>
                               Coupon Code
                            </span>
             </h4>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="6">
             <h4 class="title is-4">
               <span>
                               Discount (%)
                            </span>
             </h4>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="6">
             <h4 class="title is-4">
               <span>
                               Start Date
                            </span>
             </h4>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <h4 class="title is-4">
               <span>
                               End Date
