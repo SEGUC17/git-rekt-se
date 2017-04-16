@@ -73,7 +73,7 @@
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
-var bind = __webpack_require__(17);
+var bind = __webpack_require__(18);
 
 /*global toString:true*/
 
@@ -724,6 +724,12 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(26);
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -909,84 +915,15 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 7 */,
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(28);
-
-/***/ }),
+/* 8 */,
 /* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(18);
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  user: {
-    authenticated: false,
-    userID: function userID() {
-      return localStorage.getItem('client_id');
-    },
-    userEmail: function userEmail() {
-      return localStorage.getItem('client_email');
-    }
-  },
-  login: function login(data, callBack) {
-    var _this = this;
-
-    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* Client */])().login, data).then(function (response) {
-      _this.user.authenticated = true;
-      localStorage.setItem('client_token', response.data.token);
-      localStorage.setItem('client_email', response.data.email);
-      localStorage.setItem('client_id', response.data.id);
-      return callBack(null, response.data);
-    }).catch(function (err) {
-      callBack(err.response.data, null);
-    });
-  },
-  logout: function logout(callBack) {
-    var _this2 = this;
-
-    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* Client */])().logout, null, {
-      headers: {
-        Authorization: this.getJWTtoken()
-      }
-    }).then(function (response) {
-      _this2.user.authenticated = false;
-      localStorage.removeItem('client_token', response.data.token);
-      localStorage.removeItem('client_email', response.data.email);
-      localStorage.removeItem('client_id', response.data.id);
-      callBack(null, response.data);
-    }).catch(function (err) {
-      callBack(err.response.data, null);
-    });
-  },
-  getJWTtoken: function getJWTtoken() {
-    return 'JWT ' + localStorage.getItem('client_token');
-  },
-  refreshAuth: function refreshAuth() {
-    if (localStorage.getItem('client_token')) {
-      this.user.authenticated = true;
-    } else {
-      this.user.authenticated = false;
-    }
-  }
-});
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(42);
+var normalizeHeaderName = __webpack_require__(40);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -1002,10 +939,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(13);
+    adapter = __webpack_require__(14);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(13);
+    adapter = __webpack_require__(14);
   }
   return adapter;
 }
@@ -1076,286 +1013,17 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 11 */,
-/* 12 */,
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(0);
-var settle = __webpack_require__(34);
-var buildURL = __webpack_require__(37);
-var parseHeaders = __webpack_require__(43);
-var isURLSameOrigin = __webpack_require__(41);
-var createError = __webpack_require__(16);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(36);
-
-module.exports = function xhrAdapter(config) {
-  return new Promise(function dispatchXhrRequest(resolve, reject) {
-    var requestData = config.data;
-    var requestHeaders = config.headers;
-
-    if (utils.isFormData(requestData)) {
-      delete requestHeaders['Content-Type']; // Let the browser set it
-    }
-
-    var request = new XMLHttpRequest();
-    var loadEvent = 'onreadystatechange';
-    var xDomain = false;
-
-    // For IE 8/9 CORS support
-    // Only supports POST and GET calls and doesn't returns the response headers.
-    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
-    if (process.env.NODE_ENV !== 'test' &&
-        typeof window !== 'undefined' &&
-        window.XDomainRequest && !('withCredentials' in request) &&
-        !isURLSameOrigin(config.url)) {
-      request = new window.XDomainRequest();
-      loadEvent = 'onload';
-      xDomain = true;
-      request.onprogress = function handleProgress() {};
-      request.ontimeout = function handleTimeout() {};
-    }
-
-    // HTTP basic authentication
-    if (config.auth) {
-      var username = config.auth.username || '';
-      var password = config.auth.password || '';
-      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
-    }
-
-    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
-
-    // Set the request timeout in MS
-    request.timeout = config.timeout;
-
-    // Listen for ready state
-    request[loadEvent] = function handleLoad() {
-      if (!request || (request.readyState !== 4 && !xDomain)) {
-        return;
-      }
-
-      // The request errored out and we didn't get a response, this will be
-      // handled by onerror instead
-      // With one exception: request that using file: protocol, most browsers
-      // will return status as 0 even though it's a successful request
-      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
-        return;
-      }
-
-      // Prepare the response
-      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
-      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
-      var response = {
-        data: responseData,
-        // IE sends 1223 instead of 204 (https://github.com/mzabriskie/axios/issues/201)
-        status: request.status === 1223 ? 204 : request.status,
-        statusText: request.status === 1223 ? 'No Content' : request.statusText,
-        headers: responseHeaders,
-        config: config,
-        request: request
-      };
-
-      settle(resolve, reject, response);
-
-      // Clean up request
-      request = null;
-    };
-
-    // Handle low level network errors
-    request.onerror = function handleError() {
-      // Real errors are hidden from us by the browser
-      // onerror should only fire if it's a network error
-      reject(createError('Network Error', config));
-
-      // Clean up request
-      request = null;
-    };
-
-    // Handle timeout
-    request.ontimeout = function handleTimeout() {
-      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED'));
-
-      // Clean up request
-      request = null;
-    };
-
-    // Add xsrf header
-    // This is only done if running in a standard browser environment.
-    // Specifically not if we're in a web worker, or react-native.
-    if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(39);
-
-      // Add xsrf header
-      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
-          cookies.read(config.xsrfCookieName) :
-          undefined;
-
-      if (xsrfValue) {
-        requestHeaders[config.xsrfHeaderName] = xsrfValue;
-      }
-    }
-
-    // Add headers to the request
-    if ('setRequestHeader' in request) {
-      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
-        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
-          // Remove Content-Type if data is undefined
-          delete requestHeaders[key];
-        } else {
-          // Otherwise add header to the request
-          request.setRequestHeader(key, val);
-        }
-      });
-    }
-
-    // Add withCredentials to request if needed
-    if (config.withCredentials) {
-      request.withCredentials = true;
-    }
-
-    // Add responseType to request if needed
-    if (config.responseType) {
-      try {
-        request.responseType = config.responseType;
-      } catch (e) {
-        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
-        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
-        if (config.responseType !== 'json') {
-          throw e;
-        }
-      }
-    }
-
-    // Handle progress if needed
-    if (typeof config.onDownloadProgress === 'function') {
-      request.addEventListener('progress', config.onDownloadProgress);
-    }
-
-    // Not all browsers support upload events
-    if (typeof config.onUploadProgress === 'function' && request.upload) {
-      request.upload.addEventListener('progress', config.onUploadProgress);
-    }
-
-    if (config.cancelToken) {
-      // Handle cancellation
-      config.cancelToken.promise.then(function onCanceled(cancel) {
-        if (!request) {
-          return;
-        }
-
-        request.abort();
-        reject(cancel);
-        // Clean up request
-        request = null;
-      });
-    }
-
-    if (requestData === undefined) {
-      requestData = null;
-    }
-
-    // Send the request
-    request.send(requestData);
-  });
-};
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * A `Cancel` is an object that is thrown when an operation is canceled.
- *
- * @class
- * @param {string=} message The message.
- */
-function Cancel(message) {
-  this.message = message;
-}
-
-Cancel.prototype.toString = function toString() {
-  return 'Cancel' + (this.message ? ': ' + this.message : '');
-};
-
-Cancel.prototype.__CANCEL__ = true;
-
-module.exports = Cancel;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function isCancel(value) {
-  return !!(value && value.__CANCEL__);
-};
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var enhanceError = __webpack_require__(33);
-
-/**
- * Create an Error with the specified message, config, error code, and response.
- *
- * @param {string} message The error message.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- @ @param {Object} [response] The response.
- * @returns {Error} The created error.
- */
-module.exports = function createError(message, config, code, response) {
-  var error = new Error(message);
-  return enhanceError(error, config, code, response);
-};
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = function bind(fn, thisArg) {
-  return function wrap() {
-    var args = new Array(arguments.length);
-    for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i];
-    }
-    return fn.apply(thisArg, args);
-  };
-};
-
-
-/***/ }),
-/* 18 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Visitor; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Client; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Visitor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Client; });
 /* unused harmony export Business */
-/* unused harmony export Admin */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Admin; });
 /* unused harmony export Service */
 var BASE = 'http://localhost:3000/api/v1';
 
@@ -1506,237 +1174,340 @@ var Service = function Service() {
 });
 
 /***/ }),
-/* 19 */
+/* 11 */,
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Errors__ = __webpack_require__(52);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(10);
 
 
 
-
-var Form = function () {
-  /**
-   * Creates an instance of Form.
-   * @param {Object} data
-   *
-   * @memberOf Form
-   */
-  function Form() {
+/* harmony default export */ __webpack_exports__["a"] = ({
+  user: {
+    authenticated: false,
+    userID: function userID() {
+      return localStorage.getItem('client_id');
+    },
+    userEmail: function userEmail() {
+      return localStorage.getItem('client_email');
+    }
+  },
+  login: function login(data, callBack) {
     var _this = this;
 
-    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Client */])().login, data).then(function (response) {
+      _this.user.authenticated = true;
+      localStorage.setItem('client_token', response.data.token);
+      localStorage.setItem('client_email', response.data.email);
+      localStorage.setItem('client_id', response.data.id);
+      return callBack(null, response.data);
+    }).catch(function (err) {
+      callBack(err.response.data, null);
+    });
+  },
+  logout: function logout(callBack) {
+    var _this2 = this;
 
-    _classCallCheck(this, Form);
-
-    this.keys = Object.keys(data);
-    this.keys.forEach(function (key) {
-      _this[key] = data[key];
-    }, this);
-    this.errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */]();
-  }
-
-  /**
-   * Sets the value of a specific attribute.
-   * @param {String} key
-   * @param {any} value
-   *
-   * @memberOf Form
-   */
-
-
-  _createClass(Form, [{
-    key: 'set',
-    value: function set(key, value) {
-      if (!Object.prototype.hasOwnProperty.call(this, key)) {
-        throw new Error('Can only set values to keys that exist after creation!');
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Client */])().logout, null, {
+      headers: {
+        Authorization: this.getJWTtoken()
       }
-      this[key] = value;
+    }).then(function (response) {
+      _this2.user.authenticated = false;
+      localStorage.removeItem('client_token', response.data.token);
+      localStorage.removeItem('client_email', response.data.email);
+      localStorage.removeItem('client_id', response.data.id);
+      callBack(null, response.data);
+    }).catch(function (err) {
+      callBack(err.response.data, null);
+    });
+  },
+  getJWTtoken: function getJWTtoken() {
+    return 'JWT ' + localStorage.getItem('client_token');
+  },
+  refreshAuth: function refreshAuth() {
+    if (localStorage.getItem('client_token')) {
+      this.user.authenticated = true;
+    } else {
+      this.user.authenticated = false;
+    }
+  }
+});
+
+/***/ }),
+/* 13 */,
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(0);
+var settle = __webpack_require__(32);
+var buildURL = __webpack_require__(35);
+var parseHeaders = __webpack_require__(41);
+var isURLSameOrigin = __webpack_require__(39);
+var createError = __webpack_require__(17);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(34);
+
+module.exports = function xhrAdapter(config) {
+  return new Promise(function dispatchXhrRequest(resolve, reject) {
+    var requestData = config.data;
+    var requestHeaders = config.headers;
+
+    if (utils.isFormData(requestData)) {
+      delete requestHeaders['Content-Type']; // Let the browser set it
     }
 
-    /**
-     * Resets the values of this form unless specific attributes were given.
-     * @param {Array} keys
-     *
-     * @memberOf Form
-     */
+    var request = new XMLHttpRequest();
+    var loadEvent = 'onreadystatechange';
+    var xDomain = false;
 
-  }, {
-    key: 'reset',
-    value: function reset() {
-      var _this2 = this;
-
-      var keys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.keys;
-
-      keys.forEach(function (key) {
-        _this2[key] = '';
-      }, this);
+    // For IE 8/9 CORS support
+    // Only supports POST and GET calls and doesn't returns the response headers.
+    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
+    if (process.env.NODE_ENV !== 'test' &&
+        typeof window !== 'undefined' &&
+        window.XDomainRequest && !('withCredentials' in request) &&
+        !isURLSameOrigin(config.url)) {
+      request = new window.XDomainRequest();
+      loadEvent = 'onload';
+      xDomain = true;
+      request.onprogress = function handleProgress() {};
+      request.ontimeout = function handleTimeout() {};
     }
 
-    /**
-     * Returns the data of this form in JSON format.
-     * @returns {Object}
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'data',
-    value: function data() {
-      var _this3 = this;
-
-      var data = {};
-      this.keys.forEach(function (key) {
-        data[key] = _this3[key];
-      }, this);
-      return data;
+    // HTTP basic authentication
+    if (config.auth) {
+      var username = config.auth.username || '';
+      var password = config.auth.password || '';
+      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
     }
 
-    /**
-     * Submits this form using the given method and url,
-     * updating the forms state and return a Promise.
-     * @param {String} method
-     * @param {String} url
-     * @returns {Promise}
-     * @memberOf Form
-     */
+    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
 
-  }, {
-    key: 'submit',
-    value: function submit(method, url) {
-      var _this4 = this;
+    // Set the request timeout in MS
+    request.timeout = config.timeout;
 
-      this.errors.clear();
-      return new Promise(function (resolve, reject) {
-        __WEBPACK_IMPORTED_MODULE_0_axios___default.a[method](url, _this4.data()).then(function (response) {
-          _this4.onSuccess(response);
-          resolve(response.data, response);
-        }).catch(function (err) {
-          _this4.onFailure(err);
-          reject(err.response ? err.response.data.errors : err.message, err);
-        });
+    // Listen for ready state
+    request[loadEvent] = function handleLoad() {
+      if (!request || (request.readyState !== 4 && !xDomain)) {
+        return;
+      }
+
+      // The request errored out and we didn't get a response, this will be
+      // handled by onerror instead
+      // With one exception: request that using file: protocol, most browsers
+      // will return status as 0 even though it's a successful request
+      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+        return;
+      }
+
+      // Prepare the response
+      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
+      var response = {
+        data: responseData,
+        // IE sends 1223 instead of 204 (https://github.com/mzabriskie/axios/issues/201)
+        status: request.status === 1223 ? 204 : request.status,
+        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+        headers: responseHeaders,
+        config: config,
+        request: request
+      };
+
+      settle(resolve, reject, response);
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle low level network errors
+    request.onerror = function handleError() {
+      // Real errors are hidden from us by the browser
+      // onerror should only fire if it's a network error
+      reject(createError('Network Error', config));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle timeout
+    request.ontimeout = function handleTimeout() {
+      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED'));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Add xsrf header
+    // This is only done if running in a standard browser environment.
+    // Specifically not if we're in a web worker, or react-native.
+    if (utils.isStandardBrowserEnv()) {
+      var cookies = __webpack_require__(37);
+
+      // Add xsrf header
+      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
+          cookies.read(config.xsrfCookieName) :
+          undefined;
+
+      if (xsrfValue) {
+        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+      }
+    }
+
+    // Add headers to the request
+    if ('setRequestHeader' in request) {
+      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+          // Remove Content-Type if data is undefined
+          delete requestHeaders[key];
+        } else {
+          // Otherwise add header to the request
+          request.setRequestHeader(key, val);
+        }
       });
     }
 
-    /**
-     * Submits the form to the given url using a GET Request.
-     * @param {String} url
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'get',
-    value: function get(url) {
-      return this.submit('get', url);
+    // Add withCredentials to request if needed
+    if (config.withCredentials) {
+      request.withCredentials = true;
     }
 
-    /**
-     * Submits the form to the given url using a POST Request.
-     * @param {String} url
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'post',
-    value: function post(url) {
-      return this.submit('post', url);
-    }
-
-    /**
-     * Submits the form to the given url using a PUT Request.
-     * @param {String} url
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'put',
-    value: function put(url) {
-      return this.submit('put', url);
-    }
-
-    /**
-     * Submits the form to the given url using a DELETE Request.
-     * @param {String} url
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'delete',
-    value: function _delete(url) {
-      return this.submit('delete', url);
-    }
-
-    /**
-     * Called when request finishes successfully.
-     * @param {ResponseSchema} response
-     * @see {@link https://github.com/mzabriskie/axios#response-schema}
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'onSuccess',
-    value: function onSuccess(response) {
-      this.reset();
-    }
-
-    /**
-     * Called when request finishes with an error.
-     * @param {Error} error
-     * @see {@link https://github.com/mzabriskie/axios#handling-errors}
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'onFailure',
-    value: function onFailure(error) {
-      var errors = void 0;
-      if (error.response) {
-        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.response.data.errors);
-      } else {
-        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.message);
+    // Add responseType to request if needed
+    if (config.responseType) {
+      try {
+        request.responseType = config.responseType;
+      } catch (e) {
+        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
+        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
+        if (config.responseType !== 'json') {
+          throw e;
+        }
       }
-      this.errors = errors;
     }
-  }]);
 
-  return Form;
-}();
+    // Handle progress if needed
+    if (typeof config.onDownloadProgress === 'function') {
+      request.addEventListener('progress', config.onDownloadProgress);
+    }
 
-/* harmony default export */ __webpack_exports__["a"] = (Form);
+    // Not all browsers support upload events
+    if (typeof config.onUploadProgress === 'function' && request.upload) {
+      request.upload.addEventListener('progress', config.onUploadProgress);
+    }
 
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+    if (config.cancelToken) {
+      // Handle cancellation
+      config.cancelToken.promise.then(function onCanceled(cancel) {
+        if (!request) {
+          return;
+        }
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clientLoginRules; });
-/* unused harmony default export */ var _unused_webpack_default_export = ({});
+        request.abort();
+        reject(cancel);
+        // Clean up request
+        request = null;
+      });
+    }
 
-var clientLoginRules = {
-  email: [{
-    required: true,
-    message: 'Please enter your email',
-    trigger: 'blur'
-  }],
-  password: [{
-    required: true,
-    message: 'Please enter your password',
-    trigger: 'blur'
-  }]
+    if (requestData === undefined) {
+      requestData = null;
+    }
+
+    // Send the request
+    request.send(requestData);
+  });
 };
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+
 /***/ }),
-/* 21 */,
-/* 22 */
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * A `Cancel` is an object that is thrown when an operation is canceled.
+ *
+ * @class
+ * @param {string=} message The message.
+ */
+function Cancel(message) {
+  this.message = message;
+}
+
+Cancel.prototype.toString = function toString() {
+  return 'Cancel' + (this.message ? ': ' + this.message : '');
+};
+
+Cancel.prototype.__CANCEL__ = true;
+
+module.exports = Cancel;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var enhanceError = __webpack_require__(31);
+
+/**
+ * Create an Error with the specified message, config, error code, and response.
+ *
+ * @param {string} message The error message.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ @ @param {Object} [response] The response.
+ * @returns {Error} The created error.
+ */
+module.exports = function createError(message, config, code, response) {
+  var error = new Error(message);
+  return enhanceError(error, config, code, response);
+};
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+
+/***/ }),
+/* 19 */,
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -1745,7 +1516,7 @@ __webpack_require__(80)
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(46),
+  __webpack_require__(44),
   /* template */
   __webpack_require__(75),
   /* scopeId */
@@ -1774,7 +1545,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 23 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -1783,7 +1554,7 @@ __webpack_require__(79)
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(47),
+  __webpack_require__(45),
   /* template */
   __webpack_require__(74),
   /* scopeId */
@@ -1812,7 +1583,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 24 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4219,10 +3990,10 @@ if (inBrowser && window.Vue) {
 
 /* harmony default export */ __webpack_exports__["a"] = (VueRouter);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
 
 /***/ }),
-/* 25 */
+/* 23 */
 /***/ (function(module, exports) {
 
 var g;
@@ -4249,17 +4020,17 @@ module.exports = g;
 
 
 /***/ }),
-/* 26 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_Index_home_vue__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_Index_home_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_pages_Index_home_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Client_login_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Client_login_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Client_login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Client_login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Admin_removeClient_vue__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Admin_removeClient_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Admin_removeClient_vue__);
@@ -4291,17 +4062,17 @@ var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
 /* harmony default export */ __webpack_exports__["default"] = (router);
 
 /***/ }),
-/* 27 */,
-/* 28 */
+/* 25 */,
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(17);
-var Axios = __webpack_require__(30);
-var defaults = __webpack_require__(10);
+var bind = __webpack_require__(18);
+var Axios = __webpack_require__(28);
+var defaults = __webpack_require__(9);
 
 /**
  * Create an instance of Axios
@@ -4334,15 +4105,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(14);
-axios.CancelToken = __webpack_require__(29);
-axios.isCancel = __webpack_require__(15);
+axios.Cancel = __webpack_require__(15);
+axios.CancelToken = __webpack_require__(27);
+axios.isCancel = __webpack_require__(16);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(44);
+axios.spread = __webpack_require__(42);
 
 module.exports = axios;
 
@@ -4351,13 +4122,13 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 29 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(14);
+var Cancel = __webpack_require__(15);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -4415,18 +4186,18 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 30 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(10);
+var defaults = __webpack_require__(9);
 var utils = __webpack_require__(0);
-var InterceptorManager = __webpack_require__(31);
-var dispatchRequest = __webpack_require__(32);
-var isAbsoluteURL = __webpack_require__(40);
-var combineURLs = __webpack_require__(38);
+var InterceptorManager = __webpack_require__(29);
+var dispatchRequest = __webpack_require__(30);
+var isAbsoluteURL = __webpack_require__(38);
+var combineURLs = __webpack_require__(36);
 
 /**
  * Create a new instance of Axios
@@ -4507,7 +4278,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 31 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4566,16 +4337,16 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 32 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var transformData = __webpack_require__(35);
-var isCancel = __webpack_require__(15);
-var defaults = __webpack_require__(10);
+var transformData = __webpack_require__(33);
+var isCancel = __webpack_require__(16);
+var defaults = __webpack_require__(9);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -4652,7 +4423,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 33 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4678,13 +4449,13 @@ module.exports = function enhanceError(error, config, code, response) {
 
 
 /***/ }),
-/* 34 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(16);
+var createError = __webpack_require__(17);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -4710,7 +4481,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 35 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4737,7 +4508,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 36 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4780,7 +4551,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 37 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4855,7 +4626,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 38 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4876,7 +4647,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 39 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4936,7 +4707,7 @@ module.exports = (
 
 
 /***/ }),
-/* 40 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4957,7 +4728,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 41 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5032,7 +4803,7 @@ module.exports = (
 
 
 /***/ }),
-/* 42 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5051,7 +4822,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 43 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5095,7 +4866,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 44 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5129,228 +4900,184 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
+/* 43 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints_js__ = __webpack_require__(10);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            errors: [],
+            clients: []
+        };
+    },
+    mounted: function mounted() {
+        this.names = this.getClients();
+    },
+
+    methods: {
+        getClients: function getClients() {
+            var _this = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints_js__["a" /* Admin */])().removeClient).then(function (res) {
+                console.log(res);
+                _this.clients = res.data;
+            }).catch(function () {
+                _this.clients = [];
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(52);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            form: new __WEBPACK_IMPORTED_MODULE_1__services_Form__["a" /* default */]({
+                email: '',
+                password: ''
+            }),
+            rules: __WEBPACK_IMPORTED_MODULE_2__services_validation__["a" /* clientLoginRules */],
+            logged_in: false,
+            loginSuccess: '',
+            errors: []
+        };
+    },
+    mounted: function mounted() {
+        __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].refreshAuth();
+        if (__WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].user.authenticated) {
+            this.$router.push('/');
+        }
+    },
+
+    methods: {
+        submitForm: function submitForm(formName) {
+            var _this = this;
+
+            this.errors = [];
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].login(_this.form.data(), function (responseErrors, response) {
+                        if (responseErrors) {
+                            _this.errors = responseErrors.errors.map(function (err) {
+                                if (typeof err === 'string') {
+                                    return err;
+                                } else {
+                                    return err.msg;
+                                }
+                            });
+                        } else {
+                            _this.logged_in = true;
+                            _this.loginSuccess = response.message;
+                            setTimeout(function () {
+                                _this.$router.push('/');
+                            }, 1000);
+                        }
+                    });
+                } else {
+                    _this.errors.push('Please fill in all the fields');
+                }
+            });
+        },
+        resetForm: function resetForm(formName) {
+            this.$refs[formName].resetFields();
+            this.errors = [];
+        }
+    }
+});
+
+/***/ }),
 /* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(20);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            form: new __WEBPACK_IMPORTED_MODULE_1__services_Form__["a" /* default */]({
-                email: '',
-                password: ''
-            }),
-            rules: __WEBPACK_IMPORTED_MODULE_2__services_validation__["a" /* clientLoginRules */],
-            logged_in: false,
-            loginSuccess: '',
-            errors: []
-        };
-    },
-    mounted: function mounted() {
-        __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].refreshAuth();
-        if (__WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].user.authenticated) {
-            this.$router.push('/');
-        }
-    },
-
-    methods: {
-        submitForm: function submitForm(formName) {
-            var _this = this;
-
-            this.errors = [];
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].login(_this.form.data(), function (responseErrors, response) {
-                        if (responseErrors) {
-                            _this.errors = responseErrors.errors.map(function (err) {
-                                if (typeof err === 'string') {
-                                    return err;
-                                } else {
-                                    return err.msg;
-                                }
-                            });
-                        } else {
-                            _this.logged_in = true;
-                            _this.loginSuccess = response.message;
-                            setTimeout(function () {
-                                _this.$router.push('/');
-                            }, 1000);
-                        }
-                    });
-                } else {
-                    _this.errors.push('Please fill in all the fields');
-                }
-            });
-        },
-        resetForm: function resetForm(formName) {
-            this.$refs[formName].resetFields();
-            this.errors = [];
-        }
-    }
-});
-
-/***/ }),
-/* 46 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(20);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            form: new __WEBPACK_IMPORTED_MODULE_1__services_Form__["a" /* default */]({
-                email: '',
-                password: ''
-            }),
-            rules: __WEBPACK_IMPORTED_MODULE_2__services_validation__["a" /* clientLoginRules */],
-            logged_in: false,
-            loginSuccess: '',
-            errors: []
-        };
-    },
-    mounted: function mounted() {
-        __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].refreshAuth();
-        if (__WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].user.authenticated) {
-            this.$router.push('/');
-        }
-    },
-
-    methods: {
-        submitForm: function submitForm(formName) {
-            var _this = this;
-
-            this.errors = [];
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].login(_this.form.data(), function (responseErrors, response) {
-                        if (responseErrors) {
-                            _this.errors = responseErrors.errors.map(function (err) {
-                                if (typeof err === 'string') {
-                                    return err;
-                                } else {
-                                    return err.msg;
-                                }
-                            });
-                        } else {
-                            _this.logged_in = true;
-                            _this.loginSuccess = response.message;
-                            setTimeout(function () {
-                                _this.$router.push('/');
-                            }, 1000);
-                        }
-                    });
-                } else {
-                    _this.errors.push('Please fill in all the fields');
-                }
-            });
-        },
-        resetForm: function resetForm(formName) {
-            this.$refs[formName].resetFields();
-            this.errors = [];
-        }
-    }
-});
-
-/***/ }),
-/* 47 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(12);
 //
 //
 //
@@ -5404,18 +5131,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 48 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_gr_card_vue__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_gr_card_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__shared_gr_card_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mainLocations__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__priceRanges__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_EndPoints__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mainLocations__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__priceRanges__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_EndPoints__ = __webpack_require__(10);
 //
 //
 //
@@ -5535,7 +5262,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     getLocations: function getLocations() {
       var _this = this;
 
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_EndPoints__["b" /* Visitor */])().locations).then(function (res) {
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_EndPoints__["c" /* Visitor */])().locations).then(function (res) {
         _this.locations = res.data;
       }).catch(function () {
         _this.locations = __WEBPACK_IMPORTED_MODULE_2__mainLocations__["a" /* default */];
@@ -5602,7 +5329,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 49 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5633,7 +5360,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 50 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5662,7 +5389,7 @@ var locations = [{
 /* harmony default export */ __webpack_exports__["a"] = (locations);
 
 /***/ }),
-/* 51 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5688,7 +5415,7 @@ var ranges = [{
 /* harmony default export */ __webpack_exports__["a"] = (ranges);
 
 /***/ }),
-/* 52 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5895,6 +5622,235 @@ var Errors = function () {
 }();
 
 /* harmony default export */ __webpack_exports__["a"] = (Errors);
+
+/***/ }),
+/* 51 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Errors__ = __webpack_require__(50);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+var Form = function () {
+  /**
+   * Creates an instance of Form.
+   * @param {Object} data
+   *
+   * @memberOf Form
+   */
+  function Form() {
+    var _this = this;
+
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, Form);
+
+    this.keys = Object.keys(data);
+    this.keys.forEach(function (key) {
+      _this[key] = data[key];
+    }, this);
+    this.errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */]();
+  }
+
+  /**
+   * Sets the value of a specific attribute.
+   * @param {String} key
+   * @param {any} value
+   *
+   * @memberOf Form
+   */
+
+
+  _createClass(Form, [{
+    key: 'set',
+    value: function set(key, value) {
+      if (!Object.prototype.hasOwnProperty.call(this, key)) {
+        throw new Error('Can only set values to keys that exist after creation!');
+      }
+      this[key] = value;
+    }
+
+    /**
+     * Resets the values of this form unless specific attributes were given.
+     * @param {Array} keys
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'reset',
+    value: function reset() {
+      var _this2 = this;
+
+      var keys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.keys;
+
+      keys.forEach(function (key) {
+        _this2[key] = '';
+      }, this);
+    }
+
+    /**
+     * Returns the data of this form in JSON format.
+     * @returns {Object}
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'data',
+    value: function data() {
+      var _this3 = this;
+
+      var data = {};
+      this.keys.forEach(function (key) {
+        data[key] = _this3[key];
+      }, this);
+      return data;
+    }
+
+    /**
+     * Submits this form using the given method and url,
+     * updating the forms state and return a Promise.
+     * @param {String} method
+     * @param {String} url
+     * @returns {Promise}
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'submit',
+    value: function submit(method, url) {
+      var _this4 = this;
+
+      this.errors.clear();
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_0_axios___default.a[method](url, _this4.data()).then(function (response) {
+          _this4.onSuccess(response);
+          resolve(response.data, response);
+        }).catch(function (err) {
+          _this4.onFailure(err);
+          reject(err.response ? err.response.data.errors : err.message, err);
+        });
+      });
+    }
+
+    /**
+     * Submits the form to the given url using a GET Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'get',
+    value: function get(url) {
+      return this.submit('get', url);
+    }
+
+    /**
+     * Submits the form to the given url using a POST Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'post',
+    value: function post(url) {
+      return this.submit('post', url);
+    }
+
+    /**
+     * Submits the form to the given url using a PUT Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'put',
+    value: function put(url) {
+      return this.submit('put', url);
+    }
+
+    /**
+     * Submits the form to the given url using a DELETE Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'delete',
+    value: function _delete(url) {
+      return this.submit('delete', url);
+    }
+
+    /**
+     * Called when request finishes successfully.
+     * @param {ResponseSchema} response
+     * @see {@link https://github.com/mzabriskie/axios#response-schema}
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'onSuccess',
+    value: function onSuccess(response) {
+      this.reset();
+    }
+
+    /**
+     * Called when request finishes with an error.
+     * @param {Error} error
+     * @see {@link https://github.com/mzabriskie/axios#handling-errors}
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'onFailure',
+    value: function onFailure(error) {
+      var errors = void 0;
+      if (error.response) {
+        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.response.data.errors);
+      } else {
+        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.message);
+      }
+      this.errors = errors;
+    }
+  }]);
+
+  return Form;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Form);
+
+/***/ }),
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clientLoginRules; });
+/* unused harmony default export */ var _unused_webpack_default_export = ({});
+
+var clientLoginRules = {
+  email: [{
+    required: true,
+    message: 'Please enter your email',
+    trigger: 'blur'
+  }],
+  password: [{
+    required: true,
+    message: 'Please enter your password',
+    trigger: 'blur'
+  }]
+};
 
 /***/ }),
 /* 53 */
@@ -7812,7 +7768,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23)))
 
 /***/ }),
 /* 55 */
@@ -7967,7 +7923,7 @@ __webpack_require__(77)
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(45),
+  __webpack_require__(43),
   /* template */
   __webpack_require__(72),
   /* scopeId */
@@ -8005,7 +7961,7 @@ __webpack_require__(78)
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(48),
+  __webpack_require__(46),
   /* template */
   __webpack_require__(73),
   /* scopeId */
@@ -8043,7 +7999,7 @@ __webpack_require__(81)
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(49),
+  __webpack_require__(47),
   /* template */
   __webpack_require__(76),
   /* scopeId */
@@ -8082,7 +8038,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "column is-half is-offset-one-quarter"
   }, [_c('h1', {
     staticClass: "title has-text-centered"
-  }, [_vm._v("Login")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Client list")]), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -8112,64 +8068,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "success",
       "show-icon": ""
     }
-  })], 1), _vm._v(" "), _c('el-form', {
-    ref: "form",
-    staticClass: "demo-ruleForm",
-    attrs: {
-      "model": _vm.form,
-      "rules": _vm.rules,
-      "label-width": "100px",
-      "label-position": "top"
-    }
-  }, [_c('el-form-item', {
-    attrs: {
-      "label": "Email",
-      "prop": "email"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "placeholder": "Email"
-    },
-    model: {
-      value: (_vm.form.email),
-      callback: function($$v) {
-        _vm.form.email = $$v
-      },
-      expression: "form.email"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "Password",
-      "prop": "password"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "placeholder": "Password",
-      "type": "password"
-    },
-    model: {
-      value: (_vm.form.password),
-      callback: function($$v) {
-        _vm.form.password = $$v
-      },
-      expression: "form.password"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
-    attrs: {
-      "type": "primary"
-    },
-    on: {
-      "click": function($event) {
-        _vm.submitForm('form')
+  })], 1), _vm._v(" "), _vm._l((_vm.clients), function(client) {
+    return _c('li', {
+      domProps: {
+        "textContent": _vm._s(client.label)
       }
-    }
-  }, [_vm._v("Login")]), _vm._v(" "), _c('el-button', {
-    on: {
-      "click": function($event) {
-        _vm.resetForm('form')
-      }
-    }
-  }, [_vm._v("Reset")])], 1)], 1)], 1)])
+    })
+  })], 2)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -8729,7 +8634,7 @@ module.exports = function listToStyles (parentId, list) {
 /* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(26);
+module.exports = __webpack_require__(24);
 
 
 /***/ })

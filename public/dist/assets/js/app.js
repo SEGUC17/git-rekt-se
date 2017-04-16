@@ -73,7 +73,7 @@
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer) {
 
-var bind = __webpack_require__(17);
+var bind = __webpack_require__(18);
 
 /*global toString:true*/
 
@@ -598,7 +598,7 @@ function deepMerge(target, source) {
   }
   return target;
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
 /* 2 */
@@ -956,6 +956,12 @@ function applyToTag (styleElement, obj) {
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(26);
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1141,7 +1147,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10466,86 +10472,17 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(25)))
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(28);
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(23)))
 
 /***/ }),
 /* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(18);
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  user: {
-    authenticated: false,
-    userID: function userID() {
-      return localStorage.getItem('client_id');
-    },
-    userEmail: function userEmail() {
-      return localStorage.getItem('client_email');
-    }
-  },
-  login: function login(data, callBack) {
-    var _this = this;
-
-    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* Client */])().login, data).then(function (response) {
-      _this.user.authenticated = true;
-      localStorage.setItem('client_token', response.data.token);
-      localStorage.setItem('client_email', response.data.email);
-      localStorage.setItem('client_id', response.data.id);
-      return callBack(null, response.data);
-    }).catch(function (err) {
-      callBack(err.response.data, null);
-    });
-  },
-  logout: function logout(callBack) {
-    var _this2 = this;
-
-    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* Client */])().logout, null, {
-      headers: {
-        Authorization: this.getJWTtoken()
-      }
-    }).then(function (response) {
-      _this2.user.authenticated = false;
-      localStorage.removeItem('client_token', response.data.token);
-      localStorage.removeItem('client_email', response.data.email);
-      localStorage.removeItem('client_id', response.data.id);
-      callBack(null, response.data);
-    }).catch(function (err) {
-      callBack(err.response.data, null);
-    });
-  },
-  getJWTtoken: function getJWTtoken() {
-    return 'JWT ' + localStorage.getItem('client_token');
-  },
-  refreshAuth: function refreshAuth() {
-    if (localStorage.getItem('client_token')) {
-      this.user.authenticated = true;
-    } else {
-      this.user.authenticated = false;
-    }
-  }
-});
-
-/***/ }),
-/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(42);
+var normalizeHeaderName = __webpack_require__(40);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -10561,10 +10498,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(13);
+    adapter = __webpack_require__(14);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(13);
+    adapter = __webpack_require__(14);
   }
   return adapter;
 }
@@ -10635,7 +10572,165 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Visitor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Client; });
+/* unused harmony export Business */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Admin; });
+/* unused harmony export Service */
+var BASE = 'http://localhost:3000/api/v1';
+
+var Visitor = function Visitor() {
+  return {
+    search: BASE + '/visitor/search/',
+    viewService: function viewService(serviceID) {
+      return BASE + '/service/' + serviceID;
+    },
+    relatedService: function relatedService(serviceID, offset) {
+      return BASE + '/service/category/' + serviceID + '/' + offset;
+    },
+    relatedBusiness: function relatedBusiness(businessID, offset) {
+      return BASE + '/business/category/' + businessID + '/' + offset;
+    },
+    locations: BASE + '/visitor/search/locations',
+    viewBusiness: function viewBusiness(businessID) {
+      return BASE + '/business/' + businessID;
+    }
+  };
+};
+
+var Client = function Client() {
+  var authBase = BASE + '/client/auth';
+  var profileBase = BASE + '/client/profile';
+  return {
+    login: authBase + '/login',
+    signup: authBase + '/signup',
+    resend: authBase + '/confirmation/send',
+    reset: authBase + '/reset',
+    forgot: authBase + '/forgot',
+    logout: authBase + '/logout',
+    confirmEmail: function confirmEmail(token) {
+      return authBase + '/confirmation/' + token + '/confirm';
+    },
+
+    editInfo: function editInfo(clientID) {
+      return profileBase + '/' + clientID + '/edit';
+    }
+  };
+};
+
+var Business = function Business() {
+  var authBase = BASE + '/business/auth';
+  var serviceBase = BASE + '/business/service';
+  var businessBase = BASE + '/business/info';
+  var galleryBase = BASE + '/business';
+  return {
+    unverfiedSignUp: authBase + '/unverified/signup',
+    login: authBase + '/verified/login',
+    forgot: authBase + '/forgot',
+    reset: authBase + '/reset',
+    logout: authBase + '/logout',
+    verifiedSignUp: function verifiedSignUp(token) {
+      return authBase + '/confirm/signup/' + token;
+    },
+
+    editBasicInfo: function editBasicInfo(businessID) {
+      return BASE + '/business/profile/' + businessID + '/edit';
+    },
+    editInfo: function editInfo(businessID) {
+      return businessBase + '/edit/' + businessID;
+    },
+    addBranch: function addBranch(businessID) {
+      return businessBase + '/' + businessID + '/add/branches';
+    },
+    editBranch: function editBranch(businessID, branchID) {
+      return businessBase + '/' + businessID + '/edit/branch/' + branchID;
+    },
+    deleteBranch: function deleteBranch(businessID, branchID) {
+      return businessBase + '/' + businessID + '/delete/branch/' + branchID;
+    },
+
+    createService: serviceBase + '/create',
+    editService: function editService(serviceID) {
+      return serviceBase + '/' + serviceID + '/edit';
+    },
+    deleteService: function deleteService(serviceID) {
+      return serviceBase + '/' + serviceID + '/delete';
+    },
+    createOffering: function createOffering(serviceID) {
+      return serviceBase + '/' + serviceID + '/offering/create';
+    },
+    editOffering: function editOffering(serviceID, offeringID) {
+      return serviceBase + '/' + serviceID + '/offering/' + offeringID + '/edit';
+    },
+    deleteOffering: function deleteOffering(serviceID, offeringID) {
+      return serviceBase + '/' + serviceID + '/offering/' + offeringID + '/delete';
+    },
+
+    addImage: function addImage(businessID) {
+      return galleryBase + '/' + businessID + '/gallery/add';
+    }
+  };
+};
+
+var Admin = function Admin() {
+  var generalBase = BASE + '/admin/general';
+  var categoryBase = BASE + '/admin/category';
+  var clientBase = BASE + '/admin/client';
+  return {
+    login: BASE + '/admin/auth/login',
+
+    acceptBusiness: function acceptBusiness(businessID) {
+      return generalBase + '/confirm/' + businessID;
+    },
+    denyBusiness: function denyBusiness(businessID) {
+      return generalBase + '/deny/' + businessID;
+    },
+
+    createCategory: categoryBase + '/add',
+    editCategory: function editCategory(categoryID) {
+      return categoryBase + '/edit/' + categoryID;
+    },
+    deleteCategory: function deleteCategory(categoryID) {
+      return categoryBase + '/delete/' + categoryID;
+    },
+    removeClient: clientBase + '/list'
+
+  };
+};
+
+var Service = function Service() {
+  var serviceBase = BASE + '/service';
+  return {
+    createReview: function createReview(serviceID) {
+      return serviceBase + '/' + serviceID + '/review';
+    },
+    updateReview: function updateReview(serviceID, reviewID) {
+      return serviceBase + '/' + serviceID + '/review/' + reviewID + '/edit';
+    },
+    deleteReview: function deleteReview(serviceID, reviewID) {
+      return serviceBase + '/' + serviceID + '/review/' + reviewID + '/delete';
+    },
+
+    addImage: function addImage(serviceID) {
+      return serviceBase + '/' + serviceID + '/gallery/add';
+    }
+  };
+};
+
+/* unused harmony default export */ var _unused_webpack_default_export = ({
+  Visitor: Visitor,
+  Client: Client,
+  Business: Business,
+  Admin: Admin,
+  Service: Service
+});
 
 /***/ }),
 /* 11 */
@@ -10654,7 +10749,7 @@ exports.addClass = addClass;
 exports.removeClass = removeClass;
 exports.setStyle = setStyle;
 
-var _vue = __webpack_require__(7);
+var _vue = __webpack_require__(8);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -10837,6 +10932,69 @@ function setStyle(element, styleName, value) {
 
 /***/ }),
 /* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(10);
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  user: {
+    authenticated: false,
+    userID: function userID() {
+      return localStorage.getItem('client_id');
+    },
+    userEmail: function userEmail() {
+      return localStorage.getItem('client_email');
+    }
+  },
+  login: function login(data, callBack) {
+    var _this = this;
+
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Client */])().login, data).then(function (response) {
+      _this.user.authenticated = true;
+      localStorage.setItem('client_token', response.data.token);
+      localStorage.setItem('client_email', response.data.email);
+      localStorage.setItem('client_id', response.data.id);
+      return callBack(null, response.data);
+    }).catch(function (err) {
+      callBack(err.response.data, null);
+    });
+  },
+  logout: function logout(callBack) {
+    var _this2 = this;
+
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Client */])().logout, null, {
+      headers: {
+        Authorization: this.getJWTtoken()
+      }
+    }).then(function (response) {
+      _this2.user.authenticated = false;
+      localStorage.removeItem('client_token', response.data.token);
+      localStorage.removeItem('client_email', response.data.email);
+      localStorage.removeItem('client_id', response.data.id);
+      callBack(null, response.data);
+    }).catch(function (err) {
+      callBack(err.response.data, null);
+    });
+  },
+  getJWTtoken: function getJWTtoken() {
+    return 'JWT ' + localStorage.getItem('client_token');
+  },
+  refreshAuth: function refreshAuth() {
+    if (localStorage.getItem('client_token')) {
+      this.user.authenticated = true;
+    } else {
+      this.user.authenticated = false;
+    }
+  }
+});
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10878,19 +11036,19 @@ exports.default = {
 };
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(0);
-var settle = __webpack_require__(34);
-var buildURL = __webpack_require__(37);
-var parseHeaders = __webpack_require__(43);
-var isURLSameOrigin = __webpack_require__(41);
-var createError = __webpack_require__(16);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(36);
+var settle = __webpack_require__(32);
+var buildURL = __webpack_require__(35);
+var parseHeaders = __webpack_require__(41);
+var isURLSameOrigin = __webpack_require__(39);
+var createError = __webpack_require__(17);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(34);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -10986,7 +11144,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(39);
+      var cookies = __webpack_require__(37);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -11062,10 +11220,10 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11091,7 +11249,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11103,13 +11261,13 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(33);
+var enhanceError = __webpack_require__(31);
 
 /**
  * Create an Error with the specified message, config, error code, and response.
@@ -11127,7 +11285,7 @@ module.exports = function createError(message, config, code, response) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11145,394 +11303,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 18 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Visitor; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Client; });
-/* unused harmony export Business */
-/* unused harmony export Admin */
-/* unused harmony export Service */
-var BASE = 'http://localhost:3000/api/v1';
-
-var Visitor = function Visitor() {
-  return {
-    search: BASE + '/visitor/search/',
-    viewService: function viewService(serviceID) {
-      return BASE + '/service/' + serviceID;
-    },
-    relatedService: function relatedService(serviceID, offset) {
-      return BASE + '/service/category/' + serviceID + '/' + offset;
-    },
-    relatedBusiness: function relatedBusiness(businessID, offset) {
-      return BASE + '/business/category/' + businessID + '/' + offset;
-    },
-    locations: BASE + '/visitor/search/locations',
-    viewBusiness: function viewBusiness(businessID) {
-      return BASE + '/business/' + businessID;
-    }
-  };
-};
-
-var Client = function Client() {
-  var authBase = BASE + '/client/auth';
-  var profileBase = BASE + '/client/profile';
-  return {
-    login: authBase + '/login',
-    signup: authBase + '/signup',
-    resend: authBase + '/confirmation/send',
-    reset: authBase + '/reset',
-    forgot: authBase + '/forgot',
-    logout: authBase + '/logout',
-    confirmEmail: function confirmEmail(token) {
-      return authBase + '/confirmation/' + token + '/confirm';
-    },
-
-    editInfo: function editInfo(clientID) {
-      return profileBase + '/' + clientID + '/edit';
-    }
-  };
-};
-
-var Business = function Business() {
-  var authBase = BASE + '/business/auth';
-  var serviceBase = BASE + '/business/service';
-  var businessBase = BASE + '/business/info';
-  var galleryBase = BASE + '/business';
-  return {
-    unverfiedSignUp: authBase + '/unverified/signup',
-    login: authBase + '/verified/login',
-    forgot: authBase + '/forgot',
-    reset: authBase + '/reset',
-    logout: authBase + '/logout',
-    verifiedSignUp: function verifiedSignUp(token) {
-      return authBase + '/confirm/signup/' + token;
-    },
-
-    editBasicInfo: function editBasicInfo(businessID) {
-      return BASE + '/business/profile/' + businessID + '/edit';
-    },
-    editInfo: function editInfo(businessID) {
-      return businessBase + '/edit/' + businessID;
-    },
-    addBranch: function addBranch(businessID) {
-      return businessBase + '/' + businessID + '/add/branches';
-    },
-    editBranch: function editBranch(businessID, branchID) {
-      return businessBase + '/' + businessID + '/edit/branch/' + branchID;
-    },
-    deleteBranch: function deleteBranch(businessID, branchID) {
-      return businessBase + '/' + businessID + '/delete/branch/' + branchID;
-    },
-
-    createService: serviceBase + '/create',
-    editService: function editService(serviceID) {
-      return serviceBase + '/' + serviceID + '/edit';
-    },
-    deleteService: function deleteService(serviceID) {
-      return serviceBase + '/' + serviceID + '/delete';
-    },
-    createOffering: function createOffering(serviceID) {
-      return serviceBase + '/' + serviceID + '/offering/create';
-    },
-    editOffering: function editOffering(serviceID, offeringID) {
-      return serviceBase + '/' + serviceID + '/offering/' + offeringID + '/edit';
-    },
-    deleteOffering: function deleteOffering(serviceID, offeringID) {
-      return serviceBase + '/' + serviceID + '/offering/' + offeringID + '/delete';
-    },
-
-    addImage: function addImage(businessID) {
-      return galleryBase + '/' + businessID + '/gallery/add';
-    }
-  };
-};
-
-var Admin = function Admin() {
-  var generalBase = BASE + '/admin/general';
-  var categoryBase = BASE + '/admin/category';
-  var clientBase = BASE + '/admin/client';
-  return {
-    login: BASE + '/admin/auth/login',
-
-    acceptBusiness: function acceptBusiness(businessID) {
-      return generalBase + '/confirm/' + businessID;
-    },
-    denyBusiness: function denyBusiness(businessID) {
-      return generalBase + '/deny/' + businessID;
-    },
-
-    createCategory: categoryBase + '/add',
-    editCategory: function editCategory(categoryID) {
-      return categoryBase + '/edit/' + categoryID;
-    },
-    deleteCategory: function deleteCategory(categoryID) {
-      return categoryBase + '/delete/' + categoryID;
-    },
-    removeClient: clientBase + '/list'
-
-  };
-};
-
-var Service = function Service() {
-  var serviceBase = BASE + '/service';
-  return {
-    createReview: function createReview(serviceID) {
-      return serviceBase + '/' + serviceID + '/review';
-    },
-    updateReview: function updateReview(serviceID, reviewID) {
-      return serviceBase + '/' + serviceID + '/review/' + reviewID + '/edit';
-    },
-    deleteReview: function deleteReview(serviceID, reviewID) {
-      return serviceBase + '/' + serviceID + '/review/' + reviewID + '/delete';
-    },
-
-    addImage: function addImage(serviceID) {
-      return serviceBase + '/' + serviceID + '/gallery/add';
-    }
-  };
-};
-
-/* unused harmony default export */ var _unused_webpack_default_export = ({
-  Visitor: Visitor,
-  Client: Client,
-  Business: Business,
-  Admin: Admin,
-  Service: Service
-});
-
-/***/ }),
 /* 19 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Errors__ = __webpack_require__(52);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
-
-
-var Form = function () {
-  /**
-   * Creates an instance of Form.
-   * @param {Object} data
-   *
-   * @memberOf Form
-   */
-  function Form() {
-    var _this = this;
-
-    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, Form);
-
-    this.keys = Object.keys(data);
-    this.keys.forEach(function (key) {
-      _this[key] = data[key];
-    }, this);
-    this.errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */]();
-  }
-
-  /**
-   * Sets the value of a specific attribute.
-   * @param {String} key
-   * @param {any} value
-   *
-   * @memberOf Form
-   */
-
-
-  _createClass(Form, [{
-    key: 'set',
-    value: function set(key, value) {
-      if (!Object.prototype.hasOwnProperty.call(this, key)) {
-        throw new Error('Can only set values to keys that exist after creation!');
-      }
-      this[key] = value;
-    }
-
-    /**
-     * Resets the values of this form unless specific attributes were given.
-     * @param {Array} keys
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'reset',
-    value: function reset() {
-      var _this2 = this;
-
-      var keys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.keys;
-
-      keys.forEach(function (key) {
-        _this2[key] = '';
-      }, this);
-    }
-
-    /**
-     * Returns the data of this form in JSON format.
-     * @returns {Object}
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'data',
-    value: function data() {
-      var _this3 = this;
-
-      var data = {};
-      this.keys.forEach(function (key) {
-        data[key] = _this3[key];
-      }, this);
-      return data;
-    }
-
-    /**
-     * Submits this form using the given method and url,
-     * updating the forms state and return a Promise.
-     * @param {String} method
-     * @param {String} url
-     * @returns {Promise}
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'submit',
-    value: function submit(method, url) {
-      var _this4 = this;
-
-      this.errors.clear();
-      return new Promise(function (resolve, reject) {
-        __WEBPACK_IMPORTED_MODULE_0_axios___default.a[method](url, _this4.data()).then(function (response) {
-          _this4.onSuccess(response);
-          resolve(response.data, response);
-        }).catch(function (err) {
-          _this4.onFailure(err);
-          reject(err.response ? err.response.data.errors : err.message, err);
-        });
-      });
-    }
-
-    /**
-     * Submits the form to the given url using a GET Request.
-     * @param {String} url
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'get',
-    value: function get(url) {
-      return this.submit('get', url);
-    }
-
-    /**
-     * Submits the form to the given url using a POST Request.
-     * @param {String} url
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'post',
-    value: function post(url) {
-      return this.submit('post', url);
-    }
-
-    /**
-     * Submits the form to the given url using a PUT Request.
-     * @param {String} url
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'put',
-    value: function put(url) {
-      return this.submit('put', url);
-    }
-
-    /**
-     * Submits the form to the given url using a DELETE Request.
-     * @param {String} url
-     *
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'delete',
-    value: function _delete(url) {
-      return this.submit('delete', url);
-    }
-
-    /**
-     * Called when request finishes successfully.
-     * @param {ResponseSchema} response
-     * @see {@link https://github.com/mzabriskie/axios#response-schema}
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'onSuccess',
-    value: function onSuccess(response) {
-      this.reset();
-    }
-
-    /**
-     * Called when request finishes with an error.
-     * @param {Error} error
-     * @see {@link https://github.com/mzabriskie/axios#handling-errors}
-     * @memberOf Form
-     */
-
-  }, {
-    key: 'onFailure',
-    value: function onFailure(error) {
-      var errors = void 0;
-      if (error.response) {
-        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.response.data.errors);
-      } else {
-        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.message);
-      }
-      this.errors = errors;
-    }
-  }]);
-
-  return Form;
-}();
-
-/* harmony default export */ __webpack_exports__["a"] = (Form);
-
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clientLoginRules; });
-/* unused harmony default export */ var _unused_webpack_default_export = ({});
-
-var clientLoginRules = {
-  email: [{
-    required: true,
-    message: 'Please enter your email',
-    trigger: 'blur'
-  }],
-  password: [{
-    required: true,
-    message: 'Please enter your password',
-    trigger: 'blur'
-  }]
-};
-
-/***/ }),
-/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11564,7 +11335,7 @@ function toObject(arr) {
 };
 
 /***/ }),
-/* 22 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -11573,7 +11344,7 @@ __webpack_require__(80)
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(46),
+  __webpack_require__(44),
   /* template */
   __webpack_require__(75),
   /* scopeId */
@@ -11602,7 +11373,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 23 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -11611,7 +11382,7 @@ __webpack_require__(79)
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(47),
+  __webpack_require__(45),
   /* template */
   __webpack_require__(74),
   /* scopeId */
@@ -11640,7 +11411,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 24 */
+/* 22 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14047,10 +13818,10 @@ if (inBrowser && window.Vue) {
 
 /* harmony default export */ __webpack_exports__["a"] = (VueRouter);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(7)))
 
 /***/ }),
-/* 25 */
+/* 23 */
 /***/ (function(module, exports) {
 
 var g;
@@ -14077,17 +13848,17 @@ module.exports = g;
 
 
 /***/ }),
-/* 26 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_Index_home_vue__ = __webpack_require__(70);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_Index_home_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_pages_Index_home_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Client_login_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Client_login_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Client_login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Client_login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Admin_removeClient_vue__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Admin_removeClient_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Admin_removeClient_vue__);
@@ -14119,7 +13890,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
 /* harmony default export */ __webpack_exports__["default"] = (router);
 
 /***/ }),
-/* 27 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14157,16 +13928,16 @@ exports["default"] = type;
 module.exports = exports['default'];
 
 /***/ }),
-/* 28 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(17);
-var Axios = __webpack_require__(30);
-var defaults = __webpack_require__(10);
+var bind = __webpack_require__(18);
+var Axios = __webpack_require__(28);
+var defaults = __webpack_require__(9);
 
 /**
  * Create an instance of Axios
@@ -14199,15 +13970,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(14);
-axios.CancelToken = __webpack_require__(29);
-axios.isCancel = __webpack_require__(15);
+axios.Cancel = __webpack_require__(15);
+axios.CancelToken = __webpack_require__(27);
+axios.isCancel = __webpack_require__(16);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(44);
+axios.spread = __webpack_require__(42);
 
 module.exports = axios;
 
@@ -14216,13 +13987,13 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 29 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(14);
+var Cancel = __webpack_require__(15);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -14280,18 +14051,18 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 30 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(10);
+var defaults = __webpack_require__(9);
 var utils = __webpack_require__(0);
-var InterceptorManager = __webpack_require__(31);
-var dispatchRequest = __webpack_require__(32);
-var isAbsoluteURL = __webpack_require__(40);
-var combineURLs = __webpack_require__(38);
+var InterceptorManager = __webpack_require__(29);
+var dispatchRequest = __webpack_require__(30);
+var isAbsoluteURL = __webpack_require__(38);
+var combineURLs = __webpack_require__(36);
 
 /**
  * Create a new instance of Axios
@@ -14372,7 +14143,7 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 31 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14431,16 +14202,16 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 32 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var utils = __webpack_require__(0);
-var transformData = __webpack_require__(35);
-var isCancel = __webpack_require__(15);
-var defaults = __webpack_require__(10);
+var transformData = __webpack_require__(33);
+var isCancel = __webpack_require__(16);
+var defaults = __webpack_require__(9);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -14517,7 +14288,7 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 33 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14543,13 +14314,13 @@ module.exports = function enhanceError(error, config, code, response) {
 
 
 /***/ }),
-/* 34 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(16);
+var createError = __webpack_require__(17);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -14575,7 +14346,7 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 35 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14602,7 +14373,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 36 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14645,7 +14416,7 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 37 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14720,7 +14491,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 38 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14741,7 +14512,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 39 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14801,7 +14572,7 @@ module.exports = (
 
 
 /***/ }),
-/* 40 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14822,7 +14593,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 41 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14897,7 +14668,7 @@ module.exports = (
 
 
 /***/ }),
-/* 42 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14916,7 +14687,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 43 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14960,7 +14731,7 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 44 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14994,228 +14765,184 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
+/* 43 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints_js__ = __webpack_require__(10);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            errors: [],
+            clients: []
+        };
+    },
+    mounted: function mounted() {
+        this.names = this.getClients();
+    },
+
+    methods: {
+        getClients: function getClients() {
+            var _this = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints_js__["a" /* Admin */])().removeClient).then(function (res) {
+                console.log(res);
+                _this.clients = res.data;
+            }).catch(function () {
+                _this.clients = [];
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(52);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            form: new __WEBPACK_IMPORTED_MODULE_1__services_Form__["a" /* default */]({
+                email: '',
+                password: ''
+            }),
+            rules: __WEBPACK_IMPORTED_MODULE_2__services_validation__["a" /* clientLoginRules */],
+            logged_in: false,
+            loginSuccess: '',
+            errors: []
+        };
+    },
+    mounted: function mounted() {
+        __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].refreshAuth();
+        if (__WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].user.authenticated) {
+            this.$router.push('/');
+        }
+    },
+
+    methods: {
+        submitForm: function submitForm(formName) {
+            var _this = this;
+
+            this.errors = [];
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].login(_this.form.data(), function (responseErrors, response) {
+                        if (responseErrors) {
+                            _this.errors = responseErrors.errors.map(function (err) {
+                                if (typeof err === 'string') {
+                                    return err;
+                                } else {
+                                    return err.msg;
+                                }
+                            });
+                        } else {
+                            _this.logged_in = true;
+                            _this.loginSuccess = response.message;
+                            setTimeout(function () {
+                                _this.$router.push('/');
+                            }, 1000);
+                        }
+                    });
+                } else {
+                    _this.errors.push('Please fill in all the fields');
+                }
+            });
+        },
+        resetForm: function resetForm(formName) {
+            this.$refs[formName].resetFields();
+            this.errors = [];
+        }
+    }
+});
+
+/***/ }),
 /* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(20);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            form: new __WEBPACK_IMPORTED_MODULE_1__services_Form__["a" /* default */]({
-                email: '',
-                password: ''
-            }),
-            rules: __WEBPACK_IMPORTED_MODULE_2__services_validation__["a" /* clientLoginRules */],
-            logged_in: false,
-            loginSuccess: '',
-            errors: []
-        };
-    },
-    mounted: function mounted() {
-        __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].refreshAuth();
-        if (__WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].user.authenticated) {
-            this.$router.push('/');
-        }
-    },
-
-    methods: {
-        submitForm: function submitForm(formName) {
-            var _this = this;
-
-            this.errors = [];
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].login(_this.form.data(), function (responseErrors, response) {
-                        if (responseErrors) {
-                            _this.errors = responseErrors.errors.map(function (err) {
-                                if (typeof err === 'string') {
-                                    return err;
-                                } else {
-                                    return err.msg;
-                                }
-                            });
-                        } else {
-                            _this.logged_in = true;
-                            _this.loginSuccess = response.message;
-                            setTimeout(function () {
-                                _this.$router.push('/');
-                            }, 1000);
-                        }
-                    });
-                } else {
-                    _this.errors.push('Please fill in all the fields');
-                }
-            });
-        },
-        resetForm: function resetForm(formName) {
-            this.$refs[formName].resetFields();
-            this.errors = [];
-        }
-    }
-});
-
-/***/ }),
-/* 46 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(20);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            form: new __WEBPACK_IMPORTED_MODULE_1__services_Form__["a" /* default */]({
-                email: '',
-                password: ''
-            }),
-            rules: __WEBPACK_IMPORTED_MODULE_2__services_validation__["a" /* clientLoginRules */],
-            logged_in: false,
-            loginSuccess: '',
-            errors: []
-        };
-    },
-    mounted: function mounted() {
-        __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].refreshAuth();
-        if (__WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].user.authenticated) {
-            this.$router.push('/');
-        }
-    },
-
-    methods: {
-        submitForm: function submitForm(formName) {
-            var _this = this;
-
-            this.errors = [];
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__["a" /* default */].login(_this.form.data(), function (responseErrors, response) {
-                        if (responseErrors) {
-                            _this.errors = responseErrors.errors.map(function (err) {
-                                if (typeof err === 'string') {
-                                    return err;
-                                } else {
-                                    return err.msg;
-                                }
-                            });
-                        } else {
-                            _this.logged_in = true;
-                            _this.loginSuccess = response.message;
-                            setTimeout(function () {
-                                _this.$router.push('/');
-                            }, 1000);
-                        }
-                    });
-                } else {
-                    _this.errors.push('Please fill in all the fields');
-                }
-            });
-        },
-        resetForm: function resetForm(formName) {
-            this.$refs[formName].resetFields();
-            this.errors = [];
-        }
-    }
-});
-
-/***/ }),
-/* 47 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(12);
 //
 //
 //
@@ -15269,18 +14996,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 48 */
+/* 46 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_gr_card_vue__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_gr_card_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__shared_gr_card_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mainLocations__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__priceRanges__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_EndPoints__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mainLocations__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__priceRanges__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_EndPoints__ = __webpack_require__(10);
 //
 //
 //
@@ -15400,7 +15127,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     getLocations: function getLocations() {
       var _this = this;
 
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_EndPoints__["b" /* Visitor */])().locations).then(function (res) {
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_EndPoints__["c" /* Visitor */])().locations).then(function (res) {
         _this.locations = res.data;
       }).catch(function () {
         _this.locations = __WEBPACK_IMPORTED_MODULE_2__mainLocations__["a" /* default */];
@@ -15467,7 +15194,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 49 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15498,7 +15225,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 50 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15527,7 +15254,7 @@ var locations = [{
 /* harmony default export */ __webpack_exports__["a"] = (locations);
 
 /***/ }),
-/* 51 */
+/* 49 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15553,7 +15280,7 @@ var ranges = [{
 /* harmony default export */ __webpack_exports__["a"] = (ranges);
 
 /***/ }),
-/* 52 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15760,6 +15487,235 @@ var Errors = function () {
 }();
 
 /* harmony default export */ __webpack_exports__["a"] = (Errors);
+
+/***/ }),
+/* 51 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Errors__ = __webpack_require__(50);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+
+var Form = function () {
+  /**
+   * Creates an instance of Form.
+   * @param {Object} data
+   *
+   * @memberOf Form
+   */
+  function Form() {
+    var _this = this;
+
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    _classCallCheck(this, Form);
+
+    this.keys = Object.keys(data);
+    this.keys.forEach(function (key) {
+      _this[key] = data[key];
+    }, this);
+    this.errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */]();
+  }
+
+  /**
+   * Sets the value of a specific attribute.
+   * @param {String} key
+   * @param {any} value
+   *
+   * @memberOf Form
+   */
+
+
+  _createClass(Form, [{
+    key: 'set',
+    value: function set(key, value) {
+      if (!Object.prototype.hasOwnProperty.call(this, key)) {
+        throw new Error('Can only set values to keys that exist after creation!');
+      }
+      this[key] = value;
+    }
+
+    /**
+     * Resets the values of this form unless specific attributes were given.
+     * @param {Array} keys
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'reset',
+    value: function reset() {
+      var _this2 = this;
+
+      var keys = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.keys;
+
+      keys.forEach(function (key) {
+        _this2[key] = '';
+      }, this);
+    }
+
+    /**
+     * Returns the data of this form in JSON format.
+     * @returns {Object}
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'data',
+    value: function data() {
+      var _this3 = this;
+
+      var data = {};
+      this.keys.forEach(function (key) {
+        data[key] = _this3[key];
+      }, this);
+      return data;
+    }
+
+    /**
+     * Submits this form using the given method and url,
+     * updating the forms state and return a Promise.
+     * @param {String} method
+     * @param {String} url
+     * @returns {Promise}
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'submit',
+    value: function submit(method, url) {
+      var _this4 = this;
+
+      this.errors.clear();
+      return new Promise(function (resolve, reject) {
+        __WEBPACK_IMPORTED_MODULE_0_axios___default.a[method](url, _this4.data()).then(function (response) {
+          _this4.onSuccess(response);
+          resolve(response.data, response);
+        }).catch(function (err) {
+          _this4.onFailure(err);
+          reject(err.response ? err.response.data.errors : err.message, err);
+        });
+      });
+    }
+
+    /**
+     * Submits the form to the given url using a GET Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'get',
+    value: function get(url) {
+      return this.submit('get', url);
+    }
+
+    /**
+     * Submits the form to the given url using a POST Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'post',
+    value: function post(url) {
+      return this.submit('post', url);
+    }
+
+    /**
+     * Submits the form to the given url using a PUT Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'put',
+    value: function put(url) {
+      return this.submit('put', url);
+    }
+
+    /**
+     * Submits the form to the given url using a DELETE Request.
+     * @param {String} url
+     *
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'delete',
+    value: function _delete(url) {
+      return this.submit('delete', url);
+    }
+
+    /**
+     * Called when request finishes successfully.
+     * @param {ResponseSchema} response
+     * @see {@link https://github.com/mzabriskie/axios#response-schema}
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'onSuccess',
+    value: function onSuccess(response) {
+      this.reset();
+    }
+
+    /**
+     * Called when request finishes with an error.
+     * @param {Error} error
+     * @see {@link https://github.com/mzabriskie/axios#handling-errors}
+     * @memberOf Form
+     */
+
+  }, {
+    key: 'onFailure',
+    value: function onFailure(error) {
+      var errors = void 0;
+      if (error.response) {
+        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.response.data.errors);
+      } else {
+        errors = new __WEBPACK_IMPORTED_MODULE_1__Errors__["a" /* default */](error.message);
+      }
+      this.errors = errors;
+    }
+  }]);
+
+  return Form;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (Form);
+
+/***/ }),
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clientLoginRules; });
+/* unused harmony default export */ var _unused_webpack_default_export = ({});
+
+var clientLoginRules = {
+  email: [{
+    required: true,
+    message: 'Please enter your email',
+    trigger: 'blur'
+  }],
+  password: [{
+    required: true,
+    message: 'Please enter your password',
+    trigger: 'blur'
+  }]
+};
 
 /***/ }),
 /* 53 */
@@ -17677,7 +17633,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(25)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23)))
 
 /***/ }),
 /* 55 */
@@ -17828,7 +17784,7 @@ module.exports =
 /***/ 14:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(12);
+	module.exports = __webpack_require__(13);
 
 /***/ },
 
@@ -18282,7 +18238,7 @@ var _zhCN = __webpack_require__(128);
 
 var _zhCN2 = _interopRequireDefault(_zhCN);
 
-var _vue = __webpack_require__(7);
+var _vue = __webpack_require__(8);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -18593,7 +18549,7 @@ exports.default = function () {
   return widthNoScroll - widthWithScroll;
 };
 
-var _vue = __webpack_require__(7);
+var _vue = __webpack_require__(8);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -18612,7 +18568,7 @@ var scrollBarWidth = void 0;
 
 exports.__esModule = true;
 
-var _vue = __webpack_require__(7);
+var _vue = __webpack_require__(8);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -18931,7 +18887,7 @@ __webpack_require__(77)
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(45),
+  __webpack_require__(43),
   /* template */
   __webpack_require__(72),
   /* scopeId */
@@ -18969,7 +18925,7 @@ __webpack_require__(78)
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(48),
+  __webpack_require__(46),
   /* template */
   __webpack_require__(73),
   /* scopeId */
@@ -19007,7 +18963,7 @@ __webpack_require__(81)
 
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(49),
+  __webpack_require__(47),
   /* template */
   __webpack_require__(76),
   /* scopeId */
@@ -19046,7 +19002,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "column is-half is-offset-one-quarter"
   }, [_c('h1', {
     staticClass: "title has-text-centered"
-  }, [_vm._v("Login")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Client list")]), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -19076,64 +19032,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "type": "success",
       "show-icon": ""
     }
-  })], 1), _vm._v(" "), _c('el-form', {
-    ref: "form",
-    staticClass: "demo-ruleForm",
-    attrs: {
-      "model": _vm.form,
-      "rules": _vm.rules,
-      "label-width": "100px",
-      "label-position": "top"
-    }
-  }, [_c('el-form-item', {
-    attrs: {
-      "label": "Email",
-      "prop": "email"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "placeholder": "Email"
-    },
-    model: {
-      value: (_vm.form.email),
-      callback: function($$v) {
-        _vm.form.email = $$v
-      },
-      expression: "form.email"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "Password",
-      "prop": "password"
-    }
-  }, [_c('el-input', {
-    attrs: {
-      "placeholder": "Password",
-      "type": "password"
-    },
-    model: {
-      value: (_vm.form.password),
-      callback: function($$v) {
-        _vm.form.password = $$v
-      },
-      expression: "form.password"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
-    attrs: {
-      "type": "primary"
-    },
-    on: {
-      "click": function($event) {
-        _vm.submitForm('form')
+  })], 1), _vm._v(" "), _vm._l((_vm.clients), function(client) {
+    return _c('li', {
+      domProps: {
+        "textContent": _vm._s(client.label)
       }
-    }
-  }, [_vm._v("Login")]), _vm._v(" "), _c('el-button', {
-    on: {
-      "click": function($event) {
-        _vm.resetForm('form')
-      }
-    }
-  }, [_vm._v("Reset")])], 1)], 1)], 1)])
+    })
+  })], 2)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -19951,7 +19856,7 @@ module.exports =
 /***/ 257:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(21);
+	module.exports = __webpack_require__(19);
 
 /***/ },
 
@@ -20342,7 +20247,7 @@ module.exports =
 
 exports.__esModule = true;
 
-var _vue = __webpack_require__(7);
+var _vue = __webpack_require__(8);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -20417,7 +20322,7 @@ exports.default = {
 exports.__esModule = true;
 exports.PopupManager = undefined;
 
-var _vue = __webpack_require__(7);
+var _vue = __webpack_require__(8);
 
 var _vue2 = _interopRequireDefault(_vue);
 
@@ -20723,7 +20628,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 exports.isVNode = isVNode;
 exports.getFirstComponentChild = getFirstComponentChild;
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(19);
 
 function isVNode(node) {
   return (typeof node === 'undefined' ? 'undefined' : _typeof(node)) === 'object' && (0, _util.hasOwn)(node, 'componentOptions');
@@ -20838,24 +20743,24 @@ module.exports = function ( delay, noTrailing, callback, debounceMode ) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_element_ui__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_element_ui___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_element_ui__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_buefy__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_buefy___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_buefy__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_shared_header_vue__ = __webpack_require__(139);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_shared_header_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_shared_header_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_shared_footer_vue__ = __webpack_require__(138);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_shared_footer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_shared_footer_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Client_login_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Client_login_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Client_login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_Client_login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Client_logout_vue__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Client_logout_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Client_logout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_Client_logout_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_routes_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__services_routes_js__ = __webpack_require__(24);
 
 
 
@@ -21784,10 +21689,10 @@ module.exports = {
   object: __webpack_require__(109),
   "enum": __webpack_require__(103),
   pattern: __webpack_require__(110),
-  email: __webpack_require__(27),
-  url: __webpack_require__(27),
+  email: __webpack_require__(25),
+  url: __webpack_require__(25),
   date: __webpack_require__(102),
-  hex: __webpack_require__(27),
+  hex: __webpack_require__(25),
   required: __webpack_require__(112)
 };
 
@@ -22253,7 +22158,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_clientAuth__ = __webpack_require__(12);
 //
 //
 //
@@ -22983,7 +22888,7 @@ module.exports =
 /***/ 14:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(12);
+	module.exports = __webpack_require__(13);
 
 /***/ },
 
@@ -23190,7 +23095,7 @@ module.exports =
 /***/ 14:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(12);
+	module.exports = __webpack_require__(13);
 
 /***/ },
 
@@ -24860,7 +24765,7 @@ module.exports =
 /* 15 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(12);
+	module.exports = __webpack_require__(13);
 
 /***/ },
 /* 16 */
@@ -31063,7 +30968,7 @@ module.exports =
 /* 127 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(7);
+	module.exports = __webpack_require__(8);
 
 /***/ },
 /* 128 */
@@ -46522,7 +46427,7 @@ module.exports =
 /* 329 */
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(21);
+	module.exports = __webpack_require__(19);
 
 /***/ },
 /* 330 */
@@ -49749,7 +49654,7 @@ exports.default = function (Vue) {
   return template;
 };
 
-var _util = __webpack_require__(21);
+var _util = __webpack_require__(19);
 
 var RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
 /**
@@ -49928,7 +49833,7 @@ exports.default = {
     }
   }
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
 /* 130 */
@@ -50044,7 +49949,7 @@ module.exports =
 /***/ 14:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(12);
+	module.exports = __webpack_require__(13);
 
 /***/ },
 
@@ -50755,7 +50660,7 @@ module.exports =
 /***/ 14:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(12);
+	module.exports = __webpack_require__(13);
 
 /***/ },
 
@@ -52122,7 +52027,7 @@ module.exports =
 /***/ 56:
 /***/ function(module, exports) {
 
-	module.exports = __webpack_require__(7);
+	module.exports = __webpack_require__(8);
 
 /***/ },
 
@@ -54042,7 +53947,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 exports.__esModule = true;
 
-var _vue = __webpack_require__(7);
+var _vue = __webpack_require__(8);
 
 var _vue2 = _interopRequireDefault(_vue);
 
