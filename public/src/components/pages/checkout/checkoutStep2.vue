@@ -207,7 +207,7 @@
                   this.stripeError = result.error.message;
                   this.loader.close();
                   return;
-              }
+            }
               this.form.token = result.token.id;
               
               this.$emit('tokenGenerated');

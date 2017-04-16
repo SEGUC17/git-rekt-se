@@ -15,6 +15,7 @@
     
             <checkoutStep1 class="column is-10 is-offset-1" :form="form" :service="service" v-show="active === 1" @reviewBooking="goToStep2"></checkoutStep1>
             <checkoutStep2 class="column is-12 columns " :service="service" :form="form" v-show="active === 2" @tokenGenerated="makeTransaction"></checkoutStep2>
+            <checkoutStep3 v-if="active === 3"></checkoutStep3>
         </div>
     </div>
 </template>
@@ -109,7 +110,7 @@
             if (!clientAuth.user.authenticated) {
                 this.$router.push('/client/login');
                 this.$toast.open({
-                    message: 'You must be loggedin as a client to view this page.',
+                    message: 'You must be logged as a client to view this page.',
                     type: 'is-danger',
                     position: 'bottom',
                 });
