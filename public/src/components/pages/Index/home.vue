@@ -150,7 +150,7 @@
 
         if (priceRange.length === 2) {
           const min = parseInt(priceRange[0], 10);
-          const max = parseInt(priceRange[1], 1);
+          const max = parseInt(priceRange[1], 10);
           if (!isNaN(min) && !isNaN(max)) {
             if (this.name) {
               url += `&min=${min}&max=${max}`;
