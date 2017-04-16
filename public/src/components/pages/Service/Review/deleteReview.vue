@@ -27,14 +27,14 @@
         this.errors = [];
         Axios.post(Service.deleteReview(this.serviceID, this.reviewID))
         .then((response) => {
-          this.$emit('edited', response.message);
+          this.$emit('deleted', response.message);
         })
         .catch((err) => {
           this.errors = err.response.data.errors;
         });
       },
       cancel() {
-        this.$emit('cancelEdit');
+        this.$emit('cancelDelete');
       },
     },
   };
