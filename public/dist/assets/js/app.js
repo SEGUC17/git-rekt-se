@@ -10700,7 +10700,8 @@ var Admin = function Admin() {
     deleteCategory: function deleteCategory(categoryID) {
       return categoryBase + '/delete/' + categoryID;
     },
-    removeClient: clientBase + '/list'
+    removeClient: clientBase + '/list',
+    deleteClient: '' + clientBase
 
   };
 };
@@ -54272,6 +54273,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -54298,6 +54306,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).catch(function () {
                 _this.clients = [];
             });
+        },
+        deleteclicked: function deleteclicked(clientid) {
+            console.log(clientid);
+            // axios
+            //     .get(Admin().deleteclient/clientid)
+            //     .then((res) => {
+            //         console.log(res);
+            //       this.clients = res.data;
+            //     })
+            //     .catch(() => {
+            //       this.clients = [];
+            //     });
         }
     }
 });
@@ -54389,14 +54409,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "show-icon": ""
     }
   })], 1), _vm._v(" "), _vm._l((_vm.clients), function(client) {
-    return _c('div', [_c('li', [_vm._v(_vm._s(client.label)), _c('el-button', {
+    return _c('div', [_c('div', [_vm._v(_vm._s(client.label) + "\n                        "), _c('el-button', {
+      staticClass: "button is-danger",
       staticStyle: {
         "float": "right"
       },
-      attrs: {
-        "type": "danger"
+      on: {
+        "click": function($event) {
+          _vm.deleteclicked(client.label)
+        }
       }
-    }, [_vm._v("Danger")])], 1)])
+    }, [_vm._v("Delete   "), _c('span', {
+      staticClass: "icon"
+    }, [_c('i', {
+      staticClass: "fa fa-trash-o"
+    })])]), _vm._v(" "), _c('br'), _c('br')], 1)])
   })], 2)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true

@@ -17,7 +17,14 @@
             </div>
     
     
-            <div v-for="client in clients"><li>{{client.label}}<el-button type="danger" style="float: right;" >Danger</el-button></li></div>
+            <div v-for="client in clients">
+                <div>{{client.label}}
+                            <el-button class="button is-danger" style="float: right;"@click="deleteclicked(client.label)" >Delete &nbsp; <span class="icon">
+                            <i class="fa fa-trash-o"></i>
+                        </span></el-button>
+                        <br></br>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -49,6 +56,19 @@
             .catch(() => {
               this.clients = [];
             });
+      },
+
+      deleteclicked(clientid) {
+          console.log(clientid);
+        // axios
+        //     .get(Admin().deleteclient/clientid)
+        //     .then((res) => {
+        //         console.log(res);
+        //       this.clients = res.data;
+        //     })
+        //     .catch(() => {
+        //       this.clients = [];
+        //     });
       }
         }
     }
