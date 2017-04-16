@@ -3731,7 +3731,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_pages_about_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Business_UnverifiedSignup_vue__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Business_UnverifiedSignup_vue__ = __webpack_require__(129);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Business_UnverifiedSignup_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Business_UnverifiedSignup_vue__);
 
 
@@ -4590,157 +4590,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 39 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(41);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        var checkDescription = function checkDescription(rule, value, callback) {
-            if (!value) {
-                callback(new Error('Please input the description'));
-            } else if (value === '') {
-                callback(new Error('Please input the description'));
-            } else {
-                callback();
-            }
-        };
-        var checkName = function checkName(rule, value, callback) {
-            //TODO: add: check against database
-            if (!value) {
-                callback(new Error('Please input the Name'));
-            } else if (value === '') {
-                callback(new Error('Please input the Name'));
-            } else {
-                callback();
-            }
-        };
-        var checkPhoneNumber = function checkPhoneNumber(rule, value, callback) {
-            if (!value) {
-                callback(new Error('Please input the phone number'));
-            } else if (value === '') {
-                callback(new Error('Please input the phone number'));
-            } else if (!/^01[0-2]{1}[0-9]{8}/.test(value)) {
-                callback(new Error('Please provide a valid phone number'));
-            } else {
-                callback();
-            }
-        };
-        var checkEmail = function checkEmail(rule, value, callback) {
-            if (!value) {
-                callback(new Error('Please input the email'));
-            } else if (value === '') {
-                callback(new Error('Please input the email'));
-            } else {
-                callback();
-            }
-        };
-        return {
-            form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
-                name: '',
-                email: '',
-                shortDescription: '',
-                mobile: '',
-                success: false,
-                fail: false
-            }),
-            rules2: {
-                name: [{
-                    validator: checkName,
-                    trigger: 'blur'
-                }],
-                shortDescription: [{
-                    validator: checkDescription,
-                    trigger: 'blur'
-                }],
-                email: [{
-                    validator: checkEmail,
-                    type: 'email',
-                    message: 'Please input correct email address',
-                    trigger: 'blur'
-                }],
-                mobile: [{
-                    validator: checkPhoneNumber,
-                    trigger: 'blur'
-                }]
-            }
-        };
-    },
-
-    methods: {
-        submitForm: function submitForm(formName) {
-            var _this = this;
-
-            this.$refs[formName].validate(function (valid) {
-                if (valid) {
-                    _this.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Business().unverfiedSignup).then(function () {
-                        //TODO: add message
-                        _this.success = true;
-                    }).catch(function (err) {
-                        _this.fail = true;
-                    });
-                } else {
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
-        },
-        resetForm: function resetForm(formName) {
-            this.form.Reset();
-        }
-    }
-});
-
-/***/ }),
+/* 39 */,
 /* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4780,7 +4630,146 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export Visitor */
+/* unused harmony export Client */
+/* unused harmony export Business */
+/* unused harmony export Admin */
+/* unused harmony export Service */
 var BASE = 'http://localhost:3000/api/v1';
+
+var Visitor = function Visitor() {
+  return {
+    search: BASE + '/visitor/search/',
+    viewService: function viewService(serviceID) {
+      return BASE + '/service/' + serviceID;
+    },
+    relatedService: function relatedService(serviceID, offset) {
+      return BASE + '/service/category/' + serviceID + '/' + offset;
+    },
+    relatedBusiness: function relatedBusiness(businessID, offset) {
+      return BASE + '/business/category/' + businessID + '/offset';
+    },
+    viewBusiness: function viewBusiness(businessID) {
+      return BASE + '/business/' + businessID;
+    }
+  };
+};
+
+var Client = function Client() {
+  var authBase = BASE + '/client/auth';
+  var profileBase = BASE + '/client/profile';
+  return {
+    login: authBase + '/login',
+    signup: authBase + '/signup',
+    resend: authBase + '/confirmation/send',
+    reset: authBase + '/reset',
+    forgot: authBase + '/forgot',
+    logout: authBase + '/logout',
+    confirmEmail: function confirmEmail(token) {
+      return authBase + '/confirmation/' + token + '/confirm';
+    },
+
+    editInfo: function editInfo(clientID) {
+      return profileBase + '/' + clientID + '/edit';
+    }
+  };
+};
+
+var Business = function Business() {
+  var authBase = BASE + '/business/auth';
+  var serviceBase = BASE + '/business/service';
+  var businessBase = BASE + '/business/info';
+  var galleryBase = BASE + '/business';
+  return {
+    unverfiedSignUp: authBase + '/unverified/signup',
+    login: authBase + '/verified/login',
+    forgot: authBase + '/forgot',
+    reset: authBase + '/reset',
+    logout: authBase + '/logout',
+    verifiedSignUp: function verifiedSignUp(token) {
+      return authBase + '/confirm/signup/' + token;
+    },
+
+    editBasicInfo: function editBasicInfo(businessID) {
+      return BASE + '/business/profile/' + businessID + '/edit';
+    },
+    editInfo: function editInfo(businessID) {
+      return businessBase + '/edit/' + businessID;
+    },
+    addBranch: function addBranch(businessID) {
+      return businessBase + '/' + businessID + '/add/branches';
+    },
+    editBranch: function editBranch(businessID, branchID) {
+      return businessBase + '/' + businessID + '/edit/branch/' + branchID;
+    },
+    deleteBranch: function deleteBranch(businessID, branchID) {
+      return businessBase + '/' + businessID + '/delete/branch/' + branchID;
+    },
+
+    createService: serviceBase + '/create',
+    editService: function editService(serviceID) {
+      return serviceBase + '/' + serviceID + '/edit';
+    },
+    deleteService: function deleteService(serviceID) {
+      return serviceBase + '/' + serviceID + '/delete';
+    },
+    createOffering: function createOffering(serviceID) {
+      return serviceBase + '/' + serviceID + '/offering/create';
+    },
+    editOffering: function editOffering(serviceID, offeringID) {
+      return serviceBase + '/' + serviceID + '/offering/' + offeringID + '/edit';
+    },
+    deleteOffering: function deleteOffering(serviceID, offeringID) {
+      return serviceBase + '/' + serviceID + '/offering/' + offeringID + '/delete';
+    },
+
+    addImage: function addImage(businessID) {
+      return galleryBase + '/' + businessID + '/gallery/add';
+    }
+  };
+};
+
+var Admin = function Admin() {
+  var generalBase = BASE + '/admin/general';
+  var categoryBase = BASE + '/admin/category';
+  return {
+    login: BASE + '/admin/auth/login',
+
+    acceptBusiness: function acceptBusiness(businessID) {
+      return generalBase + '/confirm/' + businessID;
+    },
+    denyBusiness: function denyBusiness(businessID) {
+      return generalBase + '/deny/' + businessID;
+    },
+
+    createCategory: categoryBase + '/add',
+    editCategory: function editCategory(categoryID) {
+      return categoryBase + '/edit/' + categoryID;
+    },
+    deleteCategory: function deleteCategory(categoryID) {
+      return categoryBase + '/delete/' + categoryID;
+    }
+  };
+};
+
+var Service = function Service() {
+  var serviceBase = BASE + '/service';
+  return {
+    createReview: function createReview(serviceID) {
+      return serviceBase + '/' + serviceID + '/review';
+    },
+    updateReview: function updateReview(serviceID, reviewID) {
+      return serviceBase + '/' + serviceID + '/review/' + reviewID + '/edit';
+    },
+    deleteReview: function deleteReview(serviceID, reviewID) {
+      return serviceBase + '/' + serviceID + '/review/' + reviewID + '/delete';
+    },
+
+    addImage: function addImage(serviceID) {
+      return serviceBase + '/' + serviceID + '/gallery/add';
+    }
+  };
+};
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   Client: function Client() {
@@ -4797,7 +4786,11 @@ var BASE = 'http://localhost:3000/api/v1';
     return {
       unverfiedSignup: authBase + '/unverified/signup'
     };
-  }
+  },
+
+  Visitor: Visitor,
+  Admin: Admin,
+  Service: Service
 });
 
 /***/ }),
@@ -7251,44 +7244,7 @@ module.exports = Array.isArray || function (arr) {
 
 /***/ }),
 /* 55 */,
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(128)
-
-var Component = __webpack_require__(7)(
-  /* script */
-  __webpack_require__(39),
-  /* template */
-  __webpack_require__(58),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Business/UnverifiedSignup.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] UnverifiedSignup.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2ec2620a", Component.options)
-  } else {
-    hotAPI.reload("data-v-2ec2620a", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 56 */,
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7327,138 +7283,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticStyle: {
-      "padding": "200px"
-    }
-  }, [_c('article', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.form.success),
-      expression: "form.success"
-    }],
-    staticClass: "message is-primary",
-    staticStyle: {
-      "padding": "50px"
-    }
-  }, [_vm._m(0)]), _vm._v(" "), _c('article', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.form.fail),
-      expression: "form.fail"
-    }],
-    staticClass: "message is-danger",
-    staticStyle: {
-      "padding": "50px"
-    }
-  }, [_vm._m(1)]), _vm._v(" "), _c('div', {
-    staticClass: "hero-body"
-  }, [_c('div', {
-    staticClass: "container"
-  }, [_c('div', {
-    staticClass: "columns"
-  }, [_c('div', {
-    staticClass: "column is-8 is-offset-2"
-  }, [_c('div', {
-    staticClass: "login-form"
-  }, [_c('el-form', {
-    ref: "form",
-    attrs: {
-      "model": _vm.form,
-      "rules": _vm.rules2
-    }
-  }, [_c('el-form-item', {
-    attrs: {
-      "label": "Business name",
-      "prop": "name"
-    }
-  }, [_c('el-input', {
-    model: {
-      value: (_vm.form.name),
-      callback: function($$v) {
-        _vm.form.name = $$v
-      },
-      expression: "form.name"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "Email",
-      "prop": "email"
-    }
-  }, [_c('el-input', {
-    model: {
-      value: (_vm.form.email),
-      callback: function($$v) {
-        _vm.form.email = $$v
-      },
-      expression: "form.email"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "Short description",
-      "prop": "shortDescription"
-    }
-  }, [_c('el-input', {
-    model: {
-      value: (_vm.form.shortDescription),
-      callback: function($$v) {
-        _vm.form.shortDescription = $$v
-      },
-      expression: "form.shortDescription"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', {
-    attrs: {
-      "label": "mobile number",
-      "prop": "phoneNumber"
-    }
-  }, [_c('el-input', {
-    model: {
-      value: (_vm.form.mobile),
-      callback: function($$v) {
-        _vm.form.mobile = $$v
-      },
-      expression: "form.mobile"
-    }
-  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
-    attrs: {
-      "type": "primary"
-    },
-    on: {
-      "click": function($event) {
-        _vm.submitForm('form')
-      }
-    }
-  }, [_vm._v("Submit")]), _vm._v(" "), _c('el-button', {
-    on: {
-      "click": function($event) {
-        _vm.resetForm('form')
-      }
-    }
-  }, [_vm._v("Reset")])], 1)], 1)], 1)])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "message-header"
-  }, [_c('p', [_vm._v("Signup successfull. Pending admin verification")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "message-header"
-  }, [_c('p', [_vm._v("Company name .")])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-2ec2620a", module.exports)
-  }
-}
-
-/***/ }),
+/* 58 */,
 /* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7613,19 +7438,340 @@ module.exports = __webpack_require__(20);
 /* 125 */,
 /* 126 */,
 /* 127 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(41);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        var checkDescription = function checkDescription(rule, value, callback) {
+            if (!value) {
+                callback(new Error('Please input the description'));
+            } else if (value === '') {
+                callback(new Error('Please input the description'));
+            } else {
+                callback();
+            }
+        };
+        var checkName = function checkName(rule, value, callback) {
+            //TODO: add: check against database
+            if (!value) {
+                callback(new Error('Please input the Name'));
+            } else if (value === '') {
+                callback(new Error('Please input the Name'));
+            } else {
+                callback();
+            }
+        };
+        var checkPhoneNumber = function checkPhoneNumber(rule, value, callback) {
+            if (!value) {
+                callback(new Error('Please input the phone number'));
+            } else if (value === '') {
+                callback(new Error('Please input the phone number'));
+            } else if (!/^01[0-2]{1}[0-9]{8}/.test(value)) {
+                callback(new Error('Please provide a valid phone number'));
+            } else {
+                callback();
+            }
+        };
+        var checkEmail = function checkEmail(rule, value, callback) {
+            if (!value) {
+                callback(new Error('Please input the email'));
+            } else if (value === '') {
+                callback(new Error('Please input the email'));
+            } else {
+                callback();
+            }
+        };
+        return {
+            form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
+                name: '',
+                email: '',
+                shortDescription: '',
+                mobile: '',
+                success: false,
+                fail: false
+            }),
+            rules2: {
+                name: [{
+                    validator: checkName,
+                    trigger: 'blur'
+                }],
+                shortDescription: [{
+                    validator: checkDescription,
+                    trigger: 'blur'
+                }],
+                email: [{
+                    validator: checkEmail,
+                    type: 'email',
+                    message: 'Please input correct email address',
+                    trigger: 'blur'
+                }],
+                mobile: [{
+                    validator: checkPhoneNumber,
+                    trigger: 'blur'
+                }]
+            }
+        };
+    },
+
+    methods: {
+        submitForm: function submitForm(formName) {
+            var _this = this;
+
+            this.$refs[formName].validate(function (valid) {
+                if (valid) {
+                    _this.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* default */].Business().unverfiedSignup).then(function () {
+                        //TODO: add message
+                        _this.success = true;
+                    }).catch(function (err) {
+                        _this.fail = true;
+                    });
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        resetForm: function resetForm(formName) {
+            this.form.Reset();
+        }
+    }
+});
+
+/***/ }),
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(14)();
 exports.push([module.i, "\nhtml,body {\n  font-family: -apple-system,BlinkMacSystemFont,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Segoe UI Symbol\";\n  height: 100%;\n  padding: 0;\n  margin: 0;\n}\n.email-input,\n.password-input {\n  border-radius: 40px;\n  font-size: 20px;\n  padding-left: 15px;\n  color: #95A5A6;\n}\n.icon.user,\n.icon.password {\n  margin: 5px 10px 0 0;\n}\n.avatar img {\n  border-radius: 100px;\n  padding: 5px;\n  border: 1px solid #dbdbdb;\n}\n.forgot-password a {\n  color: #95A5A6;\n  font-weight: bold;\n  padding-right: 20px;\n}\n.login {\n  padding-top: 20px;\n}\n.login button {\n  border-radius: 40px;\n  font-weight: bold;\n}\n.hero-body .container {\n  margin-top: -100px;\n}\n.hero.is-dark .section {\n  background-color: transparent;\n}\n.login-wrapper {\n  margin: -0.75rem;\n  overflow-y: hidden;\n}\n.hero-banner .title {\n  display: inline-block;\n  background-color: rgba(0,0,0, 0.6);\n  padding: 5px;\n}\n", ""]);
 
 /***/ }),
-/* 128 */
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(131)
+
+var Component = __webpack_require__(7)(
+  /* script */
+  __webpack_require__(127),
+  /* template */
+  __webpack_require__(130),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Business/UnverifiedSignup.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] UnverifiedSignup.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2ec2620a", Component.options)
+  } else {
+    hotAPI.reload("data-v-2ec2620a", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticStyle: {
+      "padding": "200px"
+    }
+  }, [_c('article', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.form.success),
+      expression: "form.success"
+    }],
+    staticClass: "message is-primary",
+    staticStyle: {
+      "padding": "50px"
+    }
+  }, [_vm._m(0)]), _vm._v(" "), _c('article', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.form.fail),
+      expression: "form.fail"
+    }],
+    staticClass: "message is-danger",
+    staticStyle: {
+      "padding": "50px"
+    }
+  }, [_vm._m(1)]), _vm._v(" "), _c('div', {
+    staticClass: "hero-body"
+  }, [_c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "columns"
+  }, [_c('div', {
+    staticClass: "column is-8 is-offset-2"
+  }, [_c('div', {
+    staticClass: "login-form"
+  }, [_c('el-form', {
+    ref: "form",
+    attrs: {
+      "model": _vm.form,
+      "rules": _vm.rules2
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Business name",
+      "prop": "name"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.form.name),
+      callback: function($$v) {
+        _vm.form.name = $$v
+      },
+      expression: "form.name"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Email",
+      "prop": "email"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.form.email),
+      callback: function($$v) {
+        _vm.form.email = $$v
+      },
+      expression: "form.email"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Short description",
+      "prop": "shortDescription"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.form.shortDescription),
+      callback: function($$v) {
+        _vm.form.shortDescription = $$v
+      },
+      expression: "form.shortDescription"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "mobile number",
+      "prop": "phoneNumber"
+    }
+  }, [_c('el-input', {
+    model: {
+      value: (_vm.form.mobile),
+      callback: function($$v) {
+        _vm.form.mobile = $$v
+      },
+      expression: "form.mobile"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', [_c('el-button', {
+    attrs: {
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.submitForm('form')
+      }
+    }
+  }, [_vm._v("Submit")]), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.resetForm('form')
+      }
+    }
+  }, [_vm._v("Reset")])], 1)], 1)], 1)])])])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-header"
+  }, [_c('p', [_vm._v("Signup successfull. Pending admin verification")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "message-header"
+  }, [_c('p', [_vm._v("Company name .")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-2ec2620a", module.exports)
+  }
+}
+
+/***/ }),
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(127);
+var content = __webpack_require__(128);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
