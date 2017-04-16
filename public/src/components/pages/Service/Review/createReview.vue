@@ -47,6 +47,7 @@
                 this.success = true;
                 this.successMessage = response.message;
                 this.$refs.postReview.resetFields();
+                this.$emit('created');
               })
               .catch((err) => {
                 this.errors = err.response.data.errors;
