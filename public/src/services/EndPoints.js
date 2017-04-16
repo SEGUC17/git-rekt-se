@@ -58,6 +58,7 @@ export const Business = () => {
 export const Admin = () => {
   const generalBase = `${BASE}/admin/general`;
   const categoryBase = `${BASE}/admin/category`;
+  const clientBase = `${BASE}/admin/client`;
   return {
     login: `${BASE}/admin/auth/login`,
 
@@ -67,6 +68,8 @@ export const Admin = () => {
     createCategory: `${categoryBase}/add`,
     editCategory: categoryID => `${categoryBase}/edit/${categoryID}`,
     deleteCategory: categoryID => `${categoryBase}/delete/${categoryID}`,
+    removeClient: `${clientBase}/list`,
+
   };
 };
 

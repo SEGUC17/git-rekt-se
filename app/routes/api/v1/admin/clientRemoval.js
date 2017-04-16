@@ -45,6 +45,17 @@ router.get('/delete/:id', AdminAuth, (req, res, next) => {
     .catch(e => next([e]));
 });
 
+
+router.get('/list', AdminAuth, (req, res, next) => {
+  Client.find({
+    _deleted: false,
+  }, (err, clients) => {
+    if (err) {
+      return next(err);
+    }
+    return clients;
+  });
+});
 /**
  *  Error Handling Middlewares.
  */
