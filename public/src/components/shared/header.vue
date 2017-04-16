@@ -38,7 +38,7 @@
                                         <i class="fa fa-sign-in"></i>
                                     </span>
                     <span>
-                                <router-link to="client/login">
+                                <router-link to="/client/login">
                                     Login
                                 </router-link>
                             </span>
@@ -48,7 +48,7 @@
                     <span class="icon">
                         <i class="fa fa-logout"></i>
                     </span>
-                    <span> <router-link to="client/logout">
+                    <span> <router-link to="/client/logout">
                                     Logout
                                 </router-link></span>
                 </a>
