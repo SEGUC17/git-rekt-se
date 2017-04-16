@@ -1,16 +1,5 @@
 const BASE = 'http://localhost:3000/api/v1';
 
-
-export default {
-  Client() {
-    const authBase = `${BASE}/client/auth`;
-    const profileBase = `${BASE}/client/profile`;
-    return {
-      signup: `${authBase}/signup`,
-      resend: `${authBase}/confirmation/send`,
-    };
-  },
-
 export const Visitor = () => ({
   search: `${BASE}/visitor/search/`,
   viewService: serviceID => `${BASE}/service/${serviceID}`,
@@ -23,6 +12,7 @@ export const Visitor = () => ({
 export const Client = () => {
   const authBase = `${BASE}/client/auth`;
   const profileBase = `${BASE}/client/profile`;
+  const reviewBase = `${BASE}/client/review`;
   return {
     login: `${authBase}/login`,
     signup: `${authBase}/signup`,
@@ -69,6 +59,7 @@ export const Business = () => {
 export const Admin = () => {
   const generalBase = `${BASE}/admin/general`;
   const categoryBase = `${BASE}/admin/category`;
+  const businessBase = `${BASE}/admin/business`;
   return {
     login: `${BASE}/admin/auth/login`,
 
@@ -78,6 +69,7 @@ export const Admin = () => {
     createCategory: `${categoryBase}/add`,
     editCategory: categoryID => `${categoryBase}/edit/${categoryID}`,
     deleteCategory: categoryID => `${categoryBase}/delete/${categoryID}`,
+    deleteBusiness: businessID => `${businessBase}/delete/${businessID}`,
   };
 };
 
@@ -98,5 +90,4 @@ export default {
   Business,
   Admin,
   Service,
->>>>>>> 5211e387dd7e8286df3374180f4e045bb79b6cc1
 };
