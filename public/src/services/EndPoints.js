@@ -22,6 +22,7 @@ export const Client = () => {
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
 
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
+    profileBase,
   };
 };
 

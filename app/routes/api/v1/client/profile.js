@@ -19,6 +19,28 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
+ * Get Business
+ */
+router.get('/:id', (req, res, next) => {
+  const searchID = {
+    _id: req.params.id,
+    _deleted: false,
+  };
+  Client.findOne(searchID)
+    .exec()
+    .then((client) => {
+      if (!client) {
+        next(Strings.clientFaliure.notFound);
+      } else {
+        res.json({
+          client,
+        });
+      }
+    })
+    .catch(next);
+});
+
+/**
  * Client edit information route.
  */
 
