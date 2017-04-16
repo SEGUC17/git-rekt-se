@@ -2,13 +2,13 @@
     <div>
         <div v-show="this.errors.length > 0">
             <div class="error" v-for="error in this.errors">
-                <el-alert title="error alert" type="error" :description="error" show-icon>
+                <el-alert :title="error" type="error" show-icon>
                 </el-alert>
             </div>
         </div>
     
         <div v-show="success">
-            <el-alert title="success alert" type="success" :description="logoutSuccess" show-icon>
+            <el-alert :title="logoutSuccess" type="success" show-icon>
             </el-alert>
         </div>
     
@@ -30,7 +30,7 @@
         mounted() {
             auth.logout((responseErrs, response) => {
                 if (responseErrs) {
-                    this.errors = responseErrs;
+                    this.errors = responseErrors.errors;
                 } else {
                     this.success = true;
                     this.logoutSuccess = response.message;

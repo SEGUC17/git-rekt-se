@@ -4,13 +4,13 @@
     
             <div v-show="this.errors.length > 0">
                 <div class="error" v-for="error in this.errors">
-                    <el-alert title="error alert" type="error" :description="error" show-icon>
+                    <el-alert :title="error" type="error" show-icon>
                     </el-alert>
                 </div>
             </div>
     
             <div v-show="logged_in">
-                <el-alert title="success alert" type="success" :description="loginSuccess" show-icon>
+                <el-alert :title="loginSuccess" type="success" show-icon>
                 </el-alert>
             </div>
     
@@ -60,7 +60,13 @@
                     if (valid) {
                         clientAuth.login(this.form.data(), (responseErrors, response) => {
                             if (responseErrors) {
-                               this.errors = responseErrors.errors;
+                                responseErrors.errors.forEach((err) => {
+                                    if(typeof err === 'string') {
+                                        this.errors.push(err);
+                                    } else {
+                                        this.errors.push(err.msg);
+                                    }
+                                });
                             } else {
                                 this.logged_in = true;
                                 this.loginSuccess = response.message;
@@ -77,6 +83,7 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+                this.errors = [];
             }
         }
     }

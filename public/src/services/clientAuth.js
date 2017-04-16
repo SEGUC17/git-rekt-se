@@ -22,7 +22,7 @@ export default {
         return callBack(null, response.data);
       })
       .catch((err) => {
-        callBack(err, null);
+        callBack(err.response.data, null);
       });
   },
   logout(callBack) {
@@ -37,7 +37,7 @@ export default {
       localStorage.removeItem('client_id', response.data.id);
       callBack(null, response.data);
     }).catch((err) => {
-      callBack(err, null);
+      callBack(err.response.data, null);
     });
   },
   getJWTtoken() {
