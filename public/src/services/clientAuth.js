@@ -16,7 +16,6 @@ export default {
       .post(Client().login, data)
       .then((response) => {
         this.user.authenticated = true;
-        console.log(response);
         localStorage.setItem('client_token', response.data.token);
         localStorage.setItem('client_email', response.data.email);
         localStorage.setItem('client_id', response.data.id);
