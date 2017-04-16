@@ -24,23 +24,44 @@
 
             <!-- Navigation bar Right -->
             <div class="nav-right nav-menu">
-                <a class="button is-default gr-nav-button">
+                <a class="button is-default gr-nav-button" v-if="!user.authenticated">
                     <span class="icon">
                             <i class="fa fa-user"></i>
                         </span>
                     <router-link to="/signup" class="nav-item">Signup</router-link>
                 </a>
 
-                <a class="button is-danger gr-nav-button">
+                <a class="button is-danger gr-nav-button" v-if="!user.authenticated">
                     <span class="icon">
                             <i class="fa fa-sign-in"></i>
                         </span>
                     <router-link to="/login" class="nav-item no-link">Login</router-link>
                 </a>
+
+                <a class="button is-danger gr-nav-button" v-if="user.authenticated">
+                    <span class="icon">
+                            <i class="fa fa-sign-out"></i>
+                        </span>
+                    <router-link to="/logout" class="nav-item no-link">Logout</router-link>
+                </a>
             </div>
         </nav>
     </header>
 </template>
+
+<script>
+    import auth from '../../services/clientAuth'
+    export default {
+        data() {
+            return {
+                user: auth.user
+            }
+        },
+        mounted() {
+            auth.refreshAuth();
+        }
+    };
+</script>
 
 <style>
     .gr-nav-button {
