@@ -1,6 +1,6 @@
 <template>
   <div class="main-cnt">
-    <section class="gr-content hero is-medium is-bold has-text-centered">
+    <section class="search-header hero is-medium is-bold has-text-centered">
       <div class="hero-body">
         <h1 class="extra-large white">
           Search For Services
@@ -10,12 +10,9 @@
         </h2>
       </div>
     </section>
-    <div class="container">
+    <div class="container search-body">
       <div class="el-row">
         <div class="el-col el-col-24 el-col-xs-24 el-col-sm-6 search-tools">
-          <div class="block">
-            <h4 class="subtitle is-4">Filters</h4>
-          </div>
           <div class="block">
             <span class="search-label">Service Name</span>
             <el-input v-model="newQuery.name" @keyup.enter.native="performSearch" placeholder="Enter Name"></el-input>
@@ -194,10 +191,10 @@
 
 <style>
   .main-cnt {
-    padding: 10px 0;
+    padding-bottom: 1.5em;
   }
   
-  .gr-content {
+  .search-header {
     background: linear-gradient(180deg, rgba(0, 0, 0, .65), rgba(0, 0, 0, 0)), url('http://localhost:3000/assets/imgs/search/search_BG.JPG') 0 0/cover
   }
   
@@ -206,6 +203,9 @@
     justify-content: space-between;
   }
   
+  .search-body{ 
+    padding-top: 10px;
+  }
   .search-tools {
     padding: 15px;
   }

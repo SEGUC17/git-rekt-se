@@ -8,7 +8,7 @@ const routes = [{
   path: '/',
   component: Home,
 }, {
-  path: '/visitor/search',
+  path: '/search',
   component: SearchPage,
 }, {
   path: '/client/login',
