@@ -1,6 +1,6 @@
 const BASE = 'http://localhost:3000/api/v1';
 
-<<<<<<< HEAD
+
 export default {
   Client() {
     const authBase = `${BASE}/client/auth`;
@@ -10,7 +10,7 @@ export default {
       resend: `${authBase}/confirmation/send`,
     };
   },
-=======
+
 export const Visitor = () => ({
   search: `${BASE}/visitor/search/`,
   viewService: serviceID => `${BASE}/service/${serviceID}`,
