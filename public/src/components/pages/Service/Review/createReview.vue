@@ -34,7 +34,6 @@
     props: ['serviceID'],
     methods: {
       createReview() {
-        this.success = false;
         this.errors = [];
         this.$refs.postReview.validate((valid) => {
           if (valid) {

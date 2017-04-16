@@ -37,7 +37,6 @@
     props: ['serviceID', 'oldReview', 'visible'],
     methods: {
       editReview() {
-        this.success = false;
         this.errors = [];
         this.$refs.editReview.validate((valid) => {
           if (valid) {
