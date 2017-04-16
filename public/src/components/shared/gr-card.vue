@@ -5,26 +5,27 @@
                 <img :src="image" alt="Image">
             </figure>
         </div>
-        <div class="card-content">            
+        <div class="card-content">
             <div class="content">
-               <slot name="content"></slot>
+                <slot name="content"></slot>
             </div>
         </div>
     </div>
 </template>
 
-<style>
-.card{
-    margin: 1em;
-}
-</style>
 <script>
-    export default {
-        props: {
-            image: {
-                type: String,
-                default: '',
-            }
-        },
-    }
+  export default {
+    props: {
+      image: {
+        type: String,
+        default: '',
+      },
+    },
+  };
 </script>
+
+<style>
+    .card {
+        margin: 1em;
+    }
+</style>

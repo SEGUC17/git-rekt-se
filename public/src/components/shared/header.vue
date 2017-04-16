@@ -1,13 +1,13 @@
 <template>
     <header>
         <nav class="nav">
-    
+
             <!-- Navigation bar Center -->
-    
+
             <div class="nav-left">
                 <router-link to="/#" class="nav-item"><img src="assets/imgs/logo.svg" alt="Bulma logo"></router-link>
             </div>
-            
+
             <span class="nav-toggle">
                 <span></span>
                 <span></span>
@@ -21,7 +21,7 @@
                 <router-link to="/categories" class="nav-item">Categories</router-link>
                 <router-link to="/contact" class="nav-item">Contact</router-link>
             </div>
-    
+
             <!-- Navigation bar Right -->
             <div class="nav-right nav-menu">
                 <a class="button is-default gr-nav-button">
@@ -30,7 +30,7 @@
                         </span>
                     <router-link to="/signup" class="nav-item">Signup</router-link>
                 </a>
-    
+
                 <a class="button is-danger gr-nav-button">
                     <span class="icon">
                             <i class="fa fa-sign-in"></i>
@@ -42,18 +42,12 @@
     </header>
 </template>
 
-<script>
-    export default {
-        methods:{
-        }
-    };
-</script>
-
 <style>
     .gr-nav-button {
         margin: 10px;
     }
-    .no-link{
+
+    .no-link {
         color: white !important;
     }
 </style>

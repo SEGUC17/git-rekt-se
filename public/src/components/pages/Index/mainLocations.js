@@ -25,4 +25,4 @@ const locations = [{
 },
 ];
 
-module.exports = locations;
+export default locations;

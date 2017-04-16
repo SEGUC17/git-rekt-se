@@ -20,4 +20,4 @@ const ranges = [{
   value: '600-1000',
 }];
 
-module.exports = ranges;
+export default ranges;
