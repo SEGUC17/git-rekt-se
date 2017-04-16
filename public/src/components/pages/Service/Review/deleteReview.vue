@@ -23,7 +23,7 @@
     },
     props: ['serviceID', 'visible'],
     methods: {
-      editReview() {
+      deleteReview() {
         this.errors = [];
         Axios.post(Service.deleteReview(this.serviceID, this.reviewID))
         .then((response) => {
