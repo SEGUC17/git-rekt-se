@@ -1,4 +1,4 @@
-<<template>
+<template>
     <div class="columns is-mobile">
         <div class="column is-half is-offset-one-quarter">
             <div>
@@ -6,15 +6,19 @@
                     <div class="message" v-show="alert_show">
                         <el-alert :title="message" type="info" show-icon></el-alert>
                     </div>
-                    <div class="message" v-show="error_show">
-                        <el-alert v-for="error in errors" :key="error" :title="error" type="error" show-icon></el-alert>
+                    <div class="error" v-show="error_show">
+                        <el-alert  :title="errors" type="error" show-icon></el-alert>
+                    </div>
+    
+                    <div class="error" v-show="form.errors.has('serverError')">
+                        <el-alert  :title="form.errors.getAll('serverError')" type="error" show-icon></el-alert>
                     </div>
                 </div>
     
                 <h1 class="title has-text-centered">Forgot Password</h1>
     
-                <el-form :model="form" ref="form" label-width="100px" class="demo-ruleForm">
-                    <el-form-item label="Email" prop="email" :rules="rules">
+                <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="demo-ruleForm">
+                    <el-form-item label="Email" prop="email">
                         <el-input type="text" v-model="form.email" auto-complete="off"></el-input>
                     </el-form-item>
     
@@ -30,6 +34,9 @@
 <script>
     import Form from '../../services/Form';
     import EndPoints from '../../services/EndPoints';
+    import {
+        forgotPasswordValidation
+    } from '../../services/forgotPasswordValidation';
     
     export default {
         data() {
@@ -37,18 +44,8 @@
                 form: new Form({
                     email: '',
                 }),
-                errors:[],
-                rules: [{
-                        required: true,
-                        message: 'Please input email address',
-                        trigger: 'blur'
-                    },
-                    {
-                        type: 'email',
-                        message: 'Please input correct email address',
-                        trigger: 'blur,change'
-                    }
-                ],
+                errors: '',
+                rules: forgotPasswordValidation,
                 message: '',
                 alert_show: false,
                 error_show: false,
@@ -61,23 +58,24 @@
                     if (valid) {
                         this.form.post(EndPoints.Business().forgot)
                             .then((data) => {
-                                console.log(data);
                                 this.message = data.message;
                                 this.alert_show = true;
                                 this.error_show = false;
                             })
                             .catch((err) => {
-                                console.log(err);
-                                this.errors = err;
                                 this.alert_show = false;
                                 this.error_show = true;
                             });
                     } else {
-                        this.errors = ['Please insert correct inputs'];
+                        this.errors = 'Please insert correct inputs';
                         this.alert_show = false;
                         this.error_show = true;
                     }
                 });
+            },
+            hasErrors() {
+                const errors = this.$refs.form.$children.filter(el => el.validateMessage.length > 0);
+                return errors.length > 0;
             },
         }
     }
