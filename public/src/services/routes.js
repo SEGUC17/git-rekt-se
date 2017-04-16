@@ -1,10 +1,11 @@
 import VueRouter from 'vue-router';
-import About from '../components/pages/about.vue';
 import ForgotPassword from '../components/business/forgotPassword.vue';
+import Home from '../components/pages/Index/home.vue';
+
 
 const routes = [{
-  path: '/about',
-  component: About,
+  path: '/',
+  component: Home,
 },
 {
   path: '/api/v1/business/forgot',
@@ -13,6 +14,7 @@ const routes = [{
 
 const router = new VueRouter({
   routes,
+  linkActiveClass: 'is-active',
 });
 
 export default router;
