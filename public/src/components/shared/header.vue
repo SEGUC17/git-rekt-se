@@ -5,7 +5,7 @@
             <!-- Navigation bar Center -->
 
             <div class="nav-left">
-                <router-link to="/#" class="nav-item"><img src="assets/imgs/logo.svg" alt="Bulma logo"></router-link>
+                <router-link to="/#" class="logo nav-item"><img src="assets/imgs/logo.svg" alt="logo"></router-link>
             </div>
 
             <span class="nav-toggle">
@@ -43,6 +43,9 @@
 </template>
 
 <style>
+    .logo{
+        overflow: hidden;
+    }
     .gr-nav-button {
         margin: 10px;
     }

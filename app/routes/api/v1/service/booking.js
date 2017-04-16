@@ -127,7 +127,7 @@ router.post('/', jwtConfig.clientAuthMiddleware, (req, res, next) => {
  * Validate Coupon Route.
  */
 
-router.post('/coupon/validate', (req, res, next) => {
+router.post('/coupon/validate', jwtConfig.clientAuthMiddleware, (req, res, next) => {
   Coupon.findOne({
     code: req.body.code,
     _service: req.body.serviceId,

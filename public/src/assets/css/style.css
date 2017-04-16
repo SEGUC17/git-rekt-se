@@ -5,6 +5,9 @@
   flex-direction: column;
 }
 
+#root{
+  overflow: hidden;
+}
 #grcontent{
   flex: 1;
 }

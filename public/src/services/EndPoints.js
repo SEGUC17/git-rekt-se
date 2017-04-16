@@ -79,6 +79,7 @@ export const Service = () => {
 
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,
     validateCoupon: `${bookingBase}/coupon/validate`,
+    makeBooking: `${BASE}`,
   };
 };
 
