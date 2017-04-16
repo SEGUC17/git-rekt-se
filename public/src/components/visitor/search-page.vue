@@ -1,14 +1,14 @@
 <template>
   <div class="main-cnt">
-    <div class="page-container page-component">
+    <div class="container">
       <div class="el-row">
-        <div class="el-col el-col-24 el-col-xs-24 el-col-sm-4 search-tools">
+        <div class="el-col el-col-24 el-col-xs-24 el-col-sm-6 search-tools">
           <div class="block">
             <h4 class="subtitle is-4">Filters</h4>
           </div>
           <div class="block">
             <span class="search-label">Service Name</span>
-            <el-input v-model="newQuery.name" placeholder="Enter Name"></el-input>
+            <el-input v-model="newQuery.name" @keyup.enter.native="performSearch" placeholder="Enter Name"></el-input>
           </div>
           <div class="block">
             <span class="search-label">Min. Rating</span>
@@ -20,7 +20,7 @@
           </div>
           <div class="block">
             <span class="search-label">Location</span>
-            <el-autocomplete class="inline-input" v-model="newQuery.location" :fetch-suggestions="locationSearch" placeholder="Select Location"></el-autocomplete>
+            <el-autocomplete class="inline-input" v-model="newQuery.location" :fetch-suggestions="locationSearch" @keyup.enter.native="performSearch" placeholder="Select Location"></el-autocomplete>
           </div>
           <div class="block">
             <span class="search-label">Sort By</span>
@@ -34,7 +34,19 @@
           </div>
   
         </div>
-        <div class="el-col el-col-24 el-col-xs-24 el-col-sm-20">
+        <div class="el-col el-col-24 el-col-xs-24 el-col-sm-18">
+          <section v-if="noResults" class="hero is-medium">
+            <div  class="hero-body">
+              <div class="has-text-centered">
+                <h1 class="title">
+                  No Results Found
+                </h1>
+                <h2 class="subtitle">
+                  Please try searching for another query
+                </h2>
+              </div>
+            </div>
+          </section>
           <search-result v-for="result in results" :service="result" :key="result._id"></search-result>
           <el-row :gutter="20">
             <el-col :span="12" :offset="6">
@@ -52,13 +64,14 @@
   import Axios from 'axios';
   
   import SearchResult from './search-result.vue';
-  import EndPoints from '../../services/EndPoints';
+  import { Visitor } from '../../services/EndPoints';
   import Locations from '../../../../app/seed/service/locations';
   // TODO move locations to public folder
   
   export default {
     data() {
       return {
+        noResults: false,
         results: [],
         locationsDB: [],
         count: 0,
@@ -69,8 +82,9 @@
         {
           value: 2,
           label: 'Highest Rating',
-  
-        }],
+
+        },
+        ],
         currentQuery: this.$route.query,
         priceRange: [(this.$route.query.min) ? parseInt(this.$route.query.min, 10) : 0,
           (this.$route.query.max) ? parseInt(this.$route.query.max, 10) : 10000,
@@ -96,13 +110,7 @@
         });
       }, this);
       this.newQuery.offset = 1;
-      Axios.get(`${EndPoints.Visitor().search}/${this.stringifyQuery(this.currentQuery)}`)
-        .then((response) => {
-          this.results = response.data.results;
-          this.count = response.data.count;
-        })
-        .catch(err => console.log(err));
-      // TODO proper error handling
+      this.execQuery();
     },
     methods: {
       stringifyQuery(query) {
@@ -133,12 +141,7 @@
       },
       changePage(newPage) {
         this.currentQuery.offset = newPage;
-        Axios.get(`${EndPoints.Visitor().search}/${this.stringifyQuery(this.currentQuery)}`)
-          .then((response) => {
-            this.results = [];
-            this.results = response.data.results;
-            this.count = response.data.count;
-          });
+        this.execQuery();
       },
       locationSearch(q, cb) {
         const results = q ? this.locationsDB.filter(this.createFilter(q)) : this.locationsDB;
@@ -152,19 +155,32 @@
         this.newQuery.min = Math.min(...this.priceRange);
         this.newQuery.max = Math.max(...this.priceRange);
         this.currentQuery = this.newQuery;
-        Axios.get(`${EndPoints.Visitor().search}/${this.stringifyQuery(this.currentQuery)}`)
+        this.execQuery();
+      },
+      execQuery() {
+        Axios.get(`${Visitor().search}/${this.stringifyQuery(this.currentQuery)}`)
           .then((response) => {
+            this.noResults = false;
             this.results = response.data.results;
             this.count = response.data.count;
           })
-          .catch(err => console.log(err));
-        // TODO proper error handling
+          .catch((err) => {
+            if (err.response.data.errors[0] === 'No search results match the query.') {
+              this.noResults = true;
+              this.results = [];
+              this.count = 0;
+            }
+          });
       },
     },
   };
 </script>
 
 <style>
+  .main-cnt {
+    padding: 10px;
+  }
+  
   .container,
   .page-container {
     width: 1140px;
@@ -178,7 +194,7 @@
   }
   
   .search-tools {
-    padding-right: 15px;
+    padding: 15px;
   }
   
   .search-button {

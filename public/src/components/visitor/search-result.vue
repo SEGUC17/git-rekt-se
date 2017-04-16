@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card">
+  <el-card class="box-card result">
     <el-row type="flex" class="row-bg">
       <el-col :span="3" class="image-container">
         <figure class="service-center">
@@ -67,6 +67,10 @@
 </script>
 
 <style>
+  .result{
+    margin-bottom: 8px; 
+  }
+
   .el-tag {
     margin: 0 1px;
   }
