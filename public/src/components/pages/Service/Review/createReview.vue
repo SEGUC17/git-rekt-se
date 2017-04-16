@@ -1,6 +1,7 @@
 <template>
-    <el-alert title="Success" type="success" :description="successMessage" show-icon></el-alert>
-    <el-alert title="Error" type="error" show-icon v-for="error in errors" :description="error"></el-alert>
+  <el-alert title="Success" type="success" :description="successMessage" show-icon>
+  </el-alert>
+  <el-alert title="Error" type="error" show-icon v-for="error in errors" :description="error"></el-alert>
   <h3>
     Leave a review...</h3>
   <el-form ref="postReview" :model="review" :rules="rules" label-width="120px">
@@ -13,7 +14,6 @@
     <el-form-item>
       <el-button type="primary" @click="createReview">Create</el-button>
     </el-form-item>
-  
   </el-form>
 </template>
 
@@ -40,14 +40,19 @@
       createReview() {
         this.success = false;
         this.errors = [];
-        Axios.post(Service.createReview(this.serviceID), this.review)
-          .then((response) => {
-            this.success = true;
-            this.successMessage = response.message;
-          })
-          .catch((err) => {
-            this.errors = err.response.data.errors;
-          });
+        this.$refs.postReview.validate((valid) => {
+          if (valid) {
+            Axios.post(Service.createReview(this.serviceID), this.review)
+              .then((response) => {
+                this.success = true;
+                this.successMessage = response.message;
+                this.$refs.postReview.resetFields();
+              })
+              .catch((err) => {
+                this.errors = err.response.data.errors;
+              });
+          }
+        });
       },
     },
   };
