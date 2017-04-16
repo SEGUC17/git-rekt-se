@@ -56,7 +56,7 @@ describe('Category CRUD Test Suite', () => {
           param: 'id',
           msg: 'Invalid Business ID',
           value: 'x1',
-        }, ],
+        }],
       }, done);
   });
 });
