@@ -12,6 +12,7 @@ export const Visitor = () => ({
 export const Client = () => {
   const authBase = `${BASE}/client/auth`;
   const profileBase = `${BASE}/client/profile`;
+  const reviewBase = `${BASE}/client/review`;
   return {
     login: `${authBase}/login`,
     signup: `${authBase}/signup`,
@@ -20,6 +21,7 @@ export const Client = () => {
     forgot: `${authBase}/forgot`,
     logout: `${authBase}/logout`,
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
+    reportReview: `${reviewBase}/report`,
 
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
   };
