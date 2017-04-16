@@ -2,6 +2,8 @@
     <div class="columns is-mobile">
         <div class="column is-half is-offset-one-quarter">
     
+            <h1 class="title has-text-centered">Login</h1>
+    
             <div v-show="errors.length > 0">
                 <div class="error" v-for="error in errors">
                     <el-alert :title="error" type="error" show-icon>
@@ -15,7 +17,6 @@
             </div>
     
     
-            <h1 class="title has-text-centered">Login</h1>
     
             <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top" class="demo-ruleForm">
                 <el-form-item label="Email" prop="email">
@@ -38,7 +39,9 @@
 <script>
     import clientAuth from '../../services/clientAuth';
     import Form from '../../services/Form';
-    import { clientLoginRules } from '../../services/validation';
+    import {
+        clientLoginRules
+    } from '../../services/validation';
     
     export default {
         data() {
@@ -60,11 +63,11 @@
                     if (valid) {
                         clientAuth.login(this.form.data(), (responseErrors, response) => {
                             if (responseErrors) {
-                                responseErrors.errors.forEach((err) => {
-                                    if(typeof err === 'string') {
-                                        this.errors.push(err);
+                                this.errors = responseErrors.errors.map((err) => {
+                                    if (typeof err === 'string') {
+                                        return err;
                                     } else {
-                                        this.errors.push(err.msg);
+                                        return err.msg;
                                     }
                                 });
                             } else {
@@ -88,3 +91,15 @@
         }
     }
 </script>
+
+<style>
+    .error {
+        margin-top: 20px;
+    }
+    .error:first-child {
+        margin-top: none;
+    }
+    .demo-ruleForm {
+        margin-top: 30px;
+    }
+</style>
