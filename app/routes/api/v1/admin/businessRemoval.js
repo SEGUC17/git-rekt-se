@@ -29,7 +29,6 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        console.log('what');
         /**
          * check for services under this business and delete them first
          * also delete branches under the business
@@ -46,6 +45,7 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
           if (results) {
             for (i; i < results.length; i += 1) {
               results[i]._deleted = true;
+              results.save();
             }
           }
         });
@@ -61,6 +61,7 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
               branchlist[i] = results3[i]; // save to a const to not
               // create a function inside this loop
               results3[i]._deleted = true;
+              results3.save();
             }
           }
         });
@@ -76,6 +77,7 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
             if (results2) {
               for (i; i < results2.length; i += 1) {
                 results2[i]._deleted = true;
+                results2.save();
               }
             }
           });
@@ -83,12 +85,9 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
 
         Business.find({
           _id: req.params.id,
-        }, (err4, bus) => {
-          if (err4) {
-            return next(err4);
-          }
+        }, (bus) => {
           bus._deleted = true;
-          bus.save(err5 => next(err5));
+          bus.save();
           return res.json({
             message: Strings.adminSuccess.businessDeleted,
           });
