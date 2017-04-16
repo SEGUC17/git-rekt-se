@@ -46,7 +46,7 @@
         </div>
         <div class="el-col el-col-24 el-col-xs-24 el-col-sm-18">
           <section v-if="noResults" class="hero is-medium">
-            <div  class="hero-body">
+            <div class="hero-body">
               <div class="has-text-centered">
                 <h1 class="title">
                   No Results Found
@@ -74,8 +74,8 @@
   import Axios from 'axios';
   
   import SearchResult from './search-result.vue';
-  import { Visitor } from '../../services/EndPoints';
-  import Locations from '../../../../app/seed/service/locations';
+  import { Visitor } from '../../../services/EndPoints';
+  import Locations from '../Index/mainLocations';
   // TODO move locations to public folder
   
   export default {
@@ -114,15 +114,21 @@
       SearchResult,
     },
     mounted() {
-      Locations.forEach((location) => {
-        this.locationsDB.push({
-          value: location,
-        });
-      }, this);
+      this.getLocations();
       this.newQuery.offset = 1;
       this.execQuery();
     },
     methods: {
+      getLocations() {
+        Axios
+          .get(Visitor().locations)
+          .then((res) => {
+            this.locationsDB = res.data;
+          })
+          .catch(() => {
+            this.locationsDB = Locations;
+          });
+      },
       stringifyQuery(query) {
         let queryString = '?';
         if (!query.offset) {
@@ -190,9 +196,9 @@
   .main-cnt {
     padding: 10px 0;
   }
-
-  .gr-content{
-    background: linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,0)),url('http://localhost:3000/assets/imgs/search/search_BG.JPG') 0 0/cover
+  
+  .gr-content {
+    background: linear-gradient(180deg, rgba(0, 0, 0, .65), rgba(0, 0, 0, 0)), url('http://localhost:3000/assets/imgs/search/search_BG.JPG') 0 0/cover
   }
   
   .el-pagination {
