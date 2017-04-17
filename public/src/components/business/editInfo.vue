@@ -169,7 +169,7 @@
                 this.message = data.message;
                 this.getBusiness()
                   .then(() => this.loading = false)
-                  .catch(() => console.log('Error!'));
+                  .catch(() => this.loading = false);
               }).catch((err) => {
                 this.loading = false;
                 this.success = false;
