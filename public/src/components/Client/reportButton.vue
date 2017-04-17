@@ -8,10 +8,7 @@
                 </span>
             </el-dialog>
     
-            <el-button class="button is-danger" style="float: right;"@click="reviewclicked()" >review &nbsp; 
-                <span class="icon">
-                    <i class="fa fa-trash-o"></i>
-                </span>
+            <el-button class="button is-danger" style="float: right;"@click="reviewclicked()" >Report &nbsp; 
             </el-button>
     </div>
 </template>
