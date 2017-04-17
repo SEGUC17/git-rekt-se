@@ -18,7 +18,7 @@
 </template>
 
 <script>
-    import clientAuth from '../../services/clientAuth';
+    import clientAuth from '../../services/auth/clientAuth';
     
     export default {
         data() {
@@ -36,7 +36,7 @@
             } else {
                 clientAuth.logout((responseErrs, response) => {
                     if (responseErrs) {
-                        this.errors = responseErrors.errors;
+                        this.errors = responseErrs.errors;
                     } else {
                         this.success = true;
                         this.logoutSuccess = response.message;

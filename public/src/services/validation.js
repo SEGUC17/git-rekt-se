@@ -1,12 +1,12 @@
-export const clientLoginRules = {
+export const loginRules = {
   email: [{
     required: true,
-    message: 'Please enter your email',
+    message: 'Email is required.',
     trigger: 'blur',
   }],
   password: [{
     required: true,
-    message: 'Please enter your password',
+    message: 'Password is required.',
     trigger: 'blur',
   }],
 };
