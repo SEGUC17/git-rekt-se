@@ -526,13 +526,6 @@ const clientUpdateValidation = {
             errorMessage: bussinessValidationErrors.invalidPassword,
         },
     },
-
-
-    confirmPassword: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyConfirmation,
-        },
-    },
     firstName: {
         notEmpty: {
             errorMessage: clientValidationErrors.emptyFirstName,
@@ -578,16 +571,6 @@ const validatePassword = (password) => {
         return true;
     }
     return /^(?=.*\d).{8,15}$/.test(password);
-};
-
-/**
- * Checks if the given Array of Phone Numbers contain numbers in the
- * Egyptian phone number format.
- * @param {Array} phoneNumber
- */
-const validatePhoneNumber = (phoneNumbers) => {
-    const valid = phoneNumbers.filter(phoneNumber => /^01[0-2]{1}[0-9]{8}/.test(phoneNumber));
-    return valid.length === phoneNumbers.length;
 };
 
 const validation = {

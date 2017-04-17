@@ -20,7 +20,6 @@ router.use(bodyParser.json());
 router.use(expressValidator({
     customValidators: {
         isPassword: validationSchemas.validatePassword,
-        arePhoneNumbers: validationSchemas.validatePhoneNumber,
     },
 }));
 
@@ -65,11 +64,10 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
         let emailChanged = false;
 
 
-        req.checkBody(validationSchemas.clientSignupValidation);
+        req.checkBody(validationSchemas.clientUpdateValidation);
         req.checkBody('confirmPassword')
             .equals(req.body.password)
             .withMessage(Strings.clientValidationErrors.passwordMismatch);
-
         req.getValidationResult()
             .then((result) => {
                 if (result.isEmpty()) {

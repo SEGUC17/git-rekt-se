@@ -2,7 +2,7 @@
   <div class="columns is-mobile">
     <div class="column is-half is-offset-one-quarter">
   
-      <div v-show="success">
+      <div class="message" v-show="success">
         <el-alert title="Success" type="success" :description="successMessage" show-icon></el-alert>
       </div>
   
@@ -20,32 +20,32 @@
   
       <el-form ref="form" :model="form" :rules="rules" :label-position="'left'" label-width="120px">
         <el-form-item label="First Name" prop="firstName">
-          <el-input v-model="form.firstName" ></el-input>
+          <el-input v-model="form.firstName"></el-input>
         </el-form-item>
   
         <el-form-item label="Last Name" prop="lastName">
-          <el-input v-model="form.lastName" ></el-input>
+          <el-input v-model="form.lastName"></el-input>
         </el-form-item>
   
         <el-form-item label="Email" prop="email">
-          <el-input v-model="form.email" ></el-input>
+          <el-input v-model="form.email"></el-input>
         </el-form-item>
   
-        <el-form-item label="Password" prop="password">
-          <el-input v-model="form.password" :type="showPassword" placeholder="***************">
+        <el-form-item label="Password">
+          <el-input v-model="form.password" :type="showPassword" prop="password" placeholder="***************">
             <div slot="append">
               <el-tooltip content="See Password" placement="right">
-                <el-button @click="onShowPasswrod"><i class="fa fa-eye"></i></el-button>
+                <el-button @click="onShowPassword"><i class="fa fa-eye"></i></el-button>
               </el-tooltip>
             </div>
           </el-input>
         </el-form-item>
   
-        <el-form-item label="Confirm Password" prop="confirmPassword">
-          <el-input v-model="form.confirmPassword" :type="showConfirm" placeholder="***************">
+        <el-form-item label="Confirm Password">
+          <el-input v-model="form.confirmPassword" :type="showConfirm" prop="confirmPassword" placeholder="***************">
             <div slot="append">
               <el-tooltip content="See Confirm Password" placement="right">
-                <el-button @click="onShowConfirmPasswrod"><i class="fa fa-eye"></i></el-button>
+                <el-button @click="onShowConfirmPassword"><i class="fa fa-eye"></i></el-button>
               </el-tooltip>
             </div>
           </el-input>
@@ -55,20 +55,19 @@
           <el-input v-model="form.mobile"></el-input>
         </el-form-item>
   
-        <el-form-item label="Gender" prop="gender">
+        <el-form-item label="gender" prop="gender">
           <el-radio-group v-model="form.gender">
             <el-radio label="Male"></el-radio>
             <el-radio label="Female"></el-radio>
           </el-radio-group>
         </el-form-item>
   
-        <el-form-item label="Birthdate">
+        <el-form-item label="birthdate">
           <el-date-picker v-model="form.birthdate" type="date" :format="'dd-MM-yyyy'"></el-date-picker>
         </el-form-item>
   
         <el-form-item class="has-text-centered">
-          <el-button type="primary" icon="circle-check" @click="onClick" :loading="loading">Sign Up</el-button>
-          <el-button icon="circle-cross" @click="onReset">Reset</el-button>
+          <el-button type="primary" icon="circle-check" @click="submitForm('form')">Edit</el-button>
         </el-form-item>
       </el-form>
   
@@ -81,12 +80,13 @@
   import Errors from '../../services/Errors';
   import EndPoints from '../../services/EndPoints';
   import axios from 'axios';
+  import clientAuth from '../../services/auth/clientAuth';
   import {
     clientEditInfoValidation
-  } from '../../services/validation';
+  } from '../../services/clientEditInfoValidation';
   export default {
     data() {
-      console.log(clientEditInfoValidation);
+  
       clientEditInfoValidation.confirmPassword[0].validator = clientEditInfoValidation.confirmPassword[0]
         .validator.bind(this);
       return {
@@ -101,72 +101,100 @@
           birthdate: ''
         }),
         rules: clientEditInfoValidation,
+        client: {},
         showPassword: 'password',
         showConfirm: 'password',
         success: false,
         successMessage: '',
-        clientEmail: '',
-        loading: false,
       }
     },
-    computed: {
-      dataGetter: function(){
-        axios.get(EndPoints.Client)
-        .then((res) => {
-
+    mounted: function() {
+      this.getClient()
+        .then(() => {
+          this.form.email = this.client.email;
+          this.form.confirmPassword = this.client.confirmPassword;
+          this.form.firstName = this.client.firstName;
+          this.form.lastName = this.client.lastName;
+          this.form.gender = this.client.gender;
+          this.form.mobile = this.client.mobile;
+          this.form.birthdate = this.client.birthdate;
         })
-        .catch((err) => {
-
+        .catch(() => {
+          this.error = true;
+          this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
         });
-      }
     },
     methods: {
-      onShowPasswrod(){
-        if( this.showPasswrod === 'text'){
+      onShowPassword() {
+        if (this.showPasswrod === 'text') {
           this.showPasswrod = 'password';
         } else {
           this.showPasswrod = 'text';
         }
       },
-      onShowConfirmPasswrod(){
-        if( this.showConfirm === 'text'){
+      onShowConfirmPassword() {
+        if (this.showConfirm === 'text') {
           this.showConfirm = 'password';
         } else {
           this.showConfirm = 'text';
         }
       },
-      onClick() {
-        if (this.hasErrors()) {
-          return;
-        }
-        this.success = false;
-        this.successMessage = '';
-        this.clientEmail = this.form.email;
-        this.loading = true;
-        this.form.post(EndPoints.Client().signup)
-          .then((data) => {
-            this.loading = false;
-            this.success = true;
-            this.successMessage = data.message;
-          }).catch(() => this.loading = false);
+      getClient() {
+        return new Promise((resolve, reject) => {
+          axios.get(EndPoints.Client().getInfo(clientAuth.user.userID()), {
+              headers: {
+                Authorization: clientAuth.getJWTtoken(),
+              },
+            })
+            .then((response) => {
+              this.client = response.data;
+              resolve();
+            }).catch((err) => {
+              this.error = true;
+              this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+              reject(err);
+            });
+        });
       },
-      onReset() {
-        this.$refs.form.resetFields();
+      submitForm(formName) {
+  
+        this.success = false;
+        this.successMessage = '',
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              console.log("valid")
+              this.form.post(EndPoints.Client().editInfo(clientAuth.user.userID()), {
+                  headers: {
+                    Authorization: clientAuth.getJWTtoken(),
+                  },
+                })
+                .then((data) => {
+                  this.success = true;
+                  this.successMessage = data.message;
+                }).catch((err) => {
+                  console.log(err);
+                  this.error = true;
+                  this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+                });
+            } else{
+              this.error = true;
+              this.message = ["Please insert correct inputs"];
+            }
+          });
       },
       hasErrors() {
         const errors = this.$refs.form.$children.filter(el => el.validateMessage.length > 0);
         return errors.length > 0;
       },
-      resendMail() {
-        this.loading = true;
-        this.form.email = this.clientEmail;
-        this.form.post(EndPoints.Client().resend)
-          .then((data) => {
-            this.loading = false;
-            this.success = true;
-            this.successMessage = data.message;
-          }).catch(err => this.loading = false);
-      },
     },
   }
 </script>
+
+<style>
+  .error {
+    margin-bottom: 10px;
+  }
+  .message {
+    margin-bottom: 10px;
+  }
+</style>
