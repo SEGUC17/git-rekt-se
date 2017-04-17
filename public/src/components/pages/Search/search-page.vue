@@ -11,7 +11,7 @@
       </div>
     </section>
     <div class="container search-body">
-      <el-alert v-for"error in errors" :title="error" type="error" show-icon></el-alert>
+      <el-alert v-for="error in errors" :title="error" type="error" show-icon></el-alert>
       <div class="el-row">
         <div class="el-col el-col-24 el-col-xs-24 el-col-sm-6 search-tools">
           <div class="block">
