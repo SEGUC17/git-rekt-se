@@ -63,7 +63,7 @@ require('./routes/routes')(app);
 
 app.use(express.static(path.join(__dirname, '../public/dist/')));
 
-app.get('/*', (req, res) => res.redirect(`/#${req.path}`));
+app.get('/*', (req, res) => res.redirect(`/#${req.originalUrl}`));
 
 /**
  * Generic Error Handling Middlewares.

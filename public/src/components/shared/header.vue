@@ -50,8 +50,7 @@
 </template>
 
 <script>
-  import auth from '../../services/clientAuth';
-
+  import auth from '../../services/auth/clientAuth';
   export default {
     data() {
       return {

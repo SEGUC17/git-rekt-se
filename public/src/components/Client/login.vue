@@ -50,11 +50,9 @@
 </template>
 
 <script>
-  import clientAuth from '../../services/clientAuth';
+  import clientAuth from '../../services/auth/clientAuth';
   import Form from '../../services/Form';
-  import {
-    clientLoginRules,
-  } from '../../services/validation';
+  import { loginRules } from '../../services/validation';
 
   export default {
     data() {
@@ -63,7 +61,7 @@
           email: '',
           password: '',
         }),
-        rules: clientLoginRules,
+        rules: loginRules,
         logged_in: false,
         loginSuccess: '',
         errors: [],
