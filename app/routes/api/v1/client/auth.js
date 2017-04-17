@@ -255,7 +255,7 @@ router.post('/fb/finalize/login', (req, res, next) => {
       ClientAuthenticator.finalizeLoginFacebook(encapsulatedToken)
         .then((token, payload) => {
           new InvalidToken({
-            token,
+            token: encapsulatedToken,
           }).save().then(() => {
             res.json({
               message: Strings.clientLoginMessages.loginSuccess,
