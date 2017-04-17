@@ -5,17 +5,17 @@ export default {
 export const businessEditInfoValidation = {
   name: [{
     required: true,
-    message: 'A Name is required.',
-    trigger: ['blur', 'change'],
+    message: 'A Business Name is required.',
+    trigger: 'blur',
   }],
   email: [{
     required: true,
     message: 'An Email is required.',
-    trigger: ['blur', 'change'],
+    trigger: 'blur',
   }, {
     type: 'email',
-    message: 'Must be a valid email!',
-    trigger: ['blur', 'change'],
+    message: 'Must be an email',
+    trigger: 'blur',
   }],
   password: [{
     validator(rule, value, callBack) {
@@ -27,7 +27,7 @@ export const businessEditInfoValidation = {
         callBack([new Error('Password must be between 8 and 15 characters and contains at least one number!')]);
       }
     },
-    trigger: ['blur', 'change'],
+    trigger: 'blur',
   }],
   confirmPassword: [{
     validator(rule, value, callBack) {
@@ -41,12 +41,12 @@ export const businessEditInfoValidation = {
         callBack([new Error('Password and Confirm Password must match!')]);
       }
     },
-    trigger: ['blur', 'change'],
+    trigger: 'blur',
   }],
   shortDescription: [{
     required: true,
     message: 'A Short Description is required.',
-    trigger: ['blur', 'change'],
+    trigger: 'blur',
   }],
   phoneNumber: [{
     validator(rule, value, callBack) {
@@ -57,7 +57,7 @@ export const businessEditInfoValidation = {
         callBack([new Error('Phone Number must be in this format 01xxxxxxxxx')]);
       }
     },
-    trigger: ['blur', 'change'],
+    trigger: 'blur',
   }],
 };
 

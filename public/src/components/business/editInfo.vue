@@ -1,15 +1,15 @@
 <template>
-  <div class="columns is-mobile">
+  <div class="columns">
     <div class="column is-half is-offset-one-quarter">
   
       <div v-show="success">
         <el-alert @close="success = false" title="Success" :description="message" type="success" show-icon></el-alert>
       </div>
-      
+  
       <div v-show="info">
         <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
       </div>
-
+  
       <div v-show="!form.errors.isEmpty() || error">
         <div v-show="error">
           <el-alert @close="error = false" title="Error" type="error" :description="message" show-icon></el-alert>
@@ -30,7 +30,7 @@
         <el-form-item label="Name" prop="name">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
-  
+        
         <el-form-item label="Email" prop="email">
           <el-input v-model="form.email"></el-input>
         </el-form-item>
@@ -80,12 +80,15 @@
 <script>
   import Form from '../../services/Form';
   import businessAuth from '../../services/auth/businessAuth';
-  import { Business } from '../../services/EndPoints';
-  import { businessEditInfoValidation } from '../../services/validation';
+  import {
+    Business
+  } from '../../services/EndPoints';
+  import {
+    businessEditInfoValidation
+  } from '../../services/validation';
   const dummy_password = '***************';
   export default {
     data() {
-      console.log(businessEditInfoValidation);
       businessEditInfoValidation.confirmPassword[0].validator = businessEditInfoValidation.confirmPassword[0].validator.bind(this);
       return {
         form: new Form({
@@ -111,23 +114,26 @@
     methods: {
       getBusiness() {
         return new Promise((resolve, reject) => {
-            axios.get(Business().getBasicInfo, {
+          axios.get(Business().getBasicInfo, {
               headers: {
                 Authorization: businessAuth.getJWTtoken(),
               },
             })
-              .then((response) => {
-                this.business = response.data.business;
-                this.onReset();
-                resolve();
-              }).catch((err) => {
-                this.error = true;
-                this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
-                reject(err);
-              });
+            .then((response) => {
+              this.business = response.data.business;
+              this.onReset();
+              resolve();
+            }).catch((err) => {
+              this.error = true;
+              this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+              reject(err);
+            });
         });
       },
       onSubmit() {
+        this.info = false;
+        this.success = false;
+        this.error = false;
         this.$refs.form.validate((valid) => {
           console.log(this.form.data());
           console.log(valid);
@@ -135,9 +141,6 @@
             this.form.phoneNumbers = this.phoneNumbers.filter(el => el.number.length > 0).map(el => el.number);
             this.form.password = this.form.password === dummy_password ? '' : this.form.password;
             this.form.confirmPassword = this.form.confirmPassword === dummy_password ? '' : this.form.confirmPassword;
-            this.info = false;
-            this.success = false;
-            this.error = false;
             this.loading = true;
             this.form.post(Business().editBasicInfo(businessAuth.user.userID()), {
                 headers: {
