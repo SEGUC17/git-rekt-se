@@ -33,14 +33,14 @@
                     <el-input type="textarea" :autosize="{ minRows: 1}" v-model="form.workingHours"></el-input>
                 </el-form-item>
     
-                <el-form-item label="Categories" prop="categoriesChoosed">
-                    <el-select v-model="form.categoriesChoosed" multiple multiple-limit=3 placeholder="Select">
+                <el-form-item label="Categories" prop="categories">
+                    <el-select v-model="form.categories" multiple :multiple-limit="3" placeholder="Select">
                         <el-option v-for="category in categories" :key="category._id" :label="category.title" :value="category._id">
                         </el-option>
                     </el-select>
                 </el-form-item>
     
-                <el-form-item v-for="(branch, index) in form.branchesEntered" :key="index" :label="'Branch '+(index+1)" prop="branchesEntered">
+                <el-form-item v-for="(branch, index) in form.branches" :key="index" :label="'Branch '+(index+1)" prop="branches">
                     <el-input placeholder="Please Enter Address here" v-model="branch.address">
                         <el-select v-model="branch.location" placeholder="Location" slot="prepend">
                             <el-option v-for="(location,index) in locations" :key="index" :label="location" :value="location">
@@ -48,7 +48,7 @@
                         </el-select>
                         <el-button @click="removeBranch(index)" slot="append">Delete Branch</el-button>
                     </el-input>
-                    <el-button v-show="index === form.branchesEntered.length-1" @click="addBranch">New Branch</el-button>
+                    <el-button v-show="index === form.branches.length-1" @click="addBranch">New Branch</el-button>
                 </el-form-item>
     
                 <el-form-item>
@@ -71,6 +71,7 @@
         Visitor
     } from '../../services/EndPoints';
     import axios from 'axios';
+    import businessAuth from '../../services/businessAuth';
     
     export default {
         data() {
@@ -84,8 +85,8 @@
                     confirmPassword: '',
                     description: '',
                     workingHours: '',
-                    categoriesChoosed: [],
-                    branchesEntered: [{
+                    categories: [],
+                    branches: [{
                         location: '',
                         address: ''
                     }],
@@ -107,18 +108,32 @@
         },
         methods: {
             submitForm(formName) {
-                this.form.branchesEntered = this.form.branchesEntered.filter((branch) => {
+                this.form.branches = this.form.branches.filter((branch) => {
                     return branch.location !== '' && branch.address !== '';
                 });
                 this.errors = [];
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log(this.form);
-                        alert('submit!');
+                        businessAuth.verifiedsignup(this.$route.params.token, this.form.data(), (responseErrs, response) => {
+                            if (responseErrs) {
+                                this.errors = responseErrs.errors.map((err) => {
+                                    if (typeof err === 'string') {
+                                        return err;
+                                    } else {
+                                        return err.msg;
+                                    }
+                                });
+                            } else {
+                                this.success = true;
+                                this.signupSuccess = response.message;
+                                setTimeout(() => {
+                                    this.$router.push('/');
+                                }, 1000);
+                            }
+                        });
                     } else {
-                        console.log('error submit!!');
                         this.addBranch();
-                        return false;
+                        this.errors.push('Please fill in all the fields');
                     }
                 });
             },
@@ -126,16 +141,16 @@
                 this.$refs[formName].resetFields();
             },
             addBranch() {
-                this.form.branchesEntered.push({
+                this.form.branches.push({
                     location: '',
                     address: ''
                 });
             },
             removeBranch(idx) {
-                this.form.branchesEntered = this.form.branchesEntered.filter((branch, index) => {
+                this.form.branches = this.form.branches.filter((branch, index) => {
                     return idx !== index;
                 });
-                if (this.form.branchesEntered.length === 0) {
+                if (this.form.branches.length === 0) {
                     this.addBranch();
                 }
             }
@@ -151,5 +166,12 @@
     .el-button {
         margin-top: 20px;
         margin-left: 10px;
+    }
+
+    .error {
+        margin-bottom: 20px;
+    }
+    .demo-ruleForm {
+        margin-top: 30px;
     }
 </style>

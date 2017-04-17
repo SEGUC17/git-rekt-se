@@ -59,7 +59,7 @@ export const verifiedBusinessSignupRules = {
     messsage: 'Please enter your business working hours',
     trigger: 'blur',
   }],
-  categoriesChoosed: [{
+  categories: [{
     validator(rule, value, callBack) {
       if (value.length === 0) {
         callBack([new Error('Please choose at least one category for your business')]);
@@ -69,7 +69,7 @@ export const verifiedBusinessSignupRules = {
     },
     trigger: 'blur',
   }],
-  branchesEntered: [{
+  branches: [{
     validator(rule, value, callBack) {
       if (value.length === 0) {
         callBack([new Error('Please add at least one branch for your business')]);
