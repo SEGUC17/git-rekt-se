@@ -51,7 +51,10 @@ export const Business = () => {
     editOffering: (serviceID, offeringID) => `${serviceBase}/${serviceID}/offering/${offeringID}/edit`,
     deleteOffering: (serviceID, offeringID) => `${serviceBase}/${serviceID}/offering/${offeringID}/delete`,
 
+    viewGallery: businessID => `${galleryBase}/${businessID}/gallery`,
     addImage: businessID => `${galleryBase}/${businessID}/gallery/add`,
+    editImage: (businessID, imageID) => `${galleryBase}/${businessID}/gallery/edit/${imageID}`,
+    deleteImage: (businessID, imageID) => `${galleryBase}/${businessID}/gallery/delete/${imageID}`,
   };
 };
 

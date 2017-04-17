@@ -38,12 +38,40 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
 });
+/**
+ * view Image to service gallery.
+ */
+
+router.get('/:id/gallery', (req, res, next) => { // BusinessAuth
+  req.checkParams(validationSchemas.businessAddImageValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        Business.findOne({
+          _id: req.params.id,
+          _deleted: false,
+        })
+          .exec()
+          .then((business) => {
+            if (business) {
+              res.json(business.gallery);
+            } else {
+              next(Strings.businessMessages.businessDoesntExist);
+            }
+          })
+          .catch(err => next(err));
+      } else {
+        next(Strings.businessMessages.invalidID);
+      }
+    })
+    .catch(err => next(err));
+});
 
 /**
  * Add Image to service gallery.
  */
 
-router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, next) => {
+router.post('/:id/gallery/add', upload.single('path'), (req, res, next) => { // BusinessAuth
   req.checkParams(validationSchemas.businessAddImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -83,7 +111,7 @@ router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, 
  * Edit Image in Business gallery.
  */
 
-router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
+router.post('/:ser_id/gallery/edit/:im_id', (req, res, next) => { // BusinessAuth
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -125,7 +153,7 @@ router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
  * Delete Image in Business gallery.
  */
 
-router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => {
+router.post('/:ser_id/gallery/delete/:im_id', (req, res, next) => { // BusinessAuth
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
