@@ -11,6 +11,7 @@
       </div>
     </section>
     <div class="container search-body">
+      <el-alert v-for"error in errors" :title="error" type="error" show-icon></el-alert>
       <div class="el-row">
         <div class="el-col el-col-24 el-col-xs-24 el-col-sm-6 search-tools">
           <div class="block">
@@ -73,7 +74,6 @@
   import SearchResult from './search-result.vue';
   import { Visitor } from '../../../services/EndPoints';
   import Locations from '../Index/mainLocations';
-  // TODO move locations to public folder
   
   export default {
     data() {
@@ -105,6 +105,7 @@
           location: (this.$route.query.location) ? this.$route.query.location : '',
           sort: (this.$route.query.sort) ? this.$route.query.sort : '',
         },
+        errors: [],
       };
     },
     components: {
@@ -171,17 +172,30 @@
         this.execQuery();
       },
       execQuery() {
+        this.errors = [];
+        const loader = this.$loading({
+          fullscreen: true,
+        });
         Axios.get(`${Visitor().search}${this.stringifyQuery(this.currentQuery)}`)
           .then((response) => {
+            loader.close();
             this.noResults = false;
             this.results = response.data.results;
             this.count = response.data.count;
           })
           .catch((err) => {
+            loader.close();
             if (err.response.data.errors[0] === 'No search results match the query.') {
               this.noResults = true;
               this.results = [];
               this.count = 0;
+            } else {
+              this.errors = err.response.data.errors.map((error) => {
+                if (typeof error === 'string') {
+                  return error;
+                }
+                return error.msg;
+              });
             }
           });
       },
