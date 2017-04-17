@@ -28,7 +28,7 @@
                     <span class="icon">
                             <i class="fa fa-user"></i>
                         </span>
-                    <span><router-link to="/client/signup" class="nav-item">Signup</router-link></span>
+                    <span><router-link to="/signup" class="nav-item">Signup</router-link></span>
                 </a>
 
                 <a class="button is-danger gr-nav-button" v-if="!user.authenticated">

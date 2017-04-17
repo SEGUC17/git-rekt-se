@@ -102,8 +102,8 @@
 
 <script>
   import Form from '../../services/Form';
-  import Errors from '../../services/Errors';
   import resend from './resend.vue';
+  import clientAuth from '../../services/auth/clientAuth';
 
   import { Client } from '../../services/EndPoints';
   import { clientSignUpValidation } from '../../services/validation';
@@ -172,6 +172,17 @@
           this.loading = false;
         });
       },
+    },
+    mounted(){
+        clientAuth.refreshAuth();
+        if(clientAuth.authenticated){
+            this.$router.push('/');
+            this.$toast({
+              message: 'You are already logged in',
+              position: 'bottom',
+              type: 'is-danger',
+            });
+        }
     },
     components: {
       resend,
