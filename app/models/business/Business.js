@@ -80,7 +80,6 @@ const businessSchema = Schema({
 
 businessSchema.pre('save', function preSave(done) {
   if (!this.isModified('password')) {
-    console.log('Modified');
     done();
   } else {
     bcrypt.hash(this.password, null, null, (err, hashedPassword) => {
