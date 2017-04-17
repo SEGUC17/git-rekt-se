@@ -246,15 +246,27 @@ router.get('/fb/login', passport.authenticate('facebook_strategy', {
  */
 router.post('/fb/finalize/login', (req, res, next) => {
   const encapsulatedToken = req.body.token;
-  ClientAuthenticator.finalizeLoginFacebook(encapsulatedToken)
-    .then((token, payload) => {
-      res.json({
-        message: Strings.clientLoginMessages.loginSuccess,
-        id: payload.id,
-        email: payload.email,
-        token,
-      });
-    }).catch(next);
+  InvalidToken.findOne({
+    token: encapsulatedToken,
+  }).exec().then((theToken) => {
+    if (theToken) {
+      next([Strings.clientLoginMessages.invalidToken]);
+    } else {
+      ClientAuthenticator.finalizeLoginFacebook(encapsulatedToken)
+        .then((token, payload) => {
+          new InvalidToken({
+            token,
+          }).save().then(() => {
+res.json({
+            message: Strings.clientLoginMessages.loginSuccess,
+            id: payload.id,
+            email: payload.email,
+            token,
+          });
+          }).catch(next);
+        }).catch(next);
+    }
+  }).catch(next);
 });
 
 router.post('/forgot', (req, res, next) => {
