@@ -5,7 +5,7 @@ export default {
 export const clientSignUpValidation = {
   email: [{
     required: true,
-    message: 'Please Enter a valid email.',
+    message: 'An Email is required.',
     trigger: 'blur',
   }, {
     type: 'email',
@@ -14,7 +14,7 @@ export const clientSignUpValidation = {
   }],
   password: [{
     required: true,
-    message: 'Please Enter a password.',
+    message: 'A Password is required.',
     trigger: 'blur',
   }, {
     pattern: /^(?=.*\d).{8,15}$/,
@@ -47,17 +47,17 @@ export const clientSignUpValidation = {
   }],
   firstName: [{
     required: true,
-    message: 'Please Enter your first name.',
+    message: 'A First Name is required.',
     trigger: 'blur',
   }],
   lastName: [{
     required: true,
-    message: 'Please Enter your last name.',
+    message: 'A Last Name is required.',
     trigger: 'blur',
   }],
   mobile: [{
     required: true,
-    message: 'Please Enter a mobile number.',
+    message: 'A Mobile number is required.',
     trigger: 'blur',
   }, {
     pattern: /^01[0-2]{1}[0-9]{8}/,
@@ -66,7 +66,7 @@ export const clientSignUpValidation = {
   }],
   gender: [{
     required: true,
-    message: 'Please Choose a gender',
+    message: 'A Gender is required.',
     trigger: 'change',
   }, {
     type: 'enum',
