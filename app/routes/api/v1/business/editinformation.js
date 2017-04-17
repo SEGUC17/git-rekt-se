@@ -28,6 +28,43 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
+ * Buisness get all of its info API Route
+ */
+
+router.get('/all', businessAuthMiddleware, (req, res, next) => {
+  Business.findOne({
+    _id: req.user.id,
+    _deleted: false,
+  }, {
+    description: true,
+    workingHours: true,
+    categories: true,
+    branches: true,
+    _id: false,
+  })
+    .populate({
+      path: 'categories',
+      select: 'title',
+    })
+    .populate({
+      path: 'branches',
+      select: 'location address',
+    })
+    .exec()
+    .then((business) => {
+      if (business) {
+        business.branches = business.branches.filter(branch => !branch._deleted);
+        res.json({
+          results: business,
+        });
+      } else {
+        next([businessMessages.businessDoesntExist]);
+      }
+    })
+    .catch(e => next([e]));
+});
+
+/**
  * Business Edit Info API Route.
  */
 
@@ -38,34 +75,34 @@ router.put('/edit', businessAuthMiddleware, (req, res, next) => {
   };
   req.checkBody(businessValidation.businessEditInfoValidation);
   req.getValidationResult()
-      .then((result) => {
-        if (result.isEmpty()) {
-          Business.findOne(searchID)
-            .exec()
-            .then((business) => {
-              if (!business) {
-                next([businessMessages.businessDoesntExist]);
-              } else {
-                business.workingHours = body.workingHours;
-                business.description = body.description;
-                business.categories = body.categories
-                  .filter((category, index, self) => self.indexOf(category) === index)
-                  .map(category =>
-                    new Schema.Types.ObjectId(category)
-                    .path);
-                business.save()
-                  .then(() => res.json({
-                    message: businessSuccess.infoEditSuccess,
-                  }))
-                  .catch(err => next(err));
-              }
-            })
-            .catch(err => next(err));
-        } else {
-          next(result.array());
-        }
-      })
-      .catch(err => next(err));
+    .then((result) => {
+      if (result.isEmpty()) {
+        Business.findOne(searchID)
+          .exec()
+          .then((business) => {
+            if (!business) {
+              next([businessMessages.businessDoesntExist]);
+            } else {
+              business.workingHours = body.workingHours;
+              business.description = body.description;
+              business.categories = body.categories
+                .filter((category, index, self) => self.indexOf(category) === index)
+                .map(category =>
+                  new Schema.Types.ObjectId(category)
+                  .path);
+              business.save()
+                .then(() => res.json({
+                  message: businessSuccess.infoEditSuccess,
+                }))
+                .catch(err => next(err));
+            }
+          })
+          .catch(err => next(err));
+      } else {
+        next(result.array());
+      }
+    })
+    .catch(err => next(err));
 });
 
 /**
@@ -79,32 +116,32 @@ router.post('/add/branches', businessAuthMiddleware, (req, res, next) => {
   };
   req.checkBody(businessValidation.businessAddValidation);
   req.getValidationResult()
-      .then((result) => {
-        if (result.isEmpty()) {
-          businessUtils.addBranches(req.body.branches, id)
-            .then((branches) => {
-              Business.findOne(searchID)
-                .exec()
-                .then((business) => {
-                  if (!business) {
-                    next([businessMessages.businessDoesntExist]);
-                  } else {
-                    business.branches = business.branches.concat(branches);
-                    business.save()
-                      .then(() => res.json({
-                        message: businessSuccess.branchAddedSuccess,
-                      }))
-                      .catch(err => next(err));
-                  }
-                })
-                .catch(err => next(err));
-            })
-            .catch(err => next(err));
-        } else {
-          next(result.array());
-        }
-      })
-      .catch(err => next(err));
+    .then((result) => {
+      if (result.isEmpty()) {
+        businessUtils.addBranches(req.body.branches, id)
+          .then((branches) => {
+            Business.findOne(searchID)
+              .exec()
+              .then((business) => {
+                if (!business) {
+                  next([businessMessages.businessDoesntExist]);
+                } else {
+                  business.branches = business.branches.concat(branches);
+                  business.save()
+                    .then(() => res.json({
+                      message: businessSuccess.branchAddedSuccess,
+                    }))
+                    .catch(err => next(err));
+                }
+              })
+              .catch(err => next(err));
+          })
+          .catch(err => next(err));
+      } else {
+        next(result.array());
+      }
+    })
+    .catch(err => next(err));
 });
 
 /**
