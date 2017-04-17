@@ -4498,6 +4498,9 @@ var routes = [{
 }, {
   path: '/client/auth/reset/:token',
   component: __WEBPACK_IMPORTED_MODULE_1__components_Client_Reset_vue___default.a
+}, {
+  path: '/client/auth/reset/:token',
+  component: __WEBPACK_IMPORTED_MODULE_1__components_Client_Reset_vue___default.a
 }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({

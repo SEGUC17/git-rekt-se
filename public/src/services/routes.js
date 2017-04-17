@@ -30,7 +30,10 @@ const routes = [{
   path: '/client/auth/reset/:token',
   component: Reset,
 },
-];
+{
+  path: '/client/auth/reset/:token',
+  component: Reset,
+}];
 
 const router = new VueRouter({
   routes,
