@@ -47,26 +47,26 @@ export const clientSignUpValidation = {
   }],
   firstName: [{
     required: true,
-    message: 'A First Name is required.',
+    message: 'First Name is required.',
     trigger: 'blur',
   }],
   lastName: [{
     required: true,
-    message: 'A Last Name is required.',
+    message: 'Last Name is required.',
     trigger: 'blur',
   }],
   mobile: [{
     required: true,
-    message: 'A Mobile number is required.',
+    message: 'Mobile number is required.',
     trigger: 'blur',
   }, {
     pattern: /^01[0-2]{1}[0-9]{8}/,
-    message: 'Please enter a valid Egyptian mobile number.',
+    message: 'Mobile number must be 11 digits in the following format 01xxxxxxxxx.',
     trigger: 'blur',
   }],
   gender: [{
     required: true,
-    message: 'A Gender is required.',
+    message: 'Gender is required.',
     trigger: 'change',
   }, {
     type: 'enum',
