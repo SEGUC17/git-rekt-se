@@ -1,65 +1,55 @@
 <template>
-        <div v-show="sure">
-             <el-dialog title="Are you sure you want to remove this business?" v-show="sure" size="tiny" show-close=false>
-                 <span slot="footer" class="dialog-footer" show-close=false>
-                    <el-button class="button is-warning"@click="sure = false">Cancel</el-button>
-                    <el-button class="button is-danger" @click="sure = false">Confirm</el-button>
-                 </span>
+            <el-dialog title="Confirm Deletion" v-model="sure" size="tiny">
+                 <span>Are you sure you want to remove this business?</span>
+                    <span slot="footer" class="dialog-footer">
+                    <el-button @click="sure = false">Cancel</el-button>
+                    <el-button class="button is-primary" @click="sure = false,confirmeddeletion(), shownot = true">Confirm</el-button>
+                </span>
             </el-dialog>
-              
     
-    <el-button class="button is-danger" style="float: right;"@click="deleteclicked(id)" >Delete &nbsp; <span class="icon">
-                            <i class="fa fa-trash-o"></i>
-                        </span></el-button>
-           
-    </div>
+            <el-button class="button is-danger" style="float: right;"@click="deleteclicked()" >Delete &nbsp; 
+                <span class="icon">
+                    <i class="fa fa-trash-o"></i>
+                </span>
+            </el-button>
 </template>
 
 <script>
     
     import axios from 'axios';
-    import { Client } from '../../services/EndPoints.js';
-    import { Visitor } from '../../services/EndPoints.js';
+    import { Notification } from 'element-ui';
+    import { Admin } from '../../services/EndPoints.js';
     export default {
         data() {
             return {
                 errors: [],
                 sure:false,
-                currid:'',
+                shownot:false,
+                currid: '',
             }
         },
         props: ['id'];
         mounted() {
-                this.names = this.getClients();
         },
         methods: {
 
-      deleteclicked(id) {
-          console.log(id);
-          this.currname = name;
-          this.currid =id;
+      deleteclicked() {
+          this.currid = id;
           this.sure =true;
-        // axios
-        //     .get(Client().deleteclient/currid)
-        //     .then((res) => {
-        //         console.log(res);
-        //       this.clients = res.data;
-        //     })
-        //     .catch(() => {
-        //       this.clients = [];
-        //     });
-      }, confirmeddelete(id) {
-          console.log(id);
-          
-        // axios
-        //     .get(Client().deleteBusiness/currid)
-        //     .then((res) => {
-        //         console.log(res);
-        //       this.clients = res.data;
-        //     })
-        //     .catch(() => {
-        //       this.clients = [];
-        //     });
+      }, 
+      confirmeddeletion() {
+          axios
+            .get(Admin().deleteBusiness(this.currid))
+            .then((res) => {
+                this.$notify({
+                         title: 'Success',
+                        message: 'Business Deleted Successfully!',
+                        type: 'success'
+                  });
+            })
+            .catch((err) => {
+                    this.errors = (err.response.data.errors);
+            });
       }
         }
     }
