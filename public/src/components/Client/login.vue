@@ -30,7 +30,7 @@
 
 
                 <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top"
-                         class="demo-ruleForm">
+                          class="login-form">
                     <el-form-item label="Email" prop="email">
                         <el-input v-model="form.email" placeholder="Email"></el-input>
                     </el-form-item>
@@ -41,7 +41,6 @@
 
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('form')">Login</el-button>
-                        <el-button @click="resetForm('form')">Reset</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -102,10 +101,6 @@
             this.errors.push('Please fill in all the fields.');
           }
         });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-        this.errors = [];
       },
     },
   };

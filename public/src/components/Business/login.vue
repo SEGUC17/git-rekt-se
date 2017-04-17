@@ -41,7 +41,6 @@
 
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('form')">Login</el-button>
-                        <el-button @click="resetForm('form')">Reset</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -85,7 +84,7 @@
             businessAuth.login(this.form.data(), (responseErrors, response) => {
               loader.close();
               if (responseErrors) {
-                this.errors = responseErrors.errors.map((err) => {
+                 this.errors = responseErrors.errors.map((err) => {
                   if (typeof err === 'string') {
                     return err;
                   }
@@ -103,10 +102,6 @@
             this.errors.push('Please fill in all the fields.');
           }
         });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-        this.errors = [];
       },
     },
   };
