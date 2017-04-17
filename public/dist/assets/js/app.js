@@ -10927,17 +10927,8 @@ var Service = function Service() {
 };
 
 /* unused harmony default export */ var _unused_webpack_default_export = ({
-  Client: function Client() {
-    var authBase = BASE + '/client/auth';
-    var profileBase = BASE + '/client/profile';
-    return {
-      signup: authBase + '/signup',
-      resend: authBase + '/confirmation/send',
-      reset: authBase + '/reset'
-    };
-  },
-
   Visitor: Visitor,
+  Client: Client,
   Business: Business,
   Admin: Admin,
   Service: Service
