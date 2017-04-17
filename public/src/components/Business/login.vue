@@ -37,9 +37,9 @@
 </template>
 
 <script>
+  import businessAuth from '../../services/auth/businessAuth';
   import clientAuth from '../../services/auth/clientAuth';
   import Form from '../../services/Form';
-
   import { loginRules } from '../../services/validation';
 
   export default {
@@ -53,11 +53,14 @@
         logged_in: false,
         loginSuccess: '',
         errors: [],
-      }
+      };
     },
     mounted() {
+      businessAuth.refreshAuth();
       clientAuth.refreshAuth();
-      if (clientAuth.user.authenticated) {
+      const authenticated = businessAuth.user.authenticated || clientAuth.user.authenticated;
+
+      if (authenticated) {
         this.$router.push('/');
       }
     },
@@ -66,14 +69,13 @@
         this.errors = [];
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            clientAuth.login(this.form.data(), (responseErrors, response) => {
+            businessAuth.login(this.form.data(), (responseErrors, response) => {
               if (responseErrors) {
                 this.errors = responseErrors.errors.map((err) => {
                   if (typeof err === 'string') {
                     return err;
-                  } else {
-                    return err.msg;
                   }
+                  return err.msg;
                 });
               } else {
                 this.logged_in = true;
@@ -87,14 +89,13 @@
             this.errors.push('Please fill in all the fields');
           }
         });
-
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
         this.errors = [];
-      }
-    }
-  }
+      },
+    },
+  };
 </script>
 
 <style>

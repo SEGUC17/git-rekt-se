@@ -2,7 +2,7 @@ export default {
 
 };
 
-export const clientLoginRules = {
+export const loginRules = {
   email: [{
     required: true,
     message: 'Please enter your email',
