@@ -96,6 +96,7 @@
 <script>
   import Form from '../../services/Form';
   import businessAuth from '../../services/auth/businessAuth';
+  import commonAuth from '../../services/auth/commonAuth';
   import {
     Business
   } from '../../services/EndPoints';
@@ -198,8 +199,7 @@
       },
     },
     mounted() {
-      businessAuth.refreshAuth();
-      if(!businessAuth.user.authenticated){
+      if(!commonAuth.isBusiness()){
         this.$router.push('/');
         this.$toast.open({
           message: 'You are not logged in. Please login first.',
@@ -218,7 +218,7 @@
           this.info = true;
           this.message = 'Edit the info you want to change, otherwise leave them as is !';
         })
-        .catch(() => console.log('Error!'));
+        .catch(() => loader.close());
     },
   }
 </script>
