@@ -48,7 +48,9 @@
                   document.getElementById("myBtn").disabled = true;
             })
             .catch((err) => {
-                    this.errors = (err.response.data.errors);
+                     for(var i=0 ; i<err.response.data.errors.length; i += 1){
+                         this.errors.push(err.response.data.errors[i]);
+                     }
             });
       }
         }
