@@ -3,6 +3,20 @@
         <div class="column is-half is-offset-one-quarter">
             <el-form :model="form" :rules="rules" ref="form" label-width="120px" label-position="top" class="demo-ruleForm">
     
+                <h1 class="title has-text-centered">Login</h1>
+    
+                <div v-show="errors.length > 0">
+                    <div class="error" v-for="error in errors">
+                        <el-alert :title="error" type="error" show-icon>
+                        </el-alert>
+                    </div>
+                </div>
+    
+                <div v-show="success">
+                    <el-alert :title="signupSuccess" type="success" show-icon>
+                    </el-alert>
+                </div>
+    
                 <el-form-item label="Password" prop="password">
                     <el-input v-model="form.password" type="password"></el-input>
                 </el-form-item>
@@ -20,8 +34,8 @@
                 </el-form-item>
     
                 <el-form-item label="Categories" prop="categoriesChoosed">
-                    <el-select v-model="form.categoriesChoosed" multiple multiple-limit:3 placeholder="Select">
-                        <el-option v-for="category in categories" :key="category.id" :label="category.name" :value="category.id">
+                    <el-select v-model="form.categoriesChoosed" multiple multiple-limit=3 placeholder="Select">
+                        <el-option v-for="category in categories" :key="category._id" :label="category.title" :value="category._id">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -32,7 +46,7 @@
                             <el-option v-for="(location,index) in locations" :key="index" :label="location" :value="location">
                             </el-option>
                         </el-select>
-                    <el-button @click="removeBranch(index)" slot="append">Delete Branch</el-button>
+                        <el-button @click="removeBranch(index)" slot="append">Delete Branch</el-button>
                     </el-input>
                     <el-button v-show="index === form.branchesEntered.length-1" @click="addBranch">New Branch</el-button>
                 </el-form-item>
@@ -41,7 +55,7 @@
                     <el-button type="primary" @click="submitForm('form')">Create</el-button>
                     <el-button @click="resetForm('form')">Reset</el-button>
                 </el-form-item>
-
+    
             </el-form>
         </div>
     </div>
@@ -51,10 +65,19 @@
     import Form from '../../services/Form';
     import {
         verifiedBusinessSignupRules
-    } from '../../services/validation'
-    import locations from '../../../../app/seed/service/locations'
+    } from '../../services/validation';
+    import locations from '../../../../app/seed/service/locations';
+    import {
+        Visitor
+    } from '../../services/EndPoints';
+    import axios from 'axios';
+    
     export default {
         data() {
+            verifiedBusinessSignupRules.confirmPassword[1].validator = verifiedBusinessSignupRules.confirmPassword[1]
+                .validator.bind(this);
+            verifiedBusinessSignupRules.password[2].validator = verifiedBusinessSignupRules.password[2]
+                .validator.bind(this);
             return {
                 form: new Form({
                     password: '',
@@ -62,33 +85,32 @@
                     description: '',
                     workingHours: '',
                     categoriesChoosed: [],
-                    branchesEntered:[{
-                        location:'',
-                        address:''
+                    branchesEntered: [{
+                        location: '',
+                        address: ''
                     }],
                 }),
-                categories: [{
-                    name: 'Self Development',
-                    id: 1
-                }, {
-                    name: 'Language Courses',
-                    id: 2
-                }, {
-                    name: 'Self Development 2',
-                    id: 3
-                }, {
-                    name: 'Language Courses 2',
-                    id: 4
-                }],
+                categories: [],
                 locations: locations,
+                errors: [],
+                success: false,
+                signupSuccess: '',
                 rules: verifiedBusinessSignupRules,
             };
+        },
+        mounted() {
+            axios.get(Visitor().businessCategories).then((response) => {
+                this.categories = response.data.results;    
+            }).catch(e => {
+                this.errors = e;
+            });
         },
         methods: {
             submitForm(formName) {
                 this.form.branchesEntered = this.form.branchesEntered.filter((branch) => {
                     return branch.location !== '' && branch.address !== '';
                 });
+                this.errors = [];
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         console.log(this.form);
@@ -125,9 +147,9 @@
     .el-select {
         width: 180px;
     }
+    
     .el-button {
         margin-top: 20px;
         margin-left: 10px;
     }
-
 </style>

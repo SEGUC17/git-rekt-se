@@ -7,6 +7,7 @@ export const Visitor = () => ({
   relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/${offset}`,
   locations: `${BASE}/visitor/search/locations`,
   viewBusiness: businessID => `${BASE}/business/${businessID}`,
+  businessCategories: `${BASE}/categories/business`,
 });
 
 export const Client = () => {

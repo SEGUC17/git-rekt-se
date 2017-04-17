@@ -36,10 +36,6 @@ export const verifiedBusinessSignupRules = {
     message: 'Please confirm your password',
     trigger: 'blur',
   }, {
-    pattern: /^(?=.*\d).{8,15}$/,
-    message: 'Password must be between 8 and 15 characters and contains at least one number.',
-    trigger: 'blur',
-  }, {
     validator(rule, value, callBack) {
       if (this.form.password.length > 0) {
         if (this.form.password !== value) {
