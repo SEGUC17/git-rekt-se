@@ -257,12 +257,12 @@ router.post('/fb/finalize/login', (req, res, next) => {
           new InvalidToken({
             token,
           }).save().then(() => {
-res.json({
-            message: Strings.clientLoginMessages.loginSuccess,
-            id: payload.id,
-            email: payload.email,
-            token,
-          });
+            res.json({
+              message: Strings.clientLoginMessages.loginSuccess,
+              id: payload.id,
+              email: payload.email,
+              token,
+            });
           }).catch(next);
         }).catch(next);
     }

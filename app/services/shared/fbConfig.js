@@ -31,8 +31,8 @@ const facebookStrategy = new FBStrategy({
      */
 
     Client.findOne({
-        _facebookId: profile._json.id,
-      })
+      _facebookId: profile._json.id,
+    })
       .then((user) => {
         if (!user) {
           done(null, false, profile._json);
