@@ -36,7 +36,7 @@
             } else {
                 clientAuth.logout((responseErrs, response) => {
                     if (responseErrs) {
-                        this.errors = responseErrors.errors;
+                        this.errors = responseErrs.errors;
                     } else {
                         this.success = true;
                         this.logoutSuccess = response.message;

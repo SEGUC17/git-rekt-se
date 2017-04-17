@@ -22,6 +22,15 @@ require('dotenv')
 
 if (process.env.DEBUG_MODE) {
   app.use(logger('dev'));
+
+  /**
+   * Add Delay to test frontend.
+   */
+
+  app.use((req, res, next) => {
+    const delay = Math.floor(((Math.random() * 1000) + 500));
+    setTimeout(next, delay);
+  });
 }
 
 /**
@@ -40,6 +49,7 @@ passport.use('jwt_administrator', jwtConfig.adminStrategy);
 passport.use('facebook_strategy', fbConfig.facebookStrategy);
 
 app.use(passport.initialize());
+
 
 /**
  * API ROUTES.
