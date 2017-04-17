@@ -37,7 +37,6 @@
     import axios from 'axios';
     import { Notification } from 'element-ui';
     import { Admin } from '../../services/EndPoints.js';
-    import { Visitor } from '../../services/EndPoints.js';
     export default {
         data() {
             return {
