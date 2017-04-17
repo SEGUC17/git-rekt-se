@@ -31,8 +31,8 @@ const facebookStrategy = new FBStrategy({
      */
 
     Client.findOne({
-      _facebookId: profile._json.id,
-    })
+        _facebookId: profile._json.id,
+      })
       .then((user) => {
         if (!user) {
           done(null, false, profile._json);
@@ -68,7 +68,7 @@ const facebookMiddleware = (req, res, next) => {
 
     if (!user && info) {
       if (info.message === 'Permissions error') {
-        return next(['Permissions error']);
+        res.redirect('/client/signup/?error=Permissions error');
       }
       res.locals.facebookInfo = info;
       return next();
