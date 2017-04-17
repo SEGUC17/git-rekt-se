@@ -50,15 +50,13 @@
       }, confirmedreport(id) {
           console.log(id);
           
-        // axios
-        //     .get(Client().reportReview/currid)
-        //     .then((res) => {
-        //         console.log(res);
-        //       this.clients = res.data;
-        //     })
-        //     .catch(() => {
-        //       this.clients = [];
-        //     });
+        axios
+            .get(Client().reportReview(id))
+            .then((res) => {
+                console.log(res)
+            })
+            .catch(() => {
+            });
       }
         }
     }
