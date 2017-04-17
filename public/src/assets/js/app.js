@@ -6,7 +6,7 @@ import Buefy from 'buefy'
 import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
-import ClientSignUp from '../../components/client/signup.vue';
+import clientSignUp from '../../components/client/signup.vue';
 import clientLogin from '../../components/Client/login.vue';
 import clientLogout from '../../components/Client/logout.vue';
 import router from '../../services/routes.js';
@@ -25,7 +25,7 @@ new Vue({
   components: {
     'gr-header': header,
     'gr-footer': footer,
-    'client': ClientSignUp,
+    'client': clientSignUp,
     'client-login': clientLogin,
     'client-logout': clientLogout,
   }
