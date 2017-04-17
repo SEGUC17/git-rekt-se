@@ -5751,10 +5751,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     onClick: function onClick() {
       var _this = this;
 
+      this.error = false;
+      this.success = false;
+      this.message = '';
       this.$refs.form.validate(function (valid) {
         if (valid) {
-          _this.success = false;
-          _this.message = '';
           _this.clientEmail = _this.form.email;
           _this.loading = true;
           _this.form.post(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints__["a" /* default */].Client().signup).then(function (data) {
@@ -5777,11 +5778,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this2 = this;
 
       this.loading = true;
+      this.success = false;
+      this.message = '';
       this.form.email = this.clientEmail;
       this.form.post(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints__["a" /* default */].Client().resend).then(function (data) {
         _this2.loading = false;
         _this2.success = true;
-        _this2.successMessage = data.message;
+        _this2.message = data.message;
       }).catch(function (err) {
         return _this2.loading = false;
       });
@@ -8413,7 +8416,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "title": "Success",
       "type": "success",
-      "description": _vm.successMessage,
+      "description": _vm.message,
       "show-icon": ""
     }
   }), _vm._v(" "), _c('div', {

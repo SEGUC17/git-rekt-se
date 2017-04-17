@@ -3,7 +3,7 @@
     <div class="column is-half is-offset-one-quarter">
   
       <div v-show="success">
-        <el-alert title="Success" type="success" :description="successMessage" show-icon></el-alert>
+        <el-alert title="Success" type="success" :description="message" show-icon></el-alert>
         <div class="has-text-centered">
           <el-button type="text" :loading="loading" @click="resendMail">Resend Mail!</el-button>
         </div>
@@ -17,7 +17,7 @@
         <div class="error" v-show="form.errors.has('serverError')">
           <el-alert @close="form.errors.remove('serverError')" title="Server Errors" :description="form.errors.getAll('serverError', ' | ')" type="error" show-icon></el-alert>
         </div>
-
+  
         <div class="error" v-show="error">
           <el-alert @close="error = false" :title="message" type="error" show-icon></el-alert>
         </div>
@@ -119,10 +119,11 @@
     },
     methods: {
       onClick() {
+        this.error = false;
+        this.success = false;
+        this.message = '';
         this.$refs.form.validate((valid) => {
           if (valid) {
-            this.success = false;
-            this.message = '';
             this.clientEmail = this.form.email;
             this.loading = true;
             this.form.post(EndPoints.Client().signup)
@@ -142,12 +143,14 @@
       },
       resendMail() {
         this.loading = true;
+        this.success = false;
+        this.message = '';
         this.form.email = this.clientEmail;
         this.form.post(EndPoints.Client().resend)
           .then((data) => {
             this.loading = false;
             this.success = true;
-            this.successMessage = data.message;
+            this.message = data.message;
           }).catch(err => this.loading = false);
       },
     },
