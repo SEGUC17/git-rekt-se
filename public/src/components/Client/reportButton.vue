@@ -8,7 +8,7 @@
                 </span>
             </el-dialog>
     
-            <el-button class="button is-danger" style="float: right;"@click="reviewclicked()" >Report &nbsp; 
+            <el-button id ="mybtn" class="button is-danger" style="float: right;"@click="reviewclicked()" >Report &nbsp; 
             </el-button>
     </div>
 </template>
@@ -45,6 +45,7 @@
                         message: 'Review reported successfully!',
                         type: 'success'
                   });
+                  document.getElementById("myBtn").disabled = true;
             })
             .catch((err) => {
                     this.errors = (err.response.data.errors);
