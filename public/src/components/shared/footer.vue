@@ -48,21 +48,6 @@
         line-height: 32px;
         font-size: 16px;
         text-align: center;
-<<<<<<< HEAD
-    }   
-    .icon-link{
-        border: 1px solid rgba(0, 0, 0, 0.4);
-        padding-top:15px !important;    
-    }
-    .right-footer2{
-        text-align: right;
-    }
-
-    .left-footer2{
-        padding-left:30px;
-        text-align: left;
-    }
-=======
     }
     
     .icon-link {
@@ -88,5 +73,4 @@
             padding-left: 0;
         }
     }
->>>>>>> 5211e387dd7e8286df3374180f4e045bb79b6cc1
 </style>
