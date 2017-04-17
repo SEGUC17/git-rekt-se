@@ -42,7 +42,7 @@
                     <span class="icon">
                             <i class="fa fa-sign-out"></i>
                         </span>
-                    <router-link to="/logout" class="nav-item no-link">Logout</router-link>
+                    <router-link to="/client/logout" class="nav-item no-link">Logout</router-link>
                 </a>
             </div>
         </nav>
@@ -50,17 +50,18 @@
 </template>
 
 <script>
-    import auth from '../../services/clientAuth'
-    export default {
-        data() {
-            return {
-                user: auth.user
-            }
-        },
-        mounted() {
-            auth.refreshAuth();
-        }
-    };
+  import auth from '../../services/clientAuth';
+
+  export default {
+    data() {
+      return {
+        user: auth.user,
+      };
+    },
+    mounted() {
+      auth.refreshAuth();
+    },
+  };
 </script>
 
 <style>
@@ -71,4 +72,5 @@
     .no-link {
         color: white !important;
     }
+
 </style>
