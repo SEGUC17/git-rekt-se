@@ -1,5 +1,7 @@
 <template>
-  <el-alert title="Error" type="error" show-icon v-for="error in errors" :description="error"></el-alert>
+  <el-alert type="success" show-icon v-if="success" :title="success">
+  <el-alert type="error" show-icon v-for="error in errors" :title="error">
+  </el-alert>
   <h3>
     Leave a review...</h3>
   <el-form ref="postReview" :model="review" :rules="rules" label-width="120px">
@@ -28,6 +30,7 @@
           description: Text,
         },
         rules: ReviewRules,
+        success: '',
         errors: [],
       };
     },
@@ -35,15 +38,21 @@
     methods: {
       createReview() {
         this.errors = [];
+        this.success = '';
         this.$refs.postReview.validate((valid) => {
           if (valid) {
             Axios.post(Service.createReview(this.serviceID), this.review)
               .then((response) => {
                 this.$refs.postReview.resetFields();
-                this.$emit('created', response.message);
+                this.$emit('created');
               })
-              .catch((err) => {
-                this.errors = err.response.data.errors;
+              .catch((error) => {
+                this.errors = error.response.data.errors.map((err) => {
+                  if (typeof err === 'string') {
+                    return err;
+                  }
+                  return err.msg;
+                });
               });
           }
         });
