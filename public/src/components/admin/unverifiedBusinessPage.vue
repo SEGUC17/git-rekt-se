@@ -72,6 +72,7 @@
                         for (var i = 0; i < err.response.data.errors.length; i++) {
                             this.errors.push(err.response.data.errors[i]);
                         }
+                        document.body.scrollTop = document.documentElement.scrollTop = 0;
                     });
             },
             accept(index, rows) {
@@ -90,6 +91,7 @@
                         for (var i = 0; i < err.response.data.errors.length; i++) {
                             this.errors.push(err.response.data.errors[i]);
                         }
+                        document.body.scrollTop = document.documentElement.scrollTop = 0;
                     });
             },
             reject(index, rows) {
@@ -108,6 +110,7 @@
                         for (var i = 0; i < err.response.data.errors.length; i++) {
                             this.errors.push(err.response.data.errors[i]);
                         }
+                        document.body.scrollTop = document.documentElement.scrollTop = 0;
                     });
             }
         }
