@@ -51,7 +51,15 @@
                             <div>{{shortDescription}}</div>
                             <h1 class="title" style="margin-top:2em">Gallery:</h1>
                             <!--TODO:Carousal should go here-->
-                            <div>Carousal should go in here</div>
+                            <div>
+                                <template>
+                                    <el-carousel :interval="5000" arrow="always">
+                                        <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
+                                        <h3>{{ item }}</h3>
+                                        </el-carousel-item>
+                                    </el-carousel>
+                                </template>
+                            </div>
                         </article>
     
                     </el-tab-pane>
@@ -156,8 +164,8 @@
             };
         },
         methods: {
+            //send get request to obtain service info using service id
             getService() {
-                console.log(EndPoints.Service().viewSearvice);
                 axios.get(EndPoints.Service().viewSearvice(this.$route.params.id)).then((res) => {
                     const service = res.data;
                     this.name = service.name,
@@ -175,27 +183,31 @@
                         this.reviews = service.reviews,
                         this.gallery = service.gallery,
                         this.categories = service.categories,
-                        this.offerings = service.offerings
+                        this.offerings = service.offerings,
+                        this.getRelatedServices();
                 }).catch((err) => {
                     console.log(err);
                 });
             },
+            //obtains 3 related services from on of the categories
             getRelatedServices() {
-                axios.get('http://localhost:3000/api/v1/service/category/58f3e42d459ef84621cb3ba2/1').then((res) => {
+                if(this.categories.length === 0)
+                return;
+
+                axios.get(EndPoints.viewRelatedServices(this.categories[0], 1)).then((res) => {
                     this.relatedServices = res.data.results;
-                    console.log('ok??');
                 }).catch(err => console.log(err));
             },
+            //in case extra functionality is needed
             handleClick(tab, event) {
-                console.log(tab, event);
             },
+            //link to booking
             BookNow() {
                 alert('booking');
             }
         },
         mounted() {
             this.getService();
-            this.getRelatedServices();
         },
         computed: {
             backgroundStyle() {
