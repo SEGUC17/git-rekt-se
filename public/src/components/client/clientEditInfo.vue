@@ -4,9 +4,6 @@
   
       <div v-show="success">
         <el-alert title="Success" type="success" :description="successMessage" show-icon></el-alert>
-        <div class="has-text-centered">
-          <el-button type="text" :loading="loading" @click="resendMail">Resend Mail!</el-button>
-        </div>
       </div>
   
       <div v-show="!form.errors.isEmpty()">
@@ -35,20 +32,20 @@
         </el-form-item>
   
         <el-form-item label="Password" prop="password">
-          <el-input v-model="form.password" :type="showPassword" >
+          <el-input v-model="form.password" :type="showPassword" placeholder="***************">
             <div slot="append">
               <el-tooltip content="See Password" placement="right">
-                <el-button @mousedown.native="showPassword = 'text'" @mouseup.native="showPassword = 'password'"><i class="fa fa-eye"></i></el-button>
+                <el-button @click="onShowPasswrod"><i class="fa fa-eye"></i></el-button>
               </el-tooltip>
             </div>
           </el-input>
         </el-form-item>
   
         <el-form-item label="Confirm Password" prop="confirmPassword">
-          <el-input v-model="form.confirmPassword" :type="showConfirm">
+          <el-input v-model="form.confirmPassword" :type="showConfirm" placeholder="***************">
             <div slot="append">
               <el-tooltip content="See Confirm Password" placement="right">
-                <el-button @mousedown.native="showConfirm = 'text'" @mouseup.native="showConfirm = 'password'"><i class="fa fa-eye"></i></el-button>
+                <el-button @click="onShowConfirmPasswrod"><i class="fa fa-eye"></i></el-button>
               </el-tooltip>
             </div>
           </el-input>
@@ -89,9 +86,8 @@
   } from '../../services/validation';
   export default {
     data() {
-      clientEditInfoValidation.confirmPassword[1].validator = clientEditInfoValidation.confirmPassword[1]
-        .validator.bind(this);
-      clientEditInfoValidation.password[2].validator = clientEditInfoValidation.password[2]
+      console.log(clientEditInfoValidation);
+      clientEditInfoValidation.confirmPassword[0].validator = clientEditInfoValidation.confirmPassword[0]
         .validator.bind(this);
       return {
         form: new Form({
@@ -125,6 +121,20 @@
       }
     },
     methods: {
+      onShowPasswrod(){
+        if( this.showPasswrod === 'text'){
+          this.showPasswrod = 'password';
+        } else {
+          this.showPasswrod = 'text';
+        }
+      },
+      onShowConfirmPasswrod(){
+        if( this.showConfirm === 'text'){
+          this.showConfirm = 'password';
+        } else {
+          this.showConfirm = 'text';
+        }
+      },
       onClick() {
         if (this.hasErrors()) {
           return;
