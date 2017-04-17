@@ -103,7 +103,7 @@
 <script>
   import Form from '../../services/Form';
   import resend from './resend.vue';
-  import clientAuth from '../../services/auth/clientAuth';
+  import commonAuth from '../../services/auth/commonAuth';
 
   import { Client } from '../../services/EndPoints';
   import { clientSignUpValidation } from '../../services/validation';
@@ -175,7 +175,7 @@
     },
     mounted(){
         clientAuth.refreshAuth();
-        if(clientAuth.user.authenticated){
+        if(commonAuth.isAuthenticated){
             this.$router.push('/');
             this.$toast({
               message: 'You are already logged in',
