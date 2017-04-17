@@ -2,7 +2,7 @@
   <div id="coupon-container" class="container">
     <div v-show="errors.length>0">
       <div class="error" v-for="error in errors">
-        <el-alert :title="error" type="error" :closable="false" show-icon></el-alert>
+        <el-alert :title="error" type="error" show-icon></el-alert>
       </div>
     </div>
   
@@ -130,7 +130,9 @@
             this.errors = [];
           })
           .catch(err => {
-            this.errors = err.response.data.errors
+            for (var i = 0; i < err.response.data.errors.length; i++) {
+                            this.errors.push(err.response.data.errors[i]);
+               };
             document.body.scrollTop = document.documentElement.scrollTop = 0;
           });
       },
@@ -148,11 +150,14 @@
                 });
               })
               .catch(err => {
-                this.errors = err.response.data.errors
+                console.log(err);
+                for (var i = 0; i < err.response.data.errors.length; i++) {
+                            this.errors.push(err.response.data.errors[i]);
+               };
                 document.body.scrollTop = document.documentElement.scrollTop = 0;
               });
           } else {
-            this.errors = ['Invalid Input(s)!'];
+            this.errors.push('Invalid Input(s)!');
             document.body.scrollTop = document.documentElement.scrollTop = 0;
             return false;
           }
@@ -160,9 +165,6 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
-        if (this.errors[0] === "Invalid Input(s)!") {
-          this.errors = [];
-        }
       },
       deleteCoupon(couponID) {
         axios.post(EndPoints.Service().deleteCoupon('58f36821c82d1a37e868866b', couponID))
@@ -175,7 +177,9 @@
             });
           })
           .catch(err => {
-            this.errors = err.response.data.errors;
+            for (var i = 0; i < err.response.data.errors.length; i++) {
+                            this.errors.push(err.response.data.errors[i]);
+               };
             document.body.scrollTop = document.documentElement.scrollTop = 0;
           });
       }

@@ -23,15 +23,15 @@ router.use(expressValidator({}));
  */
 router.get('/:id/coupons', BusinessAuth, (req, res, next) => {
   Service.findOne({
-      _id: req.params.id,
-      _deleted: false,
-    })
+    _id: req.params.id,
+    _deleted: false,
+  })
     .exec()
     .then((service) => {
       if (service) {
         // check whether logged in business matches the service provider
         if (`${service._business}` === `${req.user._id}`) {
-        Coupon.find({
+          Coupon.find({
             _service: req.params.id,
             _deleted: false,
           })
@@ -64,9 +64,9 @@ router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
       if (result.isEmpty()) {
         console.log('validated');
         Service.findOne({
-            _id: req.params.id,
-            _deleted: false,
-          })
+          _id: req.params.id,
+          _deleted: false,
+        })
           .exec()
           .then((service) => {
             if (service) {
@@ -123,18 +123,18 @@ router.post('/:ser_id/coupons/delete/:coup_id', BusinessAuth, (req, res, next) =
     .then((result) => {
       if (result.isEmpty()) {
         Service.findOne({
-            _id: req.params.ser_id,
-            _deleted: false,
-          })
+          _id: req.params.ser_id,
+          _deleted: false,
+        })
           .exec()
           .then((service) => {
             if (service) {
               if (`${service._business}` === `${req.user._id}`) {
-                check whether logged in business matches the service provider
+                // check whether logged in business matches the service provider
                 Coupon.findOne({
-                    _id: req.params.coup_id,
-                    _deleted: false,
-                  })
+                  _id: req.params.coup_id,
+                  _deleted: false,
+                })
                   .exec()
                   .then((coupon) => {
                     if (!coupon) {
