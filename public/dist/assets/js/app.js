@@ -54092,16 +54092,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -54280,7 +54270,91 @@ if (false) {
 /* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports={render:function(){},staticRenderFns:[]}
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('header', [_c('nav', {
+    staticClass: "nav"
+  }, [_c('div', {
+    staticClass: "nav-left"
+  }, [_c('router-link', {
+    staticClass: "nav-item",
+    attrs: {
+      "to": "/#"
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": "assets/imgs/logo.svg",
+      "alt": "Bulma logo"
+    }
+  })])], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "nav-center nav-menu"
+  }, [_c('router-link', {
+    staticClass: "nav-item",
+    attrs: {
+      "to": "/#"
+    }
+  }, [_vm._v("Home")]), _vm._v(" "), _c('router-link', {
+    staticClass: "nav-item",
+    attrs: {
+      "to": "/about"
+    }
+  }, [_vm._v("About Us")]), _vm._v(" "), _c('router-link', {
+    staticClass: "nav-item",
+    attrs: {
+      "to": "/categories"
+    }
+  }, [_vm._v("Categories")]), _vm._v(" "), _c('router-link', {
+    staticClass: "nav-item",
+    attrs: {
+      "to": "/contact"
+    }
+  }, [_vm._v("Contact")])], 1), _vm._v(" "), _c('div', {
+    staticClass: "nav-right nav-menu"
+  }, [(!_vm.user.authenticated) ? _c('a', {
+    staticClass: "button is-default gr-nav-button"
+  }, [_vm._m(1), _vm._v(" "), _c('router-link', {
+    staticClass: "nav-item",
+    attrs: {
+      "to": "/signup"
+    }
+  }, [_vm._v("Signup")])], 1) : _vm._e(), _vm._v(" "), (!_vm.user.authenticated) ? _c('a', {
+    staticClass: "button is-danger gr-nav-button"
+  }, [_vm._m(2), _vm._v(" "), _c('router-link', {
+    staticClass: "nav-item no-link",
+    attrs: {
+      "to": "/login"
+    }
+  }, [_vm._v("Login")])], 1) : _vm._e(), _vm._v(" "), (_vm.user.authenticated) ? _c('a', {
+    staticClass: "button is-danger gr-nav-button"
+  }, [_vm._m(3), _vm._v(" "), _c('router-link', {
+    staticClass: "nav-item no-link",
+    attrs: {
+      "to": "/logout"
+    }
+  }, [_vm._v("Logout")])], 1) : _vm._e()])])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "nav-toggle"
+  }, [_c('span'), _vm._v(" "), _c('span'), _vm._v(" "), _c('span')])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-user"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-sign-in"
+  })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('span', {
+    staticClass: "icon"
+  }, [_c('i', {
+    staticClass: "fa fa-sign-out"
+  })])
+}]}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
