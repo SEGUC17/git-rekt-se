@@ -4,7 +4,6 @@ import clientLogin from '../components/Client/login.vue';
 import clientLogout from '../components/Client/logout.vue';
 import businessLogin from '../components/Business/login.vue';
 
-
 const routes = [{
   path: '/',
   component: Home,

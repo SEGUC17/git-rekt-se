@@ -1,7 +1,5 @@
 import axios from 'axios';
-import {
-  Business,
-} from '../services/EndPoints';
+import { Business } from '../../services/EndPoints';
 
 export default {
   user: {
