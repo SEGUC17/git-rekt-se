@@ -51,6 +51,7 @@
 
 <script>
   import auth from '../../services/auth/clientAuth';
+  
   export default {
     data() {
       return {

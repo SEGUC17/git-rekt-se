@@ -87,6 +87,8 @@
                     <el-form-item class="has-text-centered">
                         <el-button type="primary" icon="circle-check" @click="onClick" :loading="loading">
                             Sign Up
+    
+
 
                         </el-button>
                         <el-button icon="circle-cross" @click="onReset">Reset</el-button>
@@ -169,20 +171,19 @@
               this.success = true;
               this.message = data.message;
             }).catch(() => {
-          this.loading = false;
-        });
+              this.loading = false;
+            });
       },
     },
-    mounted(){
-        clientAuth.refreshAuth();
-        if(commonAuth.isAuthenticated){
-            this.$router.push('/');
-            this.$toast({
-              message: 'You are already logged in',
-              position: 'bottom',
-              type: 'is-danger',
-            });
-        }
+    mounted() {
+      if (commonAuth.isAuthenticated()) {
+        this.$router.push('/');
+        this.$toast({
+          message: 'You are already logged in',
+          position: 'bottom',
+          type: 'is-danger',
+        });
+      }
     },
     components: {
       resend,

@@ -21,11 +21,11 @@
 
 <script>
   import axios from 'axios';
-  import {Client} from '../../services/EndPoints';
+  import { Client } from '../../services/EndPoints';
 
   export default {
     props: ['email'],
-    data(){
+    data() {
       return {
         lastEmailReset: Date.now(),
       };
@@ -47,7 +47,7 @@
         }
 
         this.lastEmailReset = currentTime;
-        
+  
         axios
             .post(Client().resend, {
               email: this.email,
