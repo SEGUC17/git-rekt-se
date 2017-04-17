@@ -53,7 +53,7 @@ router.get('/list', AdminAuth, (req, res, next) => {
     if (err) {
       return next(err);
     }
-    return clients;
+    return res.json(clients);
   });
 });
 /**

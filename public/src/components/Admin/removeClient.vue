@@ -10,27 +10,18 @@
                     </el-alert>
                 </div>
             </div>
-
-             <div v-show="sure">
-             <el-dialog title="Confirmation" v-show="sure" size="tiny" show-close=false>
-                <div>Are you sure you want to delete {{currname}}</div>
-                 <span slot="footer" class="dialog-footer" show-close=false>
-                    <el-button class="button is-warning"@click="sure = false">Cancel</el-button>
-                    <el-button class="button is-danger" @click="sure = false">Confirm</el-button>
-                 </span>
+            
+            <el-dialog title="Confirm Deletion" v-model="sure" size="tiny">
+                 <span>Are you sure you want to delete {{currname}}?</span>
+                 <span slot="footer" class="dialog-footer">
+                 <el-button @click="sure = false">Cancel</el-button>
+             <el-button class="button is-primary" @click="sure = false,confirmeddeletion(), shownot = true">Confirm</el-button>
+                </span>
             </el-dialog>
-              
-            </div>
-    
-            <div v-show="logged_in">
-                <el-alert :title="loginSuccess" type="success" show-icon>
-                </el-alert>
-            </div>
-    
     
             <div v-for="client in clients">
-                <div>{{client.label}}
-                            <el-button class="button is-danger" style="float: right;"@click="deleteclicked(client.label)" >Delete &nbsp; <span class="icon">
+                <div>{{client.firstName}}&nbsp;{{client.lastName}}
+                            <el-button class="button is-danger" style="float: right;"@click="deleteclicked(client)" >Delete &nbsp; <span class="icon">
                             <i class="fa fa-trash-o"></i>
                         </span></el-button>
                         <br></br>
@@ -44,6 +35,7 @@
 <script>
     
     import axios from 'axios';
+    import { Notification } from 'element-ui';
     import { Admin } from '../../services/EndPoints.js';
     import { Visitor } from '../../services/EndPoints.js';
     export default {
@@ -52,8 +44,9 @@
                 errors: [],
                 clients:[],
                 sure:false,
+                shownot:false,
                 currname:'',
-                dialogVisible: false,
+                currid: '',
             }
         },
         mounted() {
@@ -62,41 +55,44 @@
         methods: {
             getClients() {
         axios
-            .get(Visitor().locations)
+            .get(Admin().listClients)
             .then((res) => {
-                console.log(res);
+              console.log(res);
               this.clients = res.data;
             })
-            .catch(() => {
+            .catch((err) => {
+              this.errors = (err.response.data.errors);
               this.clients = [];
             });
       },
 
-      deleteclicked(clientid) {
-          console.log(clientid);
-          this.currname=clientid;
+      deleteclicked(client) {
+          this.currname = client.firstName+" "+client.lastName;
+          this.currid = client._id;
           this.sure =true;
-        // axios
-        //     .get(Admin().deleteclient/clientid)
-        //     .then((res) => {
-        //         console.log(res);
-        //       this.clients = res.data;
-        //     })
-        //     .catch(() => {
-        //       this.clients = [];
-        //     });
-      }, confirmeddeletion(clientid) {
-          console.log(clientid);
+      }, confirmeddeletion() {
           
-        // axios
-        //     .get(Admin().deleteclient/clientid)
-        //     .then((res) => {
-        //         console.log(res);
-        //       this.clients = res.data;
-        //     })
-        //     .catch(() => {
-        //       this.clients = [];
-        //     });
+        axios
+            .get(Admin().deleteClient(this.currid))
+            .then((res) => {
+                this.$notify({
+                         title: 'Success',
+                        message: 'Client Deleted Successfully!',
+                        type: 'success'
+                  });  
+                    axios
+                       .get(Admin().listClients)
+                          .then((res) => {
+                             this.clients = res.data;
+                         })
+                        .catch((err) => {
+                             this.errors = (err.response.data.errors);
+                             this.clients = [];
+                        });
+            })
+            .catch((err) => {
+                    this.errors = (err.response.data.errors);
+            });
       }
         }
     }
