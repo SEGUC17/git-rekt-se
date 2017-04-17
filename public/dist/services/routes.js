@@ -14840,6 +14840,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* Admin */])().listClients).then(function (res) {
                 console.log(res);
                 _this.clients = res.data;
+                _this.errors = [];
             }).catch(function (err) {
                 _this.errors = err.response.data.errors;
                 _this.clients = [];
@@ -14861,9 +14862,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
                 __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* Admin */])().listClients).then(function (res) {
                     _this2.clients = res.data;
+                    _this2.errors = [];
                 }).catch(function (err) {
                     _this2.errors = err.response.data.errors;
                     _this2.clients = [];
+                    _this2.errors = [];
                 });
             }).catch(function (err) {
                 _this2.errors = err.response.data.errors;

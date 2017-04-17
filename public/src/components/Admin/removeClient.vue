@@ -59,6 +59,7 @@
             .then((res) => {
               console.log(res);
               this.clients = res.data;
+              this.errors = [];
             })
             .catch((err) => {
               this.errors = (err.response.data.errors);
@@ -84,10 +85,12 @@
                        .get(Admin().listClients)
                           .then((res) => {
                              this.clients = res.data;
+                             this.errors = [];
                          })
                         .catch((err) => {
                              this.errors = (err.response.data.errors);
                              this.clients = [];
+                             this.errors = [];
                         });
             })
             .catch((err) => {
