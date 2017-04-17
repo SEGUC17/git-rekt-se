@@ -80,6 +80,7 @@ export const Service = () => {
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,
 
     viewSearvice: serviceID => `${serviceBase}/${serviceID}`,
+    viewRelatedServices: (categoryID, offset) => `${serviceBase}/category/${categoryID}/${offset}`,
   };
 };
 
