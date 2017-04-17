@@ -46,6 +46,7 @@
                         type: 'success'
                   });
                   document.getElementById("myBtn").disabled = true;
+                  this.errors = [];
             })
             .catch((err) => {
                      for(var i=0 ; i<err.response.data.errors.length; i += 1){
