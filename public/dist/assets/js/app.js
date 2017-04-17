@@ -10479,10 +10479,10 @@ module.exports = Vue$3;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return clientSignUpValidation; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return loginRules; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return clientSignUpValidation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return loginRules; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clientForgotPassword; });
-/* harmony default export */ __webpack_exports__["b"] = ({});
+/* unused harmony default export */ var _unused_webpack_default_export = ({});
 
 var clientSignUpValidation = {
   email: [{
@@ -10640,7 +10640,7 @@ var clientForgotPassword = {
   login: function login(data, callBack) {
     var _this = this;
 
-    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Client */])().login, data).then(function (response) {
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["c" /* Client */])().login, data).then(function (response) {
       _this.user.authenticated = true;
       localStorage.setItem('client_token', response.data.token);
       localStorage.setItem('client_email', response.data.email);
@@ -10653,7 +10653,7 @@ var clientForgotPassword = {
   logout: function logout(callBack) {
     var _this2 = this;
 
-    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Client */])().logout, null, {
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["c" /* Client */])().logout, null, {
       headers: {
         Authorization: this.getJWTtoken()
       }
@@ -10784,9 +10784,9 @@ module.exports = defaults;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Visitor; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Client; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Business; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return Visitor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Client; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Business; });
 /* unused harmony export Admin */
 /* unused harmony export Service */
 var BASE = 'http://localhost:3000/api/v1';
@@ -10926,7 +10926,7 @@ var Service = function Service() {
   };
 };
 
-/* unused harmony default export */ var _unused_webpack_default_export = ({
+/* harmony default export */ __webpack_exports__["a"] = ({
   Visitor: Visitor,
   Client: Client,
   Business: Business,
@@ -11691,7 +11691,7 @@ module.exports = function bind(fn, thisArg) {
   login: function login(data, callBack) {
     var _this = this;
 
-    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* Business */])().login, data).then(function (response) {
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Business */])().login, data).then(function (response) {
       _this.user.authenticated = true;
       localStorage.setItem('business_token', response.data.token);
       localStorage.setItem('business_email', response.data.email);
@@ -11704,7 +11704,7 @@ module.exports = function bind(fn, thisArg) {
   logout: function logout(callBack) {
     var _this2 = this;
 
-    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* Business */])().logout, null, {
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Business */])().logout, null, {
       headers: {
         Authorization: this.getJWTtoken()
       }
@@ -15284,7 +15284,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         email: '',
         password: ''
       }),
-      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["c" /* loginRules */],
+      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["b" /* loginRules */],
       logged_in: false,
       loginSuccess: '',
       errors: []
@@ -15338,12 +15338,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_validation_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints_js__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(9);
-//
-//
-//
-//
 //
 //
 //
@@ -15406,17 +15402,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    console.log(_this.form.data);
-                    _this.form.post(__WEBPACK_IMPORTED_MODULE_1__services_validation_js__["b" /* default */].Client().reset).then(function (data) {
+                    _this.form.post(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints_js__["a" /* default */].Client().reset).then(function (data) {
                         _this.form.success = true;
                     }).catch(function (err) {
                         _this.form.fail = true;
-                        console.log(err);
-                        console.log(_this.form.errors);
                     });
-                } else {
-                    console.log('error submit!!');
-                    return false;
                 }
             });
         }
@@ -15496,7 +15486,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         email: '',
         password: ''
       }),
-      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["c" /* loginRules */],
+      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["b" /* loginRules */],
       logged_in: false,
       loginSuccess: '',
       errors: []
@@ -15734,7 +15724,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     getLocations: function getLocations() {
       var _this = this;
 
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_EndPoints__["c" /* Visitor */])().locations).then(function (res) {
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_EndPoints__["d" /* Visitor */])().locations).then(function (res) {
         _this.locations = res.data;
       }).catch(function () {
         _this.locations = __WEBPACK_IMPORTED_MODULE_2__mainLocations__["a" /* default */];
@@ -19690,29 +19680,31 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('article', {
+  return _c('div', [_c('el-alert', {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: (_vm.form.success),
       expression: "form.success"
     }],
-    staticClass: "message is-primary",
-    staticStyle: {
-      "padding": "50px"
+    attrs: {
+      "title": "Password changed successfully",
+      "type": "success",
+      "show-icon": ""
     }
-  }, [_vm._m(0)]), _vm._v(" "), _c('article', {
+  }), _vm._v(" "), _c('el-alert', {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: (_vm.form.fail),
       expression: "form.fail"
     }],
-    staticClass: "message is-danger",
-    staticStyle: {
-      "padding": "50px"
+    attrs: {
+      "title": "Token expired",
+      "type": "error",
+      "show-icon": ""
     }
-  }, [_vm._m(1)]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('div', {
     staticClass: "hero-body"
   }, [_c('div', {
     staticClass: "contains"
@@ -19771,16 +19763,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.submitForm('form')
       }
     }
-  }, [_vm._v("Submit")])], 1)], 1)], 1)])])])])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "message-header"
-  }, [_c('p', [_vm._v("Password changed succesfully")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "message-header"
-  }, [_c('p', [_vm._v("Token expired.")])])
-}]}
+  }, [_vm._v("Submit")])], 1)], 1)], 1)])])])])], 1)
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -55266,7 +55250,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.lastEmailReset = currentTime;
 
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Client */])().resend, {
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["c" /* Client */])().resend, {
         email: this.email
       }).then(function (response) {
         _this.$toast.open({
@@ -55411,8 +55395,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    __WEBPACK_IMPORTED_MODULE_4__services_validation__["d" /* clientSignUpValidation */].confirmPassword[1].validator = __WEBPACK_IMPORTED_MODULE_4__services_validation__["d" /* clientSignUpValidation */].confirmPassword[1].validator.bind(this);
-    __WEBPACK_IMPORTED_MODULE_4__services_validation__["d" /* clientSignUpValidation */].password[2].validator = __WEBPACK_IMPORTED_MODULE_4__services_validation__["d" /* clientSignUpValidation */].password[2].validator.bind(this);
+    __WEBPACK_IMPORTED_MODULE_4__services_validation__["c" /* clientSignUpValidation */].confirmPassword[1].validator = __WEBPACK_IMPORTED_MODULE_4__services_validation__["c" /* clientSignUpValidation */].confirmPassword[1].validator.bind(this);
+    __WEBPACK_IMPORTED_MODULE_4__services_validation__["c" /* clientSignUpValidation */].password[2].validator = __WEBPACK_IMPORTED_MODULE_4__services_validation__["c" /* clientSignUpValidation */].password[2].validator.bind(this);
     return {
       form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
         email: '',
@@ -55424,7 +55408,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         mobile: '',
         birthdate: ''
       }),
-      rules: __WEBPACK_IMPORTED_MODULE_4__services_validation__["d" /* clientSignUpValidation */],
+      rules: __WEBPACK_IMPORTED_MODULE_4__services_validation__["c" /* clientSignUpValidation */],
       showPassword: 'password',
       showConfirm: 'password',
       success: false,
@@ -55446,7 +55430,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (valid) {
           _this.clientEmail = _this.form.email;
           _this.loading = true;
-          _this.form.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__services_EndPoints__["b" /* Client */])().signup).then(function (data) {
+          _this.form.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__services_EndPoints__["c" /* Client */])().signup).then(function (data) {
             _this.loading = false;
             _this.success = true;
             _this.message = data.message;
@@ -55466,7 +55450,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.success = false;
       this.message = '';
       this.form.email = this.clientEmail;
-      this.form.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__services_EndPoints__["b" /* Client */])().resend).then(function (data) {
+      this.form.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__services_EndPoints__["c" /* Client */])().resend).then(function (data) {
         _this2.loading = false;
         _this2.success = true;
         _this2.message = data.message;
