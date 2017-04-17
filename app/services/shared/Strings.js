@@ -223,7 +223,7 @@ const offeringValidationError = {
   invalidServiceID: 'Service is invalid',
   invalidService: 'No such a service',
   invalidOperation: 'Not authorized for doing such an operation',
-  invalidBranch: 'Your business doesnot have this branch',
+  invalidBranch: 'Your business does not have this branch',
   invalidOfferingID: 'Offering is invalid',
   invalidOffering: 'No such offering',
 };

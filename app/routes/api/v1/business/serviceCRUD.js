@@ -55,6 +55,50 @@ router.use(expressValidator({}));
  */
 
 /**
+ * List all services belonging to a business
+ */
+router.get('/list', businessAuthMiddleware, (req, res, next) => {
+  Service.find({
+    _business: req.user.id,
+    _deleted: false,
+  })
+  .exec()
+  .then((services) => {
+    res.json({
+      services,
+    });
+  })
+  .catch(e => next(e));
+});
+
+/**
+ * List offerings belonging to a service
+ */
+
+router.get(':id/offering/list', businessAuthMiddleware, (req, res, next) => {
+  Service.findOne({
+    _business: req.params.id,
+    _deleted: false,
+  })
+  .exec()
+  .then((service) => {
+    if (!service) {
+      next(Strings.offeringValidationError.invalidService);
+      return;
+    }
+    if (service._business !== req.user.id) {
+      next(Strings.offeringValidationError.invalidOperation);
+      return;
+    }
+    const validOfferings = service.offerings.filter(offering => !offering._deleted);
+    res.json({
+      offerings: validOfferings,
+    });
+  })
+  .catch(e => next(e));
+});
+
+/**
  * Business create a service
  */
 
