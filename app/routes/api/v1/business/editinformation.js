@@ -31,17 +31,13 @@ router.use(expressValidator({}));
  * Business Edit Info API Route.
  */
 
-router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
-  const id = req.params.id;
-  if (req.user.id !== id) {
-    next([businessMessages.mismatchID]);
-  } else {
-    const body = req.body;
-    const searchID = {
-      _id: id,
-    };
-    req.checkBody(businessValidation.businessEditInfoValidation);
-    req.getValidationResult()
+router.put('/edit', businessAuthMiddleware, (req, res, next) => {
+  const body = req.body;
+  const searchID = {
+    _id: req.user.id,
+  };
+  req.checkBody(businessValidation.businessEditInfoValidation);
+  req.getValidationResult()
       .then((result) => {
         if (result.isEmpty()) {
           Business.findOne(searchID)
@@ -70,23 +66,19 @@ router.put('/edit/:id', businessAuthMiddleware, (req, res, next) => {
         }
       })
       .catch(err => next(err));
-  }
 });
 
 /**
  * Business Add Branches API Route.
  */
 
-router.post('/:id/add/branches', businessAuthMiddleware, (req, res, next) => {
+router.post('/add/branches', businessAuthMiddleware, (req, res, next) => {
   const id = req.params.id;
-  if (req.user.id !== id) {
-    next([businessMessages.mismatchID]);
-  } else {
-    const searchID = {
-      _id: id,
-    };
-    req.checkBody(businessValidation.businessAddValidation);
-    req.getValidationResult()
+  const searchID = {
+    _id: req.user.id,
+  };
+  req.checkBody(businessValidation.businessAddValidation);
+  req.getValidationResult()
       .then((result) => {
         if (result.isEmpty()) {
           businessUtils.addBranches(req.body.branches, id)
@@ -113,7 +105,6 @@ router.post('/:id/add/branches', businessAuthMiddleware, (req, res, next) => {
         }
       })
       .catch(err => next(err));
-  }
 });
 
 /**
