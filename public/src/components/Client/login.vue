@@ -51,6 +51,7 @@
 
 <script>
   import clientAuth from '../../services/auth/clientAuth';
+  import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
   import { loginRules } from '../../services/validation';
 
@@ -68,8 +69,7 @@
       };
     },
     mounted() {
-      clientAuth.refreshAuth();
-      if (clientAuth.user.authenticated) {
+      if (Authenticator.isAuthenticated()) {
         this.$router.push('/');
       }
     },
@@ -99,7 +99,7 @@
               }
             });
           } else {
-            this.errors.push('Please fill in all the fields');
+            this.errors.push('Please fill in all the fields.');
           }
         });
       },
@@ -118,10 +118,6 @@
 
     .error:first-child {
         margin-top: 0;
-    }
-
-    .demo-ruleForm {
-        margin-top: 30px;
     }
 
     .client-signin-top {

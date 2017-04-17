@@ -28,7 +28,7 @@ if (process.env.DEBUG_MODE) {
    */
 
   app.use((req, res, next) => {
-    const delay = Math.floor(((Math.random() * 3000) + 500));
+    const delay = Math.floor(((Math.random() * 1000) + 500));
     setTimeout(next, delay);
   });
 }

@@ -21,6 +21,7 @@
                     <p class="subtitle is-bold"> Book services, view your bookings and unlock achievements.</p>
                     <router-link tag="el-button" to="/client/login" class="el-button--default el-button--large">
                         Client Sign In
+
                     </router-link>
                 </div>
             </div>
@@ -32,6 +33,7 @@
                     <p class="subtitle is-bold"> Manage your bookings, services and engage with your clients. </p>
                     <router-link tag="el-button" to="/business/login" class="el-button--default el-button--large">
                         Business Sign In
+
                     </router-link>
                 </div>
             </div>
@@ -40,12 +42,11 @@
 </template>
 
 <script>
-  import clientAuth from '../../../services/clientAuth';
+  import Authenticator from '../../../services/auth/commonAuth';
 
   export default{
     mounted() {
-      clientAuth.refreshAuth();
-      if (clientAuth.user.authenticated) {
+      if (Authenticator.isAuthenticated()) {
         this.$router.push('/');
         this.$toast.open({
           message: 'You are already logged in.',
