@@ -22,15 +22,12 @@
 
 <script>
     import axios from 'axios';
-    import {
-        Visitor,
-        Service
-    } from '../../../services/EndPoints';
+    import { Visitor,Service } from '../../../services/EndPoints';
     import serviceInfoHeader from './serviceInfoHeader.vue';
     import checkoutStep1 from './checkoutStep1.vue';
     import checkoutStep2 from './checkoutStep2.vue';
     import checkoutStep3 from './checkoutStep3.vue';
-    import clientAuth from '../../../services/clientAuth';
+    import clientAuth from '../../../services/auth/clientAuth';
     
     export default {
         components: {

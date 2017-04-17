@@ -1,13 +1,14 @@
 #root {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-   display: flex;
-   min-height:100vh;
-  flex-direction: column;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
 #root{
   overflow: hidden;
 }
+
 #grcontent{
   flex: 1;
 }
@@ -36,4 +37,11 @@
   display: block;
   height: 0;
   clear: both;
+}
+.white {
+    color: #fff;
+}
+
+.login-form {
+    margin-top: 2em;
 }

@@ -98,7 +98,7 @@
 <script>
   import moment from 'moment';
   import axios from 'axios';
-  import clientAuth from '../../../services/clientAuth';
+  import clientAuth from '../../../services/auth/clientAuth';
 
   import {Service} from '../../../services/EndPoints';
 
