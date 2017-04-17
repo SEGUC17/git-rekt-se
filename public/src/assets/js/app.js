@@ -7,6 +7,7 @@ import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import clientLogin from '../../components/Client/login.vue';
 import clientLogout from '../../components/Client/logout.vue';
+import businessEditPage from '../../components/Business/editPage.vue';
 import router from '../../services/routes.js';
 
 window.axios = axios;
@@ -23,5 +24,6 @@ new Vue({
     'gr-footer': footer,
     'client-login': clientLogin,
     'client-logout': clientLogout,
+    'business-edit-page': businessEditPage,
   }
 });
