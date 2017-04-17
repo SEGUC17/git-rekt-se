@@ -19,7 +19,7 @@
           </el-form-item>
           <el-form-item label="Categories">
             <el-select v-model="selectedCategories" multiple placeholder="Categories your service falls under">
-              <el-option v-for="item in categories" :label="item.label" :value="item.value">
+              <el-option v-for="item in categories" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
@@ -30,7 +30,25 @@
           </el-form-item>
         </el-form>
       </el-card>
-  
+      <div class="services-list">
+        <el-card class="service-card" v-for="service in services" :key="service.id">
+          <span>{{service.name}}</span>
+          <div class="service-buttons is-pulled-right">
+            <el-button icon="document">
+            <router-link to={{'/business/editServices/' + service.id + '/editOfferings'}}>Edit Offerings</router-link>
+            </el-button>
+            <el-button icon="picture">
+            <router-link to={{'/business/editServices/' + service.id +  'editGallery'}}>Edit Gallery</router-link>
+            </el-button>
+            <el-button icon="edit">
+              Edit Service
+            </el-button>
+            <el-button icon="delete" type="danger">
+              Delete Service
+            </el-button>
+          </div>
+        </el-card>
+      </div>
     </div>
   </div>
 </template>
@@ -39,7 +57,7 @@
 <script>
   import Axios from 'axios';
   import { Business } from '../../../services/EndPoints';
-  import { ServiceRules } from '../../../services/validation';
+  import { serviceRules } from '../../../services/validation';
   
   export default {
     data() {
@@ -48,7 +66,7 @@
         categories: [],
         newService: {},
         generalErrors: [],
-        serviceRules: ServiceRules,
+        serviceRules,
         createSuccess: '',
         createErrors: [],
       };
