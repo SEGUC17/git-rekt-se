@@ -16,39 +16,6 @@ export const loginRules = {
 };
 
 export const infoFormRules = {
-  password: [{
-    required: true,
-    message: 'Please enter your password',
-    trigger: 'blur',
-  }, {
-    pattern: /^(?=.*\d).{8,15}$/,
-    message: 'Password must be between 8 and 15 characters and contains at least one number.',
-    trigger: 'blur',
-  }, {
-    validator(rule, value, callBack) {
-      this.$refs.infoForm.validateField('confirmPassword');
-      callBack();
-    },
-    trigger: ['blur', 'change'],
-  }],
-  confirmPassword: [{
-    required: true,
-    message: 'Please confirm your password',
-    trigger: 'blur',
-  }, {
-    validator(rule, value, callBack) {
-      if (this.infoForm.password.length > 0) {
-        if (this.infoForm.password !== value) {
-          callBack([new Error('Password and Confirm Password must match!')]);
-        } else {
-          callBack();
-        }
-      } else {
-        callBack();
-      }
-    },
-    trigger: ['blur', 'change'],
-  }],
   description: [{
     required: true,
     message: 'Please enter a description for your business activity',

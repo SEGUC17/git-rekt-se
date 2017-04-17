@@ -11,14 +11,6 @@
                     <div>
                         <el-form :model="infoForm" :rules="form1Rules" ref="infoForm" label-width="120px" label-position="top" class="demo-ruleForm">
     
-                            <el-form-item label="Password" prop="password">
-                                <el-input v-model="infoForm.password" type="password"></el-input>
-                            </el-form-item>
-    
-                            <el-form-item label="Confirm Password" prop="confirmPassword">
-                                <el-input v-model="infoForm.confirmPassword" type="password"></el-input>
-                            </el-form-item>
-    
                             <el-form-item label="Description" prop="description">
                                 <el-input type="textarea" :autosize="{ minRows: 2}" v-model="infoForm.description"></el-input>
                             </el-form-item>
@@ -83,14 +75,9 @@
     import locations from '../../../../app/seed/service/locations';
     export default {
         data() {
-            infoFormRules.confirmPassword[1].validator = infoFormRules.confirmPassword[1]
-                .validator.bind(this);
-            infoFormRules.password[2].validator = infoFormRules.password[2]
-                .validator.bind(this);
+            
             return {
                 infoForm: new Form({
-                    password: '',
-                    confirmPassword: '',
                     description: '',
                     workingHours: '',
                     categories: '',
