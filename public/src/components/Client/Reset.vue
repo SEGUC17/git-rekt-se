@@ -39,35 +39,16 @@
 
 <script>
     import Form from '../../services/Form';
-    import EndPoints from '../../services/EndPoints';
-    
+    import EndPoints from '../../services/validation.js';
+     import {
+    clientForgotPassword
+  } from '../../services/validation';
     export default {
         data() {
-            
-            var validatePassword = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error('Please input a password'));
-                } else {
-                    if (!(/^(?=.*\d).{8,15}$/.test(value))) {
-                        callback(new Error('Password must be between 8 and 15 characters and contains at least one number.'));
-                    } else {
-                        if (this.form.confirmPassword !== '') {
-                            this.$refs.form.validateField('confirmPassword');
-                        }
-                        callback();
-                    }
-    
-                }
-            };
-            var validateConfirmPassword = (rule, value, callback) => {
-                if (value === '') {
-                    callback(new Error('Please insert a password!'));
-                } else if (value !== this.form.password) {
-                    callback(new Error('The two inputs don\'t match!'));
-                } else {
-                    callback();
-                }
-            };
+              clientForgotPassword.confirmPassword[1].validator = clientForgotPassword.confirmPassword[1]
+        .validator.bind(this);
+      clientForgotPassword.password[2].validator = clientForgotPassword.password[2]
+        .validator.bind(this);
             return {
                 form: new Form({
                     token: this.$route.params.token,
@@ -77,16 +58,7 @@
                     fail:false,
                 }),
                 errors: {},
-                rules: {
-                    password: [{
-                        validator: validatePassword,
-                        trigger: 'blur'
-                    }],
-                    confirmPassword: [{
-                        validator: validateConfirmPassword,
-                        trigger: 'blur'
-                    }],
-                },
+                rules: clientForgotPassword
             };
         },
         methods: {
