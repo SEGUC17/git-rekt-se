@@ -48,6 +48,7 @@ export default {
     return `JWT ${localStorage.getItem('business_token')}`;
   },
   refreshAuth() {
+    console.log(localStorage.getItem('business_token'));
     if (localStorage.getItem('business_token')) {
       this.user.authenticated = true;
     } else {

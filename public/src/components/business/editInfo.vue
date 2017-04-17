@@ -1,78 +1,94 @@
 <template>
-  <div class="columns">
-    <div class="column is-half is-offset-one-quarter">
-  
-      <div v-show="success">
-        <el-alert @close="success = false" title="Success" :description="message" type="success" show-icon></el-alert>
-      </div>
-  
-      <div v-show="info">
-        <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
-      </div>
-  
-      <div v-show="!form.errors.isEmpty() || error">
-        <div v-show="error">
-          <el-alert @close="error = false" title="Error" type="error" :description="message" show-icon></el-alert>
-        </div>
-  
-        <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
-          <el-alert @close="form.errors.remove(key)" :title="key.toUpperCase()" type="error" :description="form.errors.getAll(key, ' | ')" show-icon></el-alert>
-        </div>
-  
-        <div class="error" v-show="form.errors.has('serverError')">
-          <el-alert @close="" title="Server Errors" :description="form.errors.getAll('serverError')" type="error" show-icon></el-alert>
-        </div>
-      </div>
-  
-      <h1 class="title has-text-centered">Edit Basic Information</h1>
-  
-      <el-form ref="form" :model="form" :rules="rules" label-position="left" label-width="120px">
-        <el-form-item label="Name" prop="name">
-          <el-input v-model="form.name"></el-input>
-        </el-form-item>
-        
-        <el-form-item label="Email" prop="email">
-          <el-input v-model="form.email"></el-input>
-        </el-form-item>
-  
-        <el-form-item label="Password" prop="password">
-          <el-input v-model="form.password" :type="showPassword">
-            <template slot="append">
-              <el-tooltip content="See Password" placement="right">
-                <el-button @mousedown.native="showPassword='text'" @mouseup.native="showPassword='password'">
-                  <i class="fa fa-eye"></i>
-                </el-button>
-              </el-tooltip>
-            </template>
-          </el-input>
-        </el-form-item>
-  
-        <el-form-item label="Confirm Password" prop="confirmPassword">
-          <el-input v-model="form.confirmPassword" :type="showConfirm">
-            <template slot="append">
-              <el-tooltip content="See Confirm Password" placement="right">
-                <el-button @mousedown.native="showConfirm='text'" @mouseup.native="showConfirm='password'">
-                  <i class="fa fa-eye"></i>
-                </el-button>
-              </el-tooltip>
-            </template>
-          </el-input>
-        </el-form-item>
-  
-        <el-form-item v-for="el in phoneNumbers" :key="el.index" :label="`Phone Number ${el.index}`">
-          <el-input v-model="el.number"></el-input>
-        </el-form-item>
-  
-        <el-form-item label="Short Description" prop="shortDescription">
-          <el-input v-model="form.shortDescription" type="textarea" :autosize="{ minRows: 1, maxRows: 3}"></el-input>
-        </el-form-item>
 
-        <el-form-item class="has-text-centered">
-          <el-button type="primary" icon="edit" @click="onSubmit" :loading="loading">Edit</el-button>
-          <el-button icon="plus" @click="addPhone">Add Phone</el-button>
-          <el-button icon="circle-cross" @click="onReset">Reset</el-button>
-        </el-form-item>
-      </el-form>
+  <div class="business-edit-info">
+    <!-- Client Signup Header -->
+    <section class="client-signin-top hero is-bold">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title extra-large white">
+              Business
+          </h1>
+          <p class="subtitle white">
+           Business Business
+          </p>
+         </div>
+       </div>
+    </section>
+    <div class="columns">
+      <div class="column is-half is-offset-one-quarter">
+    
+        <div v-show="success">
+          <el-alert @close="success = false" title="Success" :description="message" type="success" show-icon></el-alert>
+        </div>
+    
+        <div v-show="info">
+          <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
+        </div>
+    
+        <div v-show="!form.errors.isEmpty() || error">
+          <div v-show="error">
+            <el-alert @close="error = false" title="Error" type="error" :description="message" show-icon></el-alert>
+          </div>
+    
+          <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
+            <el-alert @close="form.errors.remove(key)" :title="key.toUpperCase()" type="error" :description="form.errors.getAll(key, ' | ')" show-icon></el-alert>
+          </div>
+    
+          <div class="error" v-show="form.errors.has('serverError')">
+            <el-alert @close="" title="Server Errors" :description="form.errors.getAll('serverError')" type="error" show-icon></el-alert>
+          </div>
+        </div>
+    
+        <h1 class="title has-text-centered">Edit Basic Information</h1>
+    
+        <el-form class="edit-info-form" ref="form" :model="form" :rules="rules" label-position="left" label-width="120px">
+          <el-form-item label="Name" prop="name">
+            <el-input v-model="form.name"></el-input>
+          </el-form-item>
+          
+          <el-form-item label="Email" prop="email">
+            <el-input v-model="form.email"></el-input>
+          </el-form-item>
+    
+          <el-form-item label="Password" prop="password">
+            <el-input v-model="form.password" :type="showPassword">
+              <template slot="append">
+                <el-tooltip content="See Password" placement="right">
+                  <el-button @mousedown.native="showPassword='text'" @mouseup.native="showPassword='password'">
+                    <i class="fa fa-eye"></i>
+                  </el-button>
+                </el-tooltip>
+              </template>
+            </el-input>
+          </el-form-item>
+    
+          <el-form-item label="Confirm Password" prop="confirmPassword">
+            <el-input v-model="form.confirmPassword" :type="showConfirm">
+              <template slot="append">
+                <el-tooltip content="See Confirm Password" placement="right">
+                  <el-button @mousedown.native="showConfirm='text'" @mouseup.native="showConfirm='password'">
+                    <i class="fa fa-eye"></i>
+                  </el-button>
+                </el-tooltip>
+              </template>
+            </el-input>
+          </el-form-item>
+    
+          <el-form-item v-for="el in phoneNumbers" :key="el.index" :label="`Phone Number ${el.index}`">
+            <el-input v-model="el.number"></el-input>
+          </el-form-item>
+    
+          <el-form-item label="Short Description" prop="shortDescription">
+            <el-input v-model="form.shortDescription" type="textarea" :autosize="{ minRows: 1, maxRows: 3}"></el-input>
+          </el-form-item>
+
+          <el-form-item class="has-text-centered">
+            <el-button type="primary" icon="edit" @click="onSubmit" :loading="loading">Edit</el-button>
+            <el-button icon="plus" @click="addPhone">Add Phone</el-button>
+            <el-button icon="circle-cross" @click="onReset">Reset</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
   </div>
 </template>
@@ -182,6 +198,16 @@
       },
     },
     mounted() {
+      businessAuth.refreshAuth();
+      if(!businessAuth.user.authenticated){
+        this.$router.push('/');
+        this.$toast.open({
+          message: 'You are not logged in. Please login first.',
+          position: 'bottom',
+          type: 'is-danger',
+        });
+        return;
+      }
       const loader = this.$loading({
         fullscreen: true,
         text: 'Fetching Data',
@@ -198,7 +224,21 @@
 </script>
 
 <style>
-  .error+.error {
-    margin-top: 10px;
-  }
+    .edit-info-form {
+        margin-top: 2em;
+    }
+
+    .error + .error {
+        margin-top: 10px;
+    }
+
+    @media screen and (max-width: 999px) {
+        .edit-info-form {
+            margin: 2em;
+        }
+
+        .extra-large {
+            font-size: 3em;
+        }
+    }
 </style>

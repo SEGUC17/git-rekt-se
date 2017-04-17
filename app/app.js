@@ -27,10 +27,10 @@ if (process.env.DEBUG_MODE) {
    * Add Delay to test frontend.
    */
 
-  // app.use((req, res, next) => {
-  //   const delay = Math.floor(((Math.random() * 1000) + 500));
-  //   setTimeout(next, delay);
-  // });
+  app.use((req, res, next) => {
+    const delay = Math.floor(((Math.random() * 1000) + 500));
+    setTimeout(next, delay);
+  });
 }
 
 /**
