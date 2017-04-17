@@ -5,7 +5,11 @@
       <div v-show="success">
         <el-alert @close="success = false" title="Success" :description="message" type="success" show-icon></el-alert>
       </div>
-  
+      
+      <div v-show="info">
+        <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
+      </div>
+
       <div v-show="!form.errors.isEmpty() || error">
         <div v-show="error">
           <el-alert @close="error = false" title="Error" type="error" :description="message" show-icon></el-alert>
@@ -55,14 +59,14 @@
           </el-input>
         </el-form-item>
   
-        <el-form-item label="Short Description" prop="shortDescription">
-          <el-input v-model="form.shortDescription"></el-input>
-        </el-form-item>
-  
-        <el-form-item v-for="el in phoneNumbers" :key="el.key" label="Phone Numbers" :prop="`dd${el.key}`" :rules="rules.phoneNumber">
+        <el-form-item v-for="el in phoneNumbers" :key="el.index" :label="`Phone Number ${el.index}`">
           <el-input v-model="el.number"></el-input>
         </el-form-item>
   
+        <el-form-item label="Short Description" prop="shortDescription">
+          <el-input v-model="form.shortDescription" type="textarea" :autosize="{ minRows: 1, maxRows: 3}"></el-input>
+        </el-form-item>
+
         <el-form-item class="has-text-centered">
           <el-button type="primary" icon="edit" @click="onSubmit" :loading="loading">Edit</el-button>
           <el-button icon="plus" @click="addPhone">Add Phone</el-button>
@@ -75,16 +79,13 @@
 
 <script>
   import Form from '../../services/Form';
-  import {
-    Business
-  } from '../../services/EndPoints';
-  import {
-    businessEditInfoValidation
-  } from '../../services/validation';
-  const dummy_token = '';
+  import businessAuth from '../../services/auth/businessAuth';
+  import { Business } from '../../services/EndPoints';
+  import { businessEditInfoValidation } from '../../services/validation';
   const dummy_password = '***************';
   export default {
     data() {
+      console.log(businessEditInfoValidation);
       businessEditInfoValidation.confirmPassword[0].validator = businessEditInfoValidation.confirmPassword[0].validator.bind(this);
       return {
         form: new Form({
@@ -100,49 +101,59 @@
         business: {},
         success: false,
         error: false,
+        info: false,
         message: '',
         loading: false,
-        showPassword: '',
-        showConfirm: '',
+        showPassword: 'password',
+        showConfirm: 'password',
       };
     },
     methods: {
       getBusiness() {
-        axios.get(Business().getBasicInfo, {
-            headers: {
-              Authorization: `JWT ${dummy_token}`,
-            },
-          })
-          .then((response) => {
-            this.business = response.data.business;
-            this.onReset();
-            this.loading = false;
-          }).catch((err) => {
-            this.error = true;
-            this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
-          });
+        return new Promise((resolve, reject) => {
+            axios.get(Business().getBasicInfo, {
+              headers: {
+                Authorization: businessAuth.getJWTtoken(),
+              },
+            })
+              .then((response) => {
+                this.business = response.data.business;
+                this.onReset();
+                resolve();
+              }).catch((err) => {
+                this.error = true;
+                this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+                reject(err);
+              });
+        });
       },
       onSubmit() {
         this.$refs.form.validate((valid) => {
+          console.log(this.form.data());
+          console.log(valid);
           if (valid) {
             this.form.phoneNumbers = this.phoneNumbers.filter(el => el.number.length > 0).map(el => el.number);
             this.form.password = this.form.password === dummy_password ? '' : this.form.password;
             this.form.confirmPassword = this.form.confirmPassword === dummy_password ? '' : this.form.confirmPassword;
+            this.info = false;
             this.success = false;
             this.error = false;
             this.loading = true;
-            this.form.post(Business().editBasicInfo(this.business._id), {
+            this.form.post(Business().editBasicInfo(businessAuth.user.userID()), {
                 headers: {
-                  Authorization: `JWT ${dummy_token}`,
+                  Authorization: businessAuth.getJWTtoken(),
                 },
               })
               .then((data) => {
                 this.success = true;
                 this.message = data.message;
-                this.getBusiness();
+                this.getBusiness()
+                  .then(() => this.loading = false)
+                  .catch(() => console.log('Error!'));
               }).catch((err) => {
                 this.loading = false;
                 this.success = false;
+                this.onReset();
               });
           } else {
             this.error = true;
@@ -168,7 +179,17 @@
       },
     },
     mounted() {
-      this.getBusiness();
+      const loader = this.$loading({
+        fullscreen: true,
+        text: 'Fetching Data',
+      });
+      this.getBusiness()
+        .then(() => {
+          loader.close();
+          this.info = true;
+          this.message = 'Edit the info you want to change, otherwise leave them as is !';
+        })
+        .catch(() => console.log('Error!'));
     },
   }
 </script>
