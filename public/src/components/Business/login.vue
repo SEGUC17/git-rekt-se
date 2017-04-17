@@ -53,7 +53,7 @@
   import businessAuth from '../../services/auth/businessAuth';
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
-  import {loginRules} from '../../services/validation';
+  import { loginRules } from '../../services/validation';
 
   export default {
     data() {
@@ -84,7 +84,7 @@
             businessAuth.login(this.form.data(), (responseErrors, response) => {
               loader.close();
               if (responseErrors) {
-                 this.errors = responseErrors.errors.map((err) => {
+                this.errors = responseErrors.errors.map((err) => {
                   if (typeof err === 'string') {
                     return err;
                   }
