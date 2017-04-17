@@ -44211,7 +44211,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     type: 'success'
                 });
             }).catch(function (err) {
-                _this.errors = err.response.data.errors;
+                for (var i = 0; i < err.response.data.errors.length; i += 1) {
+                    _this.errors.push(err.response.data.errors[i]);
+                }
             });
         }
     }

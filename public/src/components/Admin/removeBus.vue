@@ -48,6 +48,7 @@
                         message: 'Business Deleted Successfully!',
                         type: 'success'
                   });
+                  this.errors = [];
             })
             .catch((err) => {
                      for(var i=0 ; i<err.response.data.errors.length; i += 1){
