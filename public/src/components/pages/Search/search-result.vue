@@ -59,8 +59,7 @@
         return `/business/${this.businessID}`;
       },
       imagePath() {
-        // TODO change service image path
-        return (this.coverImage) ? '' : 'assets/imgs/service.svg';
+        return (this.coverImage) ? `/uploads/${this.coverImage}` : 'assets/imgs/service.svg';
       },
     },
   };

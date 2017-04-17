@@ -195,7 +195,7 @@
   }
   
   .search-header {
-    background: linear-gradient(180deg, rgba(0, 0, 0, .65), rgba(0, 0, 0, 0)), url('http://localhost:3000/assets/imgs/search/search_BG.JPG') 0 0/cover
+    background: linear-gradient(180deg, rgba(0, 0, 0, .65), rgba(0, 0, 0, 0)), url('/assets/imgs/search/search_BG.JPG') 0 0/cover
   }
   
   .el-pagination {
