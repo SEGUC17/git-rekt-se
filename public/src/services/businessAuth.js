@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { Business } from '../services/EndPoints';
+import {
+  Business,
+} from '../services/EndPoints';
 
 export default {
   user: {
@@ -35,9 +37,9 @@ export default {
         })
       .then((response) => {
         this.user.authenticated = false;
-        localStorage.removeItem(response.data.token);
-        localStorage.removeItem(response.data.email);
-        localStorage.removeItem(response.data.id);
+        localStorage.removeItem('business_token');
+        localStorage.removeItem('business_email');
+        localStorage.removeItem('business_id');
         return callBack(null, response.data);
       })
       .catch((err) => {

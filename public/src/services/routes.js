@@ -17,8 +17,6 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
-}, {
-  path: '/business/logout',
 }];
 
 const router = new VueRouter({
