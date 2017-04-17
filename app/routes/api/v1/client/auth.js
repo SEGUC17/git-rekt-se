@@ -241,6 +241,22 @@ router.get('/fb/login', passport.authenticate('facebook_strategy', {
   scope: ['email'],
 }));
 
+/**
+ * Client finalize facebook login.
+ */
+router.post('/fb/finalize/login', (req, res, next) => {
+  const encapsulatedToken = req.body.token;
+  ClientAuthenticator.finalizeLoginFacebook(encapsulatedToken)
+    .then((token, payload) => {
+      res.json({
+        message: Strings.clientLoginMessages.loginSuccess,
+        id: payload.id,
+        email: payload.email,
+        token,
+      });
+    }).catch(next);
+});
+
 router.post('/forgot', (req, res, next) => {
   const email = req.body.email;
   const currentDate = Date.now();
@@ -285,7 +301,7 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
    * If authenticated with facebook.
    */
   if (req.isAuthenticated()) {
-    res.json(ClientAuthenticator.loginFacebook(req.user.email, req.user.id));
+    res.redirect(`/TODO/?token=${ClientAuthenticator.loginFacebook(req.user.email, req.user.id)}`);
   } else {
     /**
      * Redirect to Signup page with data accquired from facebook.
