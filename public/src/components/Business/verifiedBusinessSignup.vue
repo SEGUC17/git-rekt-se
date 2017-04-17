@@ -139,6 +139,8 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+                this.form.branches = [];
+                this.addBranch();
             },
             addBranch() {
                 this.form.branches.push({
@@ -173,5 +175,6 @@
     }
     .demo-ruleForm {
         margin-top: 30px;
+        margin-bottom: 40px;
     }
 </style>
