@@ -4,6 +4,19 @@
     
             <h1 class="title has-text-centered">Edit Info</h1>
     
+            <div v-show="errors.length > 0">
+                <div class="error" v-for="error in errors">
+                    <el-alert :title="error" type="error" show-icon>
+                    </el-alert>
+                </div>
+            </div>
+    
+            <div v-show="success">
+                <el-alert :title="editSuccess" type="success" show-icon>
+                </el-alert>
+            </div>
+    
+    
             <el-tabs type="card" @tab-click="handleClick">
     
                 <el-tab-pane name="basicInfotab" label="Basic Info" v-show="enableInfoTab">
@@ -49,12 +62,12 @@
                                         </el-option>
                                     </el-select>
                                 </el-input>
-                                    <el-button @click="removeBranch(index)">Delete Branch</el-button>
-                                    <el-button @click="updateBranch(index)">Update Branch</el-button>
-
+                                <el-button @click="removeBranch(index)">Delete Branch</el-button>
+                                <el-button @click="updateBranch(index)">Update Branch</el-button>
+    
                                 <el-button v-show="index === branchesForm.branches.length-1" @click="addBranch">Add a New Branch</el-button>
                             </el-form-item>
-
+    
     
                         </el-form>
     
@@ -68,19 +81,26 @@
 </template>
 
 <script>
+    import axios from 'axios';
     import Form from '../../services/Form';
     import {
-        infoFormRules, branchesFromRules
+        infoFormRules,
+        branchesFromRules
     } from '../../services/validation';
     import locations from '../../../../app/seed/service/locations';
+    import {
+        Visitor,
+        Business
+    } from '../../services/EndPoints';
+    import businessAuth from '../../services/auth/businessAuth';
+    
     export default {
         data() {
-            
             return {
                 infoForm: new Form({
                     description: '',
                     workingHours: '',
-                    categories: '',
+                    categories: [],
                 }),
                 branchesForm: new Form({
                     branches: [{
@@ -92,34 +112,54 @@
                 enableBranchesTab: false,
                 form1Rules: infoFormRules,
                 form2Rules: branchesFromRules,
-                categories: [{
-                    title: 'hello1',
-                    _id: '1'
-                }, {
-                    title: 'hello2',
-                    _id: '2'
-                }, {
-                    title: 'hello3',
-                    _id: '3'
-                }, {
-                    title: 'hello4',
-                    _id: '4'
-                }, ],
+                categories: [],
+                errors: [],
+                success: false,
+                editSuccess: '',
                 locations: locations,
             }
+        },
+        mounted() {
+            axios.get(Business()
+                .businessInfo, {
+                    headers: {
+                        Authorization: businessAuth.getJWTtoken(),
+                    },
+                }).then((infoResponse) => {
+                axios.get(Visitor().businessCategories).then((categoriesResponse) => {
+                    this.categories = categoriesResponse.data.results;
+    
+                    this.infoForm.description = infoResponse.data.results.description;
+                    this.infoForm.workingHours = infoResponse.data.results.workingHours;
+                    this.infoForm.categories = infoResponse.data.results.categories;
+                    this.branchesForm.branches = infoResponse.data.results.branches;
+    
+                }).catch(e => this.errors = e);
+            }).catch(e => this.errors = e);
+    
         },
     
         methods: {
             submitForm(formName) {
-                console.log(formName);
-                console.log(this.$refs[formName]);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        console.log(this.infoForm.data());
-                        alert('submit!');
+                        if (formName === 'infoForm') {
+                            axios.put(Business().editInfo, this.infoForm.data(), {
+                                headers: {
+                                    Authorization: businessAuth.getJWTtoken(),
+                                },
+                            }).then((response) => {
+                                this.success = true;
+                                this.editSuccess = response.data.message;
+                                   setTimeout(() => {
+                                    this.$router.go(this.$router.path);
+                                }, 1000);
+                            }).catch(e => this.errors = e);
+                        } else {
+    
+                        }
                     } else {
-                        console.log('error submit!!');
-                        return false;
+                        errors = ['Please fill in the fields'];
                     }
     
     
@@ -152,7 +192,7 @@
                 }
             },
             updateBranch(idx) {
-
+    
             },
         }
     
@@ -168,9 +208,11 @@
         margin-top: 20px;
         margin-left: 10px;
     }
+    
     .error {
         margin-bottom: 20px;
     }
+    
     .demo-ruleForm {
         margin-top: 30px;
         margin-bottom: 40px;

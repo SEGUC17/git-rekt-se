@@ -7,6 +7,7 @@ export const Visitor = () => ({
   relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/${offset}`,
   locations: `${BASE}/visitor/search/locations`,
   viewBusiness: businessID => `${BASE}/business/${businessID}`,
+  businessCategories: `${BASE}/categories/business`,
 });
 
 export const Client = () => {
@@ -39,7 +40,7 @@ export const Business = () => {
     verifiedSignUp: token => `${authBase}/confirm/signup/${token}`,
 
     editBasicInfo: businessID => `${BASE}/business/profile/${businessID}/edit`,
-    editInfo: businessID => `${businessBase}/edit/${businessID}`,
+    editInfo: `${businessBase}/edit`,
     addBranch: businessID => `${businessBase}/${businessID}/add/branches`,
     editBranch: (businessID, branchID) => `${businessBase}/${businessID}/edit/branch/${branchID}`,
     deleteBranch: (businessID, branchID) => `${businessBase}/${businessID}/delete/branch/${branchID}`,
@@ -52,6 +53,7 @@ export const Business = () => {
     deleteOffering: (serviceID, offeringID) => `${serviceBase}/${serviceID}/offering/${offeringID}/delete`,
 
     addImage: businessID => `${galleryBase}/${businessID}/gallery/add`,
+    businessInfo: `${BASE}/business/info/all`,
   };
 };
 
