@@ -175,7 +175,7 @@
     },
     mounted(){
         clientAuth.refreshAuth();
-        if(clientAuth.authenticated){
+        if(clientAuth.user.authenticated){
             this.$router.push('/');
             this.$toast({
               message: 'You are already logged in',
