@@ -9,6 +9,7 @@ const path = require('path');
 const Service = require('../../../../models/service/Service');
 const Offering = require('../../../../models/service/Offering');
 const Branch = require('../../../../models/service/Branch');
+const Category = require('../../../../models/service/Category');
 
 const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
@@ -21,17 +22,24 @@ mongoose.Promise = Promise;
 
 const router = express.Router();
 
-/*
-    Multer Config.
+/**
+ * Multer Config.
  */
+
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, `${__dirname}/uploads`);
+    cb(null, path.join(__dirname, '../../../../../public/dist/uploads'));
   },
   filename(req, file, cb) {
     const buf = crypto.randomBytes(48);
     cb(null, Date.now() + buf.toString('hex') + path.extname(file.originalname));
   },
+  fileFilter: ((req, file, cb) => {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+      return cb(new Error('Only image files are allowed!'), false);
+    }
+    return cb(null, true);
+  }),
 });
 
 const upload = multer({
@@ -55,8 +63,32 @@ router.use(expressValidator({}));
  */
 
 /**
+ * List all service categories
+ */
+
+router.get('/category/list', businessAuthMiddleware, (req, res, next) => {
+  Category.find({
+    type: 'Service',
+    _deleted: false,
+  })
+  .exec()
+  .then((categories) => {
+    const caetgoryDropDown = categories.map(category => ({
+      label: category.title,
+      value: category._id,
+    }));
+    res.json({
+      categories: caetgoryDropDown,
+    });
+  })
+  .catch(e => next(e));
+});
+
+
+/**
  * List all services belonging to a business
  */
+
 router.get('/list', businessAuthMiddleware, (req, res, next) => {
   Service.find({
     _business: req.user.id,

@@ -44,6 +44,8 @@ export const Business = () => {
     editBranch: (businessID, branchID) => `${businessBase}/${businessID}/edit/branch/${branchID}`,
     deleteBranch: (businessID, branchID) => `${businessBase}/${businessID}/delete/branch/${branchID}`,
 
+    listServices: `${serviceBase}/list`,
+    listCategories: `${serviceBase}/category/list`,
     createService: `${serviceBase}/create`,
     editService: serviceID => `${serviceBase}/${serviceID}/edit`,
     deleteService: serviceID => `${serviceBase}/${serviceID}/delete`,
