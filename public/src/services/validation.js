@@ -5,12 +5,12 @@ export default {
 export const businessEditInfoValidation = {
   name: [{
     required: true,
-    message: 'Please Enter a name!',
+    message: 'A Name is required.',
     trigger: ['blur', 'change'],
   }],
   email: [{
     required: true,
-    message: 'Please Enter an email!',
+    message: 'An Email is required.',
     trigger: ['blur', 'change'],
   }, {
     type: 'email',
@@ -45,7 +45,7 @@ export const businessEditInfoValidation = {
   }],
   shortDescription: [{
     required: true,
-    message: 'Please Enter a Short Description!',
+    message: 'A Short Description is required.',
     trigger: ['blur', 'change'],
   }],
   phoneNumber: [{
@@ -60,15 +60,15 @@ export const businessEditInfoValidation = {
   }],
 };
 
-export const clientLoginRules = {
+export const loginRules = {
   email: [{
     required: true,
-    message: 'Please enter your email',
+    message: 'Email is required.',
     trigger: 'blur',
   }],
   password: [{
     required: true,
-    message: 'Please enter your password',
+    message: 'Password is required.',
     trigger: 'blur',
   }],
 };

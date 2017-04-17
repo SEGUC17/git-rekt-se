@@ -3,6 +3,8 @@ import Home from '../components/pages/Index/home.vue';
 import clientLogin from '../components/Client/login.vue';
 import clientLogout from '../components/Client/logout.vue';
 import businessEditInfo from '../components/business/editInfo.vue';
+import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
+import businessLogin from '../components/Business/login.vue';
 
 const routes = [{
   path: '/',
@@ -16,6 +18,12 @@ const routes = [{
 }, {
   path: '/business/editinfo',
   component: businessEditInfo,
+}, {
+  path: '/login',
+  component: loginSelect,
+}, {
+  path: '/business/login',
+  component: businessLogin,
 }];
 
 const router = new VueRouter({
