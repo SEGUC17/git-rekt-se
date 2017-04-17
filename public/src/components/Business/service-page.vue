@@ -20,8 +20,6 @@
             </div>
     
             <div class="column">
-    
-    
                 <div class="box cyan-bg" v-for="offer in offerings" style="margin-top:2em; margin-bottom:2em">
                     <div class="columns">
                         <div class="column is-6">
@@ -55,7 +53,7 @@
                                 <template>
                                     <el-carousel :interval="5000" arrow="always">
                                         <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
-                                        <h3>{{ item }}</h3>
+                                            <img :src="item"> </img>
                                         </el-carousel-item>
                                     </el-carousel>
                                 </template>
@@ -196,7 +194,7 @@
 
                 axios.get(EndPoints.viewRelatedServices(this.categories[0], 1)).then((res) => {
                     this.relatedServices = res.data.results;
-                }).catch(err => console.log(err));
+                }).catch(() =>  this.relatedServices = []);
             },
             //in case extra functionality is needed
             handleClick(tab, event) {
