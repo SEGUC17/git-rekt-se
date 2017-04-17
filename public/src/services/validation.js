@@ -5,20 +5,20 @@ export default {
 export const clientSignUpValidation = {
   email: [{
     required: true,
-    message: 'An Email is required.',
+    message: 'Email is required.',
     trigger: 'blur',
   }, {
     type: 'email',
-    message: 'Must be an email.',
+    message: 'Invalid Email format.',
     trigger: 'blur',
   }],
   password: [{
     required: true,
-    message: 'A Password is required.',
+    message: 'Password is required.',
     trigger: 'blur',
   }, {
     pattern: /^(?=.*\d).{8,15}$/,
-    message: 'Password must be between 8 and 15 characters and contains at least one number.',
+    message: 'Password must be 8-15 chars and contains at least one number.',
     trigger: 'blur',
   }, {
     validator(rule, value, callBack) {
@@ -29,13 +29,13 @@ export const clientSignUpValidation = {
   }],
   confirmPassword: [{
     required: true,
-    message: 'Please Confirm the password',
+    message: 'Password Confirmation is required.',
     trigger: 'blur',
   }, {
     validator(rule, value, callBack) {
       if (this.form.password.length > 0) {
         if (this.form.password !== value) {
-          callBack([new Error('Password and Confirm Password must match!')]);
+          callBack([new Error('Password and password confirmation mismatch.')]);
         } else {
           callBack();
         }

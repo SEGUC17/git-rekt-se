@@ -15,17 +15,17 @@
         </section>
 
         <div class="columns">
-            <div class="column is-half is-offset-one-quarter">
+            <div class="column is-half is-offset-one-quarter" v-if="!success">
                 <!-- Backend Form Errors-->
                 <div v-show="!form.errors.isEmpty() || error">
                     <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
                         <el-alert @close="form.errors.remove(key)" type="error"
-                                  :description="form.errors.getAll(key, ' | ')" show-icon></el-alert>
+                                  :title="form.errors.getAll(key, ' | ') || '' " show-icon></el-alert>
                     </div>
 
                     <div class="error" v-show="form.errors.has('serverError')">
                         <el-alert @close="form.errors.remove('serverError')"
-                                  :description="form.errors.getAll('serverError', ' | ')" type="error"
+                                  :title="form.errors.getAll('serverError', ' | ') || ''" type="error"
                                   show-icon></el-alert>
                     </div>
 
@@ -87,9 +87,6 @@
                     <el-form-item class="has-text-centered">
                         <el-button type="primary" icon="circle-check" @click="onClick" :loading="loading">
                             Sign Up
-    
-    
-    
 
                         </el-button>
                         <el-button icon="circle-cross" @click="onReset">Reset</el-button>
@@ -98,18 +95,18 @@
 
             </div>
         </div>
+
+        <resend class="column is-10 is-offset-1" :email="clientEmail" v-if="success"></resend>
     </div>
 </template>
 
 <script>
   import Form from '../../services/Form';
   import Errors from '../../services/Errors';
-  import {
-    Client
-  } from '../../services/EndPoints';
-  import {
-    clientSignUpValidation
-  } from '../../services/validation';
+  import resend from './resend.vue';
+
+  import { Client } from '../../services/EndPoints';
+  import { clientSignUpValidation } from '../../services/validation';
 
   export default {
     data() {
@@ -153,8 +150,8 @@
                   this.success = true;
                   this.message = data.message;
                 }).catch(() => {
-              this.loading = false;
-            });
+                  this.loading = false;
+                });
           }
         });
       },
@@ -176,14 +173,28 @@
         });
       },
     },
+    components: {
+      resend,
+    },
   };
 </script>
 
 <style>
-    .signup-form{
-        margin-top: 3em;
+    .signup-form {
+        margin-top: 2em;
     }
+
     .error + .error {
         margin-top: 10px;
+    }
+
+    @media screen and (max-width: 999px) {
+        .signup-form {
+            margin: 2em;
+        }
+
+        .extra-large {
+            font-size: 3em;
+        }
     }
 </style>
