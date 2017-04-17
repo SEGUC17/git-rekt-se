@@ -60,7 +60,7 @@ export const clientSignUpValidation = {
     message: 'Mobile number is required.',
     trigger: 'blur',
   }, {
-    pattern: /^01[0-2]{1}[0-9]{8}/,
+    pattern: /^01[0-2][0-9]{8}$/,
     message: 'Mobile number must be 11 digits in the following format 01xxxxxxxxx.',
     trigger: 'blur',
   }],

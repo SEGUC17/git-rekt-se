@@ -60,7 +60,7 @@ const clientSignupValidation = {
       errorMessage: clientValidationErrors.emptyMobile,
     },
     matches: {
-      options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
+      options: [/^01[0-2]{1}[0-9]{8}$/], // Egyptian Mobile phone
       errorMessage: clientValidationErrors.invalidMobile,
     },
   },
