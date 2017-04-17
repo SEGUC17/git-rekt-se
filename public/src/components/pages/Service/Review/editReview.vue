@@ -1,6 +1,6 @@
 <template>
 <el-dialog title="Edit Review" v-model="dialogVisible">
-  <el-alert title="Error" type="error" show-icon v-for="error in errors" :description="error"></el-alert>
+  <el-alert type="error" show-icon v-for="error in errors" :title="error">
   <el-form ref="editReview" :model="review" :rules="rules" label-width="120px">
     <el-form-item label: "Rating" prop="rating">
       <el-rate v-model="review.rating"></el-rate>
@@ -40,12 +40,22 @@
         this.errors = [];
         this.$refs.editReview.validate((valid) => {
           if (valid) {
+            const loader = this.$loading({
+              fullscreen: true,
+            });
             Axios.post(Service.editReview(this.serviceID, this.reviewID), this.review)
               .then((response) => {
+                loader.close();
                 this.$emit('edited', response.message);
               })
-              .catch((err) => {
-                this.errors = err.response.data.errors;
+              .catch((error) => {
+                loader.close();
+                this.errors = error.response.data.errors.map((err) => {
+                  if (typeof err === 'string') {
+                    return err;
+                  }
+                  return err.msg;
+                });
               });
           }
         });

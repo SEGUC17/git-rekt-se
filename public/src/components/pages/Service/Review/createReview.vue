@@ -41,12 +41,17 @@
         this.success = '';
         this.$refs.postReview.validate((valid) => {
           if (valid) {
+            const loader = this.$loading({
+              fullscreen: true,
+            });
             Axios.post(Service.createReview(this.serviceID), this.review)
               .then((response) => {
+                loader.close();
                 this.$refs.postReview.resetFields();
                 this.$emit('created');
               })
               .catch((error) => {
+                loader.close();
                 this.errors = error.response.data.errors.map((err) => {
                   if (typeof err === 'string') {
                     return err;

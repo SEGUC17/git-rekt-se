@@ -1,6 +1,6 @@
 <template>
 <el-dialog title="Delete Review" v-model="dialogVisible">
-  <el-alert title="Error" type="error" show-icon v-for="error in errors" :description="error"></el-alert>
+  <el-alert type="error" show-icon v-for="error in errors" :title="error">
     <span>This cannot be undone. Delete this review?</span>
     <span slot="footer" class="dialog-footer">
       <el-button @click="cancel">Cancel</el-button>
@@ -25,12 +25,22 @@
     methods: {
       deleteReview() {
         this.errors = [];
+        const loader = this.$loading({
+          fullscreen: true,
+        });
         Axios.post(Service.deleteReview(this.serviceID, this.reviewID))
         .then((response) => {
+          loader.close();
           this.$emit('deleted', response.message);
         })
-        .catch((err) => {
-          this.errors = err.response.data.errors;
+        .catch((error) => {
+          loader.close();
+          this.errors = error.response.data.errors.map((err) => {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
         });
       },
       cancel() {
