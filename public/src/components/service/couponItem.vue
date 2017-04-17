@@ -4,37 +4,46 @@
             <el-col :span="10">
                 <h4 class="title is-5">
                     <span>
-                              {{Code}}
-                           </span>
+                                  {{Code}}
+                               </span>
                 </h4>
             </el-col>
             <el-col :span="10">
                 <h4 class="title is-5">
                     <span>
-                              {{Value}} %
-                           </span>
+                                  {{Value}} %
+                               </span>
                 </h4>
             </el-col>
             <el-col :span="10">
                 <h4 class="title is-5">
                     <span>
-                              {{startDate}}
-                           </span>
+                                  {{startDate}}
+                               </span>
                 </h4>
             </el-col>
             <el-col :span="10">
                 <h4 class="title is-5">
                     <span>
-                              {{endDate}}
-                           </span>
+                                  {{endDate}}
+                               </span>
                 </h4>
             </el-col>
-            <a class="button is-danger is-outlined" @click="deleteCoupon">
-                <span>Delete</span>
-                <span class="icon is-small">
-                      <i class="fa fa-times"></i>
-                    </span>
-            </a>
+            <template>
+                <el-dialog title="Delete Coupon" v-model="acceptDialogue" size="tiny">
+            <span>Are you sure you wish to delete this coupon?</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="acceptDialogue = false">Cancel</el-button>
+                <el-button type="primary" @click="deleteCoupon">Yes, I'm sure.</el-button>
+            </span>
+        </el-dialog>
+                <a class="button is-danger is-outlined" @click="acceptDialogue = true">
+                    <span>Delete</span>
+                    <span class="icon is-small">
+                          <i class="fa fa-times"></i>
+                        </span>
+                </a>
+</template>
         </el-row>
     </el-card>
 </template>
@@ -51,8 +60,9 @@
                 Code: this.coupon.code,
                 Value: this.coupon.discount,
                 startDate: this.getDateFormat(this.coupon.startDate),
-                endDate:  this.getDateFormat(this.coupon.endDate),
+                endDate: this.getDateFormat(this.coupon.endDate),
                 serviceID: this.coupon._service,
+                acceptDialogue: false,
             };
         },
         props: ['coupon'],
@@ -72,12 +82,8 @@
             },
     
             deleteCoupon() {
-                axios.post(EndPoints.Service().deleteCoupon('58f36821c82d1a37e868866b', this.couponID))
-                    .then(() => {
-                        this.$emit('deleted');
-                        alert('Coupon Deleted!');
-                    })
-                    .catch(err => console.log(err))
+                this.$emit('deleted');
+                this.acceptDialogue= false;
             },
         }
     };

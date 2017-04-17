@@ -21,30 +21,30 @@ router.use(expressValidator({}));
 /**
  * view service coupons.
  */
-router.get('/:id/coupons', (req, res, next) => { // BusinessAuth,
+router.get('/:id/coupons', BusinessAuth, (req, res, next) => {
   Service.findOne({
-    _id: req.params.id,
-    _deleted: false,
-  })
+      _id: req.params.id,
+      _deleted: false,
+    })
     .exec()
     .then((service) => {
       if (service) {
         // check whether logged in business matches the service provider
-        // if (`${service._business}` === `${req.user._id}`) {
+        if (`${service._business}` === `${req.user._id}`) {
         Coupon.find({
-          _service: req.params.id,
-          _deleted: false,
-        })
-            .exec()
-            .then((coupons) => {
-              if (coupons) {
-                res.json(coupons);
-              }
-            })
-            .catch(err => next(err));
-        // } else {
-        //   next(Strings.serviceFailure.notYourService);
-        // }
+            _service: req.params.id,
+            _deleted: false,
+          })
+          .exec()
+          .then((coupons) => {
+            if (coupons) {
+              res.json(coupons);
+            }
+          })
+          .catch(err => next(err));
+        } else {
+          next(Strings.serviceFailure.notYourService);
+        }
       } else {
         next(Strings.serviceFailure.invalidService);
       }
@@ -55,7 +55,7 @@ router.get('/:id/coupons', (req, res, next) => { // BusinessAuth,
  * Add Coupon to a service.
  */
 
-router.post('/:id/coupons/add', (req, res, next) => { // BusinessAuth
+router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
   console.log('entered add');
   console.log(req.body);
   req.check(validationSchemas.couponAddValidation);
@@ -64,31 +64,30 @@ router.post('/:id/coupons/add', (req, res, next) => { // BusinessAuth
       if (result.isEmpty()) {
         console.log('validated');
         Service.findOne({
-          _id: req.params.id,
-          _deleted: false,
-        })
+            _id: req.params.id,
+            _deleted: false,
+          })
           .exec()
           .then((service) => {
             if (service) {
-              console.log('found a service');
               // check whether logged in business matches the service provider
-              // if (`${service._business}` === `${req.user._id}`) {
+              if (`${service._business}` === `${req.user._id}`) {
                 // check that the given expiration date is not in the past nor before the start date
-              if (new Date(req.body.endDate)
+                if (new Date(req.body.endDate)
                   .getTime() < Date.now() ||
                   new Date(req.body.endDate)
                   .getTime() < new Date(req.body.startDate)
                   .getTime()) {
-                next(Strings.couponValidationError.invalidEndDate);
-              } else {
-                const coupon = ({
-                  _service: req.params.id,
-                  startDate: new Date(req.body.startDate),
-                  endDate: new Date(req.body.endDate),
-                  code: req.body.code,
-                  discount: req.body.discount,
-                });
-                new Coupon(coupon)
+                  next(Strings.couponValidationError.invalidEndDate);
+                } else {
+                  const coupon = ({
+                    _service: req.params.id,
+                    startDate: new Date(req.body.startDate),
+                    endDate: new Date(req.body.endDate),
+                    code: req.body.code,
+                    discount: req.body.discount,
+                  });
+                  new Coupon(coupon)
                     .save()
                     .then(() => {
                       console.log('saved coupon');
@@ -97,10 +96,10 @@ router.post('/:id/coupons/add', (req, res, next) => { // BusinessAuth
                       });
                     })
                     .catch(saveErr => next(saveErr));
+                }
+              } else {
+                next(Strings.serviceFailure.notYourService);
               }
-              // } else {
-              //   next(Strings.serviceFailure.notYourService);
-              // }
             } else {
               next(Strings.serviceFailure.invalidService);
             }
@@ -118,24 +117,24 @@ router.post('/:id/coupons/add', (req, res, next) => { // BusinessAuth
  * Delete Coupon from a service.
  */
 
-router.post('/:ser_id/coupons/delete/:coup_id', (req, res, next) => { // BusinessAuth
+router.post('/:ser_id/coupons/delete/:coup_id', BusinessAuth, (req, res, next) => {
   req.check(validationSchemas.couponDeleteValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
         Service.findOne({
-          _id: req.params.ser_id,
-          _deleted: false,
-        })
+            _id: req.params.ser_id,
+            _deleted: false,
+          })
           .exec()
           .then((service) => {
             if (service) {
-              // if (`${service._business}` === `${req.user._id}`) {
-                // check whether logged in business matches the service provider
-              Coupon.findOne({
-                _id: req.params.coup_id,
-                _deleted: false,
-              })
+              if (`${service._business}` === `${req.user._id}`) {
+                check whether logged in business matches the service provider
+                Coupon.findOne({
+                    _id: req.params.coup_id,
+                    _deleted: false,
+                  })
                   .exec()
                   .then((coupon) => {
                     if (!coupon) {
@@ -152,12 +151,12 @@ router.post('/:ser_id/coupons/delete/:coup_id', (req, res, next) => { // Busines
                     }
                   })
                   .catch(err => next(err));
+              } else {
+                next(Strings.serviceFailure.notYourService);
+              }
             } else {
-              next(Strings.serviceFailure.notYourService);
+              next(Strings.serviceFailure.invalidService);
             }
-            // } else {
-            //   next(Strings.serviceFailure.invalidService);
-            // }
           })
           .catch(err => next(err));
       } else {

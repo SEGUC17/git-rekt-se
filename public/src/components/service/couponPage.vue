@@ -1,5 +1,11 @@
 <template>
   <div id="coupon-container" class="container">
+    <div v-show="errors.length>0">
+      <div class="error" v-for="error in errors">
+        <el-alert :title="error" type="error" :closable="false" show-icon></el-alert>
+      </div>
+    </div>
+  
     <h1 class="title">Add a Coupon</h1>
     <el-form :model="couponForm" :rules="rules" ref="couponForm" label-width="130px" class="demo-couponForm">
       <el-form-item label="Coupon Code" prop="code">
@@ -32,37 +38,37 @@
     <div>
       <el-card class="box-card">
         <el-row type="flex" class="row-bg">
-          <el-col :span="6">
+          <el-col :span="5">
             <h4 class="title is-4">
               <span>
-                              Coupon Code
-                           </span>
+                                Coupon Code
+                             </span>
             </h4>
           </el-col>
           <el-col :span="6">
             <h4 class="title is-4">
               <span>
-                              Discount (%)
-                           </span>
+                                Discount (%)
+                             </span>
             </h4>
           </el-col>
           <el-col :span="6">
             <h4 class="title is-4">
               <span>
-                              Start Date
-                           </span>
+                                Start Date
+                             </span>
             </h4>
           </el-col>
           <el-col :span="8">
             <h4 class="title is-4">
               <span>
-                              End Date
-                           </span>
+                                End Date
+                             </span>
             </h4>
           </el-col>
         </el-row>
       </el-card>
-      <couponItem @deleted="fetchCoupons" v-for="coupon in coupons" :coupon="coupon" :key="coupon._id"></couponItem>
+      <couponItem @deleted="deleteCoupon(coupon._id)" v-for="coupon in coupons" :coupon="coupon" :key="coupon._id"></couponItem>
   
     </div>
   
@@ -79,6 +85,7 @@
     data() {
       return {
         coupons: [],
+        errors: [],
   
         couponForm: {
           code: '',
@@ -113,8 +120,6 @@
         }
       };
     },
-  
-  
     props: ['service'],
   
     methods: {
@@ -122,8 +127,12 @@
         axios.get(EndPoints.Service().viewCoupons('58f36821c82d1a37e868866b'))
           .then((res) => {
             this.coupons = res.data;
+            this.errors = [];
           })
-          .catch(err => console.log(err));
+          .catch(err => {
+            this.errors = err.response.data.errors
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+          });
       },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
@@ -132,23 +141,48 @@
               .then(() => {
                 this.resetForm(formName);
                 this.fetchCoupons();
-                 alert('Coupon Added!');
+                this.$notify({
+                  title: 'Success!',
+                  message: 'Coupon Added!',
+                  type: 'success'
+                });
               })
-              .catch(err => console.log(err));
+              .catch(err => {
+                this.errors = err.response.data.errors
+                document.body.scrollTop = document.documentElement.scrollTop = 0;
+              });
           } else {
-            console.log('error submit!!');
+            this.errors = ['Invalid Input(s)!'];
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
             return false;
           }
         });
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+        if (this.errors[0] === "Invalid Input(s)!") {
+          this.errors = [];
+        }
+      },
+      deleteCoupon(couponID) {
+        axios.post(EndPoints.Service().deleteCoupon('58f36821c82d1a37e868866b', couponID))
+          .then(() => {
+            this.fetchCoupons();
+            this.$notify({
+              title: 'Success!',
+              message: 'Coupon Deleted!',
+              type: 'success'
+            });
+          })
+          .catch(err => {
+            this.errors = err.response.data.errors;
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+          });
       }
     },
     mounted() {
       this.fetchCoupons();
     },
-  
     components: {
       couponItem,
     },
