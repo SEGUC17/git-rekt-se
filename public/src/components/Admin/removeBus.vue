@@ -39,7 +39,7 @@
       }, 
       confirmeddeletion() {
           axios
-            .get(Admin().deleteBusiness(this.currid))
+            .post(Admin().deleteBusiness(this.currid))
             .then((res) => {
                 this.$notify({
                          title: 'Success',
