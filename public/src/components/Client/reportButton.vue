@@ -1,4 +1,5 @@
 <template>
+    <div>
             <el-dialog title="Confirm Deletion" v-model="sure" size="tiny">
                  <span>Are you sure you want to report this review?</span>
                     <span slot="footer" class="dialog-footer">
@@ -12,6 +13,7 @@
                     <i class="fa fa-trash-o"></i>
                 </span>
             </el-button>
+    </div>
 </template>
 
 <script>
