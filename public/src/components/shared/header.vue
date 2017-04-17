@@ -28,7 +28,7 @@
                     <span class="icon">
                             <i class="fa fa-user"></i>
                         </span>
-                    <router-link to="/signup" class="nav-item">Signup</router-link>
+                    <span><router-link to="/signup" class="nav-item">Signup</router-link></span>
                 </a>
 
                 <a class="button is-danger gr-nav-button" v-if="!user.authenticated">
@@ -51,6 +51,7 @@
 
 <script>
   import auth from '../../services/auth/clientAuth';
+  
   export default {
     data() {
       return {
