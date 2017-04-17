@@ -2,9 +2,8 @@
     <div class="step2">
         <div class="column is-6 is-offset-1">
 
-            <div class="box">
-                <h1 class="title is-4">Booking Information</h1>
-                <hr/>
+            <div class="box content">
+                <h3 class="booking-header"> Booking Information</h3>
                 <div class="field">
                     <p class="label">Credit or debit card</p>
                     <div id="card-element" class="seventy-width el-input__inner"></div>
@@ -14,7 +13,7 @@
                 <div class="field">
                     <p class="label">Coupon (optional)</p>
                     <el-input placeholder="coupon code" class="seventy-width" v-model="coupon"></el-input>
-                    <el-button type="primary" @click="validateCoupon">Validate</el-button>
+                    <el-button type="primary" @click="validateCoupon" :loading="couponLoading">Validate</el-button>
                     <span class="help is-danger" v-show="invalidCoupon">{{ invalidCoupon }}</span>
                     <span class="help is-primary" v-show="validCoupon">{{ validCoupon }}</span>
                 </div>
@@ -24,7 +23,7 @@
         </div>
 
         <div class="column is-4">
-            <div class="box">
+            <div class="box content">
                 <h1 class="title is-5">{{ service.name }}</h1>
                 <p class="subtitle is-6">{{ service.businessName }}</p>
 
@@ -59,7 +58,7 @@
                         <span classs="icon">
                             <i class="checkout-i fa fa-map-marker"></i>
                        </span>
-                      {{ form.offering.address }}
+                        {{ form.offering.address }}
                     </p>
                 </div>
 
@@ -100,7 +99,7 @@
   import axios from 'axios';
   import clientAuth from '../../../services/auth/clientAuth';
 
-  import {Service} from '../../../services/EndPoints';
+  import { Service } from '../../../services/EndPoints';
 
   export default {
     props: ['form', 'service'],
@@ -114,6 +113,7 @@
         validCoupon: '',
         loader: '',
         coupon: undefined,
+        couponLoading: false,
       };
     },
 
@@ -167,22 +167,25 @@
         this.form.coupon = '';
         this.invalidCoupon = '';
         this.validCoupon = '';
+        this.couponLoading = true;
 
         axios
             .post(url, {
               code: this.coupon,
               serviceId: this.$route.params.ser_id,
-            },{
+            }, {
               headers: {
-                  Authorization : clientAuth.getJWTtoken(),
-              }
-          })
+                Authorization: clientAuth.getJWTtoken(),
+              },
+            })
             .then((data) => {
               this.form.coupon = data.data;
               this.coupon = data.data.code;
+              this.couponLoading = false;
               this.validCoupon = 'Coupon applied.';
             })
             .catch((e) => {
+              this.couponLoading = false;
               this.invalidCoupon = e.response.data.errors[0];
             });
       },
@@ -194,25 +197,31 @@
       },
 
       generateToken(e) {
-          e.preventDefault();
-          
-          this.loader = this.$loading({
-                fullscreen: true,
-          });
+        e.preventDefault();
 
-          this.stripe
-          .createToken(this.card)
-          .then((result) => {
-              if(result.error){
-                  this.stripeError = result.error.message;
-                  this.loader.close();
-                  return;
-            }
+        this.loader = this.$loading({
+          fullscreen: true,
+        });
+
+        this.stripe
+            .createToken(this.card)
+            .then((result) => {
+              if (result.error) {
+                this.stripeError = result.error.message;
+                this.loader.close();
+                return;
+              }
               this.form.token = result.token.id;
-              
               this.$emit('tokenGenerated');
-          })
-      }
+            }).catch(() => {
+              this.loader.close();
+              this.$toast.open({
+                message: 'Failed to connect to Stripe.',
+                position: 'bottom',
+                type: 'is-danger',
+              });
+            });
+      },
     },
 
     mounted() {
@@ -240,5 +249,10 @@
 
     .checkout-i {
         font-size: 1.5rem !important;
+    }
+
+    .booking-header {
+        border-bottom: 1px solid #dbdbdb;
+        padding: 0.5em 0 0.5em 0;
     }
 </style>

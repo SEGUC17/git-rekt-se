@@ -45,3 +45,7 @@
 .login-form {
     margin-top: 2em;
 }
+
+.box{
+    border-radius: 0;
+}

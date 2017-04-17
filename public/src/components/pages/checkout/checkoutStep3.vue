@@ -1,7 +1,7 @@
 <template>
     <div class="step3 box column is-10 is-offset-1">
         <div class="has-text-centered is-success" :class="successClass">
-            <i class="el-icon-check"></i>
+            <i class="el-icon-circle-check"></i>
         </div>
         <p class="content has-text-centered">
             Your transaction has been completed, you will receive an email to confirm your booking.
@@ -14,16 +14,16 @@
 
 <script>
     export default {
-        data() {
-            return {
-                successClass: '',
-            };
-        },
+      data() {
+        return {
+          successClass: '',
+        };
+      },
     
-        mounted() {
-            this.successClass = 'success-icon';
-        }
-    }
+      mounted() {
+        this.successClass = 'success-icon';
+      },
+    };
 </script>
 
 <style>

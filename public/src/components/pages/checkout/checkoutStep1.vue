@@ -1,8 +1,6 @@
 <template>
-    <div class="step1 box">
-        <h1 class="title is-4">Booking Information</h1>
-        <hr/>
-
+    <div class="step1 box content">
+        <h3 class="booking-header">Booking Information</h3>
         <div class="field">
             <p class="label">Select Branch</p>
             <el-select class="seventy-width" v-model="form.branch" placeholder="Select Branch">
@@ -42,3 +40,11 @@
     },
   };
 </script>
+
+<style>
+    @media screen and (max-width: 999px) {
+        .step1 {
+            margin: 1.2em;
+        }
+    }
+</style>
