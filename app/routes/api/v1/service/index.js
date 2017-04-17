@@ -52,13 +52,14 @@ router.get('/:id', (req, res, next) => {
         next(Strings.serviceFailure.serviceNotFound);
         return;
       }
-
+      console.log(service._business);
       const returnedService = {
         name: service.name,
         shortDescription: service.shortDescription,
+        coverImage: service.coverImage,
         description: service.description,
         businessName: service._business.name,
-        businessEmail: service._business.service,
+        businessEmail: service._business.email,
         businessShortDescription: service._business.shortDescription,
         businessDescription: service._business.description,
         businessPhoneNumbers: service._business.phoneNumbers,
@@ -67,7 +68,10 @@ router.get('/:id', (req, res, next) => {
         branches: service.branches,
         reviews: service.reviews,
         gallery: service.gallery,
+        categories: service.categories,
+        offerings: service.offerings,
       };
+      console.log(returnedService.coverImage);
       res.json(returnedService);
     })
     .catch(() => {
