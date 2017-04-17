@@ -9,13 +9,17 @@
         </div>
       </div>
   
-      <div v-show="!form.errors.isEmpty()">
+      <div v-show="!form.errors.isEmpty() || error">
         <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
           <el-alert @close="form.errors.remove(key)" :title="key.toUpperCase()" type="error" :description="form.errors.getAll(key, ' | ')" show-icon></el-alert>
         </div>
   
         <div class="error" v-show="form.errors.has('serverError')">
-          <el-alert @close="" title="Server Errors" :description="form.errors.getAll('serverError')" type="error" show-icon></el-alert>
+          <el-alert @close="form.errors.remove('serverError')" title="Server Errors" :description="form.errors.getAll('serverError', ' | ')" type="error" show-icon></el-alert>
+        </div>
+
+        <div class="error" v-show="error">
+          <el-alert @close="error = false" :title="message" type="error" show-icon></el-alert>
         </div>
       </div>
   
@@ -107,33 +111,34 @@
         showPassword: 'password',
         showConfirm: 'password',
         success: false,
-        successMessage: '',
+        error: false,
+        message: '',
         clientEmail: '',
         loading: false,
       }
     },
     methods: {
       onClick() {
-        if (this.hasErrors()) {
-          return;
-        }
-        this.success = false;
-        this.successMessage = '';
-        this.clientEmail = this.form.email;
-        this.loading = true;
-        this.form.post(EndPoints.Client().signup)
-          .then((data) => {
-            this.loading = false;
-            this.success = true;
-            this.successMessage = data.message;
-          }).catch(() => this.loading = false);
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.success = false;
+            this.message = '';
+            this.clientEmail = this.form.email;
+            this.loading = true;
+            this.form.post(EndPoints.Client().signup)
+              .then((data) => {
+                this.loading = false;
+                this.success = true;
+                this.message = data.message;
+              }).catch(() => this.loading = false);
+          } else {
+            this.error = true;
+            this.message = 'Please fix the following errors !'
+          }
+        });
       },
       onReset() {
         this.$refs.form.resetFields();
-      },
-      hasErrors() {
-        const errors = this.$refs.form.$children.filter(el => el.validateMessage.length > 0);
-        return errors.length > 0;
       },
       resendMail() {
         this.loading = true;
