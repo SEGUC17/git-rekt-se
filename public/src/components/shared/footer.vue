@@ -29,13 +29,9 @@
 
 <style>
     .footer {
-        padding: 1.5rem 0.5rem 0rem !important;
+        padding: 1.5em 0.5em 0em 0em !important;
+        margin-top: 2em;
     }
-    
-    .white {
-        color: #fff;
-    }
-    
     .footer-icons {
         padding: 5px;
     }
