@@ -4,7 +4,7 @@
     </el-alert>
     <h3>
       Leave a review...</h3>
-    <el-form ref="postReview" :model="review" :rules="rules" label-width="120px">
+    <el-form ref="postReview" :model.number="review" :rules="rules" label-width="120px">
       <el-form-item label: "Rating" prop="rating">
         <el-rate v-model="review.rating"></el-rate>
       </el-form-item>
