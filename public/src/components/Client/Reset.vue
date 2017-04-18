@@ -14,21 +14,22 @@
 
         <div class="reset-password-form columns">
             <div class="column content is-8 is-offset-2">
-               <div class="alerts">
-                
-                <el-alert class="alert-msg" :title="form.message" v-show="form.success" type="success" show-icon></el-alert>
-                   <div class="alert-msg error" v-for="key in form.keys" v-show="form.errors.has(key)">
+                <div class="alerts">
+
+                    <el-alert class="alert-msg" :title="form.message" v-show="form.success" type="success"
+                              show-icon></el-alert>
+                    <div class="alert-msg error" v-for="key in form.keys" v-show="form.errors.has(key)">
                         <el-alert @close="form.errors.remove(key)" type="error"
                                   :title="form.errors.getAll(key, ' | ') || '' " show-icon></el-alert>
-                </div>
+                    </div>
 
-                <div class="alert-msg error" v-show="form.errors.has('serverError')">
+                    <div class="alert-msg error" v-show="form.errors.has('serverError')">
                         <el-alert @close="form.errors.remove('serverError')"
                                   :title="form.errors.getAll('serverError', ' | ') || ''" type="error"
                                   show-icon></el-alert>
-                </div>
+                    </div>
 
-               </div>
+                </div>
 
                 <div class="login-form">
                     <el-form :model="form" :rules="rules" ref="form">
@@ -70,8 +71,9 @@
 
 <script>
   import Form from '../../services/Form';
-  import { Client } from '../../services/EndPoints';
-  import { clientForgotPassword } from '../../services/validation';
+  import {Client} from '../../services/EndPoints';
+  import {clientForgotPassword} from '../../services/validation';
+  import commonAuth from '../../services/auth/commonAuth';
 
   export default {
     data() {
@@ -116,17 +118,23 @@
         });
       },
     },
+
+    mounted() {
+      if (commonAuth.isAuthenticated()) {
+        this.$router.push('/');
+      }
+    },
   };
 </script>
 
 <style>
-    .alert-msg{
+    .alert-msg {
         margin-top: 1em;
     }
 
-    .client-forgot-top{
-        background: #159957;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #155799, #159957);  /* Chrome 10-25, Safari 5.1-6 */
+    .client-forgot-top {
+        background: #159957; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #155799, #159957); /* Chrome 10-25, Safari 5.1-6 */
         background: linear-gradient(to right, #155799, #159957); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         margin-bottom: 2em;
     }
