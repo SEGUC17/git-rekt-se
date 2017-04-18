@@ -39,7 +39,7 @@ describe('Business Gallery CRUD Tests', () => {
     req = supertest(app)
       .post(`/api/v1/business/${dbBusiness._id}/gallery/add`)
       .field('description', 'sample Image Description')
-      .attach('path', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
+      .attach('path', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -69,7 +69,7 @@ describe('Business Gallery CRUD Tests', () => {
     req = supertest(app)
       .post('/api/v1/business/abc/gallery/add')
       .field('description', 'sample Image Description')
-      .attach('path', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
+      .attach('path', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
       .set('Authorization', `JWT ${token}`)
       .expect(400)
       .end((err, res) => {

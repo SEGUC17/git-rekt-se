@@ -56,7 +56,7 @@ describe('Service Gallery CRUD Tests', () => {
         req = supertest(app)
           .post(`/api/v1/service/${savedSer._id}/gallery/add`)
           .field('description', 'sample Image Description')
-          .attach('path', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
+          .attach('path', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
           .set('Authorization', `JWT ${token}`)
           .expect('Content-Type', /json/)
           .expect(200)
@@ -91,14 +91,15 @@ describe('Service Gallery CRUD Tests', () => {
         req = supertest(app)
           .post('/api/v1/service/1x/gallery/add')
           .field('description', 'sample Image Description')
-          .attach('path', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
+          .attach('path', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
           .set('Authorization', `JWT ${token}`)
           .expect(400)
           .end((err, res) => {
             if (err) {
               done(err);
             } else {
-              chai.expect(res.body.errors[0]).to.equal('Invalid Service ID');
+              chai.expect(res.body.errors[0])
+                .to.equal('Invalid Service ID');
               Service.findOne({
                 _id: savedSer._id,
               }, (finderr, data) => {

@@ -26,7 +26,7 @@ router.use(expressValidator({}));
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, path.join(__dirname, '../../../../public/uploads'));
+    cb(null, path.join(__dirname, '../../../../../public/dist/uploads'));
   },
   filename(req, file, cb) {
     const buf = crypto.randomBytes(16);

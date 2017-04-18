@@ -55,7 +55,7 @@ describe('Category CRUD Test Suite', () => {
       .post('/api/v1/admin/category/add')
       .field('type', 'Business')
       .field('title', 'Sample Title')
-      .attach('icon', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
+      .attach('icon', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
       .set('Authorization', `JWT ${token}`)
       .end((err2, res) => {
         if (err2) {
@@ -79,7 +79,7 @@ describe('Category CRUD Test Suite', () => {
       .post('/api/v1/admin/category/add')
       .field('type', 'bla')
       .field('title', 'Sample Title')
-      .attach('icon', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
+      .attach('icon', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
       .set('Authorization', `JWT ${token}`)
       .expect(400)
       .end((err2, res2) => {
@@ -115,7 +115,7 @@ describe('Category CRUD Test Suite', () => {
           .post(`/api/v1/admin/category/edit/${newcat._id}`)
           .field('type', 'Business')
           .field('title', '3ala2')
-          .attach('icon', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
+          .attach('icon', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
           .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
@@ -154,7 +154,7 @@ describe('Category CRUD Test Suite', () => {
           .post(`/api/v1/admin/category/edit/${newcat._id}`)
           .field('type', 'bla')
           .field('title', '3ala2')
-          .attach('icon', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
+          .attach('icon', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
           .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
@@ -192,7 +192,7 @@ describe('Category CRUD Test Suite', () => {
         req = supertest(app)
           .post(`/api/v1/admin/category/edit/${newcat._id}`)
           .field('type', 'Business')
-          .attach('icon', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
+          .attach('icon', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
           .set('Authorization', `JWT ${token}`)
           .end((err2, res) => {
             if (err2) {
