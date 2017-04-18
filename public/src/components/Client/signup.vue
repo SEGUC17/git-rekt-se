@@ -16,6 +16,11 @@
 
         <div class="columns">
             <div class="column is-half is-offset-one-quarter" v-if="!success">
+                <!-- Info Incase signing up with facebook -->
+                <div v-show="info">
+                    <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
+                </div>
+
                 <!-- Backend Form Errors-->
                 <div v-show="!form.errors.isEmpty() || error">
                     <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
@@ -130,6 +135,7 @@
         showConfirm: 'password',
         success: false,
         error: false,
+        info: false,
         message: '',
         clientEmail: '',
         loading: false,
@@ -150,7 +156,9 @@
                   this.success = true;
                   this.message = data.message;
                 }).catch(() => {
+                  this.success = false;
                   this.loading = false;
+                  this.error = true;
                 });
           }
         });
@@ -170,17 +178,38 @@
               this.message = data.message;
             }).catch(() => {
               this.loading = false;
+              this.success = false;
+              this.error = true;
             });
       },
     },
     mounted() {
       if (commonAuth.isAuthenticated()) {
         this.$router.push('/');
-        this.$toast({
+        this.$toast.open({
           message: 'You are already logged in',
           position: 'bottom',
           type: 'is-danger',
         });
+        return;
+      }
+      if(this.$route.query && this.$route.query !== {}){
+          const query = this.$route.query;
+          Object.keys(query).forEach((key) => {
+              if(key === 'first_name'){
+                this.form.firstName = query[key];
+              } else if(key === 'last_name'){
+                this.form.lastName = query[key];
+              } else if(key === 'birthday'){
+                this.form.birthdate = query[key];
+              } else if(key === 'gender'){
+                this.form.gender = query[key] === 'male' ? 'Male' : 'Female';
+              } else { 
+                this.form[key] = query[key];                
+              }
+          }, this);
+          this.info = true;
+          this.message = 'These information where fetched from facebook, feel free to edit any of them if needed!';
       }
     },
     components: {
