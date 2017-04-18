@@ -107,6 +107,47 @@ export const serviceRules = {
   }],
 };
 
+export const offeringRules = {
+  branch: [{
+    required: true,
+    message: 'Please select a branch for your offering',
+    trigger: 'blur',
+  }],
+  price: [{
+    required: true,
+    message: 'Please enter a price for your offering',
+    trigger: 'blur',
+  }, {
+    min: 0,
+    message: 'The price cannot be lower than 0',
+    trigger: 'blur',
+  }],
+  dates: [{
+    required: true,
+    message: 'Please enter a duration for your offering',
+    trigger: 'blur',
+  }, {
+    type: 'array',
+    len: 2,
+    defaultField: {
+      type: 'date',
+      required: true,
+    },
+    message: 'Please enter a valid duration for your offering',
+    trigger: 'blur',
+  }],
+  capacity: [{
+    required: true,
+    message: 'Please enter a capacity for your offering',
+    trigger: 'blur',
+  }, {
+    min: 0,
+    message: 'The capacity cannot be lower than 0',
+    trigger: 'blur',
+  }],
+};
+
 export default {
   serviceRules,
+  offeringRules,
 };

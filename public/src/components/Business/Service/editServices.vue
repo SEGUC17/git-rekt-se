@@ -119,7 +119,7 @@
         },
       })
         .then((response) => {
-          this.categories = response.data;
+          this.categories = response.data.categories;
         })
         .catch((err) => {
           this.generalErrors = err.response.data.errors;

@@ -73,12 +73,12 @@ router.get('/category/list', businessAuthMiddleware, (req, res, next) => {
   })
   .exec()
   .then((categories) => {
-    const caetgoryDropDown = categories.map(category => ({
+    const categoryDropDown = categories.map(category => ({
       label: category.title,
       value: category._id,
     }));
     res.json({
-      categories: caetgoryDropDown,
+      categories: categoryDropDown,
     });
   })
   .catch(e => next(e));
@@ -98,6 +98,28 @@ router.get('/list', businessAuthMiddleware, (req, res, next) => {
   .then((services) => {
     res.json({
       services,
+    });
+  })
+  .catch(e => next(e));
+});
+
+/**
+ * List all branches belonging to a business
+ */
+
+router.get('/branch/list', businessAuthMiddleware, (req, res, next) => {
+  Branch.find({
+    _business: req.user.id,
+    _deleted: false,
+  })
+  .exec()
+  .then((branches) => {
+    const branchDropDown = branches.map(branch => ({
+      label: `${branch.address} - ${branch.location}`,
+      value: branch._id,
+    }));
+    res.json({
+      branches: branchDropDown,
     });
   })
   .catch(e => next(e));
