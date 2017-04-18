@@ -1,26 +1,27 @@
 <template>
   <el-alert type="success" show-icon v-if="success" :title="success">
-  <el-alert type="error" show-icon v-for="error in errors" :title="error">
-  </el-alert>
-  <h3>
-    Leave a review...</h3>
-  <el-form ref="postReview" :model="review" :rules="rules" label-width="120px">
-    <el-form-item label: "Rating" prop="rating">
-      <el-rate v-model="review.rating"></el-rate>
-    </el-form-item>
-    <el-form-item label: "Review">
-      <el-input type="textArea" v-model="review.description"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="createReview">Create</el-button>
-    </el-form-item>
-  </el-form>
+    <el-alert type="error" show-icon v-for="error in errors" :title="error">
+    </el-alert>
+    <h3>
+      Leave a review...</h3>
+    <el-form ref="postReview" :model="review" :rules="rules" label-width="120px">
+      <el-form-item label: "Rating" prop="rating">
+        <el-rate v-model="review.rating"></el-rate>
+      </el-form-item>
+      <el-form-item label: "Review">
+        <el-input type="textArea" v-model="review.description"></el-input>
+      </el-form-item>
+      <el-form-item class="is-pulled-right">
+        <el-button type="primary" @click="createReview">Create</el-button>
+      </el-form-item>
+    </el-form>
 </template>
 
 <script>
   import Axios from 'axios';
   import { Service } from '../../../../services/EndPoints';
   import { ReviewRules } from '../../../../services/validation';
+  import ClientAuth from '../../../../services/auth/clientAuth';
   
   export default {
     data() {
@@ -44,7 +45,11 @@
             const loader = this.$loading({
               fullscreen: true,
             });
-            Axios.post(Service.createReview(this.serviceID), this.review)
+            Axios.post(Service.createReview(this.serviceID), this.review, {
+              headers: {
+                Authorization: ClientAuth.getJWTtoken(),
+              },
+            })
               .then((response) => {
                 loader.close();
                 this.$refs.postReview.resetFields();

@@ -20,6 +20,7 @@
   import Axios from 'axios';
   import { Service } from '../../../../services/EndPoints';
   import { ReviewRules } from '../../../../services/validation';
+  import ClientAuth from '../../../../services/auth/clientAuth';
   
   export default {
     data() {
@@ -43,7 +44,11 @@
             const loader = this.$loading({
               fullscreen: true,
             });
-            Axios.post(Service.editReview(this.serviceID, this.reviewID), this.review)
+            Axios.post(Service.editReview(this.serviceID, this.reviewID), this.review, {
+              headers: {
+                Authorization: ClientAuth.getJWTtoken(),
+              },
+            })
               .then((response) => {
                 loader.close();
                 this.$emit('edited', response.message);

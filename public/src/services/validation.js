@@ -93,9 +93,12 @@ export const loginRules = {
 export const reviewRules = {
   rating: [{
     required: true,
+    message: 'Please enter a rating',
+    trigger: 'blur',
+  }, {
     min: 0,
     max: 5,
-    message: 'Please enter a rating',
+    message: 'Rating can only be a value between 1 & 5',
     trigger: 'blur',
   }],
 };

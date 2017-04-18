@@ -12,6 +12,7 @@
 <script>
   import Axios from 'axios';
   import { Service } from '../../../../services/EndPoints';
+  import ClientAuth from '../../../../services/auth/clientAuth';
   
   export default {
     data() {
@@ -28,7 +29,11 @@
         const loader = this.$loading({
           fullscreen: true,
         });
-        Axios.post(Service.deleteReview(this.serviceID, this.reviewID))
+        Axios.post(Service.deleteReview(this.serviceID, this.reviewID), null, {
+          headers: {
+            Authorization: ClientAuth.getJWTtoken(),
+          },
+        })
         .then((response) => {
           loader.close();
           this.$emit('deleted', response.message);
