@@ -16087,6 +16087,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         _this.error_show = false;
                     }).catch(function (err) {
                         _this.alert_show = false;
+                        _this.error_show = false;
                     });
                 } else {
                     _this.errors = 'Please insert correct inputs';
@@ -16487,9 +16488,7 @@ var BusinessResetFormValidation = {
       } else {
         callBack();
       }
-    },
-
-    trigger: ['blur', 'change']
+    }
   }]
 };
 
@@ -18458,7 +18457,7 @@ exports.push([module.i, "\n.bus-signin-top {\n    background: #41295a; /* fallba
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n.error {\n    margin-bottom: 10px;\n}\n", ""]);
+exports.push([module.i, "\n.error+.error {\n    margin-bottom: 10px;\n}\n.message+.error {\n    margin-bottom: 10px;\n}\n", ""]);
 
 /***/ }),
 /* 70 */
@@ -20623,11 +20622,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "title": _vm.errors,
       "type": "error",
       "show-icon": ""
-    },
-    on: {
-      "close": function($event) {
-        _vm.error_show = false
-      }
     }
   })], 1), _vm._v(" "), _c('div', {
     directives: [{

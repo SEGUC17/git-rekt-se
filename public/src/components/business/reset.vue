@@ -7,7 +7,7 @@
                         <el-alert :title="message" type="success" show-icon></el-alert>
                     </div>
                     <div class="error" v-show="error_show">
-                        <el-alert @close="error_show = false" :title="errors" type="error" show-icon></el-alert>
+                        <el-alert  :title="errors" type="error" show-icon></el-alert>
                     </div>
                     <div class="error" v-show="form.errors.has('serverError')">
                         <el-alert @close="" :title="form.errors.getAll('serverError')" type="error" show-icon></el-alert>
@@ -73,9 +73,10 @@
                             })
                             .catch((err) => {
                                 this.alert_show = false;
+                                this.error_show = false;
                             });
                     } else {
-                        this.errors = 'Please insert correct inputs';
+                        this.errors='Please insert correct inputs';
                         this.error_show = true;
                         this.alert_show = false;
                     }
@@ -86,7 +87,11 @@
 </script>
 
 <style>
-    .error {
+    .error+.error {
+        margin-bottom: 10px;
+    }
+    
+    .message+.error {
         margin-bottom: 10px;
     }
 </style>
