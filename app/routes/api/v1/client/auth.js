@@ -122,7 +122,7 @@ router.post('/reset', (req, res, next) => {
   req.checkBody(validationSchemas.clientResetPasswordValidation);
   req.checkBody('confirmPassword')
     .equals(req.body.password)
-.withMessage(Strings.clientValidationErrors.passwordMismatch);
+    .withMessage(Strings.clientValidationErrors.passwordMismatch);
 
   req.getValidationResult()
     .then((result) => {
@@ -140,21 +140,21 @@ router.post('/reset', (req, res, next) => {
                 $lte: creationDate,
               },
             })
-      .exec()
-      .then((client) => {
-        if (!client) {
-          return next(Strings.clientForgotPassword.INVALID_RESET_TOKEN);
-        }
-        client.passwordResetTokenDate = undefined; // Disable the token
-        client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
-        client.password = password; // Reset password
+              .exec()
+              .then((client) => {
+                if (!client) {
+                  return next(Strings.clientForgotPassword.INVALID_RESET_TOKEN);
+                }
+                client.passwordResetTokenDate = undefined; // Disable the token
+                client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
+                client.password = password; // Reset password
 
-        return client.save()
-          .then(() => res.json({
-            message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
-          }));
-      })
-      .catch(e => next([e]));
+                return client.save()
+                  .then(() => res.json({
+                    message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
+                  }));
+              })
+              .catch(e => next(e));
           }
         });
       } else {
@@ -188,29 +188,29 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
         $gte: creationDate,
       },
     })
-    .exec()
-    .then((client) => {
-      if (!client) {
-        next(Strings.clientVerfication.invalidToken);
-        return;
-      }
-      if (client.status === 'confirmed') {
-        next(Strings.clientVerfication.alreadyConfirmed);
-        return;
-      }
-      if (client.status === 'banned') {
-        next(Strings.clientVerfication.accountBanned);
-        return;
-      }
-      client.confirmationTokenDate = undefined;
-      client.status = 'confirmed';
-      client.save()
-      .then(res.json({
-        message: Strings.clientVerfication.verificationSuccess,
-      }))
+      .exec()
+      .then((client) => {
+        if (!client) {
+          next(Strings.clientVerfication.invalidToken);
+          return;
+        }
+        if (client.status === 'confirmed') {
+          next(Strings.clientVerfication.alreadyConfirmed);
+          return;
+        }
+        if (client.status === 'banned') {
+          next(Strings.clientVerfication.accountBanned);
+          return;
+        }
+        client.confirmationTokenDate = undefined;
+        client.status = 'confirmed';
+        client.save()
+          .then(res.json({
+            message: Strings.clientVerfication.verificationSuccess,
+          }))
+          .catch(err2 => next(err2));
+      })
       .catch(err2 => next(err2));
-    })
-    .catch(err2 => next(err2));
   });
 });
 
