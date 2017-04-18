@@ -27,11 +27,7 @@ const routes = [{
   component: businessLogin,
 },
 {
-  path: '/client/auth/reset/:token',
-  component: Reset,
-},
-{
-  path: '/client/auth/reset/:token',
+  path: '/client/reset/:token',
   component: Reset,
 }];
 
