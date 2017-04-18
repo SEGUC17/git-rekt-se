@@ -2,7 +2,7 @@
     <div class="client-reset-password">
 
         <!-- Client Reset password top header -->
-        <section class="bus-signin-top hero is-bold">
+        <section class="client-forgot-top hero is-bold">
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title extra-large white">
@@ -102,6 +102,13 @@
 </script>
 
 <style>
+    .client-forgot-top{
+        background: #159957;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #155799, #159957);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #155799, #159957); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        margin-bottom: 2em;
+    }
+
     @media screen and (max-width: 999px) {
         .reset-password-form {
             margin: 2em;
