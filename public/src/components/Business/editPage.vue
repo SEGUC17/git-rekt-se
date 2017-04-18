@@ -17,7 +17,7 @@
             </div>
     
     
-            <el-tabs type="card" @tab-click="handleClick">
+            <el-tabs type="card" v-model="activeName">
     
                 <el-tab-pane name="basicInfotab" label="Basic Info" v-show="enableInfoTab">
                     <h3 class="title has-text-centered">Edit Your Basic Info</h3>
@@ -33,7 +33,7 @@
                             </el-form-item>
     
                             <el-form-item label="Categories" prop="categories">
-                                <el-select v-model="infoForm.categories" multiple :multiple-limit="3" placeholder="Select">
+                                <el-select v-model="infoForm.categories" multiple :multiple-limit="3"    placeholder="Select">
                                     <el-option v-for="category in categories" :key="category._id" :label="category.title" :value="category._id">
                                     </el-option>
                                 </el-select>
@@ -97,6 +97,7 @@
     export default {
         data() {
             return {
+                activeName: 'basicInfotab',
                 infoForm: new Form({
                     description: '',
                     workingHours: '',
@@ -129,6 +130,9 @@
                     this.infoForm.description = infoResponse.data.results.description;
                     this.infoForm.workingHours = infoResponse.data.results.workingHours;
                     this.infoForm.categories = infoResponse.data.results.categories;
+                    this.infoForm.categories = infoResponse.data.results.categories.map((cat) =>{
+                            return cat._id;
+                    });
                     this.branchesForm.branches = infoResponse.data.results.branches;
     
                     this.branchesForm.branches.push({
@@ -168,15 +172,6 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
-            },
-            handleClick(tab, event) {
-                if (tab.name === 'basicInfotab') {
-                    this.enableInfoTab = true;
-                    this.enableBranchesTab = false;
-                } else {
-                    this.enableBranchesTab = true;
-                    this.enableInfoTab = false;
-                }
             },
             saveBranch(idx) {
                 if (this.branchesForm.branches[idx].location && this.branchesForm.branches[idx].address) {
