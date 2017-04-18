@@ -98,8 +98,11 @@ export const serviceRules = {
   }],
   shortDescription: [{
     required: true,
-    message: 'Please enter a short description (max 140 characters) of your service',
+    message: 'Please enter a short description of your service',
+    trigger: 'blur',
+  }, {
     max: 140,
+    message: 'The description can have a maximum 140 characters',
     trigger: 'blur',
   }],
 };
