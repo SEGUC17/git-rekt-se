@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router';
+import Reset from '../components/Client/Reset.vue';
 import Home from '../components/pages/Index/home.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
@@ -27,6 +28,14 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
+},
+{
+  path: '/client/auth/reset/:token',
+  component: Reset,
+},
+{
+  path: '/client/auth/reset/:token',
+  component: Reset,
 }];
 
 const router = new VueRouter({
