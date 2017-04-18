@@ -17,9 +17,7 @@
                <div class="alerts">
                 
                 <el-alert class="alert-msg" :title="form.message" v-show="form.success" type="success" show-icon></el-alert>
-
-                <!--<el-alert class="alert-msg" title="Token expired" v-show="form.fail" type="error" show-icon></el-alert>-->
-                <div class="alert-msg error" v-for="key in form.keys" v-show="form.errors.has(key)">
+                   <div class="alert-msg error" v-for="key in form.keys" v-show="form.errors.has(key)">
                         <el-alert @close="form.errors.remove(key)" type="error"
                                   :title="form.errors.getAll(key, ' | ') || '' " show-icon></el-alert>
                 </div>
@@ -93,7 +91,6 @@
         showPassword: 'password',
         showConfirm: 'password',
         loading: false,
-        errors: {},
         rules: clientForgotPassword,
       };
     },
@@ -107,13 +104,13 @@
                   this.form.success = true;
                   this.loading = false;
                   this.form.message = data.message;
+                  setTimeout(() => {
+                    this.$router.push('/client/login');
+                  }, 2000);
                 })
-                .catch((e) => {
+                .catch(() => {
                   this.form.fail = true;
                   this.loading = false;
-                  this.errors = e.map(() => {
-
-                  });
                 });
           }
         });
