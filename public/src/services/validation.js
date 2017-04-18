@@ -38,7 +38,7 @@ export const infoFormRules = {
   }],
 };
 
-export const branchesFromRules = {
+export const branchesFormRules = {
   branches: [{
     validator(rule, value, callBack) {
       if (value.length === 0) {
