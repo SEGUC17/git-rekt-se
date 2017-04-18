@@ -102,6 +102,16 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
     .catch(err => next(err));
 });
 
+router.get('/list', AdminAuth, (req, res, next) => {
+  Business.find({
+    _deleted: false,
+  }, (err, businesses) => {
+    if (err) {
+      return next(err);
+    }
+    return res.json(businesses);
+  });
+});
 /**
  *  Error Handling Middlewares.
  */
