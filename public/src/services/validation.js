@@ -33,7 +33,7 @@ export const clientSignUpValidation = {
     trigger: 'blur',
   }, {
     validator(rule, value, callBack) {
-      if (!this.form.password){
+      if (!this.form.password) {
         callBack();
         return;
       }
