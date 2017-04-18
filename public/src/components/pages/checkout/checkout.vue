@@ -5,18 +5,42 @@
         <!--- Checkout Steps -->
         <div class="stepper">
             <el-steps space="50%" :active="active" :center="true" :align-center="true">
-                <el-step title="Select" icon="edit"></el-step>
-                <el-step title="Review" icon="document"></el-step>
-                <el-step title="Finish" icon="check"></el-step>
+
+                <a href="#" @click.prevent="goToStep1">
+                    <el-step icon="edit">
+                        <div slot="title">
+                            <el-tooltip class="item" content="Select Offering" placement="bottom">
+                                <span>Select</span>
+                            </el-tooltip>
+                        </div>
+                    </el-step>
+                </a>
+
+                <el-step icon="document">
+                    <div slot="title">
+                        <el-tooltip class="item" content="Review Booking Information" placement="bottom">
+                            <span>Review</span>
+                        </el-tooltip>
+                    </div>
+                </el-step>
+
+                <el-step icon="check">
+                    <div slot="title">
+                        <el-tooltip class="item" content="Finish Booking" placement="bottom">
+                            <span>Finish</span>
+                        </el-tooltip>
+                    </div>
+                </el-step>
+
             </el-steps>
         </div>
 
         <div class="columns checkout-boxes">
 
             <checkoutStep1 class="column is-10 is-offset-1" :form="form" :service="service" v-show="active === 1"
-                           @reviewBooking="goToStep2"></checkoutStep1>
+                           @reviewBooking="goToStep2" :active="active"></checkoutStep1>
             <checkoutStep2 class="column is-12 columns " :service="service" :form="form" v-show="active === 2"
-                           @tokenGenerated="makeTransaction"></checkoutStep2>
+                           @tokenGenerated="makeTransaction" @returnStep1="goToStep1"></checkoutStep2>
             <checkoutStep3 v-if="active === 3"></checkoutStep3>
         </div>
     </div>
@@ -24,7 +48,7 @@
 
 <script>
   import axios from 'axios';
-  import { Visitor, Service } from '../../../services/EndPoints';
+  import {Visitor, Service} from '../../../services/EndPoints';
   import serviceInfoHeader from './serviceInfoHeader.vue';
   import checkoutStep1 from './checkoutStep1.vue';
   import checkoutStep2 from './checkoutStep2.vue';
@@ -53,6 +77,15 @@
       };
     },
 
+    computed: {
+      toolTipContent() {
+        if (this.active === 1) {
+          return 'Select Timing';
+        }
+        return 'Go back to step 1';
+      },
+    },
+
     methods: {
       getService() {
         this.loader = this.$loading({
@@ -77,6 +110,20 @@
               this.loader.close();
             });
       },
+      handleTooltip() {
+        if (this.active === 2) {
+          this.goToStep1();
+        }
+      },
+
+      goToStep1() {
+        if (this.active === 2) {
+          this.form.offering = '';
+          this.form.branch = '';
+          this.active = 1;
+        }
+      },
+
       goToStep2() {
           /*
            *  Make the change between steps smoother.
@@ -108,8 +155,8 @@
               this.active = 3;
               this.loader.close();
             }).catch(() => {
-              this.loader.close();
-            });
+          this.loader.close();
+        });
       },
     },
     mounted() {
@@ -138,8 +185,8 @@
     }
 
     .checkout-top {
-        background: #CB356B;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #BD3F32, #CB356B);  /* Chrome 10-25, Safari 5.1-6 */
+        background: #CB356B; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #BD3F32, #CB356B); /* Chrome 10-25, Safari 5.1-6 */
         background: linear-gradient(to right, #BD3F32, #CB356B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         margin-bottom: 2em;
     }

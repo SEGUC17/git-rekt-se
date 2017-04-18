@@ -17,7 +17,6 @@
                     <span class="help is-danger" v-show="invalidCoupon">{{ invalidCoupon }}</span>
                     <span class="help is-primary" v-show="validCoupon">{{ validCoupon }}</span>
                 </div>
-
             </div>
 
         </div>
@@ -44,7 +43,6 @@
                  <i class="checkout-i fa fa-clock-o"></i>
                 </span> {{ getServiceDuration(form.offering.startDate, form.offering.endDate) }}
                     </p>
-
                 </div>
 
                 <div class="serviceloc">
@@ -99,7 +97,7 @@
   import axios from 'axios';
   import clientAuth from '../../../services/auth/clientAuth';
 
-  import { Service } from '../../../services/EndPoints';
+  import {Service} from '../../../services/EndPoints';
 
   export default {
     props: ['form', 'service'],
@@ -214,14 +212,15 @@
               this.form.token = result.token.id;
               this.$emit('tokenGenerated');
             }).catch(() => {
-              this.loader.close();
-              this.$toast.open({
-                message: 'Failed to connect to Stripe.',
-                position: 'bottom',
-                type: 'is-danger',
-              });
-            });
+          this.loader.close();
+          this.$toast.open({
+            message: 'Failed to connect to Stripe.',
+            position: 'bottom',
+            type: 'is-danger',
+          });
+        });
       },
+
     },
 
     mounted() {

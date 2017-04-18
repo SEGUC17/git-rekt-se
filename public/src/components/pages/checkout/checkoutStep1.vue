@@ -11,7 +11,7 @@
 
         <div class="field">
             <p class="label">Starting Date</p>
-            <el-select class="seventy-width" @change="$emit('reviewBooking')" v-model="form.offering"
+            <el-select class="seventy-width" @change="goToStep2" v-model="form.offering"
                        placeholder="Select Offering" :disabled="form.branch === ''">
                 <el-option v-for="offering in service.offerings" v-if="offering.branch === form.branch"
                            :key="offering._id" :label="formatDates(offering.startDate, offering.endDate)"
@@ -37,6 +37,14 @@
         const momentEndDate = moment(endDate);
         return `${momentStartDate.format('MMMM Do YYYY')} - ${momentEndDate.diff(momentStartDate, 'days')} days`;
       },
+
+      goToStep2() {
+        const can = this.form.branch !== '' && this.form.offering !== '';
+        if (can) {
+          this.$emit('reviewBooking');
+        }
+      },
+
     },
   };
 </script>

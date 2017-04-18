@@ -32,4 +32,10 @@
         font-size: 4rem;
         color: #00d2b2;
     }
+
+     @media screen and (max-width: 999px) {
+        .step3 {
+            margin: 2em;
+        }
+    }
 </style>
