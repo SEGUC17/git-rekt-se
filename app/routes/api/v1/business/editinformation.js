@@ -110,7 +110,6 @@ router.put('/edit', businessAuthMiddleware, (req, res, next) => {
  */
 
 router.post('/add/branches', businessAuthMiddleware, (req, res, next) => {
-  const id = req.params.id;
   const searchID = {
     _id: req.user.id,
   };
@@ -118,7 +117,7 @@ router.post('/add/branches', businessAuthMiddleware, (req, res, next) => {
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        businessUtils.addBranches(req.body.branches, id)
+        businessUtils.addBranches(req.body.branches, req.user.id)
           .then((branches) => {
             Business.findOne(searchID)
               .exec()
