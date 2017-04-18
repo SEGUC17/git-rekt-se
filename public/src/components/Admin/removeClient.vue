@@ -65,7 +65,7 @@
             }
         },
         mounted() {
-                this.names = this.getClients();
+                this.clients = this.getClients();
         },
         methods: {
             getClients() {
