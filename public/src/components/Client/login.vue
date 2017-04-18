@@ -56,8 +56,8 @@
   import clientAuth from '../../services/auth/clientAuth';
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
-  import {loginRules} from '../../services/validation';
-  import {Client} from '../../services/EndPoints';
+  import { loginRules } from '../../services/validation';
+  import { Client } from '../../services/EndPoints';
 
   export default {
     data() {
@@ -131,12 +131,11 @@
                 this.loginSuccess = response.data.message;
                 clientAuth.storeData(response);
               }).catch((err) => {
-            this.errors = this.errors
+                this.errors = this.errors
                 .concat(err.response ? err.response.data.errors : [err.message]);
-            loader.close();
-          });
+                loader.close();
+              });
         }
-
       },
 
     },

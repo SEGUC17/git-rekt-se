@@ -196,24 +196,24 @@
         });
         return;
       }
-      if(this.$route.query && this.$route.query !== {}){
-          const query = this.$route.query;
-          Object.keys(query).forEach((key) => {
-              if(key === 'first_name'){
-                this.form.firstName = query[key];
-              } else if(key === 'last_name'){
-                this.form.lastName = query[key];
-              } else if(key === 'birthday'){
-                this.form.birthdate = query[key];
-              } else if(key === 'gender'){
-                this.form.gender = query[key] === 'male' ? 'Male' : 'Female';
-              } else { 
-                this.form[key] = query[key];                
-              }
-          }, this);
-          this.info = true;
-          this.message = 'These information where fetched from facebook, feel free to edit any of them if needed!';
-          console.log(this.form.data());
+      if (this.$route.query && this.$route.query !== {}) {
+        const query = this.$route.query;
+        Object.keys(query).forEach((key) => {
+          if (key === 'first_name') {
+            this.form.firstName = query[key];
+          } else if (key === 'last_name') {
+            this.form.lastName = query[key];
+          } else if (key === 'birthday') {
+            this.form.birthdate = query[key];
+          } else if (key === 'gender') {
+            this.form.gender = query[key] === 'male' ? 'Male' : 'Female';
+          } else {
+            this.form[key] = query[key];
+          }
+        }, this);
+        this.info = true;
+        this.message = 'These information where fetched from facebook, feel free to edit any of them if needed!';
+        console.log(this.form.data());
       }
     },
     components: {
