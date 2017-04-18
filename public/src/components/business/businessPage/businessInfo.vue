@@ -101,42 +101,7 @@
             }
         },
         mounted: function() {
-            this.startRotation();
-    
-            axios.get(EndPoints.Visitor().viewBusiness(this.$route.params.id))
-                .then((business) => {
-                    this.id = business.data.id;
-                    this.name = business.data.name;
-                    this.email = business.data.email;
-                    this.shortDescription = business.data.shortDescription;
-                    this.gallery = business.data.gallery;
-                    this.phoneNumbers = business.data.phoneNumbers;
-                    this.description = business.data.description;
-                    this.workingHours = business.data.workingHours;
-                    this.categories = business.data.categories;
-                    this.branches = business.data.branches;
-                    this.services = business.data.services;
-    
-                    //uncomment this when you add gallery .setting the slider
-                    if (this.gallery.length > 0) {
-                        this.images = this.gallery;
-                    }
-    
-                    console.log(this.images);
-    
-                    //getting related businesses
-                    axios.get(EndPoints.Visitor().relatedBusiness(this.categories[0]._id, 1))
-                        .then((res) => {
-                            this.related = res.data.results;
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-    
+            this.load(this.$route.params.id)
         },
     
         computed: {
@@ -173,8 +138,46 @@
                 const businessID = business._id;
                 let url = `/business/${businessID}`;
                 this.$router.push(url);
-                this.$router.go(1);
+                this.load(businessID);
             },
+            load(id) {
+                this.startRotation();
+    
+                axios.get(EndPoints.Visitor().viewBusiness(id))
+                    .then((business) => {
+                        this.id = business.data.id;
+                        this.name = business.data.name;
+                        this.email = business.data.email;
+                        this.shortDescription = business.data.shortDescription;
+                        this.gallery = business.data.gallery;
+                        this.phoneNumbers = business.data.phoneNumbers;
+                        this.description = business.data.description;
+                        this.workingHours = business.data.workingHours;
+                        this.categories = business.data.categories;
+                        this.branches = business.data.branches;
+                        this.services = business.data.services;
+    
+                        //uncomment this when you add gallery .setting the slider
+                        if (this.gallery.length > 0) {
+                            this.images = this.gallery;
+                        }
+    
+                        console.log(this.images);
+    
+                        //getting related businesses
+                        axios.get(EndPoints.Visitor().relatedBusiness(this.categories[0]._id, 1))
+                            .then((res) => {
+                                this.related = res.data.results;
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+    
+            }
         }
     };
 </script>
