@@ -1,6 +1,6 @@
 <template>
 <div>
-   <reportButton repid=""></reportButton>
+   <reportButton repid="58f603fb7e936a5bbf157ae9"></reportButton>
    </div>
 </template>
 

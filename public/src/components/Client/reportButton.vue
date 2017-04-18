@@ -33,7 +33,7 @@
         methods: {
 
       reviewclicked() {
-          this.currid = repid;
+          this.currid = this.repid;
           this.sure =true;
       }, 
       confirmedreport() {
@@ -45,7 +45,7 @@
                         message: 'Review reported successfully!',
                         type: 'success'
                   });
-                  document.getElementById("myBtn").disabled = true;
+                  document.getElementById("mybtn").disabled = true;
                   this.errors = [];
             })
             .catch((err) => {
