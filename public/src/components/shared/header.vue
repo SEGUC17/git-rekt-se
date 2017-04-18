@@ -28,7 +28,7 @@
                     <span class="icon">
                             <i class="fa fa-user"></i>
                         </span>
-                    <router-link to="/signup" class="nav-item">Signup</router-link>
+                    <span><router-link to="/signup" class="nav-item">Signup</router-link></span>
                 </a>
 
                 <a class="button is-danger gr-nav-button" v-if="!user.authenticated">
@@ -42,7 +42,7 @@
                     <span class="icon">
                             <i class="fa fa-sign-out"></i>
                         </span>
-                    <router-link to="/logout" class="nav-item no-link">Logout</router-link>
+                    <router-link to="/client/logout" class="nav-item no-link">Logout</router-link>
                 </a>
             </div>
         </nav>
@@ -50,17 +50,18 @@
 </template>
 
 <script>
-    import auth from '../../services/clientAuth'
-    export default {
-        data() {
-            return {
-                user: auth.user
-            }
-        },
-        mounted() {
-            auth.refreshAuth();
-        }
-    };
+  import auth from '../../services/auth/clientAuth';
+  
+  export default {
+    data() {
+      return {
+        user: auth.user,
+      };
+    },
+    mounted() {
+      auth.refreshAuth();
+    },
+  };
 </script>
 
 <style>
@@ -71,4 +72,5 @@
     .no-link {
         color: white !important;
     }
+
 </style>
