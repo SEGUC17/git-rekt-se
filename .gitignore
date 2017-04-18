@@ -59,3 +59,4 @@ public/dist/**
 mix-manifest.json
 public/dist/services
 public/dist/assets
+public/dist/index.html
