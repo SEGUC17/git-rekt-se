@@ -18,14 +18,14 @@
             </el-select>
           </el-form-item>
           <el-form-item label="Price" required prop="price">
-            <el-input type="textarea" v-model.number="newOffering.price" placeholder="Set a price"></el-input>
+            <el-input v-model.number="newOffering.price" placeholder="Set a price"></el-input>
           </el-form-item>
           <el-form-item label="Start Date -  End Date" required prop="dates">
             <el-date-picker v-model="newOffering.dates" type="daterange" placeholder="Set a duration">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="Capacity" required prop="capacity">
-            <el-input type="textarea" v-model.number="newOffering.capacity" placeholder="Set a capacity"></el-input>
+            <el-input v-model.number="newOffering.capacity" placeholder="Set a capacity"></el-input>
           </el-form-item>
           </el-form-item>
           <el-form-item class="is-pulled-right">
@@ -59,14 +59,14 @@
             </el-select>
           </el-form-item>
           <el-form-item label="Price" required prop="price">
-            <el-input type="textarea" v-model.number="editFormOffering.price" placeholder="Set a price"></el-input>
+            <el-input type="price" v-model.number="editFormOffering.price" placeholder="Set a price"></el-input>
           </el-form-item>
           <el-form-item label="Start Date -  End Date" required prop="dates">
             <el-date-picker v-model="editFormOffering.dates" type="daterange" placeholder="Set a duration">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="Capacity" required prop="capacity">
-            <el-input type="textarea" v-model.number="editFormOffering.capacity" placeholder="Set a capacity"></el-input>
+            <el-input type="capacity" v-model.number="editFormOffering.capacity" placeholder="Set a capacity"></el-input>
           </el-form-item>
         <!--TODO Upload Cover Image-->
       </el-form>
@@ -98,16 +98,29 @@
         serviceID: this.$route.params.id,
         offerings: [],
         branches: [],
-        newOffering: {},
+        newOffering: {
+          branch: '',
+          price: '',
+          dates: '',
+          capacity: '',
+        },
         generalErrors: [],
         offeringRules,
         createSuccess: '',
         createErrors: [],
-        editFormOffering: {},
+        editFormOffering: {
+          _id: '',
+          branch: '',
+          price: '',
+          dates: '',
+          capacity: '',
+        },
         editVisible: false,
         editSuccess: '',
         editErrors: [],
-        offeringToDelete: {},
+        offeringToDelete: {
+          _id: '',
+        },
         deleteVisible: false,
         deleteSuccess: '',
         deleteErrors: [],

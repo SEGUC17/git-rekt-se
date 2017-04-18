@@ -114,15 +114,22 @@ export const offeringRules = {
     trigger: 'blur',
   }],
   price: [{
+    type: 'number',
+    message: 'Price must be a number',
+    trigger: 'blur',
+  }, {
+    type: 'number',
     required: true,
     message: 'Please enter a price for your offering',
     trigger: 'blur',
   }, {
+    type: 'number',
     min: 0,
     message: 'The price cannot be lower than 0',
     trigger: 'blur',
   }],
   dates: [{
+    type: 'array',
     required: true,
     message: 'Please enter a duration for your offering',
     trigger: 'blur',
@@ -137,10 +144,12 @@ export const offeringRules = {
     trigger: 'blur',
   }],
   capacity: [{
+    type: 'number',
     required: true,
     message: 'Please enter a capacity for your offering',
     trigger: 'blur',
   }, {
+    type: 'number',
     min: 0,
     message: 'The capacity cannot be lower than 0',
     trigger: 'blur',
