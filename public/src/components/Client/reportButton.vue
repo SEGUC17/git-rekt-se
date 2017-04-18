@@ -8,7 +8,7 @@
                 </span>
             </el-dialog>
     
-            <el-button id ="mybtn" class="button is-danger" style="float: right;"@click="reviewclicked()" >Report &nbsp; 
+            <el-button id ="mybtn" class="button is-danger"@click="reviewclicked()" >Report &nbsp; 
             </el-button>
     </div>
 </template>
@@ -27,7 +27,7 @@
                 currid: '',
             }
         },
-        props: ['id'];
+        props: ['id'],
         mounted() {
         },
         methods: {
