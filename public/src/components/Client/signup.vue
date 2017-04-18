@@ -87,9 +87,6 @@
                     <el-form-item class="has-text-centered">
                         <el-button type="primary" icon="circle-check" @click="onClick" :loading="loading">
                             Sign Up
-    
-
-
                         </el-button>
                         <el-button icon="circle-cross" @click="onReset">Reset</el-button>
                     </el-form-item>
