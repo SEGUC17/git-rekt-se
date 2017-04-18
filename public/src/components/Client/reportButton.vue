@@ -1,5 +1,11 @@
 <template>
     <div>
+    <div v-show="errors.length > 0">
+                <div class="error" v-for="error in errors">
+                    <el-alert :title="error" type="error" show-icon>
+                    </el-alert>
+                </div>
+            </div>
             <el-dialog title="Confirm Deletion" v-model="sure" size="tiny">
                  <span>Are you sure you want to report this review?</span>
                     <span slot="footer" class="dialog-footer">
