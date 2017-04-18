@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import clientAuth from '../../services/clientAuth';
+    import clientAuth from '../../services/auth/clientAuth';
     
     export default {
         data() {
