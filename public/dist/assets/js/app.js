@@ -44236,7 +44236,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* Admin */])().listClients).then(function (res) {
-                console.log(res);
                 _this.clients = res.data;
                 _this.errors = [];
             }).catch(function (err) {
@@ -44247,7 +44246,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         deleteclicked: function deleteclicked(client) {
-            console.log(client);
             this.currname = client.firstName + " " + client.lastName;
             this.currid = client._id;
             this.sure = true;
