@@ -149,7 +149,6 @@ router.post('/add/branches', businessAuthMiddleware, (req, res, next) => {
  */
 
 router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req, res, next) => {
-  console.log(req.body);
   const id = req.params.business_id;
   if (req.user.id !== id) {
     next([businessMessages.mismatchID]);
@@ -165,14 +164,9 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
           Branch.findOne(searchID)
             .exec()
             .then((branch) => {
-              console.log(5);
-              console.log(branch);
-              console.log(branch._business);
               if (!branch || branch._deleted) {
-                console.log(3);
                 next([businessMessages.branchDoesntExist]);
               } else if (branch._business.equals(id)) {
-                console.log(3);
                 branch.location = req.body.branch.location;
                 branch.address = req.body.branch.address;
                 branch.save()
@@ -181,7 +175,6 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
                   }))
                   .catch(err => next(err));
               } else {
-                console.log(4);
                 next([businessMessages.mismatchID]);
               }
             })
