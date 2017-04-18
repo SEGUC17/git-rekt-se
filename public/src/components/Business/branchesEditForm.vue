@@ -1,20 +1,34 @@
 <template>
-    <el-form :model="branchesForm" :rules="form2Rules" ref="branchesForm" label-width="120px" label-position="top" class="demo-ruleForm">
+    <div>
+        <div v-show="errors.length > 0">
+            <div class="error" v-for="error in errors">
+                <el-alert :title="error" type="error" show-icon>
+                </el-alert>
+            </div>
+        </div>
     
-        <el-form-item v-for="(branch, index) in branchesForm.branches" :key="index" :label="'Branch '+(index+1)" prop="branches">
-            <el-input placeholder="Please Enter Address here" v-model="branch.address">
-                <el-select v-model="branch.location" placeholder="Location" slot="prepend">
-                    <el-option v-for="(location,index) in locations" :key="index" :label="location" :value="location">
-                    </el-option>
-                </el-select>
-            </el-input>
-            <el-button v-show="index < branchesForm.branches.length-1" @click="removeBranch(index)">Delete Branch</el-button>
-            <el-button v-show="index < branchesForm.branches.length-1" @click="updateBranch(index)">Update Branch</el-button>
+        <div v-show="success">
+            <el-alert :title="editSuccess" type="success" show-icon>
+            </el-alert>
+        </div>
     
-            <el-button v-show="index === branchesForm.branches.length-1" @click="saveBranch(index)">Save Branch</el-button>
-        </el-form-item>
+        <el-form :model="branchesForm" :rules="form2Rules" ref="branchesForm" label-width="120px" label-position="top" class="demo-ruleForm">
     
-    </el-form>
+            <el-form-item v-for="(branch, index) in branchesForm.branches" :key="index" :label="'Branch '+(index+1)" prop="branches">
+                <el-input placeholder="Please Enter Address here" v-model="branch.address">
+                    <el-select v-model="branch.location" placeholder="Location" slot="prepend">
+                        <el-option v-for="(location,index) in locations" :key="index" :label="location" :value="location">
+                        </el-option>
+                    </el-select>
+                </el-input>
+                <el-button v-show="index < branchesForm.branches.length-1" @click="removeBranch(index)">Delete Branch</el-button>
+                <el-button v-show="index < branchesForm.branches.length-1" @click="updateBranch(index)">Update Branch</el-button>
+    
+                <el-button v-show="index === branchesForm.branches.length-1" @click="saveBranch(index)">Save Branch</el-button>
+            </el-form-item>
+    
+        </el-form>
+    </div>
 </template>
 
 <script>
@@ -32,7 +46,7 @@
     
     export default {
         data() {
-            return {               
+            return {
                 branchesForm: new Form({
                     branches: []
                 }),
@@ -44,24 +58,34 @@
             }
         },
         mounted() {
-            axios.get(Business()
-                .businessInfo, {
-                    headers: {
-                        Authorization: businessAuth.getJWTtoken(),
-                    },
-                }).then((infoResponse) => {
+            this.loadFormData();
+    
+        },
+        methods: {
+            loadFormData() {
+                const loader = this.$loading({
+                    fullscreen: true,
+                });
+                axios.get(Business()
+                    .businessInfo, {
+                        headers: {
+                            Authorization: businessAuth.getJWTtoken(),
+                        },
+                    }).then((infoResponse) => {
+                    loader.close();
                     this.branchesForm.branches = infoResponse.data.results.branches;
+                    this.errors = [];
                     this.branchesForm.branches.push({
                         location: '',
                         address: '',
                     });
-            }).catch(e => this.errors = e);
-    
-        },
-    
-        methods: {
+                }).catch(e => this.errors = e);
+            },
             saveBranch(idx) {
                 if (this.branchesForm.branches[idx].location && this.branchesForm.branches[idx].address) {
+                    const loader = this.$loading({
+                        fullscreen: true,
+                    });
                     axios.post(Business().addBranch, {
                         branches: [this.branchesForm.branches[idx]]
                     }, {
@@ -71,8 +95,10 @@
                     }).then((response) => {
                         this.success = true;
                         this.editSuccess = response.data.message;
+                        loader.close();
                         setTimeout(() => {
-                            this.$router.go(this.$router.path);
+                            this.success = false;
+                            this.editSuccess = '';
                         }, 1000);
                     }).catch(e => this.errors = e);
                     this.branchesForm.branches.push({
@@ -85,6 +111,9 @@
     
             },
             removeBranch(idx) {
+                const loader = this.$loading({
+                    fullscreen: true,
+                });
                 axios.delete(Business().deleteBranch(businessAuth.user.userID(), this.branchesForm.branches[idx]._id), {
                     headers: {
                         Authorization: businessAuth.getJWTtoken(),
@@ -92,13 +121,22 @@
                 }).then((response) => {
                     this.success = true;
                     this.editSuccess = response.data.message;
+                    this.branchesForm.branches.splice(idx, 1);
+                    console.log(this.branchesForm.branches);
+                    loader.close();
                     setTimeout(() => {
-                        this.$router.go(this.$router.path);
+                        this.success = false;
+                        this.editSuccess = '';
                     }, 1000);
-                }).catch(e => this.errors = e);
+                }).catch(e => {
+                    loader.close();
+                    this.errors = e;
+                });
             },
             updateBranch(idx) {
-    
+                const loader = this.$loading({
+                    fullscreen: true,
+                });
                 axios.put(Business().editBranch(businessAuth.user.userID(), this.branchesForm.branches[idx]._id), {
                     branch: this.branchesForm.branches[idx]
                 }, {
@@ -108,10 +146,15 @@
                 }).then((response) => {
                     this.success = true;
                     this.editSuccess = response.data.message;
+                    loader.close();
                     setTimeout(() => {
-                        this.$router.go(this.$router.path);
+                        this.success = false;
+                        this.editSuccess = '';
                     }, 1000);
-                }).catch(e => this.errors = e);
+                }).catch(e => {
+                    loader.close();
+                    this.errors = e;
+                });
             },
         }
     

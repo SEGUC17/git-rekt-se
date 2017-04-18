@@ -4,28 +4,15 @@
     
             <h1 class="title has-text-centered">Edit Info</h1>
     
-            <div v-show="errors.length > 0">
-                <div class="error" v-for="error in errors">
-                    <el-alert :title="error" type="error" show-icon>
-                    </el-alert>
-                </div>
-            </div>
-    
-            <div v-show="success">
-                <el-alert :title="editSuccess" type="success" show-icon>
-                </el-alert>
-            </div>
             <el-tabs type="card" v-model="activeName">
     
                 <el-tab-pane name="basicInfotab" label="Basic Info">
-                    <h3 class="title has-text-centered">Edit Your Basic Info</h3>
                     <div>
                         <infoform></infoform>
                     </div>
                 </el-tab-pane>
     
                 <el-tab-pane name="branchestab" label="Branches">
-                    <h3 class="title has-text-centered">Edit Your Branches</h3>
                     <div>
                     <branchesform></branchesform>
                     </div>
