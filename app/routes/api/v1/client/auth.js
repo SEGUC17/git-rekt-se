@@ -20,7 +20,7 @@ mongoose.Promise = Promise;
 const router = express.Router();
 
 require('dotenv')
-  .config();
+    .config();
 
 const JWT_KEY = process.env.JWT_KEY_CLIENT;
 
@@ -57,32 +57,32 @@ router.post('/signup', (req, res, next) => {
 
   req.checkBody(validationSchemas.clientSignupValidation);
   req.checkBody('confirmPassword')
-    .equals(req.body.password)
-    .withMessage(Strings.clientValidationErrors.passwordMismatch);
+      .equals(req.body.password)
+      .withMessage(Strings.clientValidationErrors.passwordMismatch);
 
   req.getValidationResult()
-    .then((result) => {
-      if (result.isEmpty()) {
-        new Client(userInfo)
-          .save()
-          .then(() => {
-            ClientAuthenticator.generateConfirmationToken(req.body.email)
-              .then((token) => {
-                Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
-                  .then(() => {
-                    res.json({
-                      message: Strings.clientSuccess.signup,
-                    });
-                  })
-                  .catch(e => next(e));
+      .then((result) => {
+        if (result.isEmpty()) {
+          new Client(userInfo)
+              .save()
+              .then(() => {
+                ClientAuthenticator.generateConfirmationToken(req.body.email)
+                    .then((token) => {
+                      Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
+                          .then(() => {
+                            res.json({
+                              message: Strings.clientSuccess.signup,
+                            });
+                          })
+                          .catch(e => next(e));
+                    })
+                    .catch(e => next(e));
               })
-              .catch(e => next(e));
-          })
-          .catch(() => next([Strings.clientValidationErrors.userExists]));
-      } else {
-        next(result.array());
-      }
-    });
+              .catch(() => next([Strings.clientValidationErrors.userExists]));
+        } else {
+          next(result.array());
+        }
+      });
 });
 
 /**
@@ -93,23 +93,23 @@ router.post('/signup', (req, res, next) => {
 router.post('/confirmation/send', (req, res, next) => {
   req.checkBody(validationSchemas.clientConfirmEmailValidation);
   req.getValidationResult()
-    .then((result) => {
-      if (result.isEmpty()) {
-        ClientAuthenticator.generateConfirmationToken(req.body.email)
-          .then((token) => {
-            Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
-              .then(() => {
-                res.json({
-                  message: Strings.clientSuccess.emailConfirmation,
-                });
+      .then((result) => {
+        if (result.isEmpty()) {
+          ClientAuthenticator.generateConfirmationToken(req.body.email)
+              .then((token) => {
+                Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
+                    .then(() => {
+                      res.json({
+                        message: Strings.clientSuccess.emailConfirmation,
+                      });
+                    })
+                    .catch(e => next(e));
               })
               .catch(e => next(e));
-          })
-          .catch(e => next(e));
-      } else {
-        next(result.array());
-      }
-    });
+        } else {
+          next(result.array());
+        }
+      });
 });
 
 /**
@@ -122,46 +122,46 @@ router.post('/reset', (req, res, next) => {
 
   req.checkBody(validationSchemas.clientResetPasswordValidation);
   req.checkBody('confirmPassword')
-    .equals(req.body.password)
-    .withMessage(Strings.clientValidationErrors.passwordMismatch);
+      .equals(req.body.password)
+      .withMessage(Strings.clientValidationErrors.passwordMismatch);
 
   req.getValidationResult()
-    .then((result) => {
-      if (result.isEmpty()) {
-        jwt.verify(resetToken, JWT_KEY, (err, payload) => {
-          if (!payload) {
-            next(Strings.clientForgotPassword.INVALID_RESET_TOKEN);
-          } else {
-            const email = payload.email;
-            const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
+      .then((result) => {
+        if (result.isEmpty()) {
+          jwt.verify(resetToken, JWT_KEY, (err, payload) => {
+            if (!payload) {
+              next(Strings.clientForgotPassword.INVALID_RESET_TOKEN);
+            } else {
+              const email = payload.email;
+              const creationDate = new Date(parseInt(payload.iat, 10) * 1000);
 
-            Client.findOne({
-              email,
-              passwordChangeDate: {
-                $lte: creationDate,
-              },
-            })
-              .exec()
-              .then((client) => {
-                if (!client) {
-                  return next(Strings.clientForgotPassword.INVALID_RESET_TOKEN);
-                }
-                client.passwordResetTokenDate = undefined; // Disable the token
-                client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
-                client.password = password; // Reset password
-
-                return client.save()
-                  .then(() => res.json({
-                    message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
-                  }));
+              Client.findOne({
+                email,
+                passwordChangeDate: {
+                  $lte: creationDate,
+                },
               })
-              .catch(e => next(e));
-          }
-        });
-      } else {
-        next(result.array());
-      }
-    });
+                  .exec()
+                  .then((client) => {
+                    if (!client) {
+                      return next(Strings.clientForgotPassword.INVALID_RESET_TOKEN);
+                    }
+                    client.passwordResetTokenDate = undefined; // Disable the token
+                    client.passwordChangeDate = Date.now(); // Invalidate Login Tokens
+                    client.password = password; // Reset password
+
+                    return client.save()
+                        .then(() => res.json({
+                          message: Strings.clientForgotPassword.PASSWORD_RESET_SUCCESS,
+                        }));
+                  })
+                  .catch(e => next(e));
+            }
+          });
+        } else {
+          next(result.array());
+        }
+      });
 });
 
 
@@ -189,29 +189,29 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
         $gte: creationDate,
       },
     })
-      .exec()
-      .then((client) => {
-        if (!client) {
-          next(Strings.clientVerfication.invalidToken);
-          return;
-        }
-        if (client.status === 'confirmed') {
-          next(Strings.clientVerfication.alreadyConfirmed);
-          return;
-        }
-        if (client.status === 'banned') {
-          next(Strings.clientVerfication.accountBanned);
-          return;
-        }
-        client.confirmationTokenDate = undefined;
-        client.status = 'confirmed';
-        client.save()
-          .then(res.json({
-            message: Strings.clientVerfication.verificationSuccess,
-          }))
-          .catch(err2 => next(err2));
-      })
-      .catch(err2 => next(err2));
+        .exec()
+        .then((client) => {
+          if (!client) {
+            next(Strings.clientVerfication.invalidToken);
+            return;
+          }
+          if (client.status === 'confirmed') {
+            next(Strings.clientVerfication.alreadyConfirmed);
+            return;
+          }
+          if (client.status === 'banned') {
+            next(Strings.clientVerfication.accountBanned);
+            return;
+          }
+          client.confirmationTokenDate = undefined;
+          client.status = 'confirmed';
+          client.save()
+              .then(res.json({
+                message: Strings.clientVerfication.verificationSuccess,
+              }))
+              .catch(err2 => next(err2));
+        })
+        .catch(err2 => next(err2));
   });
 });
 
@@ -222,15 +222,15 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
 router.post('/login', (req, res, next) => {
   req.checkBody(validationSchemas.clientLoginValidation);
   req.getValidationResult()
-    .then((result) => {
-      if (result.isEmpty()) {
-        ClientAuthenticator.loginClient(req.body.email, req.body.password)
-          .then(info => res.json(info))
-          .catch(err => next(err));
-      } else {
-        next(result.array());
-      }
-    });
+      .then((result) => {
+        if (result.isEmpty()) {
+          ClientAuthenticator.loginClient(req.body.email, req.body.password)
+              .then(info => res.json(info))
+              .catch(err => next(err));
+        } else {
+          next(result.array());
+        }
+      });
 });
 
 /**
@@ -254,18 +254,21 @@ router.post('/fb/finalize/login', (req, res, next) => {
       next([Strings.clientLoginMessages.invalidToken]);
     } else {
       ClientAuthenticator.finalizeLoginFacebook(encapsulatedToken)
-        .then((token, payload) => {
-          new InvalidToken({
-            token: encapsulatedToken,
-          }).save().then(() => {
-            res.json({
-              message: Strings.clientLoginMessages.loginSuccess,
-              id: payload.id,
-              email: payload.email,
-              token,
-            });
+          .then((data) => {
+            new InvalidToken({
+              token: encapsulatedToken,
+            })
+                .save().then(() => {
+                  res.json({
+                    message: Strings.clientLoginMessages.loginSuccess,
+                    id: data.payload.id,
+                    email: data.payload.email,
+                    token: data.token,
+                  });
+                }).catch((e) => {
+                  next(e);
+                });
           }).catch(next);
-        }).catch(next);
     }
   }).catch(next);
 });
@@ -284,25 +287,25 @@ router.post('/forgot', (req, res, next) => {
   Client.findOne({
     email: req.body.email,
   })
-    .exec()
-    .then((client) => {
-      if (!client) { // Client not found, Invalid mail
-        return res.json({
-          message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
-        });
-      }
-      client.passwordResetTokenDate = currentDate;
+      .exec()
+      .then((client) => {
+        if (!client) { // Client not found, Invalid mail
+          return res.json({
+            message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
+          });
+        }
+        client.passwordResetTokenDate = currentDate;
 
-      return client.save()
-        .then(() => {
-          Mailer.forgotPasswordEmail(email, req.hostname, resetToken)
-            .then(() => res.json({
-              message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
-            }))
-            .catch(err => next(err));
-        });
-    })
-    .catch(err => next(err));
+        return client.save()
+            .then(() => {
+              Mailer.forgotPasswordEmail(email, req.hostname, resetToken)
+                  .then(() => res.json({
+                    message: Strings.clientForgotPassword.CHECK_YOU_EMAIL,
+                  }))
+                  .catch(err => next(err));
+            });
+      })
+      .catch(err => next(err));
 });
 
 /**
@@ -323,9 +326,9 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
     let redirectURL = '';
     const facebookInfo = res.locals.facebookInfo;
     Object.keys(facebookInfo)
-      .forEach((key) => {
-        redirectURL += `&${key}=${facebookInfo[key]}`;
-      });
+        .forEach((key) => {
+          redirectURL += `&${key}=${facebookInfo[key]}`;
+        });
     redirectURL = `?${redirectURL.substr(1)}`;
     res.redirect(`/client/signup/${redirectURL}`);
   }
@@ -339,18 +342,18 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
 
 router.post('/logout', jwtConfig.clientAuthMiddleware, (req, res, next) => {
   const token = jwtConfig.parseAuthHeader(req.headers.authorization)
-    .value;
+      .value;
   new InvalidToken({
     token,
   })
-    .save((err) => {
-      if (err) {
-        return next(err);
-      }
-      return res.json({
-        message: Strings.clientSuccess.logout,
+      .save((err) => {
+        if (err) {
+          return next(err);
+        }
+        return res.json({
+          message: Strings.clientSuccess.logout,
+        });
       });
-    });
 });
 
 /**

@@ -33,7 +33,7 @@
 
 
                 <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top"
-                          class="login-form">
+                         class="login-form">
                     <el-form-item label="Email" prop="email">
                         <el-input v-model="form.email" placeholder="Email"></el-input>
                     </el-form-item>
@@ -52,11 +52,12 @@
 </template>
 
 <script>
+  import axios from 'axios';
   import clientAuth from '../../services/auth/clientAuth';
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
-  import { loginRules } from '../../services/validation';
-  import { Client } from '../../services/EndPoints';
+  import {loginRules} from '../../services/validation';
+  import {Client} from '../../services/EndPoints';
 
   export default {
     data() {
@@ -72,11 +73,6 @@
         message: '',
         errors: [],
       };
-    },
-    mounted() {
-      if (Authenticator.isAuthenticated()) {
-        this.$router.push('/');
-      }
     },
     methods: {
       submitForm(formName) {
@@ -96,11 +92,8 @@
                   return err.msg;
                 });
               } else {
-                this.logged_in = true;
+                this.afterLoginHandler();
                 this.loginSuccess = response.message;
-                setTimeout(() => {
-                  this.$router.push('/');
-                }, 1000);
               }
             });
           } else {
@@ -108,33 +101,56 @@
           }
         });
       },
-    },
-    mounted() {
-      if(this.$route.query && this.route.query !== {}){
-        const token = this.$route.query.find(key => key === 'token');
-        if(!token || token.length === 0){
-          this.errors.push('Invalid Query');
-          return;
+
+      afterLoginHandler() {
+        this.logged_in = true;
+        setTimeout(() => {
+          this.$router.go({
+            path: '/',
+          });
+        }, 1000);
+      },
+
+      facebookLogin() {
+        const query = this.$route.query;
+        if (query && query !== {}) {
+          const token = query.token;
+          if (!token || token.length === 0) {
+            return;
+          }
+          const loader = this.$loading({
+            fullscreen: true,
+            text: 'Signing in..',
+          });
+          axios.post(Client().finalizeFb, {
+            token,
+          })
+              .then((response) => {
+                loader.close();
+                this.afterLoginHandler(response);
+                this.loginSuccess = response.data.message;
+                clientAuth.storeData(response);
+              }).catch((err) => {
+            this.errors = this.errors
+                .concat(err.response ? err.response.data.errors : [err.message]);
+            loader.close();
+          });
         }
-        const loader = this.$loading({
-          fullscreen: true,
-          text: 'Signing in..',
+
+      },
+
+    },
+
+    mounted() {
+      if (Authenticator.isAuthenticated()) {
+        this.$router.go({
+          path: '/',
         });
-        axios.post(Client().finalizeFb, {
-          token,
-        }).then((response) => {
-          console.log(response);
-          this.logged_in = true;
-          this.loginSuccess = response.data.message;
-          clientAuth.storeData(response);
-          loader.close();
-        }).catch((err) => {
-          console.log(err);
-          this.errors = this.errors.concat(err.reponse ? err.reponse.data.errors : [err.message]);
-          loader.close();
-        });
+        return;
       }
-    }
+
+      this.facebookLogin();
+    },
   };
 </script>
 
