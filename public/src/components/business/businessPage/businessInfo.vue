@@ -20,8 +20,11 @@
                     <div class="grid-content">
                         <hr class="services">
                         <el-collapse accordion>
-                            <el-collapse-item v-for="service in services" :key="service" :title="service.name" name="1">
-                                <div>{{service.shortDescription}}</div>
+                            <el-collapse-item v-for="service in services" :key="service" :title="service.name">
+                                <div>{{service.shortDescription}}
+                                    <el-button class="right" @click="bookService(service)">Book Now</el-button>
+                                    <el-button class="right" @click="viewService(service)">View</el-button>
+                                </div>
                             </el-collapse-item>
                         </el-collapse>
                     </div>
@@ -55,7 +58,9 @@
                         <hr class="related">
                         <ul>
                             <li v-for="business in related">
-                                {{ business.name }}
+                                <div @click="relatedView(business)">
+                                    {{ business.name }}
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -73,11 +78,11 @@
     export default {
         data() {
             return {
-                images: ['http://i.imgur.com/vYdoAKu.jpg', 'http://i.imgur.com/PUD9HQL.jpg', 'http://i.imgur.com/Lfv18Sb.jpg', 'http://i.imgur.com/tmVJtna.jpg', 'http://i.imgur.com/ZfFAkWZ.jpg'],
+                images: [{
+                    path: 'http://www.solidbackgrounds.com/images/2560x1440/2560x1440-black-solid-color-background.jpg'
+                }],
                 currentNumber: 0,
                 timer: null,
-                value5: 3.7,
-                reviewsNum: 1,
     
                 id: '',
                 name: '',
@@ -111,9 +116,13 @@
                     this.categories = business.data.categories;
                     this.branches = business.data.branches;
                     this.services = business.data.services;
-                    console.log(business.data);
+    
                     //uncomment this when you add gallery .setting the slider
-                    // this.images = this.gallery;
+                    if (this.gallery.length > 0) {
+                        this.images = this.gallery;
+                    }
+    
+                    console.log(this.images);
     
                     //getting related businesses
                     axios.get(EndPoints.Visitor().relatedBusiness(this.categories[0]._id, 1))
@@ -134,7 +143,7 @@
             backgroundStyle: function() {
                 return {
                     //add .path when adding gallery
-                    'background-image': 'url("' + this.images[this.currentNumber % this.images.length] + '")'
+                    'background-image': 'url("' + this.images[this.currentNumber % this.images.length].path + '")'
                 }
             }
         },
@@ -149,7 +158,23 @@
             },
             prev: function() {
                 this.currentNumber -= 1
-            }
+            },
+            viewService(service) {
+                const serviceID = service._id;
+                let url = `/service/${serviceID}`;
+                this.$router.push(url);
+            },
+            bookService(service) {
+                const serviceID = service._id;
+                let url = `/service/${serviceID}/book`;
+                this.$router.push(url);
+            },
+            relatedView(business) {
+                const businessID = business._id;
+                let url = `/business/${businessID}`;
+                this.$router.push(url);
+                this.$router.go(1);
+            },
         }
     };
 </script>
@@ -164,6 +189,9 @@
         padding-top: 145px;
         padding-bottom: 120px;
         text-align: center;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
     }
     
     .hero-text {
@@ -301,5 +329,10 @@
     .content {
         margin: 30px;
         max-width: 720;
+    }
+    
+    .right {
+        float: right;
+        margin: 5px;
     }
 </style>
