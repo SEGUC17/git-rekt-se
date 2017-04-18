@@ -87,8 +87,6 @@
                     <el-form-item class="has-text-centered">
                         <el-button type="primary" icon="circle-check" @click="onClick" :loading="loading">
                             Sign Up
-    
-
 
                         </el-button>
                         <el-button icon="circle-cross" @click="onReset">Reset</el-button>
@@ -107,8 +105,8 @@
   import resend from './resend.vue';
   import commonAuth from '../../services/auth/commonAuth';
 
-  import { Client } from '../../services/EndPoints';
-  import { clientSignUpValidation } from '../../services/validation';
+  import {Client} from '../../services/EndPoints';
+  import {clientSignUpValidation} from '../../services/validation';
 
   export default {
     data() {
@@ -152,8 +150,8 @@
                   this.success = true;
                   this.message = data.message;
                 }).catch(() => {
-                  this.loading = false;
-                });
+              this.loading = false;
+            });
           }
         });
       },
@@ -171,8 +169,8 @@
               this.success = true;
               this.message = data.message;
             }).catch(() => {
-              this.loading = false;
-            });
+          this.loading = false;
+        });
       },
     },
     mounted() {
@@ -206,7 +204,9 @@
         }
 
         .extra-large {
+            padding-top: 0.5em;
             font-size: 3em;
+
         }
     }
 </style>
