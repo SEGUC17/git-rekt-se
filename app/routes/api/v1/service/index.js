@@ -52,7 +52,6 @@ router.get('/:id', (req, res, next) => {
         next(Strings.serviceFailure.serviceNotFound);
         return;
       }
-      console.log(service._business);
       const returnedService = {
         name: service.name,
         shortDescription: service.shortDescription,
@@ -71,7 +70,6 @@ router.get('/:id', (req, res, next) => {
         categories: service.categories,
         offerings: service.offerings,
       };
-      console.log(returnedService.coverImage);
       res.json(returnedService);
     })
     .catch(() => {
