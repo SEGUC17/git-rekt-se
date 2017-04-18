@@ -78,6 +78,7 @@ router.post('/:id/gallery/add', upload.single('path'), (req, res, next) => { // 
       if (result.isEmpty()) {
         Business.findOne({
           _id: req.params.id,
+          _deleted: false,
         })
           .exec()
           .then((business) => {
@@ -118,6 +119,7 @@ router.post('/:ser_id/gallery/edit/:im_id', (req, res, next) => { // BusinessAut
       if (result.isEmpty()) {
         Business.findOne({
           _id: req.params.ser_id,
+          _deleted: false,
         })
           .exec()
           .then((business) => {
@@ -160,6 +162,7 @@ router.post('/:ser_id/gallery/delete/:im_id', (req, res, next) => { // BusinessA
       if (result.isEmpty()) {
         Business.findOne({
           _id: req.params.ser_id,
+          _deleted: false,
         })
           .exec()
           .then((business) => {
