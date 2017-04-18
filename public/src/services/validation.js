@@ -165,4 +165,5 @@ export const branchesFormRules = {
     },
     trigger: 'blur',
   }],
+};
 
