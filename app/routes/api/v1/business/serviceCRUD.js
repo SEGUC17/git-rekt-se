@@ -129,9 +129,9 @@ router.get('/branch/list', businessAuthMiddleware, (req, res, next) => {
  * List offerings belonging to a service
  */
 
-router.get(':id/offering/list', businessAuthMiddleware, (req, res, next) => {
+router.get('/:id/offering/list', businessAuthMiddleware, (req, res, next) => {
   Service.findOne({
-    _business: req.params.id,
+    _id: req.params.id,
     _deleted: false,
   })
   .exec()
@@ -140,7 +140,7 @@ router.get(':id/offering/list', businessAuthMiddleware, (req, res, next) => {
       next(Strings.offeringValidationError.invalidService);
       return;
     }
-    if (service._business !== req.user.id) {
+    if (`${service._business}` !== `${req.user.id}`) {
       next(Strings.offeringValidationError.invalidOperation);
       return;
     }
@@ -570,6 +570,7 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                 let offeringDoc;
                 service.offerings.forEach((offering) => {
                   if (`${offering._id}` === offeringID && !offering._deleted) {
+                    offering._deleted = true;
                     validOffering = true;
                     offeringDoc = offering;
                   }
@@ -579,7 +580,6 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                   next([Strings.offeringValidationError.invalidOffering]);
                   return;
                 }
-                offeringDoc._deleted = true;
                 let branchExist = false; // branch of this offering
                 const oldbranch = offeringDoc.branch;
                 service.offerings.forEach((offer) => {

@@ -172,7 +172,7 @@
             const loader = this.$loading({
               fullscreen: true,
             });
-            Axios.post(Business().createOffering(this.serviceID), this.newOffering, {
+            Axios.post(Business().createOffering(this.serviceID), this.offeringToCreate, {
               headers: {
                 Authorization: BusinessAuth.getJWTtoken(),
               },
@@ -258,6 +258,7 @@
         this.$refs.createOffering.resetFields();
       },
       showEdit(offering) {
+        console.log('I am here');
         this.editFormOffering = this.populateFormOffering(offering);
         this.editVisible = true;
       },
@@ -271,6 +272,7 @@
         offeringToReturn.price = offering.price;
         offeringToReturn.capacity = offering.capacity;
         offeringToReturn.dates = [offering.startDate, offering.endDate];
+        return offeringToReturn;
       },
     },
     computed: {

@@ -247,6 +247,11 @@ const offeringCreateValidationBody = {
       errorMessage: offeringValidationErrors.emptyEndDate,
     },
   },
+  capacity: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyCapacity,
+    },
+  },
   branch: {
     isMongoId: {
       errorMessage: offeringValidationErrors.invalidBranchID,

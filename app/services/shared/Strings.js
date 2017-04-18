@@ -219,6 +219,7 @@ const offeringValidationError = {
   emptyEndDate: 'Offering End Date is a required field',
   invalidEndDate: 'Invalid End Date',
   emptyLocation: 'Location is a required field',
+  emptyCapacity: 'Offering Capacity is a required field',
   invalidBranchID: 'Branch is invalid',
   invalidServiceID: 'Service is invalid',
   invalidService: 'No such a service',
