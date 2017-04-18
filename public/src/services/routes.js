@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router';
 import Home from '../components/pages/Index/home.vue';
 
-import servicePage from '../components/Business/service-page.vue';
+import servicePage from '../components/Service/service-page.vue';
 
 import clientLogin from '../components/Client/login.vue';
 import clientLogout from '../components/Client/logout.vue';

@@ -20,7 +20,27 @@
             </div>
     
             <div class="column">
-                <div class="box cyan-bg" v-for="offer in offerings" style="margin-top:2em; margin-bottom:2em">
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="Info" name="first">
+                        <article class="box" style="margin:2em">
+                            <h1 class="title" style="margin-bottom:1em">Description:</h1>
+                            <div>{{description}}</div>
+                        </article>
+    
+                    </el-tab-pane>
+                    <el-tab-pane label="Gallery" name="second">
+                          <div>
+                                <template>
+                                    <el-carousel :interval="5000" arrow="always">
+                                        <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
+                                            <img :src="item.path" class="extended" > </img>
+                                        </el-carousel-item>
+                                    </el-carousel>
+                                </template>
+                            </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="Offerings" name="third">
+                          <div class="box cyan-bg" v-for="offer in offerings" style="margin-top:2em; margin-bottom:2em">
                     <div class="columns">
                         <div class="column is-6">
                             <p>
@@ -41,27 +61,20 @@
                     </div>
     
                 </div>
-    
-                <el-tabs v-model="activeName" @tab-click="handleClick">
-                    <el-tab-pane label="Info" name="first">
-                        <article class="box" style="margin:2em">
-                            <h1 class="title" style="margin-bottom:1em">Description:</h1>
-                            <div>{{shortDescription}}</div>
-                            <h1 class="title" style="margin-top:2em">Gallery:</h1>
-                            <!--TODO:Carousal should go here-->
-                            <div>
-                                <template>
-                                    <el-carousel :interval="5000" arrow="always">
-                                        <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
-                                            <img :src="item"> </img>
-                                        </el-carousel-item>
-                                    </el-carousel>
-                                </template>
-                            </div>
-                        </article>
-    
                     </el-tab-pane>
-                    <el-tab-pane label="Reviews" name="second">Config</el-tab-pane>
+                        <el-tab-pane label="Ratings" name="fourth">
+                                <el-card class="box-card" v-for="review in reviews" v-bind:data="review" v-bind:key="review">
+                                    <div slot="header" class="clearfix">
+                                        <span style="line-height: 36px;">
+                                            <el-rate v-model="review.rating" disabled show-text text-color="#ff9900" text-template="{value} points"></el-rate>
+                                        </span>
+                                        <el-button style="float: right;" type="primary">Operation button</el-button>
+                                    </div>
+                                    <div class="text item">
+                                        {{review.description}}
+                                    </div>
+                                </el-card>
+                        </el-tab-pane>
                 </el-tabs>
             </div>
     
@@ -117,7 +130,7 @@
                                         <div style="padding: 14px;">
                                             <span>{{relatedService.name}}</span>
                                             <div class="bottom clearfix">
-                                                <el-button type="text" class="button is-primary">{{relatedService.name}}</el-button>
+                                                <el-button type="text" class="button is-primary" @click="goTo(relatedService._id)"> Check it now </el-button>
                                             </div>
                                         </div>
                                     </el-card>
@@ -159,12 +172,14 @@
                 offerings: null,
                 value5: 3.7,
                 relatedServices: null,
+                current: '',
             };
         },
         methods: {
             //send get request to obtain service info using service id
             getService() {
-                axios.get(EndPoints.Service().viewSearvice(this.$route.params.id)).then((res) => {
+                    
+                axios.get(EndPoints.Service().viewService(this.$route.params.id)).then((res) => {
                     const service = res.data;
                     this.name = service.name,
                         this.shortDescription = service.shortDescription,
@@ -184,15 +199,14 @@
                         this.offerings = service.offerings,
                         this.getRelatedServices();
                 }).catch((err) => {
-                    console.log(err);
+                    //TODO: redirect to 404
                 });
             },
             //obtains 3 related services from on of the categories
             getRelatedServices() {
                 if(this.categories.length === 0)
                 return;
-
-                axios.get(EndPoints.viewRelatedServices(this.categories[0], 1)).then((res) => {
+                axios.get(EndPoints.Service().viewRelatedServices(this.categories[0]._id, 1)).then((res) => {
                     this.relatedServices = res.data.results;
                 }).catch(() =>  this.relatedServices = []);
             },
@@ -202,6 +216,10 @@
             //link to booking
             BookNow() {
                 alert('booking');
+            },
+            goTo(relatedID) {
+                 this.$router.push((relatedID));
+                 this.$router.go((relatedID));
             }
         },
         mounted() {
@@ -283,4 +301,30 @@
     .clearfix:after {
         clear: both
     }
+
+.extended {
+    width: 100%;
+    height: 100%;
+}
+
+.text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 18px 0;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  .clearfix:after {
+      clear: both
+  }
+
+  .box-card {
+    width: 480px;
+  }
 </style>

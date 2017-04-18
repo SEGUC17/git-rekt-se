@@ -46,25 +46,25 @@ describe('Search Test Suite', () => {
   const properOfferings = [];
 
 
-  after((done) => {
-    Service.collection.drop(() => {
-      Service.ensureIndexes(() => {
-        Branch.collection.drop(() => {
-          Branch.ensureIndexes(() => {
-            Category.collection.drop(() => {
-              Category.ensureIndexes(() => {
-                Business.collection.drop(() => {
-                  Business.ensureIndexes(() => {
-                    done();
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
+  // after((done) => {
+  //   Service.collection.drop(() => {
+  //     Service.ensureIndexes(() => {
+  //       Branch.collection.drop(() => {
+  //         Branch.ensureIndexes(() => {
+  //           Category.collection.drop(() => {
+  //             Category.ensureIndexes(() => {
+  //               Business.collection.drop(() => {
+  //                 Business.ensureIndexes(() => {
+  //                   done();
+  //                 });
+  //               });
+  //             });
+  //           });
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
 
   before((done) => {
     Service.collection.drop(() => {
@@ -133,6 +133,8 @@ describe('Search Test Suite', () => {
                                         services[0]._business = savedBusiness0._id;
                                         services[0].categories.push(savedCategory0._id);
                                         services[0].categories.push(savedCategory2._id);
+                                        services[0].gallery.push({ path: 'http://localhost:3000/assets/imgs/home/make-online-booking.svg' },
+                                        { path: 'http://localhost:3000/assets/imgs/home/make-online-booking.svg' });
 
                                         services[1]._business = savedBusiness1._id;
                                         services[1].categories.push(savedCategory0._id);

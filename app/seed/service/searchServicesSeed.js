@@ -7,6 +7,8 @@ const services = [{
   shortDescription: '3000 NC - 2000 Z',
   _avgRating: 7,
   categories: [],
+  gallery: [],
+  reviews: [],
 },
 {
   name: 'English Course',
