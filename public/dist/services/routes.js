@@ -19153,7 +19153,11 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('reportButton')], 1)
+  return _c('div', [_c('reportButton', {
+    attrs: {
+      "repid": ""
+    }
+  })], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -53934,12 +53938,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
 
-    props: ['id'],
+    props: ['repid'],
     mounted: function mounted() {},
 
     methods: {
         reviewclicked: function reviewclicked() {
-            this.currid = id;
+            this.currid = repid;
             this.sure = true;
         },
         confirmedreport: function confirmedreport() {

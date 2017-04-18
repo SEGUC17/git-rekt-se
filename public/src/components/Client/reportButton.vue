@@ -27,13 +27,13 @@
                 currid: '',
             }
         },
-        props: ['id'],
+        props: ['repid'],
         mounted() {
         },
         methods: {
 
       reviewclicked() {
-          this.currid = id;
+          this.currid = repid;
           this.sure =true;
       }, 
       confirmedreport() {
