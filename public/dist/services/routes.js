@@ -920,8 +920,9 @@ process.umask = function() { return 0; };
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return clientSignUpValidation; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return loginRules; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return clientSignUpValidation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return loginRules; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clientForgotPassword; });
 /* unused harmony default export */ var _unused_webpack_default_export = ({});
 
 var clientSignUpValidation = {
@@ -1015,6 +1016,16 @@ var loginRules = {
     required: true,
     message: 'Password is required.',
     trigger: 'blur'
+  }]
+};
+
+var clientForgotPassword = {
+  email: [{
+    required: true,
+    message: 'Email is required.',
+    trigger: 'blur'
+  }, {
+    type: 'email', message: 'Please input correct email address', trigger: 'blur,change'
   }]
 };
 
@@ -5390,7 +5401,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         email: '',
         password: ''
       }),
-      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["a" /* loginRules */],
+      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["b" /* loginRules */],
       logged_in: false,
       loginSuccess: '',
       errors: []
@@ -5511,7 +5522,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         email: '',
         password: ''
       }),
-      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["a" /* loginRules */],
+      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation__["b" /* loginRules */],
       logged_in: false,
       loginSuccess: '',
       errors: []
@@ -9368,8 +9379,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    __WEBPACK_IMPORTED_MODULE_4__services_validation__["b" /* clientSignUpValidation */].confirmPassword[1].validator = __WEBPACK_IMPORTED_MODULE_4__services_validation__["b" /* clientSignUpValidation */].confirmPassword[1].validator.bind(this);
-    __WEBPACK_IMPORTED_MODULE_4__services_validation__["b" /* clientSignUpValidation */].password[2].validator = __WEBPACK_IMPORTED_MODULE_4__services_validation__["b" /* clientSignUpValidation */].password[2].validator.bind(this);
+    __WEBPACK_IMPORTED_MODULE_4__services_validation__["c" /* clientSignUpValidation */].confirmPassword[1].validator = __WEBPACK_IMPORTED_MODULE_4__services_validation__["c" /* clientSignUpValidation */].confirmPassword[1].validator.bind(this);
+    __WEBPACK_IMPORTED_MODULE_4__services_validation__["c" /* clientSignUpValidation */].password[2].validator = __WEBPACK_IMPORTED_MODULE_4__services_validation__["c" /* clientSignUpValidation */].password[2].validator.bind(this);
     return {
       form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
         email: '',
@@ -9381,7 +9392,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         mobile: '',
         birthdate: ''
       }),
-      rules: __WEBPACK_IMPORTED_MODULE_4__services_validation__["b" /* clientSignUpValidation */],
+      rules: __WEBPACK_IMPORTED_MODULE_4__services_validation__["c" /* clientSignUpValidation */],
       showPassword: 'password',
       showConfirm: 'password',
       success: false,
@@ -9923,6 +9934,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_validation_js__ = __webpack_require__(9);
 //
 //
 //
@@ -9956,8 +9968,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
+
 
 
 
@@ -9969,6 +9980,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       form: new __WEBPACK_IMPORTED_MODULE_1__services_Form_js__["a" /* default */]({
         email: ''
       }),
+      rules: __WEBPACK_IMPORTED_MODULE_3__services_validation_js__["a" /* clientForgotPassword */],
       success: false
     };
   },
@@ -10050,7 +10062,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._m(0)]), _vm._v(" "), _c('div', {
     staticClass: "hero-body",
     staticStyle: {
-      "padding": "200px 200px 50px 200px"
+      "margin": "3em"
     }
   }, [_c('div', {
     staticClass: "container"
@@ -10063,23 +10075,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "login-form",
     attrs: {
       "model": _vm.form,
-      "label-width": "120px"
+      "label-width": "120px",
+      "rules": _vm.rules
     }
   }, [_c('el-form-item', {
     attrs: {
       "prop": "email",
-      "label": "Email",
-      "rules": [{
-          required: true,
-          message: 'Please input email address',
-          trigger: 'blur'
-        },
-        {
-          type: 'email',
-          message: 'Please input correct email address',
-          trigger: 'blur,change'
-        }
-      ]
+      "label": "Email"
     }
   }, [_c('p', {
     staticClass: "control has-icon has-icon-right"

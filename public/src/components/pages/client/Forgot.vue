@@ -5,15 +5,13 @@
         <p>Please check your e-mail, to login</p>
       </div>
     </article>
-    <div class="hero-body" style="padding : 200px 200px 50px 200px">
+
+    <div class="hero-body" style="margin : 3em">
       <div class="container">
         <div class="columns">
           <div class="column is-8 is-offset-2">
-            <el-form :model="form" ref="form" label-width="120px" class="login-form">
-              <el-form-item prop="email" label="Email" :rules="[
-                        { required: true, message: 'Please input email address', trigger: 'blur' },
-                        { type: 'email', message: 'Please input correct email address', trigger: 'blur,change' }
-                      ]">
+            <el-form :model="form" ref="form" label-width="120px" class="login-form" :rules="rules">
+              <el-form-item prop="email" label="Email">
                 <p class="control has-icon has-icon-right">
                   <el-input v-model="form.email"></el-input>
                   <span class="icon user">
@@ -37,6 +35,7 @@
   import axios from 'axios';
   import Form from '../../../services/Form.js';
   import Endpoints from '../../../services/EndPoints.js';
+  import {clientForgotPassword} from '../../../services/validation.js';
 
   export default {
     data() {
@@ -44,6 +43,7 @@
         form: new Form({
           email: '',
         }),
+         rules: clientForgotPassword,
          success: false,
       };
     },
