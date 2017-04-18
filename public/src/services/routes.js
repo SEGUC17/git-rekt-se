@@ -22,7 +22,7 @@ const routes = [{
 },
 {
   path: '/business/:id',
-  component: busPage,
+  component: businessPage,
 }, {
   path: '/client/signup',
   component: clientSignUp,
