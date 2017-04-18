@@ -16,9 +16,7 @@ export default {
       .post(Client().login, data)
       .then((response) => {
         this.user.authenticated = true;
-        localStorage.setItem('client_token', response.data.token);
-        localStorage.setItem('client_email', response.data.email);
-        localStorage.setItem('client_id', response.data.id);
+        this.storeData(response);
         return callBack(null, response.data);
       })
       .catch((err) => {
@@ -49,5 +47,11 @@ export default {
     } else {
       this.user.authenticated = false;
     }
+  },
+  storeData(response) {
+    console.log(1);
+    localStorage.setItem('client_token', response.data.token);
+    localStorage.setItem('client_email', response.data.email);
+    localStorage.setItem('client_id', response.data.id);
   },
 };

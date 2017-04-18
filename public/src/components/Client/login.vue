@@ -16,6 +16,9 @@
         <div class="client-login-form columns">
             <div class="column is-half is-offset-one-quarter">
 
+                <div v-show="info">
+                    <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
+                </div>
                 <div v-show="errors.length > 0">
                     <div class="error" v-for="error in errors">
                         <el-alert :title="error" type="error" show-icon>
@@ -24,7 +27,7 @@
                 </div>
 
                 <div v-show="logged_in">
-                    <el-alert :title="loginSuccess" type="success" show-icon>
+                    <el-alert @close="logged_in = false" :title="loginSuccess" type="success" show-icon>
                     </el-alert>
                 </div>
 
@@ -53,6 +56,7 @@
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
   import { loginRules } from '../../services/validation';
+  import { Client } from '../../services/EndPoints';
 
   export default {
     data() {
@@ -62,8 +66,10 @@
           password: '',
         }),
         rules: loginRules,
+        info: false,
         logged_in: false,
         loginSuccess: '',
+        message: '',
         errors: [],
       };
     },
@@ -103,6 +109,32 @@
         });
       },
     },
+    mounted() {
+      if(this.$route.query && this.route.query !== {}){
+        const token = this.$route.query.find(key => key === 'token');
+        if(!token || token.length === 0){
+          this.errors.push('Invalid Query');
+          return;
+        }
+        const loader = this.$loading({
+          fullscreen: true,
+          text: 'Signing in..',
+        });
+        axios.post(Client().finalizeFb, {
+          token,
+        }).then((response) => {
+          console.log(response);
+          this.logged_in = true;
+          this.loginSuccess = response.data.message;
+          clientAuth.storeData(response);
+          loader.close();
+        }).catch((err) => {
+          console.log(err);
+          this.errors = this.errors.concat(err.reponse ? err.reponse.data.errors : [err.message]);
+          loader.close();
+        });
+      }
+    }
   };
 </script>
 
