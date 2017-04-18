@@ -53,7 +53,8 @@ export const Business = () => {
     deleteOffering: (serviceID, offeringID) => `${serviceBase}/${serviceID}/offering/${offeringID}/delete`,
 
     addImage: businessID => `${galleryBase}/${businessID}/gallery/add`,
-    businessInfo: `${BASE}/business/info/all`,
+    businessInfo: `${businessBase}/general`,
+    businessbranches: `${businessBase}/branches`,
   };
 };
 

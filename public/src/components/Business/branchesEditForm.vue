@@ -67,13 +67,13 @@
                     fullscreen: true,
                 });
                 axios.get(Business()
-                    .businessInfo, {
+                    .businessbranches, {
                         headers: {
                             Authorization: businessAuth.getJWTtoken(),
                         },
                     }).then((infoResponse) => {
                     loader.close();
-                    this.branchesForm.branches = infoResponse.data.results.branches;
+                    this.branchesForm.branches = infoResponse.data.results;
                     this.errors = [];
                     this.branchesForm.branches.push({
                         location: '',

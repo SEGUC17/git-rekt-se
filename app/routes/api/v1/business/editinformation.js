@@ -28,10 +28,10 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Buisness get all of its info API Route
+ * Buisness get its general info API Route
  */
 
-router.get('/all', businessAuthMiddleware, (req, res, next) => {
+router.get('/general', businessAuthMiddleware, (req, res, next) => {
   Business.findOne({
     _id: req.user.id,
     _deleted: false,
@@ -39,21 +39,15 @@ router.get('/all', businessAuthMiddleware, (req, res, next) => {
     description: true,
     workingHours: true,
     categories: true,
-    branches: true,
     _id: false,
   })
     .populate({
       path: 'categories',
       select: 'title',
     })
-    .populate({
-      path: 'branches',
-      select: 'location address _deleted',
-    })
     .exec()
     .then((business) => {
       if (business) {
-        business.branches = business.branches.filter(branch => !branch._deleted);
         res.json({
           results: business,
         });
@@ -63,6 +57,37 @@ router.get('/all', businessAuthMiddleware, (req, res, next) => {
     })
     .catch(e => next([e]));
 });
+
+/**
+ * Buisness get all of its branches info API Route
+ */
+
+router.get('/branches', businessAuthMiddleware, (req, res, next) => {
+  Business.findOne({
+    _id: req.user.id,
+    _deleted: false,
+  }, {
+    branches: true,
+    _id: false,
+  })
+    .populate({
+      path: 'branches',
+      select: 'location address _deleted',
+    })
+    .exec()
+    .then((business) => {
+      if (business) {
+        business.branches = business.branches.filter(branch => !branch._deleted);
+        res.json({
+          results: business.branches,
+        });
+      } else {
+        next([businessMessages.businessDoesntExist]);
+      }
+    })
+    .catch(e => next([e]));
+});
+
 
 /**
  * Business Edit Info API Route.
