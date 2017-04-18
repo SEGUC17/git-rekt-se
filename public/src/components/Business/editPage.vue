@@ -65,7 +65,7 @@
                                 <el-button @click="removeBranch(index)">Delete Branch</el-button>
                                 <el-button @click="updateBranch(index)">Update Branch</el-button>
     
-                                <el-button v-show="index === branchesForm.branches.length-1" @click="addBranch">Add a New Branch</el-button>
+                                <el-button v-show="index === branchesForm.branches.length-1" @click="saveBranch(index)">Save New Branch</el-button>
                             </el-form-item>
     
     
@@ -103,10 +103,7 @@
                     categories: [],
                 }),
                 branchesForm: new Form({
-                    branches: [{
-                        location: '',
-                        address: '',
-                    }]
+                    branches: []
                 }),
                 enableInfoTab: true,
                 enableBranchesTab: false,
@@ -134,6 +131,10 @@
                     this.infoForm.categories = infoResponse.data.results.categories;
                     this.branchesForm.branches = infoResponse.data.results.branches;
     
+                    this.branchesForm.branches.push({
+                        location: '',
+                        address: '',
+                    });
                 }).catch(e => this.errors = e);
             }).catch(e => this.errors = e);
     
@@ -151,7 +152,7 @@
                             }).then((response) => {
                                 this.success = true;
                                 this.editSuccess = response.data.message;
-                                   setTimeout(() => {
+                                setTimeout(() => {
                                     this.$router.go(this.$router.path);
                                 }, 1000);
                             }).catch(e => this.errors = e);
@@ -177,22 +178,58 @@
                     this.enableInfoTab = false;
                 }
             },
-            addBranch() {
-                this.branchesForm.branches.push({
-                    location: '',
-                    address: ''
-                });
+            saveBranch(idx) {
+                if (this.branchesForm.branches[idx].location && this.branchesForm.branches[idx].address) {
+                    axios.post(Business().addBranch, {
+                        branches: [this.branchesForm.branches[idx]]
+                    }, {
+                        headers: {
+                            Authorization: businessAuth.getJWTtoken(),
+                        },
+                    }).then((response) => {
+                        this.success = true;
+                        this.editSuccess = response.data.message;
+                        setTimeout(() => {
+                            this.$router.go(this.$router.path);
+                        }, 1000);
+                    }).catch(e => this.errors = e);
+                    this.branchesForm.branches.push({
+                        location: '',
+                        address: ''
+                    });
+                } else {
+                    this.errors = ['Fill all the info of branch to save it'];
+                }
+    
             },
             removeBranch(idx) {
-                this.branchesForm.branches = this.branchesForm.branches.filter((branch, index) => {
-                    return idx !== index;
-                });
-                if (this.branchesForm.branches.length === 0) {
-                    this.addBranch();
-                }
+                axios.delete(Business().deleteBranch(businessAuth.user.userID(), this.branchesForm.branches[idx]._id), {
+                    headers: {
+                        Authorization: businessAuth.getJWTtoken(),
+                    },
+                }).then((response) => {
+                    this.success = true;
+                    this.editSuccess = response.data.message;
+                    setTimeout(() => {
+                        this.$router.go(this.$router.path);
+                    }, 1000);
+                }).catch(e => this.errors = e);
             },
             updateBranch(idx) {
-    
+                
+                axios.put(Business().editBranch(businessAuth.user.userID(), this.branchesForm.branches[idx]._id), {
+                    branch: this.branchesForm.branches[idx]
+                }, {
+                    headers: {
+                        Authorization: businessAuth.getJWTtoken(),
+                    },
+                }).then((response) => {
+                    this.success = true;
+                    this.editSuccess = response.data.message;
+                    setTimeout(() => {
+                        this.$router.go(this.$router.path);
+                    }, 1000);
+                }).catch(e => this.errors = e);
             },
         }
     
