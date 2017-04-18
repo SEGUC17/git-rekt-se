@@ -48,7 +48,7 @@ router.post('/signup', (req, res, next) => {
     mobile: req.body.mobile,
     gender: req.body.gender,
     birthdate: req.body.birthdate,
-    _facebookId: req.body.id ? req.body.id : '',
+    _facebookId: req.body.id && req.body.id.length ? req.body.id : '',
   };
 
   /**

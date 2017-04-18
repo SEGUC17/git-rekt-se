@@ -121,6 +121,7 @@
           .validator.bind(this);
       return {
         form: new Form({
+          id: '',
           email: '',
           password: '',
           confirmPassword: '',
@@ -143,6 +144,7 @@
     },
     methods: {
       onClick() {
+        this.info = false;
         this.error = false;
         this.success = false;
         this.message = '';
@@ -155,6 +157,7 @@
                   this.loading = false;
                   this.success = true;
                   this.message = data.message;
+                  this.form = new Form(data);
                 }).catch(() => {
                   this.success = false;
                   this.loading = false;
@@ -210,6 +213,7 @@
           }, this);
           this.info = true;
           this.message = 'These information where fetched from facebook, feel free to edit any of them if needed!';
+          console.log(this.form.data());
       }
     },
     components: {

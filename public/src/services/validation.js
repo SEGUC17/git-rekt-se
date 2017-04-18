@@ -33,6 +33,10 @@ export const clientSignUpValidation = {
     trigger: 'blur',
   }, {
     validator(rule, value, callBack) {
+      if (!this.form.password){
+        callBack();
+        return;
+      }
       if (this.form.password.length > 0) {
         if (this.form.password !== value) {
           callBack([new Error('Password and password confirmation mismatch.')]);
