@@ -34,7 +34,7 @@
         </el-form>
       </el-card>
       <div class="services-list">
-        <el-card class="service-card" v-for="service in services" :key="service.id">
+        <el-card class="service-card" v-for="service in services" :key="service._id">
           <span>{{service.name}}</span>
           <div class="service-buttons is-pulled-right">
             <router-link tag="el-button" :to="offeringsURL(service)"> <i class="el-icon-document"></i>Edit Offerings</router-link>
@@ -121,8 +121,13 @@
         .then((response) => {
           this.categories = response.data.categories;
         })
-        .catch((err) => {
-          this.generalErrors = err.response.data.errors;
+        .catch((error) => {
+          this.generalErrors = error.response.data.errors.map((err) => {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
         });
     },
     methods: {
@@ -139,9 +144,14 @@
           loader.close();
           this.services = response.data.services;
         })
-        .catch((err) => {
+        .catch((error) => {
           loader.close();
-          this.generalErrors = err.response.data.errors;
+          this.generalErrors = error.response.data.errors.map((err) => {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
         });
       },
       createService() {
@@ -165,7 +175,7 @@
             })
             .catch((error) => {
               loader.close();
-              this.errors = error.errors.map((err) => {
+              this.createErrors = error.response.data.errors.map((err) => {
                 if (typeof err === 'string') {
                   return err;
                 }
@@ -196,7 +206,7 @@
             })
             .catch((error) => {
               loader.close();
-              this.errors = error.errors.map((err) => {
+              this.editErrors = error.response.data.errors.map((err) => {
                 if (typeof err === 'string') {
                   return err;
                 }
@@ -225,7 +235,7 @@
         })
         .catch((error) => {
           loader.close();
-          this.errors = error.errors.map((err) => {
+          this.deleteErrors = error.response.data.errors.map((err) => {
             if (typeof err === 'string') {
               return err;
             }
@@ -245,10 +255,10 @@
         this.deleteVisible = true;
       },
       offeringsURL(service) {
-        return `/business/edit/${service.id}/offerings`;
+        return `/business/edit/${service._id}/offerings`;
       },
       galleryURL(service) {
-        return `/business/edit/${service.id}/gallery`;
+        return `/business/edit/${service._id}/gallery`;
       },
     },
   };

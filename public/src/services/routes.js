@@ -6,6 +6,7 @@ import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
 import editServices from '../components/Business/Service/editServices.vue';
+import editOfferings from '../components/Business/Service/editOfferings.vue';
 
 const routes = [{
   path: '/',
@@ -28,6 +29,9 @@ const routes = [{
 }, {
   path: '/business/editServices',
   component: editServices,
+}, {
+  path: '/business/edit/:id/offerings',
+  component: editOfferings,
 }];
 
 const router = new VueRouter({

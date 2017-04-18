@@ -141,9 +141,14 @@
             loader.close();
             this.offerings = response.data.offerings;
           })
-          .catch((err) => {
+          .catch((error) => {
             loader.close();
-            this.generalErrors = err.response.data.errors;
+            this.generalErrors = error.response.data.errors.map((err) => {
+              if (typeof err === 'string') {
+                return err;
+              }
+              return err.msg;
+            });
           });
       },
       createOffering() {
@@ -167,7 +172,7 @@
               })
               .catch((error) => {
                 loader.close();
-                this.errors = error.errors.map((err) => {
+                this.createErrors = error.response.data.errors.map((err) => {
                   if (typeof err === 'string') {
                     return err;
                   }
@@ -199,7 +204,7 @@
               })
               .catch((error) => {
                 loader.close();
-                this.errors = error.errors.map((err) => {
+                this.editErrors = error.response.data.errors.map((err) => {
                   if (typeof err === 'string') {
                     return err;
                   }
@@ -228,7 +233,7 @@
           })
           .catch((error) => {
             loader.close();
-            this.errors = error.errors.map((err) => {
+            this.deleteErrors = error.response.data.errors.map((err) => {
               if (typeof err === 'string') {
                 return err;
               }
