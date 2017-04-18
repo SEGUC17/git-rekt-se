@@ -78,7 +78,7 @@
   <span>This cannot be undone. Delete this service?</span>
   <span slot="footer" class="dialog-footer">
     <el-button @click="deleteVisible = false">Cancel</el-button>
-    <el-button type="danger" @click="deleteService(service)">Delete</el-button>
+    <el-button type="danger" @click="deleteService">Delete</el-button>
   </span>
 </el-dialog>
   </div>
@@ -212,7 +212,7 @@
         const loader = this.$loading({
           fullscreen: true,
         });
-        Axios.post(Business().deleteService(this.serviceToDelete._id), this.serviceToDelete, {
+        Axios.post(Business().deleteService(this.serviceToDelete._id), null, {
           headers: {
             Authorization: BusinessAuth.getJWTtoken(),
           },
