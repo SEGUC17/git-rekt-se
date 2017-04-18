@@ -25,7 +25,7 @@ const businessValidationErrors = require('../shared/Strings')
 const clientSignupValidation = {
   email: {
     notEmpty: {
-      errorMessage: clientValidationErrors.emailEmpty,
+      errorMessage: clientValidationErrors.emptyEmail,
     },
     isEmail: {
       errorMessage: clientValidationErrors.invalidEmail,
@@ -60,7 +60,7 @@ const clientSignupValidation = {
       errorMessage: clientValidationErrors.emptyMobile,
     },
     matches: {
-      options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
+      options: [/^01[0-2]{1}[0-9]{8}$/], // Egyptian Mobile phone
       errorMessage: clientValidationErrors.invalidMobile,
     },
   },
