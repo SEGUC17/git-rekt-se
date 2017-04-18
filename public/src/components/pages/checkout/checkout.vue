@@ -48,7 +48,7 @@
 
 <script>
   import axios from 'axios';
-  import {Visitor, Service} from '../../../services/EndPoints';
+  import { Visitor, Service } from '../../../services/EndPoints';
   import serviceInfoHeader from './serviceInfoHeader.vue';
   import checkoutStep1 from './checkoutStep1.vue';
   import checkoutStep2 from './checkoutStep2.vue';
@@ -155,8 +155,8 @@
               this.active = 3;
               this.loader.close();
             }).catch(() => {
-          this.loader.close();
-        });
+              this.loader.close();
+            });
       },
     },
     mounted() {
