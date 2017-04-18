@@ -18,36 +18,36 @@
 </template>
 
 <script>
-    import clientAuth from '../../services/clientAuth';
+    import clientAuth from '../../services/auth/clientAuth';
     
     export default {
-        data() {
-            return {
-                errors: [],
-                logoutSuccess: '',
-                success: false,
-            }
-        },
+      data() {
+        return {
+          errors: [],
+          logoutSuccess: '',
+          success: false,
+        };
+      },
     
-        mounted() {
-            clientAuth.refreshAuth();
-            if (!clientAuth.user.authenticated) {
-                this.$router.push('/');
+      mounted() {
+        clientAuth.refreshAuth();
+        if (!clientAuth.user.authenticated) {
+          this.$router.push('/');
+        } else {
+          clientAuth.logout((responseErrs, response) => {
+            if (responseErrs) {
+              this.errors = responseErrs.errors;
             } else {
-                clientAuth.logout((responseErrs, response) => {
-                    if (responseErrs) {
-                        this.errors = responseErrors.errors;
-                    } else {
-                        this.success = true;
-                        this.logoutSuccess = response.message;
-                        setTimeout(() => {
-                            this.$router.push('/')
-                        }, 1000);
-                    }
-                });
+              this.success = true;
+              this.logoutSuccess = response.message;
+              setTimeout(() => {
+                this.$router.push('/');
+              }, 1000);
             }
+          });
         }
-    }
+      },
+    };
 </script>
 
 <style>
