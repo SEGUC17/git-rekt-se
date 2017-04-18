@@ -1340,17 +1340,8 @@ var Service = function Service() {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-  Client: function Client() {
-    var authBase = BASE + '/client/auth';
-    var profileBase = BASE + '/client/profile';
-    return {
-      signup: authBase + '/signup',
-      resend: authBase + '/confirmation/send',
-      forgot: authBase + '/forgot'
-    };
-  },
-
   Visitor: Visitor,
+  Client: Client,
   Business: Business,
   Admin: Admin,
   Service: Service
