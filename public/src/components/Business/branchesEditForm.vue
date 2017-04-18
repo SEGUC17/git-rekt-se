@@ -8,12 +8,11 @@
                     </el-option>
                 </el-select>
             </el-input>
-            <el-button @click="removeBranch(index)">Delete Branch</el-button>
-            <el-button @click="updateBranch(index)">Update Branch</el-button>
+            <el-button v-show="index < branchesForm.branches.length-1" @click="removeBranch(index)">Delete Branch</el-button>
+            <el-button v-show="index < branchesForm.branches.length-1" @click="updateBranch(index)">Update Branch</el-button>
     
-            <el-button v-show="index === branchesForm.branches.length-1" @click="saveBranch(index)">Save New Branch</el-button>
+            <el-button v-show="index === branchesForm.branches.length-1" @click="saveBranch(index)">Save Branch</el-button>
         </el-form-item>
-    
     
     </el-form>
 </template>
