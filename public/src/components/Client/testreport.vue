@@ -10,6 +10,9 @@
     import { Notification } from 'element-ui';
     import { Client } from '../../services/EndPoints.js';
     import reportButton from "../../components/Client/reportButton.vue"
+    /**
+        ID is hardcoded for testing purposes
+     */
     export default {
         data() {
             return {
