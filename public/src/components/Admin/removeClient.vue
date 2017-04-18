@@ -19,17 +19,33 @@
                 </span>
             </el-dialog>
     
-            <div v-for="client in clients">
-                <div>{{client.firstName}}&nbsp;{{client.lastName}}
-                            <el-button class="button is-danger" style="float: right;"@click="deleteclicked(client)" >Delete &nbsp; <span class="icon">
+       <el-table
+        :data="clients"
+        border
+        style="width: 100%"
+        empty-text="No Clients">
+            <el-table-column
+            prop="firstName"
+            label="First Name"
+            sortable = true>
+            </el-table-column>
+             <el-table-column
+            prop="lastName"
+            label="Last Name"
+            sortable = true>
+            </el-table-column>
+            <el-table-column
+            label ="Operation">
+                <template scope = "scope">
+                    <el-button class="button is-danger"@click="deleteclicked(scope.row)" >Delete &nbsp; 
+                        <span class="icon">
                             <i class="fa fa-trash-o"></i>
                         </span></el-button>
-                        <br></br>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </template>
+            </el-table-column>
+        </el-table>
     </div>
+</div>
 </template>
 
 <script>
@@ -55,8 +71,7 @@
             getClients() {
         axios
             .get(Admin().listClients)
-            .then((res) => {
-              console.log(res);
+            .then((res) => {    
               this.clients = res.data;
               this.errors = [];
             })

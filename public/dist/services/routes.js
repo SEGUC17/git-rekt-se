@@ -39504,13 +39504,13 @@ module.exports = Component.exports
 
 
 /* styles */
-__webpack_require__(126)
+__webpack_require__(127)
 
 var Component = __webpack_require__(8)(
   /* script */
   __webpack_require__(83),
   /* template */
-  __webpack_require__(121),
+  __webpack_require__(122),
   /* scopeId */
   null,
   /* cssModules */
@@ -41959,7 +41959,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Client_login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Client_login_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_Client_logout_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Admin_removeClient_vue__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Admin_removeClient_vue__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_Admin_removeClient_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_Admin_removeClient_vue__);
 
 
@@ -44151,7 +44151,136 @@ function mergeFn (a, b) {
 
 
 /***/ }),
-/* 81 */,
+/* 81 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_element_ui__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_element_ui___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_element_ui__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__ = __webpack_require__(14);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            errors: [],
+            clients: [],
+            sure: false,
+            shownot: false,
+            currname: '',
+            currid: ''
+        };
+    },
+    mounted: function mounted() {
+        this.names = this.getClients();
+    },
+
+    methods: {
+        getClients: function getClients() {
+            var _this = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* Admin */])().listClients).then(function (res) {
+                console.log(res);
+                _this.clients = res.data;
+                _this.errors = [];
+            }).catch(function (err) {
+                for (var i = 0; i < err.response.data.errors.length; i += 1) {
+                    _this.errors.push(err.response.data.errors[i]);
+                }
+                _this.clients = [];
+            });
+        },
+        deleteclicked: function deleteclicked(client) {
+            console.log(client);
+            this.currname = client.firstName + " " + client.lastName;
+            this.currid = client._id;
+            this.sure = true;
+        },
+        confirmeddeletion: function confirmeddeletion() {
+            var _this2 = this;
+
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* Admin */])().deleteClient(this.currid)).then(function (res) {
+                _this2.$notify({
+                    title: 'Success',
+                    message: 'Client Deleted Successfully!',
+                    type: 'success'
+                });
+                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* Admin */])().listClients).then(function (res) {
+                    _this2.clients = res.data;
+                    _this2.errors = [];
+                }).catch(function (err) {
+                    for (var i = 0; i < err.response.data.errors.length; i += 1) {
+                        _this2.errors.push(err.response.data.errors[i]);
+                    }
+                    _this2.clients = [];
+                    _this2.errors = [];
+                });
+            }).catch(function (err) {
+                for (var i = 0; i < err.response.data.errors.length; i += 1) {
+                    _this2.errors.push(err.response.data.errors[i]);
+                }
+            });
+        }
+    }
+});
+
+/***/ }),
 /* 82 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -46963,17 +47092,23 @@ function isnan (val) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)();
-exports.push([module.i, "\n.extra-large {\n    font-size: 4em;\n    line-height: 1.2em;\n}\n.intro-container {\n    padding: 5em;\n}\n.index-search {\n    margin: auto !important;\n    text-align: center;\n    display: block;\n}\n.gr-content {\n    background-image: url('http://localhost:3000/assets/imgs/idx_bg.jpg');\n    margin-bottom: 2em;\n}\n.how-it-works {\n    padding: 0 3em;\n    margin-top: 2em;\n    margin-bottom: 2em;\n}\n.full-width {\n    width: 100%;\n}\n\n", ""]);
+exports.push([module.i, "\n.error {\n    margin-top: 20px;\n}\n.error:first-child {\n    margin-top: none;\n}\n.demo-ruleForm {\n    margin-top: 30px;\n}\n", ""]);
 
 /***/ }),
 /* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(5)();
+exports.push([module.i, "\n.extra-large {\n    font-size: 4em;\n    line-height: 1.2em;\n}\n.intro-container {\n    padding: 5em;\n}\n.index-search {\n    margin: auto !important;\n    text-align: center;\n    display: block;\n}\n.gr-content {\n    background-image: url('http://localhost:3000/assets/imgs/idx_bg.jpg');\n    margin-bottom: 2em;\n}\n.how-it-works {\n    padding: 0 3em;\n    margin-top: 2em;\n    margin-bottom: 2em;\n}\n.full-width {\n    width: 100%;\n}\n\n", ""]);
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
 exports.push([module.i, "\n.error {\n    margin-top: 20px;\n}\n.error:first-child {\n    margin-top: none;\n}\n", ""]);
 
 /***/ }),
-/* 95 */,
 /* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53218,8 +53353,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 117 */,
-/* 118 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -53228,9 +53362,47 @@ __webpack_require__(125)
 
 var Component = __webpack_require__(8)(
   /* script */
-  __webpack_require__(84),
+  __webpack_require__(81),
   /* template */
   __webpack_require__(120),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/youssef/git-rekt-se/public/src/components/Admin/removeClient.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] removeClient.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-30a2f2a8", Component.options)
+  } else {
+    hotAPI.reload("data-v-30a2f2a8", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(126)
+
+var Component = __webpack_require__(8)(
+  /* script */
+  __webpack_require__(84),
+  /* template */
+  __webpack_require__(121),
   /* scopeId */
   null,
   /* cssModules */
@@ -53296,6 +53468,113 @@ module.exports = Component.exports
 
 /***/ }),
 /* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "columns is-mobile"
+  }, [_c('div', {
+    staticClass: "column is-half is-offset-one-quarter"
+  }, [_c('h1', {
+    staticClass: "title has-text-centered"
+  }, [_vm._v("Client list")]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.length > 0),
+      expression: "errors.length > 0"
+    }]
+  }, _vm._l((_vm.errors), function(error) {
+    return _c('div', {
+      staticClass: "error"
+    }, [_c('el-alert', {
+      attrs: {
+        "title": error,
+        "type": "error",
+        "show-icon": ""
+      }
+    })], 1)
+  })), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Confirm Deletion",
+      "size": "tiny"
+    },
+    model: {
+      value: (_vm.sure),
+      callback: function($$v) {
+        _vm.sure = $$v
+      },
+      expression: "sure"
+    }
+  }, [_c('span', [_vm._v("Are you sure you want to delete " + _vm._s(_vm.currname) + "?")]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    slot: "footer"
+  }, [_c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.sure = false
+      }
+    }
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c('el-button', {
+    staticClass: "button is-primary",
+    on: {
+      "click": function($event) {
+        _vm.sure = false, _vm.confirmeddeletion(), _vm.shownot = true
+      }
+    }
+  }, [_vm._v("Confirm")])], 1)]), _vm._v(" "), _c('el-table', {
+    staticStyle: {
+      "width": "100%"
+    },
+    attrs: {
+      "data": _vm.clients,
+      "border": "",
+      "empty-text": "No Clients"
+    }
+  }, [_c('el-table-column', {
+    attrs: {
+      "prop": "firstName",
+      "label": "First Name",
+      "sortable": "true"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "prop": "lastName",
+      "label": "Last Name",
+      "sortable": "true"
+    }
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "label": "Operation"
+    },
+    scopedSlots: _vm._u([
+      ["default", function(scope) {
+        return [_c('el-button', {
+          staticClass: "button is-danger",
+          on: {
+            "click": function($event) {
+              _vm.deleteclicked(scope.row)
+            }
+          }
+        }, [_vm._v("Delete   \n                        "), _c('span', {
+          staticClass: "icon"
+        }, [_c('i', {
+          staticClass: "fa fa-trash-o"
+        })])])]
+      }]
+    ])
+  })], 1)], 1)])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-30a2f2a8", module.exports)
+  }
+}
+
+/***/ }),
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -53429,7 +53708,7 @@ if (false) {
 }
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -53478,7 +53757,6 @@ if (false) {
 }
 
 /***/ }),
-/* 122 */,
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53627,13 +53905,13 @@ var content = __webpack_require__(93);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(9)("392dbeb8", content, false);
+var update = __webpack_require__(9)("6b58fa9a", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-47388a38\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./home.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-47388a38\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./home.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-30a2f2a8\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./removeClient.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-30a2f2a8\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./removeClient.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -53653,6 +53931,32 @@ var content = __webpack_require__(94);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
+var update = __webpack_require__(9)("392dbeb8", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-47388a38\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./home.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-47388a38\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./home.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(95);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
 var update = __webpack_require__(9)("95f2e968", content, false);
 // Hot Module Replacement
 if(false) {
@@ -53669,7 +53973,6 @@ if(false) {
 }
 
 /***/ }),
-/* 127 */,
 /* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -53774,274 +54077,6 @@ module.exports = function listToStyles (parentId, list) {
 
 module.exports = __webpack_require__(41);
 
-
-/***/ }),
-/* 146 */,
-/* 147 */,
-/* 148 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_element_ui__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_element_ui___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_element_ui__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__ = __webpack_require__(14);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            errors: [],
-            clients: [],
-            sure: false,
-            shownot: false,
-            currname: '',
-            currid: ''
-        };
-    },
-    mounted: function mounted() {
-        this.names = this.getClients();
-    },
-
-    methods: {
-        getClients: function getClients() {
-            var _this = this;
-
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* Admin */])().listClients).then(function (res) {
-                console.log(res);
-                _this.clients = res.data;
-                _this.errors = [];
-            }).catch(function (err) {
-                for (var i = 0; i < err.response.data.errors.length; i += 1) {
-                    _this.errors.push(err.response.data.errors[i]);
-                }
-                _this.clients = [];
-            });
-        },
-        deleteclicked: function deleteclicked(client) {
-            this.currname = client.firstName + " " + client.lastName;
-            this.currid = client._id;
-            this.sure = true;
-        },
-        confirmeddeletion: function confirmeddeletion() {
-            var _this2 = this;
-
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* Admin */])().deleteClient(this.currid)).then(function (res) {
-                _this2.$notify({
-                    title: 'Success',
-                    message: 'Client Deleted Successfully!',
-                    type: 'success'
-                });
-                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* Admin */])().listClients).then(function (res) {
-                    _this2.clients = res.data;
-                    _this2.errors = [];
-                }).catch(function (err) {
-                    for (var i = 0; i < err.response.data.errors.length; i += 1) {
-                        _this2.errors.push(err.response.data.errors[i]);
-                    }
-                    _this2.clients = [];
-                    _this2.errors = [];
-                });
-            }).catch(function (err) {
-                for (var i = 0; i < err.response.data.errors.length; i += 1) {
-                    _this2.errors.push(err.response.data.errors[i]);
-                }
-            });
-        }
-    }
-});
-
-/***/ }),
-/* 149 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(5)();
-exports.push([module.i, "\n.error {\n    margin-top: 20px;\n}\n.error:first-child {\n    margin-top: none;\n}\n.demo-ruleForm {\n    margin-top: 30px;\n}\n", ""]);
-
-/***/ }),
-/* 150 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(152)
-
-var Component = __webpack_require__(8)(
-  /* script */
-  __webpack_require__(148),
-  /* template */
-  __webpack_require__(151),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/youssef/git-rekt-se/public/src/components/Admin/removeClient.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] removeClient.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-30a2f2a8", Component.options)
-  } else {
-    hotAPI.reload("data-v-30a2f2a8", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 151 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "columns is-mobile"
-  }, [_c('div', {
-    staticClass: "column is-half is-offset-one-quarter"
-  }, [_c('h1', {
-    staticClass: "title has-text-centered"
-  }, [_vm._v("Client list")]), _vm._v(" "), _c('div', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.errors.length > 0),
-      expression: "errors.length > 0"
-    }]
-  }, _vm._l((_vm.errors), function(error) {
-    return _c('div', {
-      staticClass: "error"
-    }, [_c('el-alert', {
-      attrs: {
-        "title": error,
-        "type": "error",
-        "show-icon": ""
-      }
-    })], 1)
-  })), _vm._v(" "), _c('el-dialog', {
-    attrs: {
-      "title": "Confirm Deletion",
-      "size": "tiny"
-    },
-    model: {
-      value: (_vm.sure),
-      callback: function($$v) {
-        _vm.sure = $$v
-      },
-      expression: "sure"
-    }
-  }, [_c('span', [_vm._v("Are you sure you want to delete " + _vm._s(_vm.currname) + "?")]), _vm._v(" "), _c('span', {
-    staticClass: "dialog-footer",
-    slot: "footer"
-  }, [_c('el-button', {
-    on: {
-      "click": function($event) {
-        _vm.sure = false
-      }
-    }
-  }, [_vm._v("Cancel")]), _vm._v(" "), _c('el-button', {
-    staticClass: "button is-primary",
-    on: {
-      "click": function($event) {
-        _vm.sure = false, _vm.confirmeddeletion(), _vm.shownot = true
-      }
-    }
-  }, [_vm._v("Confirm")])], 1)]), _vm._v(" "), _vm._l((_vm.clients), function(client) {
-    return _c('div', [_c('div', [_vm._v(_vm._s(client.firstName) + " " + _vm._s(client.lastName) + "\n                        "), _c('el-button', {
-      staticClass: "button is-danger",
-      staticStyle: {
-        "float": "right"
-      },
-      on: {
-        "click": function($event) {
-          _vm.deleteclicked(client)
-        }
-      }
-    }, [_vm._v("Delete   "), _c('span', {
-      staticClass: "icon"
-    }, [_c('i', {
-      staticClass: "fa fa-trash-o"
-    })])]), _vm._v(" "), _c('br'), _c('br')], 1)])
-  })], 2)])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-30a2f2a8", module.exports)
-  }
-}
-
-/***/ }),
-/* 152 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(149);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(9)("6b58fa9a", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-30a2f2a8\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./removeClient.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-30a2f2a8\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./removeClient.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
 
 /***/ })
 /******/ ]);
