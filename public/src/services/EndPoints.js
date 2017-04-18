@@ -70,7 +70,7 @@ export const Admin = () => {
     editCategory: categoryID => `${categoryBase}/edit/${categoryID}`,
     deleteCategory: categoryID => `${categoryBase}/delete/${categoryID}`,
     deleteBusiness: businessID => `${businessBase}/delete/${businessID}`,
-    listBusiness: `${businessBase}/list/`,
+    listBusiness: `${businessBase}/list`,
   };
 };
 

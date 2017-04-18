@@ -20,7 +20,7 @@
             </el-dialog>
     
        <el-table
-        :data="clients"
+        :data="businesses"
         border
         style="width: 100%"
         empty-text="No Businesses">
@@ -65,18 +65,32 @@
         data() {
             return {
                 errors: [],
+                businesses: [],
                 sure:false,
                 shownot:false,
                 currid: '',
             }
         },
-        props: ['id'],
         mounted() {
+            this.businesses = this.getBusinesses();
         },
         methods: {
-
-      deleteclicked() {
-          this.currid = id;
+        getBusinesses() {
+            axios
+            .get(Admin().listBusiness)
+            .then((res) => {    
+              this.businesses = res.data;
+            })
+            .catch((err) => {
+                for(var i=0 ; i<err.response.data.errors.length; i += 1){
+                     this.errors.push(err.response.data.errors[i]);
+                }
+              this.businesses = [];
+            });
+      },
+      deleteclicked(business) {
+          this.currname = business.name;
+          this.currid = business._id;
           this.sure =true;
       }, 
       confirmeddeletion() {
@@ -88,7 +102,19 @@
                         message: 'Business Deleted Successfully!',
                         type: 'success'
                   });
-                  this.errors = [];
+                  axios
+                    .get(Admin().listBusiness)
+                    .then((res) => {    
+                    this.businesses = res.data;
+                    this.errors = [];
+                    })
+                    .catch((err) => {
+                        for(var i=0 ; i<err.response.data.errors.length; i += 1){
+                            this.errors.push(err.response.data.errors[i]);
+                        }
+                    this.businesses = [];
+                    });
+                        
             })
             .catch((err) => {
                      for(var i=0 ; i<err.response.data.errors.length; i += 1){
