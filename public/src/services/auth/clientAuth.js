@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Client } from '../services/EndPoints';
+import { Client } from '../../services/EndPoints';
 
 export default {
   user: {
