@@ -1,20 +1,60 @@
 <template>
-    <div>
+    <div class="columns is-mobile">
+        <div class="column is-half is-offset-one-quarter">
+    
+            <h1 class="title has-text-centered">Client list</h1>
+    
+            <div v-show="errors.length > 0">
+                <div class="error" v-for="error in errors">
+                    <el-alert :title="error" type="error" show-icon>
+                    </el-alert>
+                </div>
+            </div>
+            
             <el-dialog title="Confirm Deletion" v-model="sure" size="tiny">
-                 <span>Are you sure you want to remove this business?</span>
-                    <span slot="footer" class="dialog-footer">
-                    <el-button @click="sure = false">Cancel</el-button>
-                    <el-button class="button is-primary" @click="sure = false,confirmeddeletion(), shownot = true">Confirm</el-button>
+                 <span>Are you sure you want to delete {{currname}}?</span>
+                 <span slot="footer" class="dialog-footer">
+                 <el-button @click="sure = false">Cancel</el-button>
+             <el-button class="button is-primary" @click="sure = false,confirmeddeletion(), shownot = true">Confirm</el-button>
                 </span>
             </el-dialog>
     
-            <el-button class="button is-danger" style="float: right;"@click="deleteclicked()" >Delete &nbsp; 
-                <span class="icon">
-                    <i class="fa fa-trash-o"></i>
-                </span>
-            </el-button>
+       <el-table
+        :data="clients"
+        border
+        style="width: 100%"
+        empty-text="No Businesses">
+            <el-table-column
+            prop="name"
+            label="Business Name"
+            sortable = true>
+            </el-table-column>
+            <el-table-column
+            label ="Operation">
+                <template scope = "scope">
+                    <el-button class="button is-danger"@click="deleteclicked(scope.row)" >Delete &nbsp; 
+                        <span class="icon">
+                            <i class="fa fa-trash-o"></i>
+                        </span></el-button>
+                    </template>
+            </el-table-column>
+        </el-table>
     </div>
+</div>
 </template>
+
+<style>
+    .error {
+        margin-top: 20px;
+    }
+    .error:first-child {
+        margin-top: none;
+    }
+    .demo-ruleForm {
+        margin-top: 30px;
+    }
+</style>
+
 
 <script>
     
@@ -71,3 +111,5 @@
         margin-top: 30px;
     }
 </style>
+
+
