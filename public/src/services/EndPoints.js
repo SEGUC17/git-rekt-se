@@ -2,10 +2,10 @@ const BASE = 'http://localhost:3000/api/v1';
 
 export const Visitor = () => ({
   search: `${BASE}/visitor/search/`,
-  locations: `${BASE}/visitor/search/locations`,
   viewService: serviceID => `${BASE}/service/${serviceID}`,
   relatedService: (serviceID, offset) => `${BASE}/service/category/${serviceID}/${offset}`,
-  relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/offset`,
+  relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/${offset}`,
+  locations: `${BASE}/visitor/search/locations`,
   viewBusiness: businessID => `${BASE}/business/${businessID}`,
 });
 
@@ -20,7 +20,6 @@ export const Client = () => {
     forgot: `${authBase}/forgot`,
     logout: `${authBase}/logout`,
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
-
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
   };
 };
@@ -72,12 +71,15 @@ export const Admin = () => {
 
 export const Service = () => {
   const serviceBase = `${BASE}/service`;
+  const bookingBase = `${BASE}/service/book`;
   return {
     createReview: serviceID => `${serviceBase}/${serviceID}/review`,
     updateReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
     deleteReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/delete`,
 
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,
+    validateCoupon: `${bookingBase}/coupon/validate`,
+    makeBooking: `${bookingBase}`,
   };
 };
 
