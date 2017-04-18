@@ -16,7 +16,7 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
-router.post('/report/:id', (req, res, next) => { // authMiddleWare.clientAuthMiddleware,
+router.post('/report/:id', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
   req.checkParams(validator.adminReviewValidation);
   req.getValidationResult()
     .then((result) => {

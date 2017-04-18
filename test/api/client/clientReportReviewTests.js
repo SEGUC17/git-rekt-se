@@ -61,11 +61,11 @@ describe('Review Reporting Test Suite', () => {
     });
   });
 
-  // beforeEach((done) => {
-  //   Review.collection.drop(() => {
-  //     Review.ensureIndexes(done);
-  //   });
-  // });
+  beforeEach((done) => {
+    Review.collection.drop(() => {
+      Review.ensureIndexes(done);
+    });
+  });
 
   it('should add a report and return a confirmation message', (done) => {
     const review1 = reviews[0];
@@ -110,9 +110,9 @@ describe('Review Reporting Test Suite', () => {
         }],
       }, done);
   });
-  // after((done) => {
-  //   Review.collection.drop(() => {
-  //     Review.ensureIndexes(done);
-  //   });
-  // });
+  after((done) => {
+    Review.collection.drop(() => {
+      Review.ensureIndexes(done);
+    });
+  });
 });
