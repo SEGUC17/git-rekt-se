@@ -6,7 +6,7 @@ import clientLogout from '../components/Client/logout.vue';
 import businessPage from '../components/business/businessPage/businessInfo.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
-import businessLogin from '../components/Business/login.vue';
+import businessLogin from '../components/business/login.vue';
 
 const routes = [{
   path: '/',
