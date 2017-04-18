@@ -53,6 +53,7 @@
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
   import { loginRules } from '../../services/validation';
+  import EventBus from '../../services/EventBus';
 
   export default {
     data() {
@@ -69,7 +70,9 @@
     },
     mounted() {
       if (Authenticator.isAuthenticated()) {
-        this.$router.push('/');
+        this.$router.push({
+          path: '/',
+        });
       }
     },
     methods: {
@@ -93,7 +96,10 @@
                 this.logged_in = true;
                 this.loginSuccess = response.message;
                 setTimeout(() => {
-                  this.$router.push('/');
+                  this.$router.push({
+                    path: '/',
+                  });
+                  EventBus.$emit('UpdateNavigation');
                 }, 1000);
               }
             });

@@ -54,6 +54,7 @@
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
   import { loginRules } from '../../services/validation';
+  import EventBus from '../../services/EventBus';
 
   export default {
     data() {
@@ -95,6 +96,7 @@
                 this.loginSuccess = response.message;
                 setTimeout(() => {
                   this.$router.push('/');
+                  EventBus.$emit('UpdateNavigation');
                 }, 1000);
               }
             });

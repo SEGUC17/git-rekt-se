@@ -11,47 +11,78 @@ export default {
       return localStorage.getItem('business_email');
     },
   },
+
+  /**
+   * Login User.
+   * @param data The data to send in the request body.
+   * @param callBack The callback to axios.
+   */
+
   login(data, callBack) {
     axios
-      .post(Business()
-        .login, data)
-      .then((response) => {
-        this.user.authenticated = true;
-        localStorage.setItem('business_token', response.data.token);
-        localStorage.setItem('business_email', response.data.email);
-        localStorage.setItem('business_id', response.data.id);
-        return callBack(null, response.data);
-      })
-      .catch((err) => {
-        callBack(err.response.data, null);
-      });
+        .post(Business()
+            .login, data)
+        .then((response) => {
+          this.user.authenticated = true;
+          localStorage.setItem('business_token', response.data.token);
+          localStorage.setItem('business_email', response.data.email);
+          localStorage.setItem('business_id', response.data.id);
+          return callBack(null, response.data);
+        })
+        .catch((err) => {
+          callBack(err.response.data, null);
+        });
   },
+
+  /**
+   * Log out User.
+   * @param callBack The callback to axios.
+   */
+
   logout(callBack) {
+    this.user.authenticated = false;
+    const currentToken = this.getJWTtoken();
+
+    localStorage.removeItem('business_token');
+    localStorage.removeItem('business_email');
+    localStorage.removeItem('business_id');
+
     axios.post(Business()
         .logout, null, {
           headers: {
-            Authorization: this.getJWTtoken(),
+            Authorization: currentToken,
           },
         })
-      .then((response) => {
-        this.user.authenticated = false;
-        localStorage.removeItem('business_token');
-        localStorage.removeItem('business_email');
-        localStorage.removeItem('business_id');
-        return callBack(null, response.data);
-      })
-      .catch((err) => {
-        callBack(err.response.data, null);
-      });
+        .then((response) => {
+          callBack(null, response.data);
+        })
+        .catch((err) => {
+          callBack(err.response.data, null);
+        });
   },
+
+  /*
+  * Get the JWT for Header.
+  * */
+
   getJWTtoken() {
     return `JWT ${localStorage.getItem('business_token')}`;
   },
+
+  /*
+  * Refresh the status of the user.
+  * */
+
   refreshAuth() {
-    if (localStorage.getItem('business_token')) {
-      this.user.authenticated = true;
-    } else {
-      this.user.authenticated = false;
-    }
+    this.user.authenticated = !!localStorage.getItem('business_token');
+  },
+
+  /**
+   * Return the status of the user.
+   */
+
+  isAuthenticated() {
+    this.refreshAuth();
+    return this.user.authenticated;
   },
 };
