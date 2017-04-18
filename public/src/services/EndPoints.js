@@ -82,16 +82,8 @@ export const Service = () => {
 };
 
 export default {
-  Client() {
-    const authBase = `${BASE}/client/auth`;
-    const profileBase = `${BASE}/client/profile`;
-    return {
-      signup: `${authBase}/signup`,
-      resend: `${authBase}/confirmation/send`,
-      forgot: `${authBase}/forgot`,
-    };
-  },
   Visitor,
+  Client,
   Business,
   Admin,
   Service,
