@@ -37,6 +37,9 @@
 
                     <el-form-item label="Password" prop="password">
                         <el-input v-model="form.password" placeholder="Password" type="password"></el-input>
+                        <span class="is-help">
+                            <router-link to="/client/forgot" class="is-semi-dark">Forgot password?</router-link>
+                        </span>
                     </el-form-item>
 
                     <el-form-item>
@@ -53,6 +56,7 @@
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
   import { loginRules } from '../../services/validation';
+  import EventBus from '../../services/EventBus';
 
   export default {
     data() {
@@ -69,7 +73,9 @@
     },
     mounted() {
       if (Authenticator.isAuthenticated()) {
-        this.$router.push('/');
+        this.$router.push({
+          path: '/',
+        });
       }
     },
     methods: {
@@ -93,7 +99,10 @@
                 this.logged_in = true;
                 this.loginSuccess = response.message;
                 setTimeout(() => {
-                  this.$router.push('/');
+                  this.$router.push({
+                    path: '/',
+                  });
+                  EventBus.$emit('UpdateNavigation');
                 }, 1000);
               }
             });
@@ -122,6 +131,9 @@
         margin-bottom: 2em;
     }
 
+    .is-semi-dark{
+        color: #717171;
+    }
     @media screen and (max-width: 999px) {
         .client-login-form {
             margin: 2em;
