@@ -8,7 +8,7 @@
         <el-table :data="businessData" stripe style="width: 100%">
             <el-table-column type="expand">
                 <template scope="props">
-                      <p>{{ props.row.shortDescription }}</p>
+                          <p>{{ props.row.shortDescription }}</p>
 </template>
          </el-table-column>
         <el-table-column prop="name" label="Name" width="300">
@@ -22,16 +22,16 @@
     <el-dialog title="Approve Request" v-model="acceptDialogue" size="tiny">
         <span>Are you sure you wish to accept this business request?</span>
         <span slot="footer" class="dialog-footer">
-                    <el-button @click="acceptDialogue = false">Cancel</el-button>
-                    <el-button type="primary" @click="accept(scope.$index, businessData)">Yes, I'm sure.</el-button>
-                </span>
+                        <el-button @click="acceptDialogue = false">Cancel</el-button>
+                        <el-button type="primary" @click="accept(scope.$index, businessData)">Yes, I'm sure.</el-button>
+                    </span>
     </el-dialog>
     <el-dialog title="Reject Request" v-model="rejectDialogue" size="tiny">
         <span>Are you sure you wish to reject this business request?</span>
         <span slot="footer" class="dialog-footer">
-                    <el-button @click="rejectDialogue = false">Cancel</el-button>
-                    <el-button type="primary" @click="reject(scope.$index, businessData)">Yes, I'm sure.</el-button>
-                </span>
+                        <el-button @click="rejectDialogue = false">Cancel</el-button>
+                        <el-button type="primary" @click="reject(scope.$index, businessData)">Yes, I'm sure.</el-button>
+                    </span>
     </el-dialog>
     
     <el-button class="button is-info" @click="acceptDialogue = true">
@@ -58,13 +58,22 @@
                 rejectDialogue: false,
             }
         },
-        created() {
-            this.fetchBusiness();
+        mounted() {
+            // if (adminAuth.isAuthenticated()) {
+            //     this.$router.push('/');
+            //     this.$toast.open({
+            //         message: 'You can not view this page.',
+            //         type: 'is-danger',
+            //         position: 'bottom',
+            //     });
+            // } else {
+                this.fetchBusiness();
+            // }
         },
     
         methods: {
             closeError(idx) {
-                this.errors.splice(idx,1);
+                this.errors.splice(idx, 1);
             },
             fetchBusiness() {
                 axios.get(EndPoints.Admin().viewBusiness
