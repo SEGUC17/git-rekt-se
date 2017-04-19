@@ -1,32 +1,26 @@
 <template>
     <div class="main">
         <div class="container">
-            <!--<el-card class="create-category">-->
                 <el-alert v-for="error in generalErrors" type="error" :title="error" show-icon></el-alert>
                 <el-alert v-if="createSuccess" type="success" :title="createSuccess" show-icon></el-alert>
                 <el-alert v-if="editSuccess" type="success" :title="editSuccess" show-icon></el-alert>
                 <el-alert v-if="deleteSuccess" type="success" :title="deleteSuccess" show-icon></el-alert>
                 <el-alert v-for="error in createErrors" type="error" :title="error" show-icon></el-alert>
                 
-                <!--<el-button size="small" @click="showAdd()" type="primary"> Add Category </el-button>-->
-
             <el-dialog title="Edit Category" v-model="addVisible" size="large">
                 <el-form :model="newCategory" ref="createCategory" :rules="categoryRules" label-position="left">
                     <el-form-item label="type" required prop="type">
                         <el-input v-model="newCategory.type" placeholder="The type of your category"></el-input>
                     </el-form-item>
                     <el-form-item label="title" required prop="title">
-                        <!--TODO use radio buttons-->
                         <el-input v-model="newCategory.title" placeholder="Title of your category"></el-input>
                     </el-form-item>
-                    <!--TODO Upload Cover Image-->
                     <el-form-item class="is-pulled-right">
                         <el-button type="primary" @click="createCategory">Create</el-button>
                         <el-button @click="resetCreate">Clear</el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
-            <!--</el-card>-->
         </div>
           <div slot="header" class="clearfix">
                     <span>Create category</span>
@@ -72,7 +66,6 @@
                     <el-form-item label="title" required prop="title">
                         <el-input v-model="categoryToEdit.title" placeholder="The title of your Category"></el-input>
                     </el-form-item>
-                    <!--TODO Upload Cover Image-->
                 </el-form>
                 <span slot="footer" class="dialog-footer">
                                 <el-button @click="editVisible = false">Cancel</el-button>
