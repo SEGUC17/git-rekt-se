@@ -16,12 +16,16 @@
     methods: {
       getTransactions() {
         axios.get(Business().getTransactions, {
-            headers: businessAuth.getJWTtoken(),
+            headers: {
+              Authorization: businessAuth.getJWTtoken(),
+            },
           })
           .then((res) => {
+            console.log(res);
             console.log(res.data);
           })
           .catch((err) => {
+            console.log(err);
             console.log(err.response);
           });
       },

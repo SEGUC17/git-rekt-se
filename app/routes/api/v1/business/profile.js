@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
+const Offering = require('../../../../models/service/Offering');
+const Branch = require('../../../../models/service/Branch');
+const Service = require('../../../../models/service/Service');
 const Booking = require('../../../../models/service/Booking');
 const Business = require('../../../../models/business/Business');
 const Strings = require('../../../../services/shared/Strings');
@@ -111,10 +114,11 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
  * View Transaction History API Route.
  */
 router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
-  Booking.find({ _deleted: false })
+  Booking.find({ _deleted: false }, { offering: false, _deleted: false })
     .populate('_service', 'name')
-    .populate('_client', 'fullName')
+    .populate('_client', 'firstName lastName')
     .populate('_transaction', 'stripe_charge amount')
+    .populate('_offering', 'location address')
     .exec()
     .then((bookings) => {
       console.log(bookings);
@@ -123,6 +127,43 @@ router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) =
       });
     })
     .catch(next);
+});
+
+// TODO REMOVE THIS ROUTE
+router.get('/btngan', (req, res) => {
+  new Branch({
+    _business: '58ed2ff231b4244b489982a2',
+    location: 'Nasr City',
+    address: 'Mostafa El Na7as',
+  }).save().then((branch) => {
+    new Offering({
+      branch: branch._id,
+      location: branch.location,
+      address: branch.address,
+      price: 20,
+      startDate: Date.now(),
+      endDate: new Date(2017, 6, 2),
+    }).save().then((offering) => {
+      for (let i = 0; i < 3; i += 1) {
+        const service = new Service({
+          name: `Btngan ${i}`,
+          shortDescription: `More Btngan ${i}`,
+          _business: '58ed2ff231b4244b489982a2',
+          branches: [branch._id],
+        });
+        service.offerings.push(offering);
+        service
+          .save()
+          .then(() => {
+            console.log('Done');
+            res.json({
+              message: 'Done',
+            });
+          })
+          .catch(err => console.log(err.errors));
+      }
+    }).catch(err => console.log(err.message));
+  }).catch(err => console.log(err.message));
 });
 
 /**

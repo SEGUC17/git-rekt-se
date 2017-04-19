@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Offering = require('../service/Offering');
 
 const Schema = mongoose.Schema;
 
@@ -20,6 +19,7 @@ const bookingSchema = Schema({
   },
   _offering: {
     type: Schema.Types.ObjectId,
+    ref: 'Offering',
     required: true,
   },
   _coupon: {
