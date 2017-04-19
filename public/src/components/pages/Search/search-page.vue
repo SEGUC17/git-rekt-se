@@ -24,7 +24,7 @@
           </div>
           <div class="block">
             <span class="search-label">Price Range</span>
-            <el-slider v-model="priceRange" range :step="100" :max="10000"></el-slider>
+            <el-slider v-model="priceRange" range :step="100" :max="10000" :format-tooltip="rangeTooltip"></el-slider>
           </div>
           <div class="block">
             <span class="search-label">Location</span>
@@ -132,7 +132,7 @@
       },
       stringifyQuery(query) {
         let queryString = '?';
-        if (!query.offset) {
+        if (!query.offset === undefined) {
           query.offset = 1;
         }
         queryString += `offset=${query.offset}`;
@@ -145,7 +145,7 @@
         if (query.min) {
           queryString += `&min=${query.min}`;
         }
-        if (query.max) {
+        if (query.max || query.max === 0) {
           queryString += `&max=${query.max}`;
         }
         if (query.location) {
@@ -160,9 +160,8 @@
         this.currentQuery.offset = newPage;
         this.execQuery();
       },
-      locationSearch(q, cb) {
-        const results = q ? this.locationsDB.filter(this.createFilter(q)) : this.locationsDB;
-        cb(results);
+      rangeTooltip(value) {
+        return (value === 10000) ? 'ALL' : value;
       },
       createFilter(queryString) {
         return location => ((location.value).toLowerCase().indexOf(queryString.toLowerCase()) === 0);
@@ -170,7 +169,8 @@
       performSearch() {
         this.newQuery.offset = 1;
         this.newQuery.min = Math.min(...this.priceRange);
-        this.newQuery.max = Math.max(...this.priceRange);
+        this.newQuery.max = (Math.max(...this.priceRange) === 10000) ?
+         undefined : Math.max(...this.priceRange);
         this.currentQuery = this.newQuery;
         this.execQuery();
       },
