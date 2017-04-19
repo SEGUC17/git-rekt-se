@@ -8,6 +8,7 @@ import moment from 'moment';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import clientLogin from '../../components/Client/login.vue';
+import adminLogin from '../../components/Admin/login.vue';
 import router from '../../services/routes.js';
 
 window.axios = axios;
@@ -16,7 +17,9 @@ Vue.use(VueRouter);
 Vue.use(elementUI, {
   locale
 });
-Vue.use(Buefy);
+Vue.use(Buefy, {
+  defaultIconPack: 'fa',
+});
 
 new Vue({
   el: '#root',
@@ -25,5 +28,6 @@ new Vue({
     'gr-header': header,
     'gr-footer': footer,
     'client-login': clientLogin,
+    'admin-login': adminLogin,
   },
 });
