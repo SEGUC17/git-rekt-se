@@ -19,9 +19,11 @@
                     </div>
 
                     <div class="column is-2">
-                        <el-autocomplete class="full-width" v-model="location" :fetch-suggestions="querySearch"
-                                         placeholder="Locations" size="large">
-                        </el-autocomplete>
+                        <el-select class="full-width" v-model="location" filterable clearable placeholder="Locations" size="large">
+                            <el-option v-for="loc in locations" :key="loc.value" :label="loc.label"
+                                       :value="loc.value">
+                            </el-option>
+                        </el-select>
                     </div>
 
                     <div class="column is-2">
@@ -129,18 +131,6 @@
               this.locations = locs;
             });
       },
-
-      querySearch(query, cb) {
-        const locations = this.locations;
-        const results = [];
-        locations.forEach((loc) => {
-          if (loc.value.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
-            results.push(loc);
-          }
-        });
-        cb(results);
-      },
-
         /*
          * Generate search URI.
          */

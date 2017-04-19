@@ -97,9 +97,8 @@
   import Axios from 'axios';
 
   import SearchResult from './search-result.vue';
-  import {Visitor} from '../../../services/EndPoints';
+  import { Visitor } from '../../../services/EndPoints';
   import Locations from '../Index/mainLocations';
-  import ElFormItem from "../../../../../node_modules/element-ui/packages/form/src/form-item";
 
   export default {
     data() {
@@ -112,10 +111,10 @@
           value: 1,
           label: 'A-Z',
         },
-          {
-            value: 2,
-            label: 'Highest Rating',
-          },
+        {
+          value: 2,
+          label: 'Highest Rating',
+        },
         ],
         currentQuery: this.$route.query,
         priceRange: [(this.$route.query.min) ? parseInt(this.$route.query.min, 10) : 0,
@@ -134,7 +133,7 @@
       };
     },
     components: {
-      ElFormItem, SearchResult,
+      SearchResult,
     },
     mounted() {
       this.getLocations();
