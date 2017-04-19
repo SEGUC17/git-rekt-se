@@ -50,7 +50,6 @@
 
 <script>
   import adminAuth from '../../services/auth/adminAuth';
-  import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
   import { loginRules } from '../../services/validation';
 
@@ -68,13 +67,8 @@
       };
     },
     mounted() {
-   if (Authenticator.isAuthenticated()) {
-        this.$router.push('/');
-        this.$toast.open({
-          message: 'You are already logged in.',
-          type: 'is-danger',
-          position: 'bottom',
-        });
+   if (adminAuth.isAuthenticated()) {
+        this.$router.push('/admin/dashboard');
       }
     },
     methods: {
@@ -98,7 +92,7 @@
                 this.logged_in = true;
                 this.loginSuccess = response.message;
                 setTimeout(() => {
-                  this.$router.push('/');
+                  this.$router.push('/admin/dashboard');
                 }, 1000);
               }
             });
