@@ -16,13 +16,22 @@
 
         <div class="columns">
             <div class="column is-half is-offset-one-quarter" v-if="!success">
+
+                <div class="centered-fb">
+                    <a @click.prevent="redirectFacebook">
+                        <img src="assets/imgs/fb-login.png" alt="Facebook Login" width="50%">
+                    </a>
+                </div>
+
+                <hr class="client-login-form">
+
                 <!-- Info Incase signing up with facebook -->
-                <div v-show="info">
+                <div v-show="info" class="client-login-form">
                     <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
                 </div>
 
                 <!-- Backend Form Errors-->
-                <div v-show="!form.errors.isEmpty() || error">
+                <div v-show="!form.errors.isEmpty()" class="client-login-form">
                     <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
                         <el-alert @close="form.errors.remove(key)" type="error"
                                   :title="form.errors.getAll(key, ' | ') || '' " show-icon></el-alert>
@@ -32,10 +41,6 @@
                         <el-alert @close="form.errors.remove('serverError')"
                                   :title="form.errors.getAll('serverError', ' | ') || ''" type="error"
                                   show-icon></el-alert>
-                    </div>
-
-                    <div class="error" v-show="error">
-                        <el-alert @close="error = false" :title="message" type="error" show-icon></el-alert>
                     </div>
                 </div>
 
@@ -93,6 +98,9 @@
                         <el-button type="primary" icon="circle-check" @click="onClick" :loading="loading">
                             Sign Up
 
+
+
+
                         </el-button>
                         <el-button icon="circle-cross" @click="onReset">Reset</el-button>
                     </el-form-item>
@@ -143,9 +151,11 @@
       };
     },
     methods: {
+      redirectFacebook() {
+        window.location.href = 'http://localhost:3000/api/v1/client/auth/fb/login';
+      },
       onClick() {
         this.info = false;
-        this.error = false;
         this.success = false;
         this.message = '';
         this.$refs.form.validate((valid) => {
@@ -161,7 +171,6 @@
                 }).catch(() => {
                   this.success = false;
                   this.loading = false;
-                  this.error = true;
                 });
           }
         });
@@ -182,7 +191,6 @@
             }).catch(() => {
               this.loading = false;
               this.success = false;
-              this.error = true;
             });
       },
     },
@@ -194,12 +202,9 @@
           position: 'bottom',
           type: 'is-danger',
         });
-        return;
-      }
-      else if(this.$route.query && this.$route.query['error']) {
-          this.error = true;
-          this.message = this.$route.query['password'] || 'We could not fetch data from facebook, but you can sign up normally';
-      } else if (this.$route.query && this.$route.query['is_facebook'] === 'true') {
+      } else if (this.$route.query && this.$route.query.error) {
+        this.message = this.$route.query.password || 'Failed to fetch information from facebook.';
+      } else if (this.$route.query && this.$route.query.is_facebook === 'true') {
         const query = this.$route.query;
         Object.keys(query).forEach((key) => {
           if (key === 'first_name') {
@@ -215,7 +220,7 @@
           }
         }, this);
         this.info = true;
-        this.message = 'These information where fetched from facebook, feel free to edit any of them if needed!';
+        this.message = 'These information where fetched from facebook, please fill the remaining fields.';
         console.log(this.form.data());
       }
     },

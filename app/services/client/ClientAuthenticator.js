@@ -16,9 +16,9 @@ mongoose.Promise = Promise;
  */
 
 const generateToken = payload =>
-    jwt.sign(payload, process.env.JWT_KEY_CLIENT, {
-      expiresIn: '1h',
-    });
+  jwt.sign(payload, process.env.JWT_KEY_CLIENT, {
+    expiresIn: '1h',
+  });
 
 /**
  * Generate Token for Client Email Confirmation.
@@ -35,19 +35,19 @@ exports.generateConfirmationToken = (email) => {
     Client.findOne({
       email,
     })
-        .then((userData) => {
-          if (!userData) {
-            reject(Strings.clientConfirmation.notFound);
-          }
-          if (userData.status !== 'unconfirmed') {
-            reject(Strings.clientConfirmation.emailAlreadyConfirmed);
-          }
-          userData.confirmationTokenDate = Date.now();
-          userData.save()
-              .then(() => resolve(token))
-              .catch(err => reject(err));
-        })
-        .catch(err => reject(err));
+      .then((userData) => {
+        if (!userData) {
+          reject(Strings.clientConfirmation.notFound);
+        }
+        if (userData.status !== 'unconfirmed') {
+          reject(Strings.clientConfirmation.emailAlreadyConfirmed);
+        }
+        userData.confirmationTokenDate = Date.now();
+        userData.save()
+          .then(() => resolve(token))
+          .catch(err => reject(err));
+      })
+      .catch(err => reject(err));
   });
 };
 
@@ -61,36 +61,36 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
     email,
     _deleted: false,
   })
-      .then((user) => {
-        if (!user) {
-          reject(Strings.clientLoginMessages.invalidCreds);
-        } else if (user.status === 'unconfirmed') {
-          reject(Strings.clientLoginMessages.invalidCreds);
-        } else if (user.status === 'banned') {
-          reject(Strings.clientLoginMessages.bannedClient);
-        } else {
-          user.checkPassword(password)
-              .then((matching) => {
-                if (!matching) {
-                  reject(Strings.clientLoginMessages.invalidCreds);
-                } else {
-                  const token = jwt.sign({
-                    id: user._id,
-                  }, process.env.JWT_KEY_CLIENT, {
-                    expiresIn: '10d',
-                  });
-                  resolve({
-                    message: Strings.clientLoginMessages.loginSuccess,
-                    id: user._id,
-                    email: user.email,
-                    token,
-                  });
-                }
-              })
-              .catch(reject);
-        }
-      })
-      .catch(reject);
+    .then((user) => {
+      if (!user) {
+        reject(Strings.clientLoginMessages.invalidCreds);
+      } else if (user.status === 'unconfirmed') {
+        reject(Strings.clientLoginMessages.invalidCreds);
+      } else if (user.status === 'banned') {
+        reject(Strings.clientLoginMessages.bannedClient);
+      } else {
+        user.checkPassword(password)
+          .then((matching) => {
+            if (!matching) {
+              reject(Strings.clientLoginMessages.invalidCreds);
+            } else {
+              const token = jwt.sign({
+                id: user._id,
+              }, process.env.JWT_KEY_CLIENT, {
+                expiresIn: '10d',
+              });
+              resolve({
+                message: Strings.clientLoginMessages.loginSuccess,
+                id: user._id,
+                email: user.email,
+                token,
+              });
+            }
+          })
+          .catch(reject);
+      }
+    })
+    .catch(reject);
 });
 
 
@@ -110,28 +110,28 @@ exports.loginFacebook = (email, id) => {
   const encapsulate = jwt.sign({
     token,
   }, process.env.JWT_KEY_CLIENT, {
-    expiresIn: '300',
+    expiresIn: '5m',
   });
 
   return encapsulate;
 };
 
 exports.finalizeLoginFacebook = token =>
-    new Promise((resolve, reject) => {
-      jwt.verify(token, process.env.JWT_KEY_CLIENT, (err, decoded) => {
-        if (err) {
-          reject(err);
-        } else {
-          jwt.verify(decoded.token, process.env.JWT_KEY_CLIENT, (error, payload) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve({
-                token: decoded.token,
-                payload,
-              });
-            }
-          });
-        }
-      });
+  new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.JWT_KEY_CLIENT, (err, decoded) => {
+      if (err) {
+        reject(err);
+      } else {
+        jwt.verify(decoded.token, process.env.JWT_KEY_CLIENT, (error, payload) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve({
+              token: decoded.token,
+              payload,
+            });
+          }
+        });
+      }
     });
+  });

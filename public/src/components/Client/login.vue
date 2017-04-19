@@ -16,6 +16,13 @@
         <div class="client-login-form columns">
             <div class="column is-half is-offset-one-quarter">
 
+                <div class="centered-fb">
+                    <a @click.prevent="redirectFacebook">
+                        <img src="assets/imgs/fb-login.png" alt="Facebook Login" width="50%">
+                    </a>
+                </div>
+
+                <hr>
                 <div v-show="info">
                     <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
                 </div>
@@ -31,15 +38,14 @@
                     </el-alert>
                 </div>
 
-
                 <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top"
                          class="login-form">
                     <el-form-item label="Email" prop="email">
-                        <el-input v-model="form.email" placeholder="Email"></el-input>
+                        <el-input v-model="form.email" placeholder="Email" icon="message"></el-input>
                     </el-form-item>
 
                     <el-form-item label="Password" prop="password">
-                        <el-input v-model="form.password" placeholder="Password" type="password"></el-input>
+                        <el-input v-model="form.password" placeholder="Password" type="password" icon="edit"></el-input>
                         <span class="is-help">
                             <router-link to="/client/forgot" class="is-semi-dark">Forgot password?</router-link>
                         </span>
@@ -49,6 +55,7 @@
                         <el-button type="primary" @click="submitForm('form')">Login</el-button>
                     </el-form-item>
                 </el-form>
+
             </div>
         </div>
     </div>
@@ -59,8 +66,8 @@
   import clientAuth from '../../services/auth/clientAuth';
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
-  import { loginRules } from '../../services/validation';
-  import { Client } from '../../services/EndPoints';
+  import {loginRules} from '../../services/validation';
+  import {Client} from '../../services/EndPoints';
   import EventBus from '../../services/EventBus';
 
   export default {
@@ -78,14 +85,10 @@
         errors: [],
       };
     },
-    mounted() {
-      if (Authenticator.isAuthenticated()) {
-        this.$router.push({
-          path: '/',
-        });
-      }
-    },
     methods: {
+      redirectFacebook() {
+        window.location.href = 'http://localhost:3000/api/v1/client/auth/fb/login';
+      },
       submitForm(formName) {
         this.errors = [];
         this.$refs[formName].validate((valid) => {
@@ -125,7 +128,7 @@
 
       facebookLogin() {
         const query = this.$route.query;
-        if (query && query['is_facebook'] === 'true') {
+        if (query && query.is_facebook === 'true') {
           const token = query.token;
           if (!token || token.length === 0) {
             return;
@@ -143,27 +146,30 @@
                 this.loginSuccess = response.data.message;
                 clientAuth.storeData(response);
               }).catch((err) => {
-                this.errors = this.errors
+            this.errors = this.errors
                 .concat(err.response ? err.response.data.errors : [err.message]);
-                loader.close();
-              });
+            loader.close();
+          });
         }
       },
-
     },
-
     mounted() {
       if (Authenticator.isAuthenticated()) {
         this.$router.push('/');
         return;
       }
-
       this.facebookLogin();
     },
   };
 </script>
 
 <style>
+    .centered-fb img {
+        display: block;
+        width: 250px;
+        margin: auto;
+    }
+
     .error {
         margin-top: 20px;
     }
@@ -179,9 +185,10 @@
         margin-bottom: 2em;
     }
 
-    .is-semi-dark{
+    .is-semi-dark {
         color: #717171;
     }
+
     @media screen and (max-width: 999px) {
         .client-login-form {
             margin: 2em;
