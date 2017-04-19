@@ -85,12 +85,14 @@
 <script>
   import axios from 'axios';
   import EndPoints from '../../services/EndPoints';
-  
+  import businessAuth from '../../services/auth/businessAuth';
+  import {businessAddCoupon} from '../../services/validation';
   export default {
     data() {
       return {
         coupons: [],
         errors: [],
+        rules: businessAddCoupon,
 
         dialog: false,
         deleteDialog: false,
@@ -100,42 +102,18 @@
           discount: 1,
           startDate: '',
           endDate: '',
+
         },
-        rules: {
-          code: [{
-            required: true,
-            message: 'Please input Coupon Code',
-            trigger: 'blur'
-          }, ],
-          discount: [{
-            type: 'number',
-            required: true,
-            message: 'Please input Discount Value',
-            trigger: 'change'
-          }, ],
-          startDate: [{
-            type: 'date',
-            required: true,
-            message: 'Please pick a Start date',
-            trigger: 'change'
-          }],
-          endDate: [{
-            type: 'date',
-            required: true,
-            message: 'Please pick an End date',
-            trigger: 'change'
-          }],
-        }
       };
     },
-    props: ['service'],
   
     methods: {
       closeError(idx) {
         this.errors.splice(idx, 1);
       },
       fetchCoupons() {
-        axios.get(EndPoints.Service().viewCoupons(this.$route.params.ser_id))
+        axios.get(EndPoints.Service().viewCoupons(this.$route.params.ser_id),
+        {headers: {Authorization: businessAuth.getJWTtoken()}})
           .then((res) => {
             this.coupons = res.data;
             this.errors = [];
@@ -149,7 +127,8 @@
         this.dialog = false;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            axios.post(EndPoints.Service().addCoupon(this.$route.params.ser_id), this.couponForm)
+            axios.post(EndPoints.Service().addCoupon(this.$route.params.ser_id), this.couponForm ,
+            {headers: {Authorization: businessAuth.getJWTtoken()}})
               .then(() => {
                 this.resetForm(formName);
                 this.fetchCoupons();
@@ -175,7 +154,8 @@
       },
       deleteCoupon(index, rows) {
         this.deleteDialog= false;
-        axios.post(EndPoints.Service().deleteCoupon(this.$route.params.ser_id, this.coupons[index]._id))
+        axios.post(EndPoints.Service().deleteCoupon(this.$route.params.ser_id,this.coupons[index]._id),null,
+       {headers: {Authorization: businessAuth.getJWTtoken()}})
           .then(() => {
             rows.splice(index, 1);
             this.errors=[];
@@ -185,7 +165,7 @@
               type: 'success'
             });
           })
-          .catch(err => {
+          .catch((err) => {
             this.errors = err.response.data.errors;
             document.body.scrollTop = document.documentElement.scrollTop = 0;
           });
@@ -203,7 +183,16 @@
       },
     },
     mounted() {
+      if (!businessAuth.isAuthenticated()) {
+                this.$router.push('/');
+                this.$toast.open({
+                    message: 'You can not view this page.',
+                    type: 'is-danger',
+                    position: 'bottom',
+                });
+            } else {
       this.fetchCoupons();
+            }
     },
   };
 </script>
