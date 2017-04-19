@@ -73,8 +73,6 @@
           let message;
 
           EventBus.$emit('UpdateNavigation');
-          console.log(response);
-          console.log(responseErrs);
           loader.close();
           if (responseErrs) {
             message = responseErrs.errors[0];
