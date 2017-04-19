@@ -2,7 +2,7 @@ import VueRouter from 'vue-router';
 import Home from '../components/pages/Index/home.vue';
 import clientLogin from '../components/Client/login.vue';
 import clientLogout from '../components/Client/logout.vue';
-import adminBusiness from '../components/admin/unverifiedBusinessPage.vue';
+import adminBusiness from '../components/Admin/unverifiedBusinessPage.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
 
