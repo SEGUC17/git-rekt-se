@@ -30,7 +30,7 @@ const routes = [{
   path: '/client/reset/:token',
   component: Reset,
 }, {
-  path: '/admin/coupons',
+  path: '/service/:ser_id/coupons',
   component: Coupon,
 }];
 
