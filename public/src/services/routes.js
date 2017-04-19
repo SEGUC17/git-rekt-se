@@ -5,8 +5,7 @@ import Home from '../components/pages/Index/home.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
-import clientLogout from '../components/Client/logout.vue';
-import removeBus from '../components/Admin/removeBus.vue';
+import removeBusiness from '../components/Admin/removeBusiness.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
@@ -25,11 +24,8 @@ const routes = [{
   path: '/client/login',
   component: clientLogin,
 }, {
-  path: '/client/logout',
-  component: clientLogout,
-}, {
   path: '/admin/removebusiness',
-  component: removeBus,
+  component: removeBusiness,
 }, {
   path: '/client/signup',
   component: clientSignUp,
