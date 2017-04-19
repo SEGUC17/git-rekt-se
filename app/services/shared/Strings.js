@@ -127,11 +127,13 @@ const serviceFailure = {
   imageNotFound: 'Image not found!',
   notYourService: 'Can not modify a service that is not owned by your business!',
   missingField: 'Missing Field(s)!',
+  invalidService: 'This service is invalid.',
 };
 
 const serviceValidationErrors = {
   invalidServiceID: 'Invalid Service ID',
   invalidImageID: 'Invalid Image ID',
+  invalidStripeToken: 'Invalid Stripe Token',
 };
 
 const clientForgotPassword = {

@@ -20,7 +20,6 @@ export const Client = () => {
     forgot: `${authBase}/forgot`,
     logout: `${authBase}/logout`,
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
-
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
   };
 };
@@ -72,6 +71,7 @@ export const Admin = () => {
 
 export const Service = () => {
   const serviceBase = `${BASE}/service`;
+  const bookingBase = `${BASE}/service/book`;
   return {
     createReview: serviceID => `${serviceBase}/${serviceID}/review`,
     updateReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
@@ -79,6 +79,8 @@ export const Service = () => {
 
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,
 
+    validateCoupon: `${bookingBase}/coupon/validate`,
+    makeBooking: `${bookingBase}`,
 
     viewCoupons: serviceID => `${serviceBase}/${serviceID}/coupons`,
     addCoupon: serviceID => `${serviceBase}/${serviceID}/coupons/add`,
