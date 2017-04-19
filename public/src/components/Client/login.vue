@@ -158,6 +158,13 @@
         this.$router.push('/');
         return;
       }
+
+     const query = this.$route.query;
+      if(query.error){
+        this.info = true;
+        this.message = query.error;
+      }
+
       this.facebookLogin();
     },
   };
