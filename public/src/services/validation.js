@@ -79,6 +79,10 @@ export const clientSignUpValidation = {
     trigger: 'change',
   }],
   birthdate: [{
+    required: true,
+    message: 'Birthdate is required.',
+    trigger: 'blur',
+  }, {
     type: 'date',
     message: 'Invalid Date format.',
     trigger: 'change',
