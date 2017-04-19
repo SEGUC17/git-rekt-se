@@ -5,13 +5,15 @@
         <el-alert @close="closeError(idx)" :title="error" type="error" show-icon></el-alert>
       </div>
     </div>
+  
+  
     <el-button class="button is-primary" @click="dialog = true">Add a Coupon</el-button>
     <el-dialog title="Add a Coupon" v-model="dialog">
       <el-form :model="couponForm" :rules="rules" ref="couponForm" label-width="130px" class="demo-couponForm">
         <el-form-item label="Coupon Code" prop="code">
           <el-input v-model="couponForm.code"></el-input>
         </el-form-item>
-        <el-form-item label="Discount Value" prop="discount">
+        <el-form-item label="Discount Value (%)" prop="discount">
           <el-input-number v-model="couponForm.discount" :min="1" :max="100"></el-input-number>
         </el-form-item>
         <el-form-item label="Start Date" required>
@@ -28,67 +30,71 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-              </el-form>
-        <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialog = false">Cancel</el-button>
-                  <el-button @click="resetForm('couponForm')">Reset</el-button>
-                  <el-button type="primary" @click="submitForm('couponForm')">Confirm</el-button>
-                </span>
-
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialog = false">Cancel</el-button>
+                    <el-button @click="resetForm('couponForm')">Reset</el-button>
+                    <el-button type="primary" @click="submitForm('couponForm')">Confirm</el-button>
+                  </span>
+  
     </el-dialog>
-    <h1 class="title" v-show="coupons.length>0">Current Coupons:</h1>
-    <div>
-      <el-card class="box-card" v-show="coupons.length>0">
-        <el-row type="flex" class="row-bg">
-          <el-col :span="5">
-            <h4 class="title is-4">
-              <span>
-                                    Coupon Code
-                                 </span>
-            </h4>
-          </el-col>
-          <el-col :span="6">
-            <h4 class="title is-4">
-              <span>
-                                    Discount (%)
-                                 </span>
-            </h4>
-          </el-col>
-          <el-col :span="6">
-            <h4 class="title is-4">
-              <span>
-                                    Start Date
-                                 </span>
-            </h4>
-          </el-col>
-          <el-col :span="8">
-            <h4 class="title is-4">
-              <span>
-                                    End Date
-                                 </span>
-            </h4>
-          </el-col>
-        </el-row>
-      </el-card>
-      <couponItem @deleted="deleteCoupon(coupon._id)" v-for="coupon in coupons" :coupon="coupon" :key="coupon._id"></couponItem>
+    <el-table :data="coupons" border stripe style="width: 100%">
+      </el-table-column>
+      <el-table-column prop="code" label="Code" width="250">
+      </el-table-column>
+      <el-table-column prop="discount" label="Discount Value (%)" width="200">
+      </el-table-column>
   
-    </div>
-  
-  
+      <el-table-column label="Start Date" width="250">
+        <template scope="scope">
+    <el-icon name="Start Date"></el-icon>
+    <span>{{ getDateFormat(scope.row.startDate) }}</span>
+</template>
+
+</el-table-column>
+
+<el-table-column label="End Date" width="250">
+<template scope="scope">
+  <el-icon name="End Date">
+  </el-icon>
+  <span>{{ getDateFormat(scope.row.endDate) }}</span>
+</template>
+
+</el-table-column>
+ <el-table-column label="Operations" width="200">
+<template scope="scope">
+  <el-dialog title="Delete Coupon" v-model="deleteDialog" size="tiny">
+    <span>Are you sure you wish to delete this coupon?</span>
+    <span slot="footer" class="dialog-footer">
+                  <el-button @click="deleteDialog = false">Cancel</el-button>
+                  <el-button type="primary" @click="deleteCoupon(scope.$index, coupons)">Yes, I'm sure.</el-button>
+              </span>
+  </el-dialog>
+  <a class="button is-danger is-outlined" @click="deleteDialog = true">
+    <span>Delete</span>
+    <span class="icon is-small">
+                            <i class="fa fa-times"></i>
+                          </span>
+  </a>
+</template>
+           </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
   import axios from 'axios';
   import EndPoints from '../../services/EndPoints';
-  import couponItem from './couponItem.vue';
   
   export default {
     data() {
       return {
         coupons: [],
         errors: [],
+
         dialog: false,
+        deleteDialog: false,
+
         couponForm: {
           code: '',
           discount: 1,
@@ -140,7 +146,7 @@
           });
       },
       submitForm(formName) {
-        this.dialog= false;
+        this.dialog = false;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             axios.post(EndPoints.Service().addCoupon(this.$route.params.ser_id), this.couponForm)
@@ -167,10 +173,12 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-      deleteCoupon(couponID) {
-        axios.post(EndPoints.Service().deleteCoupon(this.$route.params.ser_id, couponID))
+      deleteCoupon(index, rows) {
+        this.deleteDialog= false;
+        axios.post(EndPoints.Service().deleteCoupon(this.$route.params.ser_id, this.coupons[index]._id))
           .then(() => {
-            this.fetchCoupons();
+            rows.splice(index, 1);
+            this.errors=[];
             this.$notify({
               title: 'Success!',
               message: 'Coupon Deleted!',
@@ -181,13 +189,21 @@
             this.errors = err.response.data.errors;
             document.body.scrollTop = document.documentElement.scrollTop = 0;
           });
-      }
+      },
+      getDateFormat(input) { // dd/mm/yyyy
+        var date = new Date(input)
+        var curr_date = date.getDate();
+        var curr_month = date.getMonth() + 1; //Months are zero based
+        if (curr_month < 10)
+          curr_month = '0' + curr_month;
+        if (curr_date < 10)
+          curr_date = '0' + curr_date;
+        var curr_year = date.getFullYear();
+        return (curr_date + "-" + curr_month + "-" + curr_year);
+      },
     },
     mounted() {
       this.fetchCoupons();
-    },
-    components: {
-      couponItem,
     },
   };
 </script>
