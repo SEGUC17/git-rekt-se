@@ -87,6 +87,7 @@
                 });
             },
             saveBranch(idx) {
+                this.errors = [];
                 if (this.branchesForm.branches[idx].location && this.branchesForm.branches[idx].address) {
                     const loader = this.$loading({
                         fullscreen: true,
