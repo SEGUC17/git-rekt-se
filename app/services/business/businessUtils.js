@@ -24,6 +24,27 @@ const addBranches = (branches, businessID) => {
   return Promise.all(resultBranches);
 };
 
+const editOfferings = (services, branchID, callBack) => {
+  const resultServices = services.map((service) => {
+    service.offerings.forEach((offering) => {
+      if (offering.branch === branchID) {
+        callBack(offering);
+        console.log(offering);
+      }
+    });
+    service.markModified('offerings');
+    service.save();
+    return new Promise((resolve, reject) => {
+      service
+        .save()
+        .then(resultService => resolve(resultService._id))
+        .catch(reject);
+    });
+  });
+  return Promise.all(resultServices);
+};
+
 module.exports = {
   addBranches,
+  editOfferings,
 };

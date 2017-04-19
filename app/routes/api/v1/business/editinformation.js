@@ -7,6 +7,7 @@ const Schema = mongoose.Schema;
 
 const Branch = require('../../../../models/service/Branch');
 const Business = require('../../../../models/business/Business');
+const Service = require('../../../../models/service/Service');
 const businessMessages = require('../../../../services/shared/Strings')
   .businessMessages;
 const businessSuccess = require('../../../../services/shared/Strings')
@@ -193,10 +194,24 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
               } else if (branch._business.equals(id)) {
                 branch.location = req.body.branch.location;
                 branch.address = req.body.branch.address;
+
                 branch.save()
-                  .then(() => res.json({
-                    message: businessSuccess.branchEditSuccess,
-                  }))
+                  .then(() => {
+                    Service.find({
+                      _business: id,
+                    })
+                      .then((services) => {
+                        businessUtils.editOfferings(services, branch._id, (offering) => {
+                          offering.location = branch.location;
+                          offering.address = branch.address;
+                        }).then((resultedServices) => {
+                          res.json({
+                            message: businessSuccess.branchEditSuccess,
+                          });
+                        }).catch(e => next([e]));
+                      })
+                      .catch(e => next([e]));
+                  })
                   .catch(err => next(err));
               } else {
                 next([businessMessages.mismatchID]);
@@ -231,9 +246,21 @@ router.delete('/:business_id/delete/branch/:branch_id', businessAuthMiddleware, 
         } else if (branch._business.equals(id)) {
           branch._deleted = true;
           branch.save()
-            .then(() => res.json({
-              message: businessSuccess.branchDeleteSuccess,
-            }))
+            .then(() => {
+              Service.find({
+                _business: id,
+              })
+                .then((services) => {
+                  businessUtils.editOfferings(services, branch._id, (offering) => {
+                    offering._deleted = true;
+                  }).then((resultedServices) => {
+                    res.json({
+                      message: businessSuccess.branchDeleteSuccess,
+                    });
+                  }).catch(e => next([e]));
+                })
+                .catch(e => next([e]));
+            })
             .catch(err => next(err));
         } else {
           next([businessMessages.mismatchID]);
