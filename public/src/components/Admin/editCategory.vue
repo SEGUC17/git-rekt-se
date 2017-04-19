@@ -21,11 +21,12 @@
                     </el-form-item>
                 </el-form>
             </el-dialog>
-        </div>
-          <div slot="header" class="clearfix">
+         <div class="is-pulled-right">
+              <div slot="header" class="clearfix">
                     <span>Create category</span>
                 </div>
         <el-button size="small" @click="showAdd()" type="primary"> Add Category </el-button>
+         </div>
         <div class="catgory-list">
             <div>
                 <el-table :data="categories" border style="width: 100%">
@@ -75,6 +76,7 @@
                 </div>
             </div>
             <div>
+        </div>
         </div>
     </div>
 </template>

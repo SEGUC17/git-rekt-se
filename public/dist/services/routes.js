@@ -34871,6 +34871,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -36950,7 +36952,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.resetCreate
     }
-  }, [_vm._v("Clear")])], 1)], 1)], 1)], 2), _vm._v(" "), _c('div', {
+  }, [_vm._v("Clear")])], 1)], 1)], 1), _vm._v(" "), _c('div', {
+    staticClass: "is-pulled-right"
+  }, [_c('div', {
     staticClass: "clearfix",
     slot: "header"
   }, [_c('span', [_vm._v("Create category")])]), _vm._v(" "), _c('el-button', {
@@ -36963,7 +36967,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.showAdd()
       }
     }
-  }, [_vm._v(" Add Category ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v(" Add Category ")])], 1), _vm._v(" "), _c('div', {
     staticClass: "catgory-list"
   }, [_c('div', [_c('el-table', {
     staticStyle: {
@@ -37132,7 +37136,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.editCategory
     }
-  }, [_vm._v("Edit")])], 1)], 1)], 1)]), _vm._v(" "), _c('div')], 1)
+  }, [_vm._v("Edit")])], 1)], 1)], 1)]), _vm._v(" "), _c('div')], 2)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
