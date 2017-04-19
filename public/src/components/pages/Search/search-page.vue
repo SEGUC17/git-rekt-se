@@ -18,7 +18,7 @@
         <div class="container is-fluid columns">
 
             <!-- Search filtering -->
-            <aside class="column search-sidebar is-3 is-offset-1">
+            <aside class="column search-sidebar is-2 is-offset-1">
                 <el-form label-position="top" class="search-form">
                     <el-form-item label="Service Name">
                         <el-input v-model="newQuery.name" @keyup.enter.native="performSearch"
@@ -58,7 +58,7 @@
             </aside>
 
             <!-- Search results -->
-            <div class="search-results column is-7">
+            <div class="search-results column is-8">
 
                 <!-- Alerts Div -->
                 <div class="alerts">
@@ -99,7 +99,7 @@
                 <b-pagination
                         v-show="errors.length === 0 && !noResults"
                         :total="count"
-                        :current="currentQuery.offset"
+                        :current="parseInt(currentQuery.offset)"
                         order="is-centered"
                         size="default"
                         :simple="false"
@@ -145,7 +145,8 @@
           min: 0,
           max: 10000,
           location: (this.$route.query.location) ? this.$route.query.location : '',
-          sort: (this.$route.query.sort) ? this.$route.query.sort : '',
+          sort: (parseInt(this.$route.query.sort, 10) === 1 ||
+           parseInt(this.$route.query.sort, 10) === 2) ? parseInt(this.$route.query.sort, 10) : '',
         },
         errors: [],
       };
