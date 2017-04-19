@@ -39,6 +39,10 @@
                         <el-input v-model="form.password" placeholder="Password" type="password"></el-input>
                     </el-form-item>
 
+                    <span class="help forgot-help">
+                            <router-link to="/business/forgot" class="is-semi-dark">Forgot password?</router-link>
+                    </span>
+
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('form')">Login</el-button>
                     </el-form-item>
@@ -54,6 +58,7 @@
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
   import { loginRules } from '../../services/validation';
+  import EventBus from '../../services/EventBus';
 
   export default {
     data() {
@@ -95,6 +100,7 @@
                 this.loginSuccess = response.message;
                 setTimeout(() => {
                   this.$router.push('/');
+                  EventBus.$emit('UpdateNavigation');
                 }, 1000);
               }
             });

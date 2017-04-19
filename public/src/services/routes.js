@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router';
+import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
 import Home from '../components/pages/Index/home.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
@@ -29,6 +30,9 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
+}, {
+  path: '/client/forgot',
+  component: Forgot,
 }, {
   path: '/client/reset/:token',
   component: Reset,
