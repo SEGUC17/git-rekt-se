@@ -31,7 +31,7 @@
                             </span>
                     <router-link to="/login" class="nav-item no-link">Login</router-link>
                 </a>
-    
+
                 <a class="button is-danger gr-nav-button" @click="clientLogout" v-if="client.authenticated">
                     <span class="icon">
                             <i class="fa fa-sign-out"></i>
@@ -45,11 +45,13 @@
 
 <script>
   import clientAuth from '../../services/auth/clientAuth';
-    
+  import adminAuth from '../../services/auth/adminAuth';
+  import Authenticator from '../../services/auth/commonAuth';
     export default {
         data() {
             return {
                 client: clientAuth.user,
+                admin: adminAuth.user,
             }
         },
         methods: {
