@@ -68,8 +68,13 @@
       };
     },
     mounted() {
-      if (Authenticator.isAuthenticated()) {
+   if (Authenticator.isAuthenticated()) {
         this.$router.push('/');
+        this.$toast.open({
+          message: 'You are already logged in.',
+          type: 'is-danger',
+          position: 'bottom',
+        });
       }
     },
     methods: {
