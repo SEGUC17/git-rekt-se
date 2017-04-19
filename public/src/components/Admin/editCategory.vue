@@ -1,11 +1,11 @@
 <template>
     <div class="main">
         <div class="container">
-                <el-alert v-for="error in generalErrors" type="error" :title="error" show-icon></el-alert>
-                <el-alert v-if="createSuccess" type="success" :title="createSuccess" show-icon></el-alert>
-                <el-alert v-if="editSuccess" type="success" :title="editSuccess" show-icon></el-alert>
+                <el-alert v-for="error in generalErrors" type="error" class="error" :title="error" show-icon></el-alert>
+                <el-alert v-if="createSuccess" type="success" class="error" :title="createSuccess" show-icon></el-alert>
+                <el-alert v-if="editSuccess" type="success" class="error" :title="editSuccess" show-icon></el-alert>
                 <el-alert v-if="deleteSuccess" type="success" :title="deleteSuccess" show-icon></el-alert>
-                <el-alert v-for="error in createErrors" type="error" :title="error" show-icon></el-alert>
+                <el-alert v-for="error in createErrors" type="error" class="error" :title="error" show-icon></el-alert>
                 
             <el-dialog title="Edit Category" v-model="addVisible" size="large">
                 <el-form :model="newCategory" ref="createCategory" :rules="categoryRules" label-position="left">

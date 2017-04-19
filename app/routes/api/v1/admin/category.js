@@ -42,7 +42,7 @@ const upload = multer({
 
 router.use(bodyParser.json());
 
-router.post('/add', upload.single('icon'), (req, res, next) => {
+router.post('/add', upload.single('icon'), AdminAuth, (req, res, next) => {
   req.checkBody(validationSchemas.adminCategoryValidation);
   req.getValidationResult()
     .then((results) => {
