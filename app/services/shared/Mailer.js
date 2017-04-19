@@ -52,6 +52,46 @@ exports.clientConfirmEmail = (email, host, resetToken) => {
   });
 };
 
+exports.notifyClientOnTransactionAccept = () => {
+  const emailContent = {
+    from: info.from,
+    subject: '[Git-Rekt] Transaction Accepted',
+    html: `Hello,
+          This email is to notify you that one of your transactions have been accepted.`,
+    text: `Hello,
+      This email is to notify you that one of your transactions have been accepted.`,
+  };
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(emailContent, (err, information) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(information);
+      }
+    });
+  });
+};
+
+exports.notifyClientOnTransactionRefund = () => {
+  const emailContent = {
+    from: info.from,
+    subject: '[Git-Rekt] Transaction Refunded',
+    html: `Hello,
+          This email is to notify you that one of your transactions have been refunded.`,
+    text: `Hello,
+      This email is to notify you that one of your transactions have been refunded.`,
+  };
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(emailContent, (err, information) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(information);
+      }
+    });
+  });
+};
+
 exports.notifyAdminOfNewBusinessSignup = () => {
   const emailContent = {
     from: info.from,

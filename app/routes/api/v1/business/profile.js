@@ -11,7 +11,7 @@ const Business = require('../../../../models/business/Business');
 const Strings = require('../../../../services/shared/Strings');
 const authMiddleWare = require('../../../../services/shared/jwtConfig');
 const errorHandler = require('../../../../services/shared/errorHandler');
-
+const mailer = require('../../../../services/shared/Mailer');
 
 const router = express.Router();
 
@@ -127,6 +127,41 @@ router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) =
       });
     })
     .catch(next);
+});
+
+/**
+ * Business Accept Transaction
+ */
+router.post('/accept', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
+  const bookingId = req.body.transactionId;
+  Booking.findOne({
+    _id: bookingId,
+  }).exec().then((booking) => {
+    booking.status = 'confirmed';
+    booking.save().then(() => {
+      mailer.notifyClientOnTransactionAccept().then(() => {
+        res.json({ message: 'Successfully Accepted Transaction.' });
+      }).catch(next);
+    }).catch(next);
+  }).catch(next);
+});
+
+/**
+ * Business Refund Transaction
+ */
+router.post('/reject', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
+  const bookingId = req.body.transactionId;
+  const stripeId = req.body.stripeId;
+  Booking.findOne({
+    _id: bookingId,
+  }).exec().then((booking) => {
+    booking.status = 'rejected';
+    booking.save().then(() => {
+      mailer.notifyClientOnTransactionRefund(() => {
+        res.json({ message: 'Successfully Refunded Transaction.' });
+      }).catch(next);
+    }).catch(next);
+  }).catch(next);
 });
 
 // TODO REMOVE THIS ROUTE
