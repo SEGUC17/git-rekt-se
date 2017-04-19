@@ -1,14 +1,14 @@
 <template>
     <div>
         <div v-show="errors.length>0">
-            <div class="error" v-for="error in errors">
-                <el-alert :title="error" type="error" show-icon></el-alert>
+            <div class="error" v-for="(error,idx) in errors">
+                <el-alert @close="closeError(idx)" :title="error" type="error" show-icon></el-alert>
             </div>
         </div>
         <el-table :data="businessData" stripe style="width: 100%">
             <el-table-column type="expand">
                 <template scope="props">
-                  <p>{{ props.row.shortDescription }}</p>
+                      <p>{{ props.row.shortDescription }}</p>
 </template>
          </el-table-column>
         <el-table-column prop="name" label="Name" width="300">
@@ -22,16 +22,16 @@
     <el-dialog title="Approve Request" v-model="acceptDialogue" size="tiny">
         <span>Are you sure you wish to accept this business request?</span>
         <span slot="footer" class="dialog-footer">
-                <el-button @click="acceptDialogue = false">Cancel</el-button>
-                <el-button type="primary" @click="accept(scope.$index, businessData)">Yes, I'm sure.</el-button>
-            </span>
+                    <el-button @click="acceptDialogue = false">Cancel</el-button>
+                    <el-button type="primary" @click="accept(scope.$index, businessData)">Yes, I'm sure.</el-button>
+                </span>
     </el-dialog>
     <el-dialog title="Reject Request" v-model="rejectDialogue" size="tiny">
         <span>Are you sure you wish to reject this business request?</span>
         <span slot="footer" class="dialog-footer">
-                <el-button @click="rejectDialogue = false">Cancel</el-button>
-                <el-button type="primary" @click="reject(scope.$index, businessData)">Yes, I'm sure.</el-button>
-            </span>
+                    <el-button @click="rejectDialogue = false">Cancel</el-button>
+                    <el-button type="primary" @click="reject(scope.$index, businessData)">Yes, I'm sure.</el-button>
+                </span>
     </el-dialog>
     
     <el-button class="button is-info" @click="acceptDialogue = true">
@@ -47,6 +47,7 @@
 <script>
     import Axios from 'axios';
     import EndPoints from '../../services/EndPoints';
+    // import adminAuth from '../../services/auth/adminAuth.js';
     export default {
     
         data() {
@@ -62,22 +63,35 @@
         },
     
         methods: {
+            closeError(idx) {
+                this.errors.splice(idx,1);
+            },
             fetchBusiness() {
-                axios.get(EndPoints.Admin().viewBusiness)
+                axios.get(EndPoints.Admin().viewBusiness
+                        // , {
+                        //     headers: {
+                        //         Authorization: adminAuth.getJWTtoken(),
+                        //     },
+                        // }
+                    )
                     .then((res) => {
                         this.businessData = res.data;
-                        errors=[];
+                        this.errors = [];
                     })
                     .catch(err => {
-                        for (var i = 0; i < err.response.data.errors.length; i++) {
-                            this.errors.push(err.response.data.errors[i]);
-                        }
+                        this.errors = err.response.data.errors;
                         document.body.scrollTop = document.documentElement.scrollTop = 0;
                     });
             },
             accept(index, rows) {
                 this.acceptDialogue = false,
-                    axios.post(EndPoints.Admin().acceptBusiness(this.businessData[index]._id))
+                    axios.post(EndPoints.Admin().acceptBusiness(this.businessData[index]._id)
+                        // , {
+                        //     headers: {
+                        //         Authorization: adminAuth.getJWTtoken(),
+                        //     },
+                        // }
+                    )
                     .then(() => {
                         rows.splice(index, 1);
                         this.$notify({
@@ -85,18 +99,22 @@
                             message: 'Request approved!',
                             type: 'success'
                         });
-                        errors=[];
+                        this.errors = [];
                     })
                     .catch(err => {
-                        for (var i = 0; i < err.response.data.errors.length; i++) {
-                            this.errors.push(err.response.data.errors[i]);
-                        }
+                        this.errors = err.response.data.errors;
                         document.body.scrollTop = document.documentElement.scrollTop = 0;
                     });
             },
             reject(index, rows) {
                 this.rejectDialogue = false,
-                    axios.post(EndPoints.Admin().denyBusiness(this.businessData[index]._id))
+                    axios.post(EndPoints.Admin().denyBusiness(this.businessData[index]._id)
+                        // , {
+                        //     headers: {
+                        //         Authorization: adminAuth.getJWTtoken(),
+                        //     },
+                        // }
+                    )
                     .then(() => {
                         rows.splice(index, 1)
                         this.$notify({
@@ -104,12 +122,10 @@
                             message: 'Request rejected!',
                             type: 'success'
                         });
-                        errors=[];
+                        this.errors = [];
                     })
                     .catch(err => {
-                        for (var i = 0; i < err.response.data.errors.length; i++) {
-                            this.errors.push(err.response.data.errors[i]);
-                        }
+                        this.errors = err.response.data.errors;
                         document.body.scrollTop = document.documentElement.scrollTop = 0;
                     });
             }
