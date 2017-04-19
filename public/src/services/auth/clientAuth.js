@@ -11,9 +11,13 @@ export default {
       return localStorage.getItem('client_email');
     },
   },
+  getJWTtoken() {
+    return `JWT ${localStorage.getItem('client_token')}`;
+  },
   login(data, callBack) {
     axios
-      .post(Client().login, data)
+      .post(Client()
+        .login, data)
       .then((response) => {
         this.user.authenticated = true;
         localStorage.setItem('client_token', response.data.token);
@@ -34,22 +38,25 @@ export default {
       });
   },
   logout(callBack) {
-    axios.post(Client().logout, null, {
-      headers: {
-        Authorization: this.getJWTtoken(),
-      },
-    }).then((response) => {
-      this.user.authenticated = false;
-      localStorage.removeItem('client_token', response.data.token);
-      localStorage.removeItem('client_email', response.data.email);
-      localStorage.removeItem('client_id', response.data.id);
-      callBack(null, response.data);
-    }).catch((err) => {
-      callBack(err.response.data, null);
-    });
-  },
-  getJWTtoken() {
-    return `JWT ${localStorage.getItem('client_token')}`;
+    this.user.authenticated = false;
+    const currentToken = this.getJWTtoken();
+
+    localStorage.removeItem('client_token');
+    localStorage.removeItem('client_email');
+    localStorage.removeItem('client_id');
+
+    axios.post(Client()
+        .logout, null, {
+          headers: {
+            Authorization: currentToken,
+          },
+        })
+      .then((response) => {
+        callBack(null, response.data);
+      })
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
   },
   refreshAuth() {
     if (localStorage.getItem('client_token')) {

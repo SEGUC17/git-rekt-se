@@ -4,6 +4,7 @@ import elementUI from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/en'
 import Buefy from 'buefy'
 import axios from 'axios';
+import moment from 'moment';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import clientLogin from '../../components/Client/login.vue';
@@ -27,6 +28,5 @@ new Vue({
     'gr-footer': footer,
     'confirm-email': confirmEmail,
     'client-login': clientLogin,
-    'client-logout': clientLogout,
-  }
+  },
 });
