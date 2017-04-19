@@ -19,7 +19,7 @@ const bookingSchema = Schema({
     required: true,
   },
   _offering: {
-    type: Offering.offeringSchema,
+    type: Schema.Types.ObjectId,
     required: true,
   },
   _coupon: {

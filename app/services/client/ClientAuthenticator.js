@@ -77,7 +77,7 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
               const token = jwt.sign({
                 id: user._id,
               }, process.env.JWT_KEY_CLIENT, {
-                expiresIn: '10d',
+                expiresIn: '1m',
               });
               resolve({
                 message: Strings.clientLoginMessages.loginSuccess,
@@ -101,14 +101,37 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
 exports.loginFacebook = (email, id) => {
   const token = jwt.sign({
     id,
+    email,
   }, process.env.JWT_KEY_CLIENT, {
     expiresIn: '10d',
   });
 
-  return {
-    message: Strings.clientLoginMessages.loginSuccess,
-    id,
-    email,
+  // expires in 5 minutes
+  const encapsulate = jwt.sign({
     token,
-  };
+  }, process.env.JWT_KEY_CLIENT, {
+    expiresIn: '5m',
+  });
+
+  return encapsulate;
 };
+
+exports.finalizeLoginFacebook = token =>
+  new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.JWT_KEY_CLIENT, (err, decoded) => {
+      if (err) {
+        reject(err);
+      } else {
+        jwt.verify(decoded.token, process.env.JWT_KEY_CLIENT, (error, payload) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve({
+              token: decoded.token,
+              payload,
+            });
+          }
+        });
+      }
+    });
+  });

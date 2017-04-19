@@ -12,10 +12,15 @@ const transactionSchema = Schema({
     ref: 'Client',
     required: true,
   },
-  _booking: {
+  _business: {
     type: Schema.Types.ObjectId,
-    ref: 'Booking',
+    ref: 'Business',
     required: true,
+  },
+  stripe_charge: {
+    type: String,
+    required: true,
+    unique: true,
   },
   amount: {
     type: Number,
