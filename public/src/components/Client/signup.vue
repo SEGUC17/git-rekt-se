@@ -196,7 +196,10 @@
         });
         return;
       }
-      else if (this.$route.query && this.$route.query['is_facebook'] === 'true') {
+      else if(this.$route.query && this.$route.query['error']) {
+          this.error = true;
+          this.message = this.$route.query['password'] || 'We could not fetch data from facebook, but you can sign up normally';
+      } else if (this.$route.query && this.$route.query['is_facebook'] === 'true') {
         const query = this.$route.query;
         Object.keys(query).forEach((key) => {
           if (key === 'first_name') {
