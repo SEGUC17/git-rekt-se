@@ -1,8 +1,8 @@
 <template>
     <div>
         <div v-show="errors.length > 0">
-            <div class="error" v-for="error in errors">
-                <el-alert :title="error" type="error" show-icon>
+            <div class="error" v-for="(error, index) in errors">
+                <el-alert :title="error" type="error" show-icon @close="closeError(index)">
                 </el-alert>
             </div>
         </div>
@@ -61,6 +61,9 @@
             this.loadFormData();
         },
         methods: {
+            closeError(idx) {
+                this.errors.splice(idx, 1);
+            },
             loadFormData() {
                 const loader = this.$loading({
                     fullscreen: true,
@@ -113,7 +116,10 @@
     
             },
             removeBranch(idx) {
-                const loader = this.$loading({
+                if (this.branchesForm.branches.length === 2) {
+                    this.errors = ['You must have atleast one branch you cannot delete this one'];
+                } else {
+                    const loader = this.$loading({
                     fullscreen: true,
                 });
                 axios.delete(Business().deleteBranch(businessAuth.user.userID(), this.branchesForm.branches[idx]._id), {
@@ -134,6 +140,7 @@
                     loader.close();
                     this.errors = e.response.data.errors;
                 });
+                }
             },
             updateBranch(idx) {
                 const loader = this.$loading({
