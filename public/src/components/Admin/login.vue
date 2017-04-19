@@ -1,19 +1,19 @@
 <template>
-    <div class="business-login">
-        <section class="bus-signin-top hero is-bold">
+    <div class="client-login">
+        <section class="client-signin-top hero is-bold">
             <div class="hero-body">
                 <div class="container">
                     <h1 class="title extra-large white">
-                        Business Sign In
+                        Admin Sign In
                     </h1>
                     <p class="subtitle white">
-                        Manage your bookings, services and engage with your clients.
+                        Welcome, Boss.
                     </p>
                 </div>
             </div>
         </section>
 
-        <div class="bus-login-form columns">
+        <div class="client-login-form columns">
             <div class="column is-half is-offset-one-quarter">
 
                 <div v-show="errors.length > 0">
@@ -28,9 +28,9 @@
                     </el-alert>
                 </div>
 
-                <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top"
-                    class="login-form">
 
+                <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top"
+                          class="login-form">
                     <el-form-item label="Email" prop="email">
                         <el-input v-model="form.email" placeholder="Email"></el-input>
                     </el-form-item>
@@ -39,26 +39,19 @@
                         <el-input v-model="form.password" placeholder="Password" type="password"></el-input>
                     </el-form-item>
 
-                    <span class="help forgot-help">
-                            <router-link to="/business/forgot" class="is-semi-dark">Forgot password?</router-link>
-                    </span>
-
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('form')">Login</el-button>
                     </el-form-item>
                 </el-form>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
-  import businessAuth from '../../services/auth/businessAuth';
-  import Authenticator from '../../services/auth/commonAuth';
+  import adminAuth from '../../services/auth/adminAuth';
   import Form from '../../services/Form';
   import { loginRules } from '../../services/validation';
-  import EventBus from '../../services/EventBus';
 
   export default {
     data() {
@@ -74,8 +67,8 @@
       };
     },
     mounted() {
-      if (Authenticator.isAuthenticated()) {
-        this.$router.push('/');
+   if (adminAuth.isAuthenticated()) {
+        this.$router.push('/admin/dashboard');
       }
     },
     methods: {
@@ -86,7 +79,7 @@
             const loader = this.$loading({
               fullscreen: true,
             });
-            businessAuth.login(this.form.data(), (responseErrors, response) => {
+            adminAuth.login(this.form.data(), (responseErrors, response) => {
               loader.close();
               if (responseErrors) {
                 this.errors = responseErrors.errors.map((err) => {
@@ -99,8 +92,7 @@
                 this.logged_in = true;
                 this.loginSuccess = response.message;
                 setTimeout(() => {
-                  this.$router.push('/');
-                  EventBus.$emit('UpdateNavigation');
+                  this.$router.push('/admin/dashboard');
                 }, 1000);
               }
             });
@@ -114,13 +106,6 @@
 </script>
 
 <style>
-    .bus-signin-top {
-        background: #41295a; /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #2F0743, #41295a); /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #2F0743, #41295a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-        margin-bottom: 2em;
-    }
-
     .error {
         margin-top: 20px;
     }
@@ -129,8 +114,15 @@
         margin-top: 0;
     }
 
+    .client-signin-top {
+        background: #67B26F; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #4ca2cd, #67B26F); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #4ca2cd, #67B26F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        margin-bottom: 2em;
+    }
+
     @media screen and (max-width: 999px) {
-        .bus-login-form {
+        .client-login-form {
             margin: 2em;
         }
     }

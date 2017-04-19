@@ -26,9 +26,7 @@ export default {
         .login, data)
       .then((response) => {
         this.user.authenticated = true;
-        localStorage.setItem('client_token', response.data.token);
-        localStorage.setItem('client_email', response.data.email);
-        localStorage.setItem('client_id', response.data.id);
+        this.storeData(response);
         return callBack(null, response.data);
       })
       .catch((err) => {
@@ -93,6 +91,12 @@ export default {
 
   refreshAuth() {
     this.user.authenticated = !!localStorage.getItem('client_token');
+  },
+
+  storeData(response) {
+    localStorage.setItem('client_token', response.data.token);
+    localStorage.setItem('client_email', response.data.email);
+    localStorage.setItem('client_id', response.data.id);
   },
 
   /**

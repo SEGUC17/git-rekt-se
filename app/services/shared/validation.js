@@ -512,6 +512,16 @@ const businessUpdateValidation = {
   },
 };
 
+const forgotPasswordValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emailEmpty,
+    },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
+};
 const serviceBookingValidation = {
   service: {
     isMongoId: {
@@ -559,6 +569,7 @@ const validation = {
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
+  forgotPasswordValidation,
   serviceBookingValidation,
 };
 

@@ -40,6 +40,7 @@
 </template>
 
 <script>
+
   import CommonAuth from '../../services/auth/commonAuth';
   import EventBus from '../../services/EventBus';
   import LogoutBtn from './logout.vue';
