@@ -1,7 +1,14 @@
 <template>
-  <div>
-    <div class="column is-half is-offset-one-quarter" v-show="error">
-      <el-alert @close="error = false" :title="message" type="error" show-icon></el-alert>
+  <div> 
+
+    <div class="column is-half is-offset-one-quarter" v-show="success || error">
+      <div v-show="error">
+        <el-alert @close="error = false" :title="message" type="error" show-icon></el-alert>
+      </div>
+
+      <div v-show="success">
+        <el-alert @close="success = false" :title="message" type="success" show-icon></el-alert>
+      </div>  
     </div>
 
     <el-table :data="bookings" border>
@@ -22,13 +29,15 @@
 
       <el-table-column label="Actions">
       <template scope="scope">
+
         <el-tooltip content="Accept Transaction" placement="top">
-          <el-button type="success" icon="circle-check" @click="acceptTransaction">Accept</el-button>
+          <el-button size="small" type="success" icon="circle-check" @click="acceptTransaction(scope)">Accept</el-button>
         </el-tooltip>
 
         <el-tooltip content="Refund Transaction" placement="top">
-          <el-button type="danger" icon="circle-cross" @click="rejectTransaction">Reject</el-button>
+          <el-button size="small" type="danger" icon="circle-cross" @click="rejectTransaction(scope)">Reject</el-button>
         </el-tooltip>
+
       </template>
       </el-table-column>
     </el-table>
@@ -40,10 +49,16 @@
   import {
     Business
   } from '../../services/EndPoints';
+  const headers = {
+    headers: {
+      Authorization: businessAuth.getJWTtoken(),
+    },
+  };
   export default {
     data() {
       return {
         bookings: [],
+        success: false,
         error: false,
         message: '',
       };
@@ -54,28 +69,51 @@
           fullscreen: true,
           text: 'Fetching Transactions..',
         });
-        axios.get(Business().getTransactions, {
-            headers: {
-              Authorization: businessAuth.getJWTtoken(),
-            },
-          })
+        axios.get(Business().getTransactions, headers)
           .then((res) => {
-            console.log(res);
-            console.log(res.data);
             this.bookings = res.data.bookings;
             loader.close();
           })
           .catch((err) => {
-            console.log(err);
-            console.log(err.response);
+            this.errors = true;
+            this.message = err.response ? err.response.data.errors.join(', ') : err.message;
             loader.close();
           });
       },
-      acceptTransaction() {
-
+      acceptTransaction(scope) {
+        this.success = false;
+        this.error = false;
+        const data = {
+          bookingId: scope.row._id,
+          email: scope.row._client.email,
+        };
+        axios.post(Business().acceptTransaction, data, headers)
+          .then((res) => {
+            this.success = true;
+            this.message =  res.data.message;
+            this.bookings[scope.$index].status = 'confirmed';
+          }).catch((err) => {
+            this.error = true;
+            this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+          });
       },
-      rejectTransaction() {
-
+      rejectTransaction(scope) {
+        this.success = false;
+        this.error = false;
+        const data = {
+          bookingId: scope.row._id,
+          stripeId: scope.row._transaction.stripe_charge,
+          email: scope.row._client.email,
+        };
+        axios.post(Business().refundTransaction, data, headers)
+          .then((res) => {
+            this.success = true;
+            this.message = res.data.message;
+            this.bookings[scope.$index].status = 'rejected';
+          }).catch((err) => {
+            this.error = true;
+            this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+          });
       },
     },
     mounted() {

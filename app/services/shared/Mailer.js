@@ -52,8 +52,9 @@ exports.clientConfirmEmail = (email, host, resetToken) => {
   });
 };
 
-exports.notifyClientOnTransactionAccept = () => {
+exports.notifyClientOnTransactionAccept = (email) => {
   const emailContent = {
+    to: email,
     from: info.from,
     subject: '[Git-Rekt] Transaction Accepted',
     html: `Hello,
@@ -72,8 +73,9 @@ exports.notifyClientOnTransactionAccept = () => {
   });
 };
 
-exports.notifyClientOnTransactionRefund = () => {
+exports.notifyClientOnTransactionRefund = (email) => {
   const emailContent = {
+    to: email,
     from: info.from,
     subject: '[Git-Rekt] Transaction Refunded',
     html: `Hello,

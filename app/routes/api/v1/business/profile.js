@@ -116,7 +116,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
 router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
   Booking.find({ _deleted: false }, { offering: false, _deleted: false })
     .populate('_service', 'name')
-    .populate('_client', 'firstName lastName')
+    .populate('_client', 'firstName lastName email')
     .populate('_transaction', 'stripe_charge amount')
     .populate('_offering', 'location address')
     .exec()
@@ -130,37 +130,53 @@ router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) =
 });
 
 /**
- * Business Accept Transaction
+ * Business Accept Transaction API Route.
  */
 router.post('/accept', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
-  const bookingId = req.body.transactionId;
+  const bookingId = req.body.bookingId;
+  const clientEmail = req.body.email;
   Booking.findOne({
     _id: bookingId,
   }).exec().then((booking) => {
-    booking.status = 'confirmed';
-    booking.save().then(() => {
-      mailer.notifyClientOnTransactionAccept().then(() => {
-        res.json({ message: 'Successfully Accepted Transaction.' });
+    if (!booking) {
+      next('Booking does not exist!');
+    } else if (booking.status !== 'pending') {
+      next('Transaction must be in pending state!');
+    } else {
+      booking.status = 'confirmed';
+      booking.save().then(() => {
+        mailer.notifyClientOnTransactionAccept(clientEmail)
+          .then(() => {
+            res.json({ message: 'Successfully Accepted Transaction.' });
+          }).catch(next);
       }).catch(next);
-    }).catch(next);
+    }
   }).catch(next);
 });
 
 /**
- * Business Refund Transaction
+ * Business Refund Transaction API Route.
  */
 router.post('/reject', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
-  const bookingId = req.body.transactionId;
+  const bookingId = req.body.bookingId;
   const stripeId = req.body.stripeId;
+  const clientEmail = req.body.email;
   Booking.findOne({
     _id: bookingId,
   }).exec().then((booking) => {
-    booking.status = 'rejected';
-    booking.save().then(() => {
-      mailer.notifyClientOnTransactionRefund(() => {
-        res.json({ message: 'Successfully Refunded Transaction.' });
+    if (!booking) {
+      next('Booking does not exist!');
+    } else if (booking.status !== 'pending') {
+      next('Transaction must be in pending state!');
+    } else {
+      booking.status = 'rejected';
+      booking.save().then(() => {
+        mailer.notifyClientOnTransactionRefund(clientEmail)
+          .then(() => {
+            res.json({ message: 'Successfully Refunded Transaction.' });
+          }).catch(next);
       }).catch(next);
-    }).catch(next);
+    }
   }).catch(next);
 });
 
