@@ -15,13 +15,22 @@
       <el-table-column label="Service Name" prop="_service.name">
       </el-table-column>
   
-      <el-table-column label="Client Name" prop="_client.firstName">
+      <el-table-column label="Client Name">
+        <template scope="scope">
+          {{ scope.row._client.firstName + ' ' + scope.row._client.lastName }}
+        </template>
       </el-table-column>
       
-      <el-table-column label="Address" prop="_offering.address">
+      <el-table-column label="Address">
+        <template scope="scope">
+          {{ scope.row._offering.address + ', ' + scope.row._offering.location }}
+        </template>
       </el-table-column>
 
-      <el-table-column label="Amount" prop="_transaction.amount">
+      <el-table-column label="Amount">
+        <template scope="scope">
+          {{ scope.row._transaction.amount / 100.0 }}
+        </template>
       </el-table-column>
 
       <el-table-column label="Status" prop="status">

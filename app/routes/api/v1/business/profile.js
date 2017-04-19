@@ -12,6 +12,7 @@ const Strings = require('../../../../services/shared/Strings');
 const authMiddleWare = require('../../../../services/shared/jwtConfig');
 const errorHandler = require('../../../../services/shared/errorHandler');
 const mailer = require('../../../../services/shared/Mailer');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const router = express.Router();
 
@@ -121,7 +122,6 @@ router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) =
     .populate('_offering', 'location address')
     .exec()
     .then((bookings) => {
-      console.log(bookings);
       res.json({
         bookings,
       });
@@ -169,13 +169,19 @@ router.post('/reject', authMiddleWare.businessAuthMiddleware, (req, res, next) =
     } else if (booking.status !== 'pending') {
       next('Transaction must be in pending state!');
     } else {
-      booking.status = 'rejected';
-      booking.save().then(() => {
-        mailer.notifyClientOnTransactionRefund(clientEmail)
-          .then(() => {
-            res.json({ message: 'Successfully Refunded Transaction.' });
+      stripe.refund(stripeId, {}, (err) => {
+        if (err) {
+          next(err);
+        } else {
+          booking.status = 'rejected';
+          booking.save().then(() => {
+            mailer.notifyClientOnTransactionRefund(clientEmail)
+              .then(() => {
+                res.json({ message: 'Successfully Refunded Transaction.' });
+              }).catch(next);
           }).catch(next);
-      }).catch(next);
+        }
+      });
     }
   }).catch(next);
 });
