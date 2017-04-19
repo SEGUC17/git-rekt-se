@@ -5,31 +5,47 @@
     flex-direction: column;
 }
 
+#root{
+  overflow: hidden;
+}
 
-#grcontent {
-    flex: 1;
+#grcontent{
+  flex: 1;
+}
+
+.extra-large {
+  font-size: 4em;
+  line-height: 1.2em;
+}
+
+.intro-container {
+  padding: 5em;
 }
 
 .el-menu-header {
-    border-radius: 0;
+  border-radius: 0;
 }
 
 .el-menu-item-right {
-    float: right !important;
+  float: right !important;
 }
 
 .clearfix:after {
-    content: " "; /* Older browser do not support empty content */
-    visibility: hidden;
-    display: block;
-    height: 0;
-    clear: both;
+  content: " ";
+  /* Older browser do not support empty content */
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
 }
-
 .white {
     color: #fff;
 }
 
 .login-form {
     margin-top: 2em;
+}
+
+.box{
+    border-radius: 0;
 }

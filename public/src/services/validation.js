@@ -33,6 +33,10 @@ export const clientSignUpValidation = {
     trigger: 'blur',
   }, {
     validator(rule, value, callBack) {
+      if (!this.form.password) {
+        callBack();
+        return;
+      }
       if (this.form.password.length > 0) {
         if (this.form.password !== value) {
           callBack([new Error('Password and password confirmation mismatch.')]);
@@ -75,6 +79,10 @@ export const clientSignUpValidation = {
     trigger: 'change',
   }],
   birthdate: [{
+    required: true,
+    message: 'Birthdate is required.',
+    trigger: 'blur',
+  }, {
     type: 'date',
     message: 'Invalid Date format.',
     trigger: 'change',
@@ -92,4 +100,51 @@ export const loginRules = {
     message: 'Password is required.',
     trigger: 'blur',
   }],
+};
+export const clientForgotPassword = {
+  password: [{
+    required: true,
+    message: 'Password is required.',
+    trigger: 'blur',
+  }, {
+    pattern: /^(?=.*\d).{8,15}$/,
+    message: 'Password must be 8-15 chars and contains at least one number.',
+    trigger: 'blur',
+  }, {
+    validator(rule, value, callBack) {
+      this.$refs.form.validateField('confirmPassword');
+      callBack();
+    },
+    trigger: ['blur', 'change'],
+  }],
+  confirmPassword: [{
+    required: true,
+    message: 'Password Confirmation is required.',
+    trigger: 'blur',
+  }, {
+    validator(rule, value, callBack) {
+      if (this.form.password.length > 0) {
+        if (this.form.password !== value) {
+          callBack([new Error('Password and password confirmation mismatch.')]);
+        } else {
+          callBack();
+        }
+      } else {
+        callBack();
+      }
+    },
+    trigger: ['blur', 'change'],
+  }],
+};
+
+export const clientForgotPasswordMail = {
+  email: [{
+    required: true,
+    message: 'Email is required.',
+    trigger: 'blur',
+  },
+  {
+    type: 'email', message: 'Please input correct email address', trigger: 'blur,change',
+  },
+  ],
 };
