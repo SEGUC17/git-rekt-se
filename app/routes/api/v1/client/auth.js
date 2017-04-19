@@ -315,7 +315,7 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
    * If authenticated with facebook.
    */
   if (req.isAuthenticated()) {
-    res.redirect(`/client/login/?token=${ClientAuthenticator.loginFacebook(req.user.email, req.user.id)}`);
+    res.redirect(`/client/login/?token=${ClientAuthenticator.loginFacebook(req.user.email, req.user.id)}&is_facebook=true`);
   } else {
     /**
      * Redirect to Signup page with data accquired from facebook.

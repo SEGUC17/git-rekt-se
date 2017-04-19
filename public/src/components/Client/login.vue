@@ -113,7 +113,7 @@
 
       facebookLogin() {
         const query = this.$route.query;
-        if (query && query !== {}) {
+        if (query && query['is_facebook'] === 'true') {
           const token = query.token;
           if (!token || token.length === 0) {
             return;
@@ -142,9 +142,7 @@
 
     mounted() {
       if (Authenticator.isAuthenticated()) {
-        this.$router.go({
-          path: '/',
-        });
+        this.$router.push('/');
         return;
       }
 
