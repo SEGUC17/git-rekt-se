@@ -30,7 +30,7 @@ describe('Business Gallery CRUD Tests', () => {
                 done();
               });
           })
-          .catch(done);
+          .catch(e => done(e));
       });
     });
   });
@@ -55,12 +55,10 @@ describe('Business Gallery CRUD Tests', () => {
               chai.expect(data.gallery.length)
                 .to.equal(1);
               chai.expect(result.body.message)
-                .to.equal('Image added successfully!');
+                .to.equal(Strings.serviceSuccess.imageAdd);
               done();
             })
-            .catch(() => {
-              done(err);
-            });
+            .catch(e => done(e));
         }
       });
   });
@@ -126,7 +124,7 @@ describe('Business Gallery CRUD Tests', () => {
                     .to.equal('API Description is working');
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })

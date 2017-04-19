@@ -61,7 +61,7 @@ router.get('/:id/gallery', (req, res, next) => { // BusinessAuth
           })
           .catch(err => next(err));
       } else {
-        next(Strings.businessMessages.invalidID);
+        next([Strings.businessMessages.invalidID]);
       }
     })
     .catch(err => next(err));
@@ -91,7 +91,7 @@ router.post('/:id/gallery/add', upload.single('path'), (req, res, next) => { // 
               business.save()
                 .then(() => {
                   res.json({
-                    message: 'Image added successfully!',
+                    message: Strings.serviceSuccess.imageAdd,
                   });
                 })
                 .catch(saveErr => next(saveErr));
@@ -101,7 +101,7 @@ router.post('/:id/gallery/add', upload.single('path'), (req, res, next) => { // 
           })
           .catch(err => next(err));
       } else {
-        next('The required id is invalid.');
+        next(['The required id is invalid.']);
       }
     })
     .catch(err => next(err));
@@ -134,18 +134,18 @@ router.post('/:ser_id/gallery/edit/:im_id', (req, res, next) => { // BusinessAut
                 business.save()
                   .then(() => {
                     res.json({
-                      message: 'Image edited successfully',
+                      message: Strings.serviceSuccess.imageEdit,
                     });
                   })
                   .catch(saveErr => next(saveErr));
               }
             } else {
-              next('The required id is invalid.');
+              next(['The required id is invalid.']);
             }
           })
           .catch(err => next(err));
       } else {
-        next('The required id is invalid.');
+        next(['The required id is invalid.']);
       }
     })
     .catch(err => next(err));
@@ -184,12 +184,12 @@ router.post('/:ser_id/gallery/delete/:im_id', (req, res, next) => { // BusinessA
                   .catch(saveErr => next(saveErr));
               }
             } else {
-              next(Strings.businessMessages.invalidID);
+              next([Strings.businessMessages.invalidID]);
             }
           })
           .catch(err => next(err));
       } else {
-        next(Strings.businessMessages.invalidID);
+        next(result.array());
       }
     })
     .catch(err => next(err));
