@@ -45,13 +45,10 @@
 
 <script>
   import clientAuth from '../../services/auth/clientAuth';
-  import adminAuth from '../../services/auth/adminAuth';
-  import Authenticator from '../../services/auth/commonAuth';
     export default {
         data() {
             return {
                 client: clientAuth.user,
-                admin: adminAuth.user,
             }
         },
         methods: {
