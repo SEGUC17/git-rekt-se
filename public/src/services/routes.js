@@ -31,7 +31,7 @@ const routes = [{
   component: businessLogin,
 },
 {
-  path: '/client/auth/forgot',
+  path: '/client/forgot',
   component: Forgot,
 },
 {
