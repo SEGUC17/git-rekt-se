@@ -17,7 +17,9 @@ Vue.use(VueRouter);
 Vue.use(elementUI, {
   locale
 });
-Vue.use(Buefy);
+Vue.use(Buefy, {
+  defaultIconPack: 'fa',
+});
 
 new Vue({
   el: '#root',
