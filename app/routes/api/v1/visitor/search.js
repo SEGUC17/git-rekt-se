@@ -17,7 +17,7 @@ router.get('/', (req, res, next) => {
   const inputQuery = req.query;
   const output = {};
   // Build up query
-  const offset = (inputQuery.offset) ? inputQuery.offset : 0;
+  const offset = (inputQuery.offset) ? inputQuery.offset : 1;
   const mongooseQuery = {
     _deleted: false,
   };
@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
   }
   if (inputQuery.rating) {
     mongooseQuery._avgRating = {
-      $gte: inputQuery.rating,
+      $gte: parseInt(inputQuery.rating, 10),
     };
   }
   // Check if query needs to check the offerings of the service
@@ -39,20 +39,31 @@ router.get('/', (req, res, next) => {
   }
   if (inputQuery.min && inputQuery.max) {
     mongooseQuery.offerings.$elemMatch.price = {
-      $gte: inputQuery.min,
-      $lte: inputQuery.max,
+      $gte: parseInt(inputQuery.min, 10),
+      $lte: parseInt(inputQuery.max, 10),
     };
   } else if (inputQuery.min) {
     mongooseQuery.offerings.$elemMatch.price = {
-      $gte: inputQuery.min,
+      $gte: parseInt(inputQuery.min, 10),
     };
   } else if (inputQuery.max) {
     mongooseQuery.offerings.$elemMatch.price = {
-      $lte: inputQuery.max,
+      $lte: parseInt(inputQuery.max, 10),
     };
   }
   if (inputQuery.location) {
-    mongooseQuery.offerings.$elemMatch.location = new RegExp(inputQuery.location, 'i');
+    mongooseQuery.offerings.$elemMatch.location = inputQuery.location;
+  }
+  /**
+   * Sorting Options (1: A-Z, 2:Desc. Rating)
+   */
+  let sort = '';
+  if (inputQuery.sort) {
+    if (inputQuery.sort === '1') {
+      sort = 'name';
+    } else if (inputQuery.sort === '2') {
+      sort = '-_avgRating';
+    }
   }
 
   // Executing
@@ -79,7 +90,8 @@ router.get('/', (req, res, next) => {
           select: 'title',
         }])
         .select('name shortDescription _business _avgRating categories coverImage')
-        .skip(offset * 10)
+        .sort(sort)
+        .skip((offset - 1) * 10)
         .limit(10)
         .exec((err, services) => {
           if (err) {
