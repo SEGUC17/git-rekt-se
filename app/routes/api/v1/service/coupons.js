@@ -22,10 +22,14 @@ router.use(expressValidator({}));
  * view service coupons.
  */
 router.get('/:id/coupons', BusinessAuth, (req, res, next) => {
-  Service.findOne({
-    _id: req.params.id,
-    _deleted: false,
-  })
+  req.check(validationSchemas.couponGetValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        Service.findOne({
+          _id: req.params.id,
+          _deleted: false,
+        })
     .exec()
     .then((service) => {
       if (service) {
@@ -39,30 +43,34 @@ router.get('/:id/coupons', BusinessAuth, (req, res, next) => {
           .then((coupons) => {
             if (coupons) {
               res.json(coupons);
+            } else {
+              res.json([]);
             }
           })
-          .catch(err => next(err));
+          .catch(err => next([err]));
         } else {
-          next(Strings.serviceFailure.notYourService);
+          next([Strings.serviceFailure.notYourService]);
         }
       } else {
-        next(Strings.serviceFailure.invalidService);
+        next([Strings.serviceFailure.invalidService]);
       }
     })
-    .catch(err => next(err));
+    .catch(err => next([err]));
+      } else {
+        next(result.array());
+      }
+    })
+    .catch(err => next([err]));
 });
 /**
  * Add Coupon to a service.
  */
 
 router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
-  console.log('entered add');
-  console.log(req.body);
   req.check(validationSchemas.couponAddValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        console.log('validated');
         Service.findOne({
           _id: req.params.id,
           _deleted: false,
@@ -78,7 +86,7 @@ router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
                   new Date(req.body.endDate)
                   .getTime() < new Date(req.body.startDate)
                   .getTime()) {
-                  next(Strings.couponValidationError.invalidEndDate);
+                  next([Strings.couponValidationError.invalidEndDate]);
                 } else {
                   const coupon = ({
                     _service: req.params.id,
@@ -90,18 +98,19 @@ router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
                   new Coupon(coupon)
                     .save()
                     .then(() => {
-                      console.log('saved coupon');
                       res.json({
                         message: Strings.serviceSuccess.couponAdd,
                       });
                     })
-                    .catch(saveErr => next(saveErr));
+                    .catch((saveErr) => {
+                      next([saveErr]);
+                    });
                 }
               } else {
-                next(Strings.serviceFailure.notYourService);
+                next([Strings.serviceFailure.notYourService]);
               }
             } else {
-              next(Strings.serviceFailure.invalidService);
+              next([Strings.serviceFailure.invalidService]);
             }
           })
           .catch(err => next([err]));
@@ -147,23 +156,23 @@ router.post('/:ser_id/coupons/delete/:coup_id', BusinessAuth, (req, res, next) =
                             message: Strings.serviceSuccess.couponDelete,
                           });
                         })
-                        .catch(saveErr => next(saveErr));
+                        .catch(saveErr => next([saveErr]));
                     }
                   })
-                  .catch(err => next(err));
+                  .catch(err => next([err]));
               } else {
-                next(Strings.serviceFailure.notYourService);
+                next([Strings.serviceFailure.notYourService]);
               }
             } else {
-              next(Strings.serviceFailure.invalidService);
+              next([Strings.serviceFailure.invalidService]);
             }
           })
-          .catch(err => next(err));
+          .catch(err => next([err]));
       } else {
         next(result.array());
       }
     })
-    .catch(err => next(err));
+    .catch(err => next([err]));
 });
 
 /**

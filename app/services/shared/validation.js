@@ -292,7 +292,13 @@ const businessResetPasswordValidation = {
     },
   },
 };
-
+const couponGetValidation = {
+  id: { in: 'params',
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+};
 const couponAddValidation = {
   id: { in: 'params',
     isMongoId: {
@@ -613,6 +619,7 @@ const validation = {
   serviceBookingValidation,
   couponAddValidation,
   couponDeleteValidation,
+  couponGetValidation,
 };
 
 module.exports = validation;
