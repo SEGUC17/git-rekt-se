@@ -39,6 +39,12 @@ router.get('/:id', (req, res, next) => {
       match: {
         _deleted: false,
       },
+      options: {
+        populate: {
+          path: '_client',
+          select: 'firstName lastName',
+        },
+      },
     },
     {
       path: 'categories',

@@ -42,7 +42,7 @@
                     <el-tab-pane label="Offerings" name="third">
                           <div class="box cyan-bg" v-for="offer in offerings" style="margin-top:2em; margin-bottom:2em">
                     <div class="columns">
-                        <div class="column is-6">
+                        <div class="column">
                             <p>
                                 <h1 class="title">
                                     {{offer.address}}
@@ -50,9 +50,12 @@
                                 <h2 class="subtitle">
                                     {{offer.location}}
                                 </h2>
+                                 <h2 class="subtitle">
+                                    {{new Date(offer.startDate).toLocaleDateString()}} - {{new Date(offer.endDate).toLocaleDateString()}}
+                                </h2>
                             </p>
                         </div>
-                        <div class="column is-3">
+                        <div class="column">
                             <span class="subtitle">EGP {{offer.price}}</span>
                         </div>
                         <div class="column">
@@ -65,6 +68,8 @@
                         <el-tab-pane label="Ratings" name="fourth">
                                 <el-card class="box-card" v-for="review in reviews" v-bind:data="review" v-bind:key="review">
                                     <div slot="header" class="clearfix">
+                                       <p> <span v-text="review._client.firstName"> </span>  <span v-text="review._client.lastName"> </span> </p>
+                                        
                                         <span style="line-height: 36px;">
                                             <el-rate v-model="review.rating" disabled show-text text-color="#ff9900" text-template="{value} points"></el-rate>
                                         </span>

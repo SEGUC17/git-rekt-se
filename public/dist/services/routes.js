@@ -6060,6 +6060,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -9358,13 +9363,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('div', {
       staticClass: "columns"
     }, [_c('div', {
-      staticClass: "column is-6"
+      staticClass: "column"
     }, [_c('p'), _c('h1', {
       staticClass: "title"
     }, [_vm._v("\n                                " + _vm._s(offer.address) + "\n                            ")]), _vm._v(" "), _c('h2', {
       staticClass: "subtitle"
-    }, [_vm._v("\n                                " + _vm._s(offer.location) + "\n                            ")]), _vm._v(" "), _c('p')]), _vm._v(" "), _c('div', {
-      staticClass: "column is-3"
+    }, [_vm._v("\n                                " + _vm._s(offer.location) + "\n                            ")]), _vm._v(" "), _c('h2', {
+      staticClass: "subtitle"
+    }, [_vm._v("\n                                " + _vm._s(new Date(offer.startDate).toLocaleDateString()) + " - " + _vm._s(new Date(offer.endDate).toLocaleDateString()) + "\n                            ")]), _vm._v(" "), _c('p')]), _vm._v(" "), _c('div', {
+      staticClass: "column"
     }, [_c('span', {
       staticClass: "subtitle"
     }, [_vm._v("EGP " + _vm._s(offer.price))])]), _vm._v(" "), _c('div', {
@@ -9394,7 +9401,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('div', {
       staticClass: "clearfix",
       slot: "header"
-    }, [_c('span', {
+    }, [_c('p', [_c('span', {
+      domProps: {
+        "textContent": _vm._s(review._client.firstName)
+      }
+    }), _vm._v(" "), _c('span', {
+      domProps: {
+        "textContent": _vm._s(review._client.lastName)
+      }
+    })]), _vm._v(" "), _c('span', {
       staticStyle: {
         "line-height": "36px"
       }
