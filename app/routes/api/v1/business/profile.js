@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
+const Booking = require('../../../../models/service/Booking');
 const Business = require('../../../../models/business/Business');
-const BusinessAuthenticator = require('../../../../services/business/BusinessAuthenticator');
 const Strings = require('../../../../services/shared/Strings');
 const authMiddleWare = require('../../../../services/shared/jwtConfig');
 const errorHandler = require('../../../../services/shared/errorHandler');
@@ -105,6 +105,24 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
   } else {
     next(Strings.businessMessages.mismatchID);
   }
+});
+
+/**
+ * View Transaction History API Route.
+ */
+router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
+  Booking.find({ _deleted: false })
+    .populate('_service', 'name')
+    .populate('_client', 'fullName')
+    .populate('_transaction', 'stripe_charge amount')
+    .exec()
+    .then((bookings) => {
+      console.log(bookings);
+      res.json({
+        bookings,
+      });
+    })
+    .catch(next);
 });
 
 /**

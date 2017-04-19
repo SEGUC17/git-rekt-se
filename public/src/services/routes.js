@@ -7,6 +7,7 @@ import clientLogin from '../components/Client/login.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
+import businessViewTransactions from '../components/Business/viewTransactions.vue';
 
 const routes = [{
   path: '/',
@@ -32,6 +33,9 @@ const routes = [{
 }, {
   path: '/client/reset/:token',
   component: Reset,
+}, {
+  path: '/business/transactions',
+  component: businessViewTransactions,
 }];
 
 const router = new VueRouter({
