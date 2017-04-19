@@ -20,16 +20,12 @@ const routes = [{
   path: '/client/signup',
   component: clientSignUp,
 }, {
-  path: '/client/signup',
-  component: clientSignUp,
-}, {
   path: '/login',
   component: loginSelect,
 }, {
   path: '/business/login',
   component: businessLogin,
-},
-{
+}, {
   path: '/client/reset/:token',
   component: Reset,
 }];
