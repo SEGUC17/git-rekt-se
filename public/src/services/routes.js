@@ -4,6 +4,7 @@ import clientLogin from '../components/Client/login.vue';
 import clientLogout from '../components/Client/logout.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
+import removeClient from '../components/Admin/removeClient.vue';
 
 const routes = [{
   path: '/',
@@ -20,6 +21,9 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
+}, {
+  path: '/admin/removeClient',
+  component: removeClient,
 }];
 
 const router = new VueRouter({
