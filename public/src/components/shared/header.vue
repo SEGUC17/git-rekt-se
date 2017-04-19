@@ -13,22 +13,23 @@
                 <router-link to="/#" class="nav-item">Home</router-link>
                 <router-link to="/about" class="nav-item">About Us</router-link>
                 <router-link to="/categories" class="nav-item">Categories</router-link>
-                <router-link to="/contact" class="nav-item">Contact</router-link>
+                <router-link to="/business/apply" class="nav-item">Business APPLY</router-link>
             </div>
 
             <!-- Navigation bar Right -->
             <div class="nav-right nav-menu">
+
                 <a class="button is-default gr-nav-button" v-if="!isAuthenticated">
                     <span class="icon">
-                                <i class="fa fa-user"></i>
-                        </span>
-                    <span><router-link to="/signup" class="nav-item">Signup</router-link></span>
+                        <i class="fa fa-user"></i>
+                    </span>
+                    <span><router-link to="/client/signup" class="nav-item">Signup</router-link></span>
                 </a>
 
                 <a class="button is-danger gr-nav-button" v-if="!isAuthenticated">
                     <span class="icon">
-                                    <i class="fa fa-sign-in"></i>
-                            </span>
+                        <i class="fa fa-sign-in"></i>
+                    </span>
                     <router-link to="/login" class="nav-item no-link">Login</router-link>
                 </a>
 

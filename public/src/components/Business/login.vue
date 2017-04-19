@@ -37,6 +37,9 @@
 
                     <el-form-item label="Password" prop="password">
                         <el-input v-model="form.password" placeholder="Password" type="password"></el-input>
+                        <span class="is-help">
+                            <router-link to="/client/forgot" class="is-semi-dark">Forgot password?</router-link>
+                        </span>
                     </el-form-item>
 
                     <el-form-item>
