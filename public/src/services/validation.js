@@ -101,7 +101,6 @@ export const loginRules = {
     trigger: 'blur',
   }],
 };
-
 export const clientForgotPassword = {
   password: [{
     required: true,
@@ -136,4 +135,16 @@ export const clientForgotPassword = {
     },
     trigger: ['blur', 'change'],
   }],
+};
+
+export const clientForgotPasswordMail = {
+  email: [{
+    required: true,
+    message: 'Email is required.',
+    trigger: 'blur',
+  },
+  {
+    type: 'email', message: 'Please input correct email address', trigger: 'blur,change',
+  },
+  ],
 };
