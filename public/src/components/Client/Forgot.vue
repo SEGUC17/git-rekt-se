@@ -36,7 +36,7 @@
   import Form from '../../services/Form.js';
   import {Client} from '../../services/EndPoints.js';
   import {
-    clientForgotPassword
+    clientForgotPasswordMail
   } from '../../services/validation.js';
   
   export default {
@@ -46,7 +46,7 @@
           email: '',
           success: false,
         }),
-        rules: clientForgotPassword,
+        rules: clientForgotPasswordMail,
         error: {},
       };
     },

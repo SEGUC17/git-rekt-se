@@ -166,7 +166,7 @@ const businessSignupValidation = {
       errorMessage: bussinessValidationErrors.emptyMobile,
     },
     matches: {
-      options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
+      options: [/^01[0-2]{1}[0-9]{8}$/], // Egyptian Mobile phone
       errorMessage: bussinessValidationErrors.invalidMobile,
     },
   },
@@ -522,6 +522,23 @@ const forgotPasswordValidation = {
     },
   },
 };
+const serviceBookingValidation = {
+  service: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  offering: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidOffering,
+    },
+  },
+  token: {
+    notEmpty: {
+      errorMessage: serviceValidationErrors.invalidStripeToken,
+    },
+  },
+};
 
 const validation = {
   clientResetPasswordValidation,
@@ -553,6 +570,7 @@ const validation = {
   businessEditImageValidation,
   adminCategoryValidation,
   forgotPasswordValidation,
+  serviceBookingValidation,
 };
 
 module.exports = validation;
