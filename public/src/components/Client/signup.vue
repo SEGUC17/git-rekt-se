@@ -87,8 +87,6 @@
                     <el-form-item class="has-text-centered">
                         <el-button type="primary" icon="circle-check" @click="onClick" :loading="loading">
                             Sign Up
-    
-
 
                         </el-button>
                         <el-button icon="circle-cross" @click="onReset">Reset</el-button>
@@ -206,7 +204,9 @@
         }
 
         .extra-large {
+            padding-top: 0.5em;
             font-size: 3em;
+
         }
     }
 </style>
