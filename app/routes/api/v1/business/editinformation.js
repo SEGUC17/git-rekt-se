@@ -155,6 +155,7 @@ router.post('/add/branches', businessAuthMiddleware, (req, res, next) => {
                   business.save()
                     .then(() => res.json({
                       message: businessSuccess.branchAddedSuccess,
+                      results: branches,
                     }))
                     .catch(err => next(err));
                 }
@@ -201,7 +202,7 @@ router.put('/:business_id/edit/branch/:branch_id', businessAuthMiddleware, (req,
                       _business: id,
                     })
                       .then((services) => {
-                        businessUtils.editOfferings(services, branch._id, (offering) => {
+                        businessUtils.editOfferings(services, branch._id, false, (offering) => {
                           offering.location = branch.location;
                           offering.address = branch.address;
                         }).then((resultedServices) => {
@@ -251,7 +252,7 @@ router.delete('/:business_id/delete/branch/:branch_id', businessAuthMiddleware, 
                 _business: id,
               })
                 .then((services) => {
-                  businessUtils.editOfferings(services, branch._id, (offering) => {
+                  businessUtils.editOfferings(services, branch._id, true, (offering) => {
                     offering._deleted = true;
                   }).then((resultedServices) => {
                     res.json({

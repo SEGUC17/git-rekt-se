@@ -100,6 +100,8 @@
                     }).then((response) => {
                         this.success = true;
                         this.editSuccess = response.data.message;
+                        console.log(response.data);
+                        this.branchesForm.branches[idx]._id = response.data.results[0];
                         loader.close();
                         setTimeout(() => {
                             this.success = false;
