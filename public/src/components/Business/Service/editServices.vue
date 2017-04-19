@@ -2,14 +2,14 @@
   <div class="main">
     <div class="container">
       <el-card class="create-service">
-      <el-alert v-for="error in generalErrors" type="error" :title="error" show-icon></el-alert>
+      <el-alert v-for="error in generalErrors" :key="error" type="error" :title="error" show-icon></el-alert>
         <div slot="header" class="clearfix">
           <span>Create Service</span>
         </div>
         <el-alert v-if="createSuccess" type="success" :title="createSuccess" show-icon></el-alert>
         <el-alert v-if="editSuccess" type="success" :title="editSuccess" show-icon></el-alert>
         <el-alert v-if="deleteSuccess" type="success" :title="deleteSuccess" show-icon></el-alert>
-        <el-alert v-for="error in createErrors" type="error" :title="error" show-icon></el-alert>
+        <el-alert v-for="error in createErrors" :key="error" type="error" :title="error" show-icon></el-alert>
         <el-form :model="newService" ref="createService" :rules="serviceRules" label-position="left">
           <el-form-item label="Name" required prop="name">
             <el-input v-model="newService.name" placeholder="The name of your service"></el-input>
@@ -51,7 +51,7 @@
     </div>
      <el-dialog title="Edit Service" v-model="editVisible" size="large">
     <el-form ref="editService" :model="serviceToEdit" :rules="serviceRules" label-position="left">
-      <el-alert v-for="error in editErrors" type="error" :title="error" show-icon></el-alert>
+      <el-alert v-for="error in editErrors" :key="error" type="error" :title="error" show-icon></el-alert>
           <el-form-item label="Name" required prop="name">
             <el-input v-model="serviceToEdit.name" placeholder="The name of your service"></el-input>
           </el-form-item>

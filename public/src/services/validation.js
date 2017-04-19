@@ -94,16 +94,16 @@ export const serviceRules = {
   name: [{
     required: true,
     message: 'Please enter a name for your service',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }],
   shortDescription: [{
     required: true,
     message: 'Please enter a short description of your service',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }, {
     max: 140,
     message: 'The description can have a maximum 140 characters',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }],
 };
 
@@ -111,28 +111,28 @@ export const offeringRules = {
   branch: [{
     required: true,
     message: 'Please select a branch for your offering',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }],
   price: [{
     type: 'number',
     message: 'Price must be a number',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }, {
     type: 'number',
     required: true,
     message: 'Please enter a price for your offering',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }, {
     type: 'number',
     min: 0,
     message: 'The price cannot be lower than 0',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }],
   dates: [{
     type: 'array',
     required: true,
     message: 'Please enter a duration for your offering',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }, {
     type: 'array',
     len: 2,
@@ -141,18 +141,18 @@ export const offeringRules = {
       required: true,
     },
     message: 'Please enter a valid duration for your offering',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }],
   capacity: [{
     type: 'number',
     required: true,
     message: 'Please enter a capacity for your offering',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }, {
     type: 'number',
     min: 0,
     message: 'The capacity cannot be lower than 0',
-    trigger: 'blur',
+    trigger: ['blur', 'change'],
   }],
 };
 

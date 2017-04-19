@@ -235,6 +235,7 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
           endDate: req.body.endDate,
           branch: req.body.branch,
           price: req.body.price,
+          capacity: req.body.capacity,
         };
 
         Service.findOne({
@@ -263,6 +264,7 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
                         branch: reqData.branch,
                         price: reqData.price,
                         address: branchAdded.address,
+                        capacity: reqData.capacity,
                       });
                       service.offerings.push(offering);
                       service.branches.addToSet(offering.branch);
@@ -409,6 +411,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
               branch: req.body.branch,
               price: req.body.price,
               address: branchDoc.address,
+              capacity: req.body.capacity,
             };
             Service.findOne({
               _id: serviceID,
@@ -429,18 +432,20 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                       let offeringDoc;
                       service.offerings.forEach((offering) => {
                         if (`${offering._id}` === offeringID && !offering._deleted) {
+                          offering.startDate = reqData.startDate;
+                          offering.endDate = reqData.endDate;
+                          offering.location = reqData.location;
+                          offering.branch = reqData.branch;
+                          offering.price = reqData.price;
+                          offering.address = reqData.address;
+                          offering.capacity = reqData.capacity;
                           validOffering = true;
                           offeringDoc = offering;
                         }
                       });
                       if (validOffering) {
                         const oldbranch = offeringDoc.branch;
-                        offeringDoc.startDate = reqData.startDate;
-                        offeringDoc.endDate = reqData.endDate;
-                        offeringDoc.location = reqData.location;
-                        offeringDoc.branch = reqData.branch;
-                        offeringDoc.price = reqData.price;
-                        offeringDoc.address = reqData.address;
+
                         let oldexist = false; // old branch before edit exist
 
                         service.offerings.forEach((offering) => {
@@ -453,7 +458,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                           service.branches.pull(oldbranch);
                         }
                         service.branches.addToSet(offeringDoc.branch);
-
+                        service.markModified('offerings');
                         service.save()
                           .then(() => res.json({
                             message: Strings.serviceSuccess.offeringEdited,
@@ -590,6 +595,7 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                     service.branches.pull(oldbranch);
                   }
                 });
+                service.markModified('offerings');
                 service.save()
                   .then(() => {
                     res.json({

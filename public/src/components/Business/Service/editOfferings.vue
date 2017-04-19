@@ -1,15 +1,15 @@
 <template>
   <div class="main">
     <div class="container">
+      <el-alert v-if="editSuccess" type="success" :title="editSuccess" show-icon></el-alert>
+        <el-alert v-if="deleteSuccess" type="success" :title="deleteSuccess" show-icon></el-alert>
       <el-card class="create-offering">
-        <el-alert v-for="error in generalErrors" type="error" :title="error" show-icon></el-alert>
+        <el-alert v-for="error in generalErrors" :key="error" type="error" :title="error" show-icon></el-alert>
         <div slot="header" class="clearfix">
           <span>Create Offering</span>
         </div>
         <el-alert v-if="createSuccess" type="success" :title="createSuccess" show-icon></el-alert>
-        <el-alert v-if="editSuccess" type="success" :title="editSuccess" show-icon></el-alert>
-        <el-alert v-if="deleteSuccess" type="success" :title="deleteSuccess" show-icon></el-alert>
-        <el-alert v-for="error in createErrors" type="error" :title="error" show-icon></el-alert>
+        <el-alert v-for="error in createErrors" :key="error" type="error" :title="error" show-icon></el-alert>
         <el-form :model="newOffering" ref="createOffering" :rules="offeringRules" label-position="left">
           <el-form-item label="Branch" required prop="branch">
             <el-select v-model="newOffering.branch" placeholder="Select a branch">
@@ -20,7 +20,7 @@
           <el-form-item label="Price" required prop="price">
             <el-input v-model.number="newOffering.price" placeholder="Set a price"></el-input>
           </el-form-item>
-          <el-form-item label="Start Date -  End Date" required prop="dates">
+          <el-form-item label="Start Date - End Date" required prop="dates">
             <el-date-picker v-model="newOffering.dates" type="daterange" placeholder="Set a duration">
             </el-date-picker>
           </el-form-item>
@@ -51,7 +51,7 @@
     </div>
     <el-dialog title="Edit offering" v-model="editVisible" size="large">
       <el-form ref="editOffering" :model="editFormOffering" :rules="offeringRules" label-position="left">
-        <el-alert v-for="error in editErrors" type="error" :title="error" show-icon></el-alert>
+        <el-alert v-for="error in editErrors" :key="error" type="error" :title="error" show-icon></el-alert>
          <el-form-item label="Branch" required prop="branch">
             <el-select v-model="editFormOffering.branch" placeholder="Select a branch">
               <el-option v-for="item in branches" :key="item.value" :label="item.label" :value="item.value">
@@ -61,7 +61,7 @@
           <el-form-item label="Price" required prop="price">
             <el-input type="price" v-model.number="editFormOffering.price" placeholder="Set a price"></el-input>
           </el-form-item>
-          <el-form-item label="Start Date -  End Date" required prop="dates">
+          <el-form-item label="Start Date - End Date" required prop="dates">
             <el-date-picker v-model="editFormOffering.dates" type="daterange" placeholder="Set a duration">
             </el-date-picker>
           </el-form-item>
@@ -258,7 +258,6 @@
         this.$refs.createOffering.resetFields();
       },
       showEdit(offering) {
-        console.log('I am here');
         this.editFormOffering = this.populateFormOffering(offering);
         this.editVisible = true;
       },
@@ -268,6 +267,7 @@
       },
       populateFormOffering(offering) {
         const offeringToReturn = {};
+        offeringToReturn._id = offering._id;
         offeringToReturn.branch = offering.branch;
         offeringToReturn.price = offering.price;
         offeringToReturn.capacity = offering.capacity;
@@ -287,6 +287,7 @@
       },
       offeringToEdit() {
         return {
+          _id: this.editFormOffering._id,
           branch: this.editFormOffering.branch,
           price: this.editFormOffering.price,
           capacity: this.editFormOffering.capacity,
