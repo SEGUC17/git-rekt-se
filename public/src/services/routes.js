@@ -33,7 +33,7 @@ const routes = [{
   path: '/business/login',
   component: businessLogin,
 }, {
-  path: '/admin/removeClient',
+  path: '/admin/remove',
   component: removeClient,
 }, { path: '/client/forgot',
   component: Forgot,

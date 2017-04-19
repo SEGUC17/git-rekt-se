@@ -28,16 +28,20 @@ router.get('/delete/:id', AdminAuth, (req, res, next) => {
       if (result.isEmpty()) {
         Client.findOne({
           _id: req.params.id,
-        }, (err, client) => {
-          if (err) {
-            return next(err);
+        }).then((client) => {
+          if (client || client.status !== 'confirmed') {
+            if (client._deleted) {
+              next([Strings.adminFailures.clientAlreadyDeleted]);
+            } else {
+              client._deleted = true;
+              client.save().then(() => res.json({
+                message: Strings.adminSuccess.clientDeleted,
+              })).catch(e => next([e]));
+            }
+          } else {
+            next([Strings.adminValidationErrors.invalidClientID]);
           }
-          client._deleted = true;
-          client.save();
-          return res.json({
-            message: Strings.adminSuccess.clientDeleted,
-          });
-        });
+        }).catch(e => next([e]));
       } else {
         next(result.array());
       }
@@ -49,12 +53,14 @@ router.get('/delete/:id', AdminAuth, (req, res, next) => {
 router.get('/list', AdminAuth, (req, res, next) => {
   Client.find({
     _deleted: false,
-  }, (err, clients) => {
-    if (err) {
-      return next(err);
-    }
-    return res.json(clients);
-  });
+    status: 'confirmed',
+  }, {
+    firstName: true,
+    lastName: true,
+    email: true,
+  }).then(clients => res.json({
+    results: clients,
+  })).catch(e => next([e]));
 });
 /**
  *  Error Handling Middlewares.

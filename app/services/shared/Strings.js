@@ -79,7 +79,7 @@ const businessMessages = {
   invalidID: 'The id is invalid',
 };
 
-/**
+/** a
  * Client Strings
  */
 
@@ -263,6 +263,10 @@ const adminSuccess = {
   clientDeleted: 'Client removed succesfully',
 };
 
+const adminFailures = {
+  clientAlreadyDeleted: 'Client is already deleted',
+};
+
 /**
  * Search Strings
  */
@@ -303,4 +307,5 @@ module.exports = {
   reviewSuccess,
   adminSuccess,
   searchErrors,
+  adminFailures,
 };
