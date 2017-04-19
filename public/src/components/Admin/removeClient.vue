@@ -77,7 +77,6 @@
         },
         methods: {
             getClients() {
-                console.log(1);
                 axios
                     .get(Admin().listClients, {
                         headers: {
@@ -85,7 +84,6 @@
                         },
                     })
                     .then((response) => {
-                        console.log(response);
                         this.clients = response.data.results;
                         this.errors = [];
                     })
@@ -112,10 +110,10 @@
                             Authorization: adminAuth.getJWTtoken(),
                         },
                     })
-                    .then((res) => {
+                    .then((response) => {
                         this.$notify({
                             title: 'Success',
-                            message: 'Client Deleted Successfully!',
+                            message: response.data.message,
                             type: 'success'
                         });
                         this.getClients();

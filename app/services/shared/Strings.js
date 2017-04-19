@@ -79,7 +79,7 @@ const businessMessages = {
   invalidID: 'The id is invalid',
 };
 
-/** a
+/**
  * Client Strings
  */
 
