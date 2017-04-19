@@ -2,10 +2,10 @@ import VueRouter from 'vue-router';
 import Home from '../components/pages/Index/home.vue';
 import clientLogin from '../components/Client/login.vue';
 import clientLogout from '../components/Client/logout.vue';
-import businessGalleryDelete from '../components/business/galleryDelete.vue';
-import businessGalleryEdit from '../components/business/galleryEdit.vue';
-import businessGalleryAdd from '../components/business/galleryAdd.vue';
-import businessGallery from '../components/business/businessGallery.vue';
+import businessGalleryDelete from '../components/Business/galleryDelete.vue';
+import businessGalleryEdit from '../components/Business/galleryEdit.vue';
+import businessGalleryAdd from '../components/Business/galleryAdd.vue';
+import businessGallery from '../components/Business/businessGallery.vue';
 
 
 const routes = [{
