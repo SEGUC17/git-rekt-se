@@ -225,6 +225,7 @@
         this.newQuery.max = (Math.max(...this.priceRange) === 10000) ?
             undefined : Math.max(...this.priceRange);
         this.currentQuery = this.newQuery;
+        
         this.updateURL();
         this.execQuery();
       },
