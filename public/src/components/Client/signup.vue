@@ -196,7 +196,7 @@
         });
         return;
       }
-      if (this.$route.query && this.$route.query !== {}) {
+      else if (this.$route.query && this.$route.query['is_facebook'] === 'true') {
         const query = this.$route.query;
         Object.keys(query).forEach((key) => {
           if (key === 'first_name') {

@@ -56,7 +56,6 @@ export default {
     }
   },
   storeData(response) {
-    console.log(1);
     localStorage.setItem('client_token', response.data.token);
     localStorage.setItem('client_email', response.data.email);
     localStorage.setItem('client_id', response.data.id);

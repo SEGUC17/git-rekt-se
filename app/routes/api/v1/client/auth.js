@@ -265,9 +265,7 @@ router.post('/fb/finalize/login', (req, res, next) => {
                     email: data.payload.email,
                     token: data.token,
                   });
-                }).catch((e) => {
-                  next(e);
-                });
+                }).catch(next);
           }).catch(next);
     }
   }).catch(next);
@@ -329,7 +327,7 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
         .forEach((key) => {
           redirectURL += `&${key}=${facebookInfo[key]}`;
         });
-    redirectURL = `?${redirectURL.substr(1)}`;
+    redirectURL = `?${redirectURL.substr(1)}&is_facebook=true`;
     res.redirect(`/client/signup/${redirectURL}`);
   }
 });
