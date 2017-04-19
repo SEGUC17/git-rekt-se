@@ -129,3 +129,16 @@ export const clientForgotPassword = {
     trigger: ['blur', 'change'],
   }],
 };
+
+export const categoryRules = {
+  type: [{
+    required: true,
+    message: 'type is required.',
+    trigger: 'blur',
+  }],
+  title: [{
+    required: true,
+    message: 'title is required.',
+    trigger: 'blur',
+  }],
+};

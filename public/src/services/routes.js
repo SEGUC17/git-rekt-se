@@ -6,6 +6,7 @@ import clientLogin from '../components/Client/login.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
+import categoryCRUD from '../components/Admin/editCategory.vue';
 
 const routes = [{
   path: '/',
@@ -32,6 +33,10 @@ const routes = [{
 {
   path: '/client/reset/:token',
   component: Reset,
+},
+{
+  path: '/admin/category/edit',
+  component: categoryCRUD,
 }];
 
 const router = new VueRouter({

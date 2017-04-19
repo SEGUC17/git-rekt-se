@@ -42,7 +42,7 @@ const upload = multer({
 
 router.use(bodyParser.json());
 
-router.post('/add', AdminAuth, upload.single('icon'), (req, res, next) => {
+router.post('/add', upload.single('icon'), (req, res, next) => {
   req.checkBody(validationSchemas.adminCategoryValidation);
   req.getValidationResult()
     .then((results) => {
@@ -113,6 +113,23 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
       message: Strings.adminSuccess.categoryDeleted,
     });
   });
+});
+
+/**
+ * List all non deleted categories
+ */
+
+router.get('/list', AdminAuth, (req, res, next) => {
+  Category.find({
+    _deleted: false,
+  })
+  .exec()
+  .then((category) => {
+    res.json({
+      category,
+    });
+  })
+  .catch(e => next(e));
 });
 
 /**
