@@ -105,6 +105,7 @@
         name: '',
         price: '',
         location: '',
+        loader: '',
       };
     },
     methods: {
@@ -114,12 +115,17 @@
          */
 
       getLocations() {
+        this.loader = this.$loading({
+          fullscreen: true,
+        });
         axios
             .get(Visitor().locations)
             .then((res) => {
+              this.loader.close();
               this.locations = res.data;
             })
             .catch(() => {
+              this.loader.close();
               this.locations = locs;
             });
       },
