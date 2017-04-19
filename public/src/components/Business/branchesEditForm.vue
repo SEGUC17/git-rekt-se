@@ -59,7 +59,6 @@
         },
         mounted() {
             this.loadFormData();
-    
         },
         methods: {
             loadFormData() {
@@ -79,7 +78,10 @@
                         location: '',
                         address: '',
                     });
-                }).catch(e => this.errors = e);
+                }).catch(e => {
+                    loader.close();
+                    this.errors = e.response.data.errors;
+                });
             },
             saveBranch(idx) {
                 if (this.branchesForm.branches[idx].location && this.branchesForm.branches[idx].address) {
@@ -130,7 +132,7 @@
                     }, 1000);
                 }).catch(e => {
                     loader.close();
-                    this.errors = e;
+                    this.errors = e.response.data.errors;
                 });
             },
             updateBranch(idx) {
@@ -153,7 +155,7 @@
                     }, 1000);
                 }).catch(e => {
                     loader.close();
-                    this.errors = e;
+                    this.errors = e.response.data.errors;
                 });
             },
         }

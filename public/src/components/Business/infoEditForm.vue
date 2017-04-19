@@ -94,8 +94,14 @@
                             return cat._id;
                         });
     
-                    }).catch(e => this.errors = e);
-                }).catch(e => this.errors = e);
+                    }).catch(e => {
+                        loader.close();
+                        this.errors = e.response.data.errors;
+                    });
+                }).catch(e => {
+                    loader.close();
+                    this.errors = e.response.data.errors;
+                });
             },
             submitForm(formName) {
                 this.errors = [];
@@ -117,10 +123,11 @@
                                 this.editSuccess = '';
                             }, 1000);
                         }).catch(e => {
-                            this.errors = e;
+                            loader.close();
+                            this.errors = e.response.data.errors;
                         });
                     } else {
-                        this.errors = ['Please fill in the fields'];    
+                        this.errors = ['Please fill in the fields'];
                     }
                 });
             }
