@@ -18,7 +18,7 @@
         <div class="container is-fluid columns">
 
             <!-- Search filtering -->
-            <aside class="column search-sidebar is-3">
+            <aside class="column search-sidebar is-3 is-offset-1">
                 <el-form label-position="top" class="search-form">
                     <el-form-item label="Service Name">
                         <el-input v-model="newQuery.name" @keyup.enter.native="performSearch"
@@ -58,7 +58,7 @@
             </aside>
 
             <!-- Search results -->
-            <div class="search-results column is-8">
+            <div class="search-results column is-7">
 
                 <!-- Alerts Div -->
                 <div class="alerts">
@@ -115,7 +115,7 @@
   import Axios from 'axios';
 
   import SearchResult from './search-result.vue';
-  import {Visitor} from '../../../services/EndPoints';
+  import { Visitor } from '../../../services/EndPoints';
   import Locations from '../Index/mainLocations';
 
   export default {
@@ -129,10 +129,10 @@
           value: 1,
           label: 'A-Z',
         },
-          {
-            value: 2,
-            label: 'Highest Rating',
-          },
+        {
+          value: 2,
+          label: 'Highest Rating',
+        },
         ],
         currentQuery: this.$route.query,
         priceRange: [(this.$route.query.min) ? parseInt(this.$route.query.min, 10) : 0,
@@ -225,7 +225,7 @@
         this.newQuery.max = (Math.max(...this.priceRange) === 10000) ?
             undefined : Math.max(...this.priceRange);
         this.currentQuery = this.newQuery;
-        
+  
         this.updateURL();
         this.execQuery();
       },
