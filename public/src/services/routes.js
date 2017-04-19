@@ -1,5 +1,5 @@
 import VueRouter from 'vue-router';
-import Forgot from '../components/pages/client/Forgot.vue';
+import Forgot from '../components/Client/Forgot.vue';
 import Home from '../components/pages/Index/home.vue';
 import clientLogin from '../components/Client/login.vue';
 import clientLogout from '../components/Client/logout.vue';
