@@ -46,10 +46,10 @@
 
                     <el-form-item label="Password" prop="password">
                         <el-input v-model="form.password" placeholder="Password" type="password" icon="edit"></el-input>
-                        <span class="is-help">
-                            <router-link to="/client/forgot" class="is-semi-dark">Forgot password?</router-link>
-                        </span>
                     </el-form-item>
+                    <span class="help forgot-help">
+                            <router-link to="/client/forgot" class="is-semi-dark">Forgot password?</router-link>
+                    </span>
 
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('form')">Login</el-button>
@@ -189,6 +189,9 @@
         color: #717171;
     }
 
+    .forgot-help{
+        margin-bottom: 1em;
+    }
     @media screen and (max-width: 999px) {
         .client-login-form {
             margin: 2em;
