@@ -16,7 +16,7 @@
       <el-table-column label="Date">
         <template scope="scope">
           <el-icon name="time"></el-icon>
-          <span>{{ scope.row.date }}</span>
+          <span>{{ new Date(scope.row.date).toLocaleDateString() }}</span>
         </template>
       </el-table-column>
 
