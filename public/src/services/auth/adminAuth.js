@@ -10,6 +10,9 @@ export default {
     userEmail() {
       return localStorage.getItem('admin_email');
     },
+    getJWTtoken() {
+      return `JWT ${localStorage.getItem('client_token')}`;
+    },
   },
   login(data, callBack) {
     axios
