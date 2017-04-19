@@ -12,10 +12,13 @@
     </div>
 
     <el-table :data="bookings" border>
-      <template scope="scope">
-        <el-icon name="time"></el-icon>
-        <span>{{ scope.row.date }}</span>
-      </template>
+
+      <el-table-column label="Date">
+        <template scope="scope">
+          <el-icon name="time"></el-icon>
+          <span>{{ scope.row.date }}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column label="Service Name" prop="_service.name">
       </el-table-column>
