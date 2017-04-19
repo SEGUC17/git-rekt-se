@@ -48,6 +48,7 @@ router.post('/signup', (req, res, next) => {
     mobile: req.body.mobile,
     gender: req.body.gender,
     birthdate: req.body.birthdate,
+    _facebookId: req.body.id && req.body.id.length ? req.body.id : '',
   };
 
   /**
@@ -241,20 +242,59 @@ router.get('/fb/login', passport.authenticate('facebook_strategy', {
   scope: ['email'],
 }));
 
-router.post('/forgot', (req, res, next) => {
-  const email = req.body.email;
-  const currentDate = Date.now();
-  const iat = Math.floor(currentDate / 1000);
-  const resetToken = jwt.sign({
-    email,
-    iat,
-  }, JWT_KEY, {
-    expiresIn: '1h',
-  });
-
-  Client.findOne({
-    email: req.body.email,
+/**
+ * Client finalize facebook login.
+ */
+router.post('/fb/finalize/login', (req, res, next) => {
+  const encapsulatedToken = req.body.token;
+  InvalidToken.findOne({
+    token: encapsulatedToken,
   })
+    .exec()
+    .then((theToken) => {
+      if (theToken) {
+        next([Strings.clientLoginMessages.invalidToken]);
+      } else {
+        ClientAuthenticator.finalizeLoginFacebook(encapsulatedToken)
+          .then((data) => {
+            new InvalidToken({
+              token: encapsulatedToken,
+            })
+              .save()
+              .then(() => {
+                res.json({
+                  message: Strings.clientLoginMessages.loginSuccess,
+                  id: data.payload.id,
+                  email: data.payload.email,
+                  token: data.token,
+                });
+              })
+              .catch(next);
+          })
+          .catch(next);
+      }
+    })
+    .catch(next);
+});
+
+router.post('/forgot', (req, res, next) => {
+  req.checkBody(validationSchemas.forgotPasswordValidation);
+  req.getValidationResult()
+  .then((result) => {
+    if (result.isEmpty()) {
+      const email = req.body.email;
+      const currentDate = Date.now();
+      const iat = Math.floor(currentDate / 1000);
+      const resetToken = jwt.sign({
+        email,
+        iat,
+      }, JWT_KEY, {
+        expiresIn: '1h',
+      });
+
+      Client.findOne({
+        email: req.body.email,
+      })
     .exec()
     .then((client) => {
       if (!client) { // Client not found, Invalid mail
@@ -274,6 +314,8 @@ router.post('/forgot', (req, res, next) => {
         });
     })
     .catch(err => next(err));
+    }
+  });
 });
 
 /**
@@ -285,7 +327,7 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
    * If authenticated with facebook.
    */
   if (req.isAuthenticated()) {
-    res.json(ClientAuthenticator.loginFacebook(req.user.email, req.user.id));
+    res.redirect(`/client/login/?token=${ClientAuthenticator.loginFacebook(req.user.email, req.user.id)}&is_facebook=true`);
   } else {
     /**
      * Redirect to Signup page with data accquired from facebook.
@@ -297,7 +339,7 @@ router.get('/fb/callback', fbConfig.facebookMiddleware, (req, res) => {
       .forEach((key) => {
         redirectURL += `&${key}=${facebookInfo[key]}`;
       });
-    redirectURL = `?${redirectURL.substr(1)}`;
+    redirectURL = `?${redirectURL.substr(1)}&is_facebook=true`;
     res.redirect(`/client/signup/${redirectURL}`);
   }
 });
