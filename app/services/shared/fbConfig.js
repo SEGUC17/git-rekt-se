@@ -32,11 +32,16 @@ const facebookStrategy = new FBStrategy({
 
     Client.findOne({
       _facebookId: profile._json.id,
+      _deleted: false,
     })
       .then((user) => {
         if (!user) {
           done(null, false, profile._json);
         } else {
+          if (user.status !== 'confirmed') {
+            done(null, false, { message: 'Please confirm your email.' });
+            return;
+          }
           done(null, user, null);
         }
       })
@@ -68,7 +73,9 @@ const facebookMiddleware = (req, res, next) => {
 
     if (!user && info) {
       if (info.message === 'Permissions error') {
-        return next(['Permissions error']);
+        return res.redirect(`/client/signup/?error=${info.message}`);
+      } else if (info.message === 'Please confirm your email.') {
+        return res.redirect(`/client/login/?error=${info.message}`);
       }
       res.locals.facebookInfo = info;
       return next();

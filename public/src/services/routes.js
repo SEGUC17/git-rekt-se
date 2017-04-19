@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router';
+import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
 import Home from '../components/pages/Index/home.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
@@ -22,9 +23,6 @@ const routes = [{
   path: '/client/signup',
   component: clientSignUp,
 }, {
-  path: '/client/signup',
-  component: clientSignUp,
-}, {
   path: '/login',
   component: loginSelect,
 }, {
@@ -36,6 +34,9 @@ const routes = [{
 }, {
   path: '/business/edit/:id/offerings',
   component: editOfferings,
+}, {
+  path: '/client/forgot',
+  component: Forgot,
 }, {
   path: '/client/reset/:token',
   component: Reset,

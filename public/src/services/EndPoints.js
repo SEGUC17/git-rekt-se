@@ -13,6 +13,7 @@ export const Client = () => {
   const authBase = `${BASE}/client/auth`;
   const profileBase = `${BASE}/client/profile`;
   return {
+    finalizeFb: `${authBase}/fb/finalize/login`,
     login: `${authBase}/login`,
     signup: `${authBase}/signup`,
     resend: `${authBase}/confirmation/send`,
