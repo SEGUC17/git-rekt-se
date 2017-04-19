@@ -30829,6 +30829,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -30861,7 +30879,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             },
             deleteVisible: false,
             deleteSuccess: '',
-            deleteErrors: []
+            deleteErrors: [],
+            addVisible: false
         };
     },
 
@@ -30879,7 +30898,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* default */].Admin().createCategory, _this.newCategory).then(function (response) {
                         loader.close();
                         _this.createSuccess = response.data.message;
-                        _this.resetCreate();
+                        _this.addVisible = false, _this.resetCreate();
                         _this.getCategories();
                     }).catch(function (error) {
                         loader.close();
@@ -30968,8 +30987,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         showEdit: function showEdit(category) {
-            this.categoryToEdit = category;
+            this.categoryToEdit = Object.assign({}, category);
             this.editVisible = true;
+        },
+        showAdd: function showAdd() {
+            this.addVisible = true;
         },
         showDelete: function showDelete(category) {
             this.categoryToDelete = category;
@@ -30980,12 +31002,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this5 = this;
 
         this.getCategories();
-        __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* default */].Admin().listCategories, {
-            headers: {
-                Authorization: BusinessAuth.getJWTtoken()
-            }
-        }).then(function (response) {
-            _this5.categories = response.data.categories;
+        __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_2__services_EndPoints_js__["a" /* default */].Admin().listCategories) //TODO: add auth  
+        .then(function (response) {
+            _this5.categories = response.data.category;
         }).catch(function (error) {
             _this5.generalErrors = error.response.data.errors.map(function (err) {
                 if (typeof err === 'string') {
@@ -37923,8 +37942,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "main"
   }, [_c('div', {
     staticClass: "container"
-  }, [_c('el-card', {
-    staticClass: "create-category"
   }, [_vm._l((_vm.generalErrors), function(error) {
     return _c('el-alert', {
       attrs: {
@@ -37933,10 +37950,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "show-icon": ""
       }
     })
-  }), _vm._v(" "), _c('div', {
-    staticClass: "clearfix",
-    slot: "header"
-  }, [_c('span', [_vm._v("Create category")])]), _vm._v(" "), (_vm.createSuccess) ? _c('el-alert', {
+  }), _vm._v(" "), (_vm.createSuccess) ? _c('el-alert', {
     attrs: {
       "type": "success",
       "title": _vm.createSuccess,
@@ -37962,7 +37976,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "show-icon": ""
       }
     })
-  }), _vm._v(" "), _c('el-form', {
+  }), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Edit Category",
+      "size": "large"
+    },
+    model: {
+      value: (_vm.addVisible),
+      callback: function($$v) {
+        _vm.addVisible = $$v
+      },
+      expression: "addVisible"
+    }
+  }, [_c('el-form', {
     ref: "createCategory",
     attrs: {
       "model": _vm.newCategory,
@@ -38016,35 +38042,112 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.resetCreate
     }
-  }, [_vm._v("Clear")])], 1)], 1)], 2)], 1), _vm._v(" "), _c('div', {
+  }, [_vm._v("Clear")])], 1)], 1)], 1)], 2), _vm._v(" "), _c('div', {
+    staticClass: "clearfix",
+    slot: "header"
+  }, [_c('span', [_vm._v("Create category")])]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "size": "small",
+      "type": "primary"
+    },
+    on: {
+      "click": function($event) {
+        _vm.showAdd()
+      }
+    }
+  }, [_vm._v(" Add Category ")]), _vm._v(" "), _c('div', {
     staticClass: "catgory-list"
-  }, _vm._l((_vm.categories), function(category) {
-    return _c('el-card', {
-      key: category._id,
-      staticClass: "Category-card"
-    }, [_c('span', [_vm._v(_vm._s(category.title))]), _vm._v(" "), _c('div', {
-      staticClass: "Category-buttons is-pulled-right"
-    }, [_c('el-button', {
-      attrs: {
-        "icon": "edit"
+  }, [_c('div', [_c('el-table', {
+    staticStyle: {
+      "width": "100%"
+    },
+    attrs: {
+      "data": _vm.categories,
+      "border": ""
+    }
+  }, [_c('el-table-column', {
+    attrs: {
+      "label": "Title"
+    },
+    scopedSlots: _vm._u([
+      ["default", function(scope) {
+        return [_c('span', {
+          staticStyle: {
+            "margin-left": "10px"
+          }
+        }, [_vm._v(_vm._s(scope.row.title))])]
+      }]
+    ])
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "label": "type"
+    },
+    scopedSlots: _vm._u([
+      ["default", function(scope) {
+        return [_c('span', {
+          staticStyle: {
+            "margin-left": "10px"
+          }
+        }, [_vm._v(_vm._s(scope.row.type))])]
+      }]
+    ])
+  }), _vm._v(" "), _c('el-table-column', {
+    attrs: {
+      "label": "Operations"
+    },
+    scopedSlots: _vm._u([
+      ["default", function(scope) {
+        return [_c('el-button', {
+          attrs: {
+            "size": "small"
+          },
+          on: {
+            "click": function($event) {
+              _vm.showEdit(scope.row)
+            }
+          }
+        }, [_vm._v("\n                        Edit")]), _vm._v(" "), _c('el-button', {
+          attrs: {
+            "size": "small",
+            "type": "danger"
+          },
+          on: {
+            "click": function($event) {
+              _vm.showDelete(scope.row)
+            }
+          }
+        }, [_vm._v("Delete")])]
+      }]
+    ])
+  })], 1), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "title": "Delete Category",
+      "size": "small"
+    },
+    model: {
+      value: (_vm.deleteVisible),
+      callback: function($$v) {
+        _vm.deleteVisible = $$v
       },
-      on: {
-        "click": function($event) {
-          _vm.showEdit(category)
-        }
+      expression: "deleteVisible"
+    }
+  }, [_c('span', [_vm._v("This cannot be undone. Delete this Category?")]), _vm._v(" "), _c('span', {
+    staticClass: "dialog-footer",
+    slot: "footer"
+  }, [_c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.deleteVisible = false
       }
-    }, [_vm._v("\n                    Edit Category\n                ")]), _vm._v(" "), _c('el-button', {
-      attrs: {
-        "icon": "delete",
-        "type": "danger"
-      },
-      on: {
-        "click": function($event) {
-          _vm.showDelete(category)
-        }
-      }
-    }, [_vm._v("\n                    Delete Category\n                ")])], 1)])
-  })), _vm._v(" "), _c('div', [_c('el-dialog', {
+    }
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c('el-button', {
+    attrs: {
+      "type": "danger"
+    },
+    on: {
+      "click": _vm.deleteCategory
+    }
+  }, [_vm._v("Delete")])], 1)]), _vm._v(" "), _c('el-dialog', {
     attrs: {
       "title": "Edit Category",
       "size": "large"
@@ -38121,35 +38224,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.editCategory
     }
-  }, [_vm._v("Edit")])], 1)], 1), _vm._v(" "), _c('el-dialog', {
-    attrs: {
-      "title": "Delete Category",
-      "size": "small"
-    },
-    model: {
-      value: (_vm.deleteVisible),
-      callback: function($$v) {
-        _vm.deleteVisible = $$v
-      },
-      expression: "deleteVisible"
-    }
-  }, [_c('span', [_vm._v("This cannot be undone. Delete this Category?")]), _vm._v(" "), _c('span', {
-    staticClass: "dialog-footer",
-    slot: "footer"
-  }, [_c('el-button', {
-    on: {
-      "click": function($event) {
-        _vm.deleteVisible = false
-      }
-    }
-  }, [_vm._v("Cancel")]), _vm._v(" "), _c('el-button', {
-    attrs: {
-      "type": "danger"
-    },
-    on: {
-      "click": _vm.deleteCategory
-    }
-  }, [_vm._v("Delete")])], 1)])], 1)])
+  }, [_vm._v("Edit")])], 1)], 1)], 1)]), _vm._v(" "), _c('div')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
