@@ -11,12 +11,12 @@
 
                 <div class="media-content">
                     <div class="content">
-                        <p class="service-name">{{serviceName}} - {{businessName}}</p>
+                        <p class="service-name non-breaking">{{serviceName}} - {{businessName}}</p>
                         <div class="service-categories">
                             <span class="search-tag tag is-dark is-small" v-for="category in categories"
                                   :key="category._id">{{ category.title }}</span>
                         </div>
-                        <p class="result-content">
+                        <p class="result-content non-breaking">
                             {{shortDescription}}
                         </p>
                         <el-rate class="is-pulled-right" v-model="rating" disabled :max="5"></el-rate>
@@ -100,6 +100,21 @@
     .result-content{
         padding: 0.5em;
     }
+
+    .non-breaking {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
+        -ms-word-break: break-all;
+        word-break: break-all;
+        word-break: break-word;
+
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+    }
+
     .el-rate__icon{
         font-size: 14px !important;
     }
