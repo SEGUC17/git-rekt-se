@@ -11,9 +11,13 @@ export default {
       return localStorage.getItem('client_email');
     },
   },
-  getJWTtoken() {
-    return `JWT ${localStorage.getItem('client_token')}`;
-  },
+
+  /**
+   * Login User.
+   * @param data The data to send in the request body.
+   * @param callBack The callback to axios.
+   */
+
   login(data, callBack) {
     axios
       .post(Client()
@@ -27,6 +31,12 @@ export default {
         callBack(err.response.data, null);
       });
   },
+
+  /**
+   * Log out User.
+   * @param callBack The callback to axios.
+   */
+
   logout(callBack) {
     this.user.authenticated = false;
     const currentToken = this.getJWTtoken();
@@ -41,23 +51,43 @@ export default {
             Authorization: currentToken,
           },
         })
-      .then((response) => {
-        callBack(null, response.data);
-      })
-      .catch((err) => {
-        callBack(err.response.data, null);
-      });
+        .then((response) => {
+          callBack(null, response.data);
+        })
+        .catch((err) => {
+          callBack(err.response.data, null);
+        });
   },
+
+  /*
+   * Get the JWT for Header.
+   * */
+
+  getJWTtoken() {
+    return `JWT ${localStorage.getItem('client_token')}`;
+  },
+
+  /*
+   * Refresh the status of the user.
+   * */
+
   refreshAuth() {
-    if (localStorage.getItem('client_token')) {
-      this.user.authenticated = true;
-    } else {
-      this.user.authenticated = false;
-    }
+    this.user.authenticated = !!localStorage.getItem('client_token');
   },
+
   storeData(response) {
     localStorage.setItem('client_token', response.data.token);
     localStorage.setItem('client_email', response.data.email);
     localStorage.setItem('client_id', response.data.id);
   },
+
+  /**
+   * Return the status of the user.
+   */
+
+  isAuthenticated() {
+    this.refreshAuth();
+    return this.user.authenticated;
+  },
+
 };
