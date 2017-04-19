@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { Client } from '../../services/EndPoints';
+import {
+  Client,
+} from '../../services/EndPoints';
 
 export default {
   user: {
@@ -11,9 +13,13 @@ export default {
       return localStorage.getItem('client_email');
     },
   },
-  getJWTtoken() {
-    return `JWT ${localStorage.getItem('client_token')}`;
-  },
+
+  /**
+   * Login User.
+   * @param data The data to send in the request body.
+   * @param callBack The callback to axios.
+   */
+
   login(data, callBack) {
     axios
       .post(Client()
@@ -29,14 +35,28 @@ export default {
         callBack(err.response.data, null);
       });
   },
+
+  /**
+   * Confirm Client Email.
+   * @param token the confirmation token.
+   * @param callBack The callback to axios.
+   */
+
   confirmEmail(token, callBack) {
     axios
-      .post(Client().confirmEmail(token))
+      .post(Client()
+        .confirmEmail(token))
       .then(response => callBack(null, response.data))
       .catch((err) => {
         callBack(err.response.data, null);
       });
   },
+
+  /**
+   * Log out User.
+   * @param callBack The callback to axios.
+   */
+
   logout(callBack) {
     this.user.authenticated = false;
     const currentToken = this.getJWTtoken();
@@ -58,11 +78,30 @@ export default {
         callBack(err.response.data, null);
       });
   },
-  refreshAuth() {
-    if (localStorage.getItem('client_token')) {
-      this.user.authenticated = true;
-    } else {
-      this.user.authenticated = false;
-    }
+
+  /*
+   * Get the JWT for Header.
+   * */
+
+  getJWTtoken() {
+    return `JWT ${localStorage.getItem('client_token')}`;
   },
+
+  /*
+   * Refresh the status of the user.
+   * */
+
+  refreshAuth() {
+    this.user.authenticated = !!localStorage.getItem('client_token');
+  },
+
+  /**
+   * Return the status of the user.
+   */
+
+  isAuthenticated() {
+    this.refreshAuth();
+    return this.user.authenticated;
+  },
+
 };
