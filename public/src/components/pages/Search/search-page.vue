@@ -15,12 +15,8 @@
             </div>
         </section>
 
-        <!-- Alerts Div -->
-        <div class="alerts">
-            <el-alert v-for="error in errors" :key="error" :title="error" type="error" show-icon></el-alert>
-        </div>
-
         <div class="container is-fluid columns">
+
             <!-- Search filtering -->
             <aside class="column search-sidebar is-3">
                 <el-form label-position="top" class="search-form">
@@ -63,6 +59,13 @@
 
             <!-- Search results -->
             <div class="search-results column is-8">
+
+                <!-- Alerts Div -->
+                <div class="alerts">
+                    <el-alert v-for="error in errors" :key="error" :title="error" class="error" type="error"
+                              show-icon></el-alert>
+                </div>
+
                 <!-- No Search Results -->
                 <section v-if="noResults" class="hero is-medium">
                     <div class="hero-body">
@@ -77,9 +80,24 @@
                     </div>
                 </section>
 
+                <!-- Error occurred -->
+                <section v-if="errors.length > 0 && !noResults" class="hero is-medium">
+                    <div class="hero-body">
+                        <div class="has-text-centered">
+                            <h1 class="title is-1 is-spaced">
+                                Error(s) occurred during search.
+                               </h1>
+                            <h2 class="subtitle">
+                                please try again
+                             </h2>
+                        </div>
+                    </div>
+                </section>
+
                 <search-result v-for="result in results" :service="result" :key="result._id"></search-result>
 
                 <b-pagination
+                        v-show="errors.length === 0 && !noResults"
                         :total="count"
                         :current="currentQuery.offset"
                         order="is-centered"
@@ -97,7 +115,7 @@
   import Axios from 'axios';
 
   import SearchResult from './search-result.vue';
-  import { Visitor } from '../../../services/EndPoints';
+  import {Visitor} from '../../../services/EndPoints';
   import Locations from '../Index/mainLocations';
 
   export default {
@@ -111,10 +129,10 @@
           value: 1,
           label: 'A-Z',
         },
-        {
-          value: 2,
-          label: 'Highest Rating',
-        },
+          {
+            value: 2,
+            label: 'Highest Rating',
+          },
         ],
         currentQuery: this.$route.query,
         priceRange: [(this.$route.query.min) ? parseInt(this.$route.query.min, 10) : 0,
@@ -141,6 +159,19 @@
       this.execQuery();
     },
     methods: {
+      updateURL() {
+        const params = {};
+        Object.keys(this.currentQuery).forEach((key) => {
+          if (this.currentQuery[key]) {
+            params[key] = this.currentQuery[key];
+          }
+        });
+
+        this.$router.push({
+          path: '/search',
+          query: params,
+        });
+      },
       getLocations() {
         Axios
             .get(Visitor().locations)
@@ -179,6 +210,7 @@
       },
       changePage(newPage) {
         this.currentQuery.offset = newPage;
+        this.updateURL();
         this.execQuery();
       },
       rangeTooltip(value) {
@@ -193,6 +225,7 @@
         this.newQuery.max = (Math.max(...this.priceRange) === 10000) ?
             undefined : Math.max(...this.priceRange);
         this.currentQuery = this.newQuery;
+        this.updateURL();
         this.execQuery();
       },
       execQuery() {
@@ -258,6 +291,10 @@
 
     .search-form .el-form-item__label {
         font-size: 1em;
+    }
+
+    .alerts {
+        margin-bottom: 1em;
     }
 
     @media screen and (max-width: 999px) {
