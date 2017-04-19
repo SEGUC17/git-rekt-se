@@ -77,7 +77,7 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
               const token = jwt.sign({
                 id: user._id,
               }, process.env.JWT_KEY_CLIENT, {
-                expiresIn: '10d',
+                expiresIn: '1m',
               });
               resolve({
                 message: Strings.clientLoginMessages.loginSuccess,
