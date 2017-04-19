@@ -11,7 +11,7 @@
       </div>
     </section>
     <div class="container search-body">
-      <el-alert v-for="error in errors" :title="error" type="error" show-icon></el-alert>
+      <el-alert v-for="error in errors" :key="error" :title="error" type="error" show-icon></el-alert>
       <div class="el-row">
         <div class="el-col el-col-24 el-col-xs-24 el-col-sm-6 search-tools">
           <div class="block">
@@ -28,7 +28,10 @@
           </div>
           <div class="block">
             <span class="search-label">Location</span>
-            <el-autocomplete class="inline-input" v-model="newQuery.location" :fetch-suggestions="locationSearch" @keyup.enter.native="performSearch" placeholder="Select Location"></el-autocomplete>
+            <el-select v-model="newQuery.location" filterable clearable placeholder="Select Location">
+              <el-option v-for="location in locationsDB" :key="location.value" :label="location.label" :value="location.value">
+              </el-option>
+            </el-select>
           </div>
           <div class="block">
             <span class="search-label">Sort By</span>

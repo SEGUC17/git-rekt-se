@@ -52,7 +52,7 @@ router.get('/', (req, res, next) => {
     };
   }
   if (inputQuery.location) {
-    mongooseQuery.offerings.$elemMatch.location = new RegExp(inputQuery.location, 'i');
+    mongooseQuery.offerings.$elemMatch.location = inputQuery.location;
   }
   /**
    * Sorting Options (1: A-Z, 2:Desc. Rating)
