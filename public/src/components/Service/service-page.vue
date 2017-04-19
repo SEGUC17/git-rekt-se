@@ -10,11 +10,17 @@
                         {{name}}
                     </h2>
                     Current rating:
-                    <el-rate v-model="value5" disabled show-text text-color="#ff9900" text-template="{value} points">
+                    <el-rate v-model="rating" disabled show-text text-color="#ff9900" text-template="{value} points">
                     </el-rate>
                 </div>
             </div>
         </section>
+        <div v-show="errors.length > 0">
+            <div class="error" v-for="error in errors">
+                <el-alert :title="error" type="error" show-icon>
+                </el-alert>
+            </div>
+        </div>
         <div class="columns">
             <div class="column is-one-quarter">
             </div>
@@ -29,14 +35,14 @@
     
                     </el-tab-pane>
                     <el-tab-pane label="Gallery" name="second">
-                          <div>
-                                <template>
-                                    <el-carousel :interval="5000" arrow="always">
-                                        <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
-                                            <img :src="item.path" class="extended" > </img>
-                                        </el-carousel-item>
-                                    </el-carousel>
-                                </template>
+                        <div>
+                            <template>
+                                                <el-carousel :interval="5000" arrow="always">
+                                                    <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
+                                                        <img :src="item.path" class="extended" > </img>
+                                                    </el-carousel-item>
+                                                </el-carousel>
+                            </template>
                             </div>
                     </el-tab-pane>
                     <el-tab-pane label="Offerings" name="third">
@@ -175,16 +181,20 @@
                 activeName: 'first',
                 categories: null,
                 offerings: null,
-                value5: 3.7,
                 relatedServices: null,
                 current: '',
+                errors: [],
+                rating:0,
             };
         },
         methods: {
             //send get request to obtain service info using service id
             getService() {
-                    
+                const loader = this.$loading({
+                    fullscreen: true,
+                });
                 axios.get(EndPoints.Service().viewService(this.$route.params.id)).then((res) => {
+                    loader.close();
                     const service = res.data;
                     this.name = service.name,
                         this.shortDescription = service.shortDescription,
@@ -202,29 +212,35 @@
                         this.gallery = service.gallery,
                         this.categories = service.categories,
                         this.offerings = service.offerings,
+                        this.rating =service.rating,
                         this.getRelatedServices();
-                }).catch((err) => {
-                    //TODO: redirect to 404
+                }).catch((error) => {
+                    loader.close();
+                    this.errors = error.response.data.errors.map((err) => {
+                        if (typeof err === 'string') {
+                            return err;
+                        }
+                        return err.msg;
+                    });
                 });
             },
             //obtains 3 related services from on of the categories
             getRelatedServices() {
-                if(this.categories.length === 0)
-                return;
+                if (this.categories.length === 0)
+                    return;
                 axios.get(EndPoints.Service().viewRelatedServices(this.categories[0]._id, 1)).then((res) => {
                     this.relatedServices = res.data.results;
-                }).catch(() =>  this.relatedServices = []);
+                }).catch(() => this.relatedServices = []);
             },
             //in case extra functionality is needed
-            handleClick(tab, event) {
-            },
+            handleClick(tab, event) {},
             //link to booking
             BookNow() {
                 alert('booking');
             },
             goTo(relatedID) {
-                 this.$router.push((relatedID));
-                 this.$router.go((relatedID));
+                this.$router.push((relatedID));
+                this.$router.go((relatedID));
             }
         },
         mounted() {
@@ -306,30 +322,31 @@
     .clearfix:after {
         clear: both
     }
-
-.extended {
-    width: 100%;
-    height: 100%;
-}
-
-.text {
-    font-size: 14px;
-  }
-
-  .item {
-    padding: 18px 0;
-  }
-
-  .clearfix:before,
-  .clearfix:after {
-      display: table;
-      content: "";
-  }
-  .clearfix:after {
-      clear: both
-  }
-
-  .box-card {
-    width: 480px;
-  }
+    
+    .extended {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .text {
+        font-size: 14px;
+    }
+    
+    .item {
+        padding: 18px 0;
+    }
+    
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+    
+    .clearfix:after {
+        clear: both
+    }
+    
+    .box-card {
+        width: 480px;
+    }
 </style>

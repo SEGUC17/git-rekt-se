@@ -15,13 +15,9 @@ import adminLogin from '../components/Admin/login.vue';
 const routes = [{
   path: '/',
   component: Home,
-
-},
-{
+}, {
   path: '/service/:id',
   component: servicePage,
-},
-{
 }, {
   path: '/search',
   component: SearchPage,

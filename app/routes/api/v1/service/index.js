@@ -76,7 +76,6 @@ router.get('/:id', (req, res, next) => {
         rating: service._avgRating,
         gallery: service.gallery,
         categories: service.categories,
-        offerings: service.offerings,
       };
       res.json(returnedService);
     })

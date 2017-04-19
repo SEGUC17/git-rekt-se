@@ -13879,11 +13879,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 var routes = [{
   path: '/',
   component: __WEBPACK_IMPORTED_MODULE_3__components_pages_Index_home_vue___default.a
-
 }, {
   path: '/service/:id',
   component: __WEBPACK_IMPORTED_MODULE_4__components_Service_service_page_vue___default.a
-}, {}, {
+}, {
   path: '/search',
   component: __WEBPACK_IMPORTED_MODULE_5__components_pages_Search_search_page_vue___default.a
 }, {
@@ -15564,6 +15563,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -15588,9 +15593,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             activeName: 'first',
             categories: null,
             offerings: null,
-            value5: 3.7,
             relatedServices: null,
-            current: ''
+            current: '',
+            errors: [],
+            rating: 0
         };
     },
 
@@ -15599,11 +15605,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getService: function getService() {
             var _this = this;
 
+            var loader = this.$loading({
+                fullscreen: true
+            });
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints_js__["f" /* default */].Service().viewService(this.$route.params.id)).then(function (res) {
+                loader.close();
                 var service = res.data;
-                _this.name = service.name, _this.shortDescription = service.shortDescription, _this.description = service.description, _this.businessName = service.businessName, _this.businessEmail = service.businessEmail, _this.coverImage = service.coverImage, _this.businessShortDescription = service.businessShortDescription, _this.businessDescription = service.businessDescription, _this.businessPhoneNumbers = service.businessPhoneNumbers, _this.businessGallery = service.businessGallery, _this.businessWorkingHours = service.businessWorkingHours, _this.branches = service.branches, _this.reviews = service.reviews, _this.gallery = service.gallery, _this.categories = service.categories, _this.offerings = service.offerings, _this.getRelatedServices();
-            }).catch(function (err) {
-                //TODO: redirect to 404
+                _this.name = service.name, _this.shortDescription = service.shortDescription, _this.description = service.description, _this.businessName = service.businessName, _this.businessEmail = service.businessEmail, _this.coverImage = service.coverImage, _this.businessShortDescription = service.businessShortDescription, _this.businessDescription = service.businessDescription, _this.businessPhoneNumbers = service.businessPhoneNumbers, _this.businessGallery = service.businessGallery, _this.businessWorkingHours = service.businessWorkingHours, _this.branches = service.branches, _this.reviews = service.reviews, _this.gallery = service.gallery, _this.categories = service.categories, _this.offerings = service.offerings, _this.rating = service.rating, _this.getRelatedServices();
+            }).catch(function (error) {
+                loader.close();
+                _this.errors = error.response.data.errors.map(function (err) {
+                    if (typeof err === 'string') {
+                        return err;
+                    }
+                    return err.msg;
+                });
             });
         },
 
@@ -18153,7 +18169,7 @@ exports.push([module.i, "\n.bus-signin-top {\n    background: #41295a; /* fallba
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n.time {\n        font-size: 13px;\n        color: #999;\n}\n.bottom {\n        margin-top: 13px;\n        line-height: 12px;\n}\n.button {\n        padding: 0;\n        float: right;\n}\n.image {\n        width: 100%;\n        display: block;\n}\n.clearfix:before,\n    .clearfix:after {\n        display: table;\n        content: \"\";\n}\n.clearfix:after {\n        clear: both\n}\n.cyan-bg {\n        background-color: lightblue;\n}\n.time {\n        font-size: 13px;\n        color: #999;\n}\n.bottom {\n        margin-top: 13px;\n        line-height: 12px;\n}\n.button {\n        padding: 0;\n        float: right;\n}\n.image {\n        width: 100%;\n        display: block;\n}\n.clearfix:before,\n    .clearfix:after {\n        display: table;\n        content: \"\";\n}\n.clearfix:after {\n        clear: both\n}\n.extended {\n    width: 100%;\n    height: 100%;\n}\n.text {\n    font-size: 14px;\n}\n.item {\n    padding: 18px 0;\n}\n.clearfix:before,\n  .clearfix:after {\n      display: table;\n      content: \"\";\n}\n.clearfix:after {\n      clear: both\n}\n.box-card {\n    width: 480px;\n}\n", ""]);
+exports.push([module.i, "\n.time {\n    font-size: 13px;\n    color: #999;\n}\n.bottom {\n    margin-top: 13px;\n    line-height: 12px;\n}\n.button {\n    padding: 0;\n    float: right;\n}\n.image {\n    width: 100%;\n    display: block;\n}\n.clearfix:before,\n.clearfix:after {\n    display: table;\n    content: \"\";\n}\n.clearfix:after {\n    clear: both\n}\n.cyan-bg {\n    background-color: lightblue;\n}\n.time {\n    font-size: 13px;\n    color: #999;\n}\n.bottom {\n    margin-top: 13px;\n    line-height: 12px;\n}\n.button {\n    padding: 0;\n    float: right;\n}\n.image {\n    width: 100%;\n    display: block;\n}\n.clearfix:before,\n.clearfix:after {\n    display: table;\n    content: \"\";\n}\n.clearfix:after {\n    clear: both\n}\n.extended {\n    width: 100%;\n    height: 100%;\n}\n.text {\n    font-size: 14px;\n}\n.item {\n    padding: 18px 0;\n}\n.clearfix:before,\n.clearfix:after {\n    display: table;\n    content: \"\";\n}\n.clearfix:after {\n    clear: both\n}\n.box-card {\n    width: 480px;\n}\n", ""]);
 
 /***/ }),
 /* 65 */
@@ -18792,13 +18808,30 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "text-template": "{value} points"
     },
     model: {
-      value: (_vm.value5),
+      value: (_vm.rating),
       callback: function($$v) {
-        _vm.value5 = $$v
+        _vm.rating = $$v
       },
-      expression: "value5"
+      expression: "rating"
     }
   })], 1)])]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.length > 0),
+      expression: "errors.length > 0"
+    }]
+  }, _vm._l((_vm.errors), function(error) {
+    return _c('div', {
+      staticClass: "error"
+    }, [_c('el-alert', {
+      attrs: {
+        "title": error,
+        "type": "error",
+        "show-icon": ""
+      }
+    })], 1)
+  })), _vm._v(" "), _c('div', {
     staticClass: "columns"
   }, [_c('div', {
     staticClass: "column is-one-quarter"
