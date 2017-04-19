@@ -5,67 +5,74 @@
             <!-- Navigation bar Center -->
 
             <div class="nav-left">
-                <router-link to="/#" class="nav-item"><img src="assets/imgs/logo.svg" alt="Bulma logo"></router-link>
+                <router-link to="/#" class="logo nav-item"><img src="assets/imgs/logo.svg" alt="logo"></router-link>
             </div>
-
-            <span class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </span>
 
             <!-- Navigation bar Center -->
             <div class="nav-center nav-menu">
                 <router-link to="/#" class="nav-item">Home</router-link>
                 <router-link to="/about" class="nav-item">About Us</router-link>
                 <router-link to="/categories" class="nav-item">Categories</router-link>
-                <router-link to="/contact" class="nav-item">Contact</router-link>
+                <router-link to="/business/apply" class="nav-item">Business APPLY</router-link>
             </div>
 
             <!-- Navigation bar Right -->
             <div class="nav-right nav-menu">
-                <a class="button is-default gr-nav-button" v-if="!user.authenticated">
+
+                <a class="button is-default gr-nav-button" v-if="!isAuthenticated">
                     <span class="icon">
-                            <i class="fa fa-user"></i>
-                        </span>
-                    <router-link to="/signup" class="nav-item">Signup</router-link>
+                        <i class="fa fa-user"></i>
+                    </span>
+                    <span><router-link to="/client/signup" class="nav-item">Signup</router-link></span>
                 </a>
 
-                <a class="button is-danger gr-nav-button" v-if="!user.authenticated">
+                <a class="button is-danger gr-nav-button" v-if="!isAuthenticated">
                     <span class="icon">
-                            <i class="fa fa-sign-in"></i>
-                        </span>
+                        <i class="fa fa-sign-in"></i>
+                    </span>
                     <router-link to="/login" class="nav-item no-link">Login</router-link>
                 </a>
 
-                <a class="button is-danger gr-nav-button" v-if="user.authenticated">
-                    <span class="icon">
-                            <i class="fa fa-sign-out"></i>
-                        </span>
-                    <router-link to="/client/logout" class="nav-item no-link">Logout</router-link>
-                </a>
+                <logout-btn class="is-danger gr-nav-button" v-if="isAuthenticated" title="Logout"></logout-btn>
             </div>
         </nav>
     </header>
 </template>
 
 <script>
-  import auth from '../../services/auth/clientAuth';
+  import CommonAuth from '../../services/auth/commonAuth';
+  import EventBus from '../../services/EventBus';
+  import LogoutBtn from './logout.vue';
+
   export default {
     data() {
       return {
-        user: auth.user,
+        isAuthenticated: CommonAuth.isAuthenticated(),
       };
     },
+    components: {
+      'logout-btn': LogoutBtn,
+    },
+
     mounted() {
-      auth.refreshAuth();
+      EventBus.$on('UpdateNavigation', () => {
+        this.isAuthenticated = CommonAuth.isAuthenticated();
+      });
     },
   };
 </script>
 
 <style>
+    .logo {
+        overflow: hidden;
+    }
+
     .gr-nav-button {
         margin: 10px;
+    }
+
+    .nav {
+        border-bottom: 1px solid #eee;
     }
 
     .no-link {
