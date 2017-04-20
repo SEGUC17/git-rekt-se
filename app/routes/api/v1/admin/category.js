@@ -105,14 +105,27 @@ router.post('/edit/:id', AdminAuth, upload.single('icon'), (req, res, next) => {
 });
 
 router.post('/delete/:id', AdminAuth, (req, res, next) => {
-  Category.findByIdAndRemove(req.params.id, (err) => {
-    if (err) {
-      return next(err);
-    }
-    return res.json({
-      message: Strings.adminSuccess.categoryDeleted,
-    });
-  });
+  const id = req.params.id;
+  Category.findOne({
+    _id: id,
+    _deleted: false,
+  })
+    .then((result) => {
+      if (!result) {
+        next(Strings.adminFailures.categoryAlreadyDeleted);
+        return;
+      }
+      result._deleted = true;
+      result
+        .save()
+        .then(() => {
+          res.json({
+            message: Strings.adminSuccess.categoryDeleted,
+          });
+        })
+        .catch(next);
+    })
+    .catch(next);
 });
 
 /**
@@ -123,13 +136,13 @@ router.get('/list', AdminAuth, (req, res, next) => {
   Category.find({
     _deleted: false,
   })
-  .exec()
-  .then((category) => {
-    res.json({
-      category,
-    });
-  })
-  .catch(e => next(e));
+    .exec()
+    .then((category) => {
+      res.json({
+        category,
+      });
+    })
+    .catch(e => next(e));
 });
 
 /**

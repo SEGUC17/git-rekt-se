@@ -99,7 +99,6 @@
     methods: {
       resendEmail(formName) {
         this.$refs[formName].validate((valid) => {
-          console.log(valid);
           if (valid) {
             this.errors = [];
             this.resend = true;

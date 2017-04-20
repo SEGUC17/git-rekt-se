@@ -12,6 +12,7 @@ import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
 import categoryCRUD from '../components/Admin/editCategory.vue';
+import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 
@@ -25,9 +26,6 @@ const routes = [{
   component: Reset,
 },
 {
-  path: '/admin/category/edit',
-  component: categoryCRUD,
-}, {
   path: '/business/apply',
   component: UnverifiedBusinessSignup,
 }, {
@@ -69,6 +67,12 @@ const routes = [{
   children: [{
     path: 'confirm',
     component: adminBusiness,
+  }, {
+    path: 'client/remove',
+    component: removeClient,
+  }, {
+    path: 'categories/edit',
+    component: categoryCRUD,
   }],
 },
 ];
