@@ -8,6 +8,7 @@
         </div>
 
         <b-table
+                v-if="businessData.length > 0"
                 :data="businessData"
                 :striped="true"
                 :narrowed="false"
@@ -24,6 +25,15 @@
             <b-table-column field="_id" component="accept-btn"></b-table-column>
             <b-table-column field="_id" component="reject-btn"></b-table-column>
         </b-table>
+
+        <!-- No data found. -->
+        <div class="no-data hero" v-show="businessData.length === 0">
+            <div class="hero-body has-text-centered">
+                <el-icon name="circle-check" class="confirmation-icon"></el-icon>
+                <p class="title is-2">No pending businesses.</p>
+                <a class="button is-info" @click.prevent="fetchBusiness">Refresh</a>
+            </div>
+        </div>
 
     </div>
 </template>

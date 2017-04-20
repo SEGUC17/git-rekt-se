@@ -137,6 +137,18 @@ export const clientForgotPassword = {
   }],
 };
 
+export const categoryRules = {
+  type: [{
+    required: true,
+    message: 'type is required.',
+    trigger: 'blur',
+  }],
+  title: [{
+    required: true,
+    message: 'title is required.',
+  }]
+};
+
 export const clientForgotPasswordMail = {
   email: [{
     required: true,

@@ -11,6 +11,7 @@ import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
+import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
@@ -19,6 +20,10 @@ import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 const routes = [{
   path: '/',
   component: Home,
+},
+{
+  path: '/client/reset/:token',
+  component: Reset,
 },
 {
   path: '/business/apply',
@@ -65,6 +70,9 @@ const routes = [{
   }, {
     path: 'client/remove',
     component: removeClient,
+  }, {
+    path: 'categories/edit',
+    component: categoryCRUD,
   }],
 }];
 

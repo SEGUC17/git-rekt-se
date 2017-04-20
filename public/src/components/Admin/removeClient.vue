@@ -6,6 +6,10 @@
         </div>
 
         <b-table
+<<<<<<< HEAD
+                v-if="clients.length > 0"
+=======
+>>>>>>> 4dccc5408d13d631384d6d5636fefb30c273cd8e
                 :data="clients"
                 :striped="true"
                 :narrowed="false"
@@ -21,6 +25,19 @@
             <b-table-column field="email" label="Email"></b-table-column>
             <b-table-column field="_id" component="client-remove-btn"></b-table-column>
         </b-table>
+<<<<<<< HEAD
+
+        <!-- No data found. -->
+        <div class="no-data hero" v-show="clients.length === 0">
+            <div class="hero-body has-text-centered">
+                <el-icon name="circle-close" class="confirmation-icon icon-fail"></el-icon>
+                <p class="title is-2">No Users Found.</p>
+                <a class="button is-info" @click.prevent="getClients">Refresh</a>
+            </div>
+        </div>
+
+=======
+>>>>>>> 4dccc5408d13d631384d6d5636fefb30c273cd8e
     </div>
 </template>
 

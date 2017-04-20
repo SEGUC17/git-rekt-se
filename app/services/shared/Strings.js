@@ -265,6 +265,7 @@ const adminSuccess = {
 
 const adminFailures = {
   clientAlreadyDeleted: 'Client is already deleted',
+  categoryAlreadyDeleted: 'Category is already deleted',
 };
 
 /**

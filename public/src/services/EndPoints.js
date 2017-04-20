@@ -69,9 +69,9 @@ export const Admin = () => {
     createCategory: `${categoryBase}/add`,
     editCategory: categoryID => `${categoryBase}/edit/${categoryID}`,
     deleteCategory: categoryID => `${categoryBase}/delete/${categoryID}`,
+    listCategories: `${categoryBase}/list`,
     listClients: `${clientBase}/list`,
     deleteClient: clientID => `${clientBase}/delete/${clientID}`,
-
   };
 };
 
