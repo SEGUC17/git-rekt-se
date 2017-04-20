@@ -18,7 +18,7 @@ const routes = [{
   component: Home,
 },
 {
-  path: '/business/unverified/signup',
+  path: '/business/apply',
   component: UnverifiedBusinessSignup,
 }, {
   path: '/search',

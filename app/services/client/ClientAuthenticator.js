@@ -110,7 +110,7 @@ exports.loginFacebook = (email, id) => {
   const encapsulate = jwt.sign({
     token,
   }, process.env.JWT_KEY_CLIENT, {
-    expiresIn: '5m',
+    expiresIn: '10d',
   });
 
   return encapsulate;
