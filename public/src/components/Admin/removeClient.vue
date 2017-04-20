@@ -65,7 +65,7 @@
         });
 
         axios
-            .get(Admin().listClients, {
+            .post(Admin().listClients, {}, {
               headers: {
                 Authorization: adminAuth.getJWTtoken(),
               },

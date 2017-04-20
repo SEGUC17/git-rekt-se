@@ -65,7 +65,7 @@
           fullscreen: true,
         });
 
-        axios.get(Admin().viewBusiness,
+        axios.post(Admin().viewBusiness, {},
             {headers: {Authorization: adminAuth.getJWTtoken()}})
             .then((res) => {
               this.businessData = res.data;

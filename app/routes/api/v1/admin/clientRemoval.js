@@ -21,7 +21,10 @@ router.use(expressValidator({}));
 
 router.use(bodyParser.json());
 
-router.get('/delete/:id', AdminAuth, (req, res, next) => {
+/**
+ * Delete a client with {id}.
+ */
+router.post('/delete/:id', AdminAuth, (req, res, next) => {
   req.checkParams(validator.adminClientValidation);
   req.getValidationResult()
     .then((result) => {
@@ -29,9 +32,9 @@ router.get('/delete/:id', AdminAuth, (req, res, next) => {
         Client.findOne({
           _id: req.params.id,
         }).then((client) => {
-          if (client || client.status !== 'confirmed') {
+          if (client && client.status === 'confirmed') {
             if (client._deleted) {
-              next([Strings.adminFailures.clientAlreadyDeleted]);
+              next(Strings.adminFailures.clientAlreadyDeleted);
             } else {
               client._deleted = true;
               client.save().then(() => res.json({
@@ -39,7 +42,7 @@ router.get('/delete/:id', AdminAuth, (req, res, next) => {
               })).catch(e => next([e]));
             }
           } else {
-            next([Strings.adminValidationErrors.invalidClientID]);
+            next(Strings.adminValidationErrors.invalidClientID);
           }
         }).catch(e => next([e]));
       } else {
@@ -49,8 +52,11 @@ router.get('/delete/:id', AdminAuth, (req, res, next) => {
     .catch(e => next([e]));
 });
 
+/**
+ * Return a list of clients to delete.
+ */
 
-router.get('/list', AdminAuth, (req, res, next) => {
+router.post('/list', AdminAuth, (req, res, next) => {
   Client.find({
     _deleted: false,
     status: 'confirmed',
@@ -60,8 +66,9 @@ router.get('/list', AdminAuth, (req, res, next) => {
     email: true,
   }).then(clients => res.json({
     results: clients,
-  })).catch(e => next([e]));
+  })).catch(e => next(e));
 });
+
 /**
  *  Error Handling Middlewares.
  */

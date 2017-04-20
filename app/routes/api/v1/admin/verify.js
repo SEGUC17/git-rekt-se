@@ -17,10 +17,12 @@ mongoose.Promise = Promise;
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
+
 /**
  * View all business application.
  */
-router.get('/business', AdminAuth, (req, res, next) => {
+
+router.post('/business', AdminAuth, (req, res, next) => {
   Business.find({
     _deleted: false,
     _status: 'unverified',

@@ -25,7 +25,7 @@
 
       removeClient() {
         axios
-            .get(Admin().deleteClient(this.data), {
+            .post(Admin().deleteClient(this.data), {}, {
               headers: {
                 Authorization: adminAuth.getJWTtoken(),
               },
