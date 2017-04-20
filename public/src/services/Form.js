@@ -64,18 +64,19 @@ export default class Form {
      * @returns {Promise}
      * @memberOf Form
      */
+
   submit(method, url, headers = {}) {
     this.errors.clear();
     return new Promise((resolve, reject) => {
-      axios[method](url, this.data(), headers)
-                .then((response) => {
-                  this.onSuccess(response);
-                  resolve(response.data, response);
-                })
-                .catch((err) => {
-                  this.onFailure(err);
-                  reject(err.response ? err.response.data.errors : err.message, err);
-                });
+      axios[method](url, this.data())
+        .then((response) => {
+          this.onSuccess(response);
+          resolve(response.data);
+        })
+        .catch((err) => {
+          this.onFailure(err);
+          reject(err.response ? err.response.data.errors : err.message);
+        });
     });
   }
 

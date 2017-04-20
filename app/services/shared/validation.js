@@ -166,7 +166,7 @@ const businessSignupValidation = {
       errorMessage: bussinessValidationErrors.emptyMobile,
     },
     matches: {
-      options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
+      options: [/^01[0-2]{1}[0-9]{8}$/], // Egyptian Mobile phone
       errorMessage: bussinessValidationErrors.invalidMobile,
     },
   },
@@ -435,6 +435,14 @@ const businessAddImageValidation = {
   },
 };
 
+const adminClientValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidClientID,
+    },
+  },
+};
+
 const businessEditImageValidation = {
   ser_id: {
     isMongoId: {
@@ -512,6 +520,18 @@ const businessUpdateValidation = {
   },
 };
 
+
+const forgotPasswordValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emailEmpty,
+    },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
+};
+
 const clientUpdateValidation = {
   email: {
     notEmpty: {
@@ -573,6 +593,24 @@ const validatePassword = (password) => {
   return /^(?=.*\d).{8,15}$/.test(password);
 };
 
+const serviceBookingValidation = {
+  service: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  offering: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidOffering,
+    },
+  },
+  token: {
+    notEmpty: {
+      errorMessage: serviceValidationErrors.invalidStripeToken,
+    },
+  },
+};
+
 const validation = {
   clientResetPasswordValidation,
   clientSignupValidation,
@@ -604,6 +642,9 @@ const validation = {
   adminCategoryValidation,
   validatePassword,
   clientUpdateValidation,
+  adminClientValidation,
+  forgotPasswordValidation,
+  serviceBookingValidation,
 };
 
 module.exports = validation;

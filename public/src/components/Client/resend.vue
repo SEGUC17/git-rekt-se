@@ -21,10 +21,10 @@
 
 <script>
   import axios from 'axios';
-  import { Client } from '../../services/EndPoints';
+  import {Client} from '../../services/EndPoints';
 
   export default {
-    props: ['email'],
+    props: ['email', 'send'],
     data() {
       return {
         lastEmailReset: Date.now(),
@@ -47,26 +47,39 @@
         }
 
         this.lastEmailReset = currentTime;
-  
+
+        const loader = this.$loading({
+          fullscreen: true,
+        });
+
         axios
             .post(Client().resend, {
               email: this.email,
             })
             .then((response) => {
+              loader.close();
               this.$toast.open({
                 message: response.data.message,
                 position: 'bottom',
                 type: 'is-primary',
               });
             })
-            .catch(() => {
+            .catch((e) => {
+              loader.close();
               this.$toast.open({
-                message: 'Failed to send confirmation email.',
+                message: e.response.data.errors[0],
                 position: 'bottom',
                 type: 'is-danger',
               });
             });
       },
+    },
+
+    mounted() {
+      if (this.send) {
+        this.lastEmailReset = 0;
+        this.resendEmail();
+      }
     },
   };
 </script>
