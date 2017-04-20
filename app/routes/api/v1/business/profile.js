@@ -118,8 +118,8 @@ router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) =
   Booking.find({ _deleted: false }, { offering: false, _deleted: false })
     .populate('_service', 'name _business')
     .populate('_client', 'firstName lastName email')
-    .populate('_transaction', 'stripe_charge amount')
-    .populate('_offering', 'location address')
+    .populate('_transaction', 'stripe_charge')
+    .populate('_offering', 'location address price')
     .exec()
     .then((bookings) => {
       console.log(req.user.id);

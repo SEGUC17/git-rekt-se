@@ -13,38 +13,38 @@
 
     <el-table :data="bookings" border>
 
-      <el-table-column label="Date">
+      <el-table-column label="Date" header-align="center">
         <template scope="scope">
-          <el-icon name="time"></el-icon>
+          <el-icon name="date"></el-icon>
           <span>{{ new Date(scope.row.date).toLocaleDateString() }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="Service Name" prop="_service.name">
+      <el-table-column label="Service Name" prop="_service.name" header-align="center">
       </el-table-column>
   
-      <el-table-column label="Client Name">
+      <el-table-column label="Client Name" header-align="center">
         <template scope="scope">
           {{ scope.row._client.firstName + ' ' + scope.row._client.lastName }}
         </template>
       </el-table-column>
       
-      <el-table-column label="Address">
+      <el-table-column label="Address" header-align="center">
         <template scope="scope">
           {{ scope.row._offering.address + ', ' + scope.row._offering.location }}
         </template>
       </el-table-column>
 
-      <el-table-column label="Amount">
+      <el-table-column label="Amount" header-align="center">
         <template scope="scope">
-          {{ scope.row._transaction.amount / 100.0 }}
+          {{ `${scope.row._offering.price} EGP`}}
         </template>
       </el-table-column>
 
-      <el-table-column label="Status" prop="status">
+      <el-table-column label="Status" prop="status" header-align="center">
       </el-table-column>
 
-      <el-table-column label="Actions">
+      <el-table-column label="Actions" header-align="center">
       <template scope="scope">
 
         <el-tooltip content="Accept Transaction" placement="top">
@@ -104,14 +104,20 @@
           bookingId: scope.row._id,
           email: scope.row._client.email,
         };
+        const loader = this.$loading({
+          fullscreen: true,
+          text: 'Fetching Transactions..',
+        });
         axios.post(Business().acceptTransaction, data, headers)
           .then((res) => {
             this.success = true;
             this.message =  res.data.message;
             this.bookings[scope.$index].status = 'confirmed';
+            loader.close();
           }).catch((err) => {
             this.error = true;
             this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+            loader.close();
           });
       },
       rejectTransaction(scope) {
@@ -122,14 +128,20 @@
           stripeId: scope.row._transaction.stripe_charge,
           email: scope.row._client.email,
         };
+        const loader = this.$loading({
+          fullscreen: true,
+          text: 'Fetching Transactions..',
+        });
         axios.post(Business().refundTransaction, data, headers)
           .then((res) => {
             this.success = true;
             this.message = res.data.message;
             this.bookings[scope.$index].status = 'rejected';
+            loader.close();
           }).catch((err) => {
             this.error = true;
             this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+            loader.close();
           });
       },
     },
