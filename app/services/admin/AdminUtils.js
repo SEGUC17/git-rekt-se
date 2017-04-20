@@ -4,18 +4,18 @@ const Review = require('../../models/service/Review');
 
 /**
  * Utility function for deleting service reviews
- * @param {Object} reviewsIDs
+ * @param {Object} reviews
  * @returns {Promise}
  */
 
 const deleteReviews = (reviewsIDs) => {
   const resultReviews = reviewsIDs.map(reviewID => new Promise((resolve, reject) => {
-    Review.find({
+    Review.findOne({
       _id: reviewID,
     }).then((review) => {
       review._deleted = true;
       review.save()
-        .then(() => resolve())
+        .then(resultReview => resolve(resultReview._id))
         .catch(reject);
     }).catch(reject);
   }));
@@ -34,7 +34,7 @@ const deleteCoupons = (coupons) => {
     return new Promise((resolve, reject) => {
       coupon
         .save()
-        .then(() => resolve())
+        .then(resultCoupon => resolve(resultCoupon._id))
         .catch(reject);
     });
   });
@@ -53,7 +53,7 @@ const deleteBookings = (bookings) => {
     return new Promise((resolve, reject) => {
       booking
         .save()
-        .then(() => resolve())
+        .then(resultBooking => resolve(resultBooking._id))
         .catch(reject);
     });
   });
@@ -76,22 +76,22 @@ const deleteServices = (services) => {
     service._deleted = true;
     return new Promise((resolve, reject) => {
       deleteReviews(service.reviews)
-        .then(() => {
+        .then((resultReviews) => {
           Coupon.find({
             _service: service._id,
           })
             .then((coupons) => {
               deleteCoupons(coupons)
-                .then(() => {
+                .then((resultCoupons) => {
                   Booking.find({
                     _service: service._id,
                   })
                     .then((bookings) => {
                       deleteBookings(bookings)
-                        .then(() => {
+                        .then((resultBookings) => {
                           service
                             .save()
-                            .then(() => resolve())
+                            .then(resultService => resolve(resultService._id))
                             .catch(reject);
                         })
                         .catch(reject);
@@ -115,7 +115,7 @@ const deleteBranches = (branches) => {
     return new Promise((resolve, reject) => {
       branch
         .save()
-        .then(() => resolve())
+        .then(resultBranch => resolve(resultBranch._id))
         .catch(reject);
     });
   });

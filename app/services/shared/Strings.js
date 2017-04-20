@@ -263,6 +263,10 @@ const adminSuccess = {
   businessDeleted: 'Business removed succesfully',
 };
 
+const adminFailures = {
+  businessAlreadyDeleted: 'Business is Already Deleted',
+};
+
 /**
  * Search Strings
  */
@@ -303,4 +307,5 @@ module.exports = {
   reviewSuccess,
   adminSuccess,
   searchErrors,
+  adminFailures,
 };
