@@ -88,32 +88,32 @@ router.post('/:id/gallery/add', upload.single('path'), BusinessAuth, (req, res, 
           .then((service) => {
             if (service) {
               // check whether logged in business matches the service provider
-              // if (`${service._business}` === `${req.user._id}`) {
-              if (req.file) {
-                console.log('found file');
-                if (req.file.mimetype.split('/')[0] === 'image') {
-                  console.log('its an image');
-                  const image = ({
-                    path: req.file.filename,
-                    description: req.body.description,
-                  });
-                  service.gallery.push(image);
-                  service.save()
+              if (`${service._business}` === `${req.user._id}`) {
+                if (req.file) {
+                  console.log('found file');
+                  if (req.file.mimetype.split('/')[0] === 'image') {
+                    console.log('its an image');
+                    const image = ({
+                      path: req.file.filename,
+                      description: req.body.description,
+                    });
+                    service.gallery.push(image);
+                    service.save()
                   .then(() => {
                     res.json({
                       message: Strings.serviceSuccess.imageAdd,
                     });
                   })
                   .catch(saveErr => next(saveErr));
+                  } else {
+                    next(Strings.serviceFailure.invalidFile);
+                  }
                 } else {
-                  next(Strings.serviceFailure.invalidFile);
+                  next(Strings.serviceFailure.imageNotFound);
                 }
               } else {
-                next(Strings.serviceFailure.imageNotFound);
+                next(Strings.serviceFailure.notYourService);
               }
-              // } else {
-              //   next(Strings.serviceFailure.notYourService);
-              // }
             } else {
               next(Strings.serviceFailure.invalidService);
             }
