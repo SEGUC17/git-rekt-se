@@ -145,6 +145,38 @@ export const clientForgotPasswordMail = {
   ],
 };
 
+export const unverfiedBusinessSignupValidation = {
+
+  name: {
+    required: true,
+    message: 'Name is required.',
+    trigger: 'blur',
+  },
+  email: [{
+    required: true,
+    message: 'Email is required.',
+    trigger: 'blur',
+  }, {
+    type: 'email',
+    message: 'Invalid Email format.',
+    trigger: 'blur',
+  }],
+  shortDescription: {
+    required: true,
+    message: 'Short description is required.',
+    trigger: 'blur',
+  },
+  mobile: [{
+    required: true,
+    message: 'Mobile number is required.',
+    trigger: 'blur',
+  }, {
+    pattern: /^01[0-2][0-9]{8}$/,
+    message: 'Mobile number must be 11 digits in the following format 01xxxxxxxxx.',
+    trigger: 'blur',
+  }],
+};
+
 export const serviceRules = {
   name: [{
     required: true,

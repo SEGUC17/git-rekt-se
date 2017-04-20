@@ -1,21 +1,27 @@
 import VueRouter from 'vue-router';
+import UnverifiedBusinessSignup from '../components/Business/UnverifiedSignup.vue';
 import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
 import Home from '../components/pages/Index/home.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
+import adminBusiness from '../components/Admin/unverifiedBusinessPage.vue';
 import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
 import adminLogin from '../components/Admin/login.vue';
+import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 import editServices from '../components/Business/Service/editServices.vue';
 import editOfferings from '../components/Business/Service/editOfferings.vue';
 
 const routes = [{
   path: '/',
   component: Home,
+}, {
+  path: '/business/apply',
+  component: UnverifiedBusinessSignup,
 }, {
   path: '/search',
   component: SearchPage,
@@ -29,6 +35,9 @@ const routes = [{
   path: '/client/signup',
   component: clientSignUp,
 }, {
+  path: '/admin/business',
+  component: adminBusiness,
+}, {
   path: '/client/confirm/:token',
   component: confirmEmail,
 }, {
@@ -38,12 +47,6 @@ const routes = [{
   path: '/business/login',
   component: businessLogin,
 }, {
-  path: '/business/editServices',
-  component: editServices,
-}, {
-  path: '/business/edit/:id/offerings',
-  component: editOfferings,
-}, {
   path: '/client/forgot',
   component: Forgot,
 }, {
@@ -52,6 +55,19 @@ const routes = [{
 }, {
   path: '/admin/login',
   component: adminLogin,
+}, {
+  path: '/admin/dashboard',
+  component: adminDashboard,
+  children: [{
+    path: 'confirm',
+    component: adminBusiness,
+  }],
+}, {
+  path: '/business/editServices',
+  component: editServices,
+}, {
+  path: '/business/edit/:id/offerings',
+  component: editOfferings,
 }];
 
 const router = new VueRouter({

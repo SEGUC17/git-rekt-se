@@ -6,11 +6,14 @@ import Buefy from 'buefy'
 import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
-import clientLogin from '../../components/Client/login.vue';
-import adminLogin from '../../components/Admin/login.vue';
+import acceptbtn from '../../components/Admin/accept-btn.vue';
+import rejectbtn from '../../components/Admin/reject-btn.vue';
 import router from '../../services/routes.js';
 
 window.axios = axios;
+
+Vue.component('accept-btn', acceptbtn);
+Vue.component('reject-btn', rejectbtn);
 
 Vue.use(VueRouter);
 Vue.use(elementUI, {
