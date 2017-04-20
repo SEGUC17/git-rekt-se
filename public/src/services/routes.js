@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router';
+import UnverifiedBusinessSignup from '../components/Business/UnverifiedSignup.vue';
 import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
 import Home from '../components/pages/Index/home.vue';
@@ -12,9 +13,14 @@ import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
 import adminLogin from '../components/Admin/login.vue';
 
+
 const routes = [{
   path: '/',
   component: Home,
+},
+{
+  path: '/business/apply',
+  component: UnverifiedBusinessSignup,
 }, {
   path: '/search',
   component: SearchPage,
