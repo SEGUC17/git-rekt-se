@@ -59,7 +59,7 @@ const routes = [{
   component: businessLogin,
 },
 {
-  path: 'client/:id/edit',
+  path: '/client/edit',
   component: clientEditInfo,
 },
 {

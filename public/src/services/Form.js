@@ -68,7 +68,7 @@ export default class Form {
   submit(method, url, headers = {}) {
     this.errors.clear();
     return new Promise((resolve, reject) => {
-      axios[method](url, this.data())
+      axios[method](url, this.data(), headers)
         .then((response) => {
           this.onSuccess(response);
           resolve(response.data);
