@@ -27572,7 +27572,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Client/resend.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Client/resend.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] resend.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -31574,6 +31574,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_adminAuth__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EventBus__ = __webpack_require__(8);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -36349,7 +36355,7 @@ exports.push([module.i, "\n.business-signup-top {\n    background: #9D50BB; /* f
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 204 */
@@ -37898,7 +37904,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Admin/dashboard/dashboard.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Admin/dashboard/dashboard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] dashboard.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -37932,7 +37938,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Admin/editCategory.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Admin/editCategory.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] editCategory.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -37970,7 +37976,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Admin/login.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Admin/login.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] login.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38008,7 +38014,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Admin/removeClient.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Admin/removeClient.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] removeClient.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38042,7 +38048,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Admin/unverifiedBusinessPage.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Admin/unverifiedBusinessPage.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] unverifiedBusinessPage.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38080,7 +38086,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Business/UnverifiedSignup.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Business/UnverifiedSignup.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] UnverifiedSignup.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38118,7 +38124,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Business/login.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Business/login.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] login.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38156,7 +38162,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Client/Forgot.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Client/Forgot.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Forgot.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38194,7 +38200,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Client/Reset.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Client/Reset.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Reset.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38232,7 +38238,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Client/confirmEmail.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Client/confirmEmail.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] confirmEmail.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38270,7 +38276,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Client/login.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Client/login.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] login.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38308,7 +38314,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Client/signup.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Client/signup.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] signup.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38346,7 +38352,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/pages/Index/home.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/Index/home.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] home.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38384,7 +38390,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/pages/Search/search-page.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/Search/search-page.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] search-page.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38422,7 +38428,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/pages/Search/search-result.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/Search/search-result.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] search-result.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38460,7 +38466,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/pages/SharedLogin/loginSelect.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/SharedLogin/loginSelect.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] loginSelect.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38498,7 +38504,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/pages/checkout/checkout.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/checkout/checkout.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] checkout.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38536,7 +38542,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/pages/checkout/checkoutStep1.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/checkout/checkoutStep1.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] checkoutStep1.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38574,7 +38580,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/pages/checkout/checkoutStep2.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/checkout/checkoutStep2.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] checkoutStep2.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38612,7 +38618,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/pages/checkout/checkoutStep3.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/checkout/checkoutStep3.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] checkoutStep3.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38646,7 +38652,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/pages/checkout/serviceInfoHeader.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/pages/checkout/serviceInfoHeader.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] serviceInfoHeader.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38684,7 +38690,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/shared/gr-card.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/shared/gr-card.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] gr-card.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -38722,7 +38728,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/shared/gr-top-hero.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/shared/gr-top-hero.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] gr-top-hero.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -39568,19 +39574,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "show-icon": ""
       }
     })
-  })), _vm._v(" "), (_vm.clients.length > 0) ? _c('b-table', {
-    attrs: {
-      "data": _vm.clients,
-      "striped": true,
-      "narrowed": false,
-      "mobile-cards": true,
-      "paginated": true,
-      "per-page": 10,
-      "pagination-simple": false,
-      "default-sort": "name",
-      "render-html": ""
-    }
-  }, [_c('b-table-column', {
+  })), _vm._v(" "), _vm._v("\n<<<<<<< HEAD\n                v-if=\"clients.length > 0\"\n=======\n>>>>>>> 4dccc5408d13d631384d6d5636fefb30c273cd8e\n                :data=\"clients\"\n                :striped=\"true\"\n                :narrowed=\"false\"\n                :mobile-cards=\"true\"\n                :paginated=\"true\"\n                :per-page=\"10\"\n                :pagination-simple=\"false\"\n                default-sort=\"name\"\n                render-html>\n\n            "), _c('b-table-column', {
     attrs: {
       "field": "firstName",
       "label": "First Name",
@@ -39602,7 +39596,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "field": "_id",
       "component": "client-remove-btn"
     }
-  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _vm._v("\n<<<<<<< HEAD\n\n        "), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -39627,7 +39621,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.getClients($event)
       }
     }
-  }, [_vm._v("Refresh")])], 1)])], 1)
+  }, [_vm._v("Refresh")])], 1)]), _vm._v("\n\n=======\n>>>>>>> 4dccc5408d13d631384d6d5636fefb30c273cd8e\n    ")], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -43372,10 +43366,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Admin_reject_btn_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_Admin_reject_btn_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Admin_remove_client_btn_vue__ = __webpack_require__(360);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Admin_remove_client_btn_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_Admin_remove_client_btn_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_Admin_category_actions_vue__ = __webpack_require__(381);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_Admin_category_actions_vue__ = __webpack_require__(358);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_Admin_category_actions_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_Admin_category_actions_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_routes_js__ = __webpack_require__(146);
-
 
 
 
@@ -44810,7 +44803,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 327 */,
+/* 327 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_EventBus__ = __webpack_require__(8);
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['data', 'row'],
+  methods: {
+    showEditDialog: function showEditDialog() {
+      __WEBPACK_IMPORTED_MODULE_0__services_EventBus__["a" /* default */].$emit('showEditDialog', this.row);
+    },
+    showDeleteDialog: function showDeleteDialog() {
+      __WEBPACK_IMPORTED_MODULE_0__services_EventBus__["a" /* default */].$emit('showDeleteDialog', this.row);
+    }
+  }
+});
+
+/***/ }),
 /* 328 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -45194,10 +45215,16 @@ exports.push([module.i, "\nfooter {\n    color: #767676;\n    margin-top: 1em;\n
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+/***/ }),
+/* 336 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
 exports.push([module.i, "\n.logo {\n    overflow: hidden;\n}\n.gr-nav-button {\n    margin: 10px;\n}\n.nav {\n    border-bottom: 1px solid #eee;\n}\n.no-link {\n    color: white !important;\n}\n\n", ""]);
 
 /***/ }),
-/* 336 */,
 /* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -46703,7 +46730,7 @@ module.exports =
 	};
 
 	module.exports = {
-	  version: '1.2.9',
+	  version: '1.2.8',
 	  locale: _locale2.default.use,
 	  i18n: _locale2.default.i18n,
 	  install: install,
@@ -50601,7 +50628,6 @@ module.exports =
 	      return {
 	        backgroundColor: this._radioGroup.fill || '',
 	        borderColor: this._radioGroup.fill || '',
-	        boxShadow: this._radioGroup.fill ? '-1px 0 0 0 ' + this._radioGroup.fill : '',
 	        color: this._radioGroup.textColor || ''
 	      };
 	    },
@@ -51921,9 +51947,6 @@ module.exports =
 	        return;
 	      }
 	      if (this.options.length === 0 || this.filteredOptionsCount === 0) return;
-	      this.optionsAllDisabled = this.options.length === this.options.filter(function (item) {
-	        return item.disabled === true;
-	      }).length;
 	      if (!this.optionsAllDisabled) {
 	        if (direction === 'next') {
 	          this.hoverIndex++;
@@ -54524,16 +54547,11 @@ module.exports =
 	        tooltip.referenceElm = cell;
 	        tooltip.$refs.popper.style.display = 'none';
 	        tooltip.doDestroy();
-	        tooltip.setExpectedState(true);
 	        this.activateTooltip(tooltip);
 	      }
 	    },
 	    handleCellMouseLeave: function handleCellMouseLeave(event) {
-	      var tooltip = this.$refs.tooltip;
-	      if (tooltip) {
-	        tooltip.setExpectedState(false);
-	        tooltip.handleClosePopper();
-	      }
+	      this.$refs.tooltip.handleClosePopper();
 	      var cell = (0, _util.getCell)(event);
 	      if (!cell) return;
 
@@ -56544,7 +56562,6 @@ module.exports =
 	            this.picker.value = parsedValue;
 	          }
 	        } else {
-	          this.$emit('input', value);
 	          this.picker.value = value;
 	        }
 	        this.$forceUpdate();
@@ -56671,8 +56688,7 @@ module.exports =
 	          _this.picker.resetView && _this.picker.resetView();
 
 	          _this.picker.$on('dodestroy', _this.doDestroy);
-	          _this.picker.$on('pick', function () {
-	            var date = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+	          _this.picker.$on('pick', function (date) {
 	            var visible = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	            _this.$emit('input', date);
@@ -60843,10 +60859,6 @@ module.exports =
 	          gpuAcceleration: false
 	        };
 	      }
-	    },
-	    enterable: {
-	      type: Boolean,
-	      default: true
 	    }
 	  },
 
@@ -60885,11 +60897,9 @@ module.exports =
 	          {
 	            on: {
 	              'mouseleave': function mouseleave() {
-	                _this2.setExpectedState(false);_this2.debounceClose();
+	                _this2.debounceClose();_this2.togglePreventClose();
 	              },
-	              'mouseenter': function mouseenter() {
-	                _this2.setExpectedState(true);
-	              }
+	              'mouseenter': this.togglePreventClose
 	            },
 
 	            ref: 'popper',
@@ -60911,12 +60921,8 @@ module.exports =
 	    var data = vnode.data = vnode.data || {};
 	    var on = vnode.data.on = vnode.data.on || {};
 
-	    on.mouseenter = this.addEventHandle(on.mouseenter, function () {
-	      _this2.setExpectedState(true);_this2.handleShowPopper();
-	    });
-	    on.mouseleave = this.addEventHandle(on.mouseleave, function () {
-	      _this2.setExpectedState(false);_this2.debounceClose();
-	    });
+	    on.mouseenter = this.addEventHandle(on.mouseenter, this.handleShowPopper);
+	    on.mouseleave = this.addEventHandle(on.mouseleave, this.debounceClose);
 	    data.staticClass = this.concatClass(data.staticClass, 'el-tooltip');
 
 	    return vnode;
@@ -60937,19 +60943,19 @@ module.exports =
 	    handleShowPopper: function handleShowPopper() {
 	      var _this3 = this;
 
-	      if (!this.expectedState || this.manual) return;
+	      if (this.manual) return;
 	      clearTimeout(this.timeout);
 	      this.timeout = setTimeout(function () {
 	        _this3.showPopper = true;
 	      }, this.openDelay);
 	    },
 	    handleClosePopper: function handleClosePopper() {
-	      if (this.enterable && this.expectedState || this.manual) return;
+	      if (this.preventClose || this.manual) return;
 	      clearTimeout(this.timeout);
 	      this.showPopper = false;
 	    },
-	    setExpectedState: function setExpectedState(expectedState) {
-	      this.expectedState = expectedState;
+	    togglePreventClose: function togglePreventClose() {
+	      this.preventClose = !this.preventClose;
 	    }
 	  }
 	};
@@ -62362,7 +62368,6 @@ module.exports =
 	      this.$emit('tab-click', tab, event);
 	    },
 	    handleTabRemove: function handleTabRemove(pane, ev) {
-	      if (pane.disabled) return;
 	      ev.stopPropagation();
 	      this.$emit('edit', pane.name, 'remove');
 	      this.$emit('tab-remove', pane.name);
@@ -63457,7 +63462,7 @@ module.exports =
 
 	    var allNodes = this._getAllNodes();
 	    allNodes.sort(function (a, b) {
-	      return b.level - a.level;
+	      return a.level < b.level;
 	    });
 
 	    var keys = Object.keys(checkedKeys);
@@ -64717,7 +64722,6 @@ module.exports =
 	//
 	//
 	//
-	//
 
 	var typeMap = {
 	  success: 'circle-check',
@@ -64737,7 +64741,6 @@ module.exports =
 	      customClass: '',
 	      iconClass: '',
 	      onClose: null,
-	      onClick: null,
 	      closed: false,
 	      top: null,
 	      timer: null
@@ -64765,11 +64768,6 @@ module.exports =
 	      this.$el.removeEventListener('transitionend', this.destroyElement);
 	      this.$destroy(true);
 	      this.$el.parentNode.removeChild(this.$el);
-	    },
-	    click: function click() {
-	      if (typeof this.onClick === 'function') {
-	        this.onClick();
-	      }
 	    },
 	    close: function close() {
 	      this.closed = true;
@@ -64833,8 +64831,7 @@ module.exports =
 	      },
 	      "mouseleave": function($event) {
 	        _vm.startTimer()
-	      },
-	      "click": _vm.click
+	      }
 	    }
 	  }, [(_vm.type || _vm.iconClass) ? _c('i', {
 	    staticClass: "el-notification__icon",
@@ -64854,10 +64851,7 @@ module.exports =
 	  }, [_vm._t("default", [_vm._v(_vm._s(_vm.message))])], 2), _c('div', {
 	    staticClass: "el-notification__closeBtn el-icon-close",
 	    on: {
-	      "click": function($event) {
-	        $event.stopPropagation();
-	        _vm.close($event)
-	      }
+	      "click": _vm.close
 	    }
 	  })])])])
 	},staticRenderFns: []}
@@ -66597,8 +66591,6 @@ module.exports =
 	//
 	//
 	//
-	//
-	//
 
 	exports.default = {
 	  mixins: [_locale2.default],
@@ -66662,13 +66654,19 @@ module.exports =
 	    }, [_c('i', {
 	      staticClass: "el-icon-document"
 	    }), _vm._v(_vm._s(file.name) + "\n    ")]), _c('label', {
+	      directives: [{
+	        name: "show",
+	        rawName: "v-show",
+	        value: (file.status === 'success'),
+	        expression: "file.status === 'success'"
+	      }],
 	      staticClass: "el-upload-list__item-status-label"
-	    }, [(file.status === 'success') ? _c('i', {
+	    }, [_c('i', {
 	      class: {
 	        'el-icon-circle-check': _vm.listType === 'text',
 	          'el-icon-check': ['picture-card', 'picture'].indexOf(_vm.listType) > -1
 	      }
-	    }) : _vm._e(), _c('i', {
+	    }), _c('i', {
 	      staticClass: "el-icon-close",
 	      on: {
 	        "click": function($event) {
@@ -66805,6 +66803,7 @@ module.exports =
 
 	      if (!files) return;
 	      this.uploadFiles(files);
+	      this.$refs.input.value = null;
 	    },
 	    uploadFiles: function uploadFiles(files) {
 	      var _this = this;
@@ -66880,7 +66879,6 @@ module.exports =
 	  render: function render(h) {
 	    var handleClick = this.handleClick,
 	        drag = this.drag,
-	        name = this.name,
 	        handleChange = this.handleChange,
 	        multiple = this.multiple,
 	        accept = this.accept,
@@ -66909,7 +66907,7 @@ module.exports =
 	        [this.$slots.default]
 	      ) : this.$slots.default, h(
 	        'input',
-	        { 'class': 'el-upload__input', attrs: { type: 'file', name: name, multiple: multiple, accept: accept },
+	        { 'class': 'el-upload__input', attrs: { type: 'file', multiple: multiple, accept: accept },
 	          ref: 'input', on: {
 	            'change': handleChange
 	          }
@@ -74599,9 +74597,6 @@ module.exports =
 	        return;
 	      }
 	      if (this.options.length === 0 || this.filteredOptionsCount === 0) return;
-	      this.optionsAllDisabled = this.options.length === this.options.filter(function (item) {
-	        return item.disabled === true;
-	      }).length;
 	      if (!this.optionsAllDisabled) {
 	        if (direction === 'next') {
 	          this.hoverIndex++;
@@ -75207,10 +75202,6 @@ module.exports =
 	          gpuAcceleration: false
 	        };
 	      }
-	    },
-	    enterable: {
-	      type: Boolean,
-	      default: true
 	    }
 	  },
 
@@ -75249,11 +75240,9 @@ module.exports =
 	          {
 	            on: {
 	              'mouseleave': function mouseleave() {
-	                _this2.setExpectedState(false);_this2.debounceClose();
+	                _this2.debounceClose();_this2.togglePreventClose();
 	              },
-	              'mouseenter': function mouseenter() {
-	                _this2.setExpectedState(true);
-	              }
+	              'mouseenter': this.togglePreventClose
 	            },
 
 	            ref: 'popper',
@@ -75275,12 +75264,8 @@ module.exports =
 	    var data = vnode.data = vnode.data || {};
 	    var on = vnode.data.on = vnode.data.on || {};
 
-	    on.mouseenter = this.addEventHandle(on.mouseenter, function () {
-	      _this2.setExpectedState(true);_this2.handleShowPopper();
-	    });
-	    on.mouseleave = this.addEventHandle(on.mouseleave, function () {
-	      _this2.setExpectedState(false);_this2.debounceClose();
-	    });
+	    on.mouseenter = this.addEventHandle(on.mouseenter, this.handleShowPopper);
+	    on.mouseleave = this.addEventHandle(on.mouseleave, this.debounceClose);
 	    data.staticClass = this.concatClass(data.staticClass, 'el-tooltip');
 
 	    return vnode;
@@ -75301,19 +75286,19 @@ module.exports =
 	    handleShowPopper: function handleShowPopper() {
 	      var _this3 = this;
 
-	      if (!this.expectedState || this.manual) return;
+	      if (this.manual) return;
 	      clearTimeout(this.timeout);
 	      this.timeout = setTimeout(function () {
 	        _this3.showPopper = true;
 	      }, this.openDelay);
 	    },
 	    handleClosePopper: function handleClosePopper() {
-	      if (this.enterable && this.expectedState || this.manual) return;
+	      if (this.preventClose || this.manual) return;
 	      clearTimeout(this.timeout);
 	      this.showPopper = false;
 	    },
-	    setExpectedState: function setExpectedState(expectedState) {
-	      this.expectedState = expectedState;
+	    togglePreventClose: function togglePreventClose() {
+	      this.preventClose = !this.preventClose;
 	    }
 	  }
 	};
@@ -77233,13 +77218,13 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(326),
   /* template */
-  __webpack_require__(367),
+  __webpack_require__(368),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Admin/accept-btn.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Admin/accept-btn.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] accept-btn.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -77260,7 +77245,44 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 358 */,
+/* 358 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(372)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(327),
+  /* template */
+  __webpack_require__(365),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Admin/category-actions.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] category-actions.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2596cb2a", Component.options)
+  } else {
+    hotAPI.reload("data-v-2596cb2a", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
 /* 359 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -77274,7 +77296,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Admin/reject-btn.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Admin/reject-btn.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] reject-btn.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -77302,13 +77324,13 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(329),
   /* template */
-  __webpack_require__(365),
+  __webpack_require__(366),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Admin/remove-client-btn.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Admin/remove-client-btn.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] remove-client-btn.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -77346,7 +77368,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/shared/footer.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/shared/footer.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] footer.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -77372,19 +77394,19 @@ module.exports = Component.exports
 
 
 /* styles */
-__webpack_require__(372)
+__webpack_require__(373)
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(331),
   /* template */
-  __webpack_require__(366),
+  __webpack_require__(367),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/shared/header.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/shared/header.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] header.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -77422,7 +77444,7 @@ var Component = __webpack_require__(1)(
   /* cssModules */
   null
 )
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/shared/logout.vue"
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/shared/logout.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] logout.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -77495,6 +77517,33 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "buttons"
+  }, [_c('el-button', {
+    staticClass: "button is-default",
+    on: {
+      "click": _vm.showEditDialog
+    }
+  }, [_vm._v("Edit")]), _vm._v(" "), _c('el-button', {
+    staticClass: "button is-danger",
+    on: {
+      "click": _vm.showDeleteDialog
+    }
+  }, [_vm._v("Delete")])], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-2596cb2a", module.exports)
+  }
+}
+
+/***/ }),
+/* 366 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('el-button', {
     staticClass: "button is-danger",
     on: {
@@ -77511,7 +77560,7 @@ if (false) {
 }
 
 /***/ }),
-/* 366 */
+/* 367 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -77632,7 +77681,7 @@ if (false) {
 }
 
 /***/ }),
-/* 367 */
+/* 368 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -77652,7 +77701,6 @@ if (false) {
 }
 
 /***/ }),
-/* 368 */,
 /* 369 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -77737,6 +77785,32 @@ var content = __webpack_require__(335);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
+var update = __webpack_require__(3)("ffe5fc84", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-2596cb2a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./category-actions.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-2596cb2a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./category-actions.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 373 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(336);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
 var update = __webpack_require__(3)("0cf5611e", content, false);
 // Hot Module Replacement
 if(false) {
@@ -77753,7 +77827,6 @@ if(false) {
 }
 
 /***/ }),
-/* 373 */,
 /* 374 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -77786,136 +77859,6 @@ if(false) {
 __webpack_require__(302);
 module.exports = __webpack_require__(303);
 
-
-/***/ }),
-/* 376 */,
-/* 377 */,
-/* 378 */,
-/* 379 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_EventBus__ = __webpack_require__(8);
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['data', 'row'],
-  methods: {
-    showEditDialog: function showEditDialog() {
-      __WEBPACK_IMPORTED_MODULE_0__services_EventBus__["a" /* default */].$emit('showEditDialog', this.row);
-    },
-    showDeleteDialog: function showDeleteDialog() {
-      __WEBPACK_IMPORTED_MODULE_0__services_EventBus__["a" /* default */].$emit('showDeleteDialog', this.row);
-    }
-  }
-});
-
-/***/ }),
-/* 380 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
-/* 381 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(383)
-
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(379),
-  /* template */
-  __webpack_require__(382),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/Users/melzarei/Desktop/git-rekt-se/public/src/components/Admin/category-actions.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] category-actions.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2596cb2a", Component.options)
-  } else {
-    hotAPI.reload("data-v-2596cb2a", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 382 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "buttons"
-  }, [_c('el-button', {
-    staticClass: "button is-default",
-    on: {
-      "click": _vm.showEditDialog
-    }
-  }, [_vm._v("Edit")]), _vm._v(" "), _c('el-button', {
-    staticClass: "button is-danger",
-    on: {
-      "click": _vm.showDeleteDialog
-    }
-  }, [_vm._v("Delete")])], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-2596cb2a", module.exports)
-  }
-}
-
-/***/ }),
-/* 383 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(380);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(3)("ffe5fc84", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-2596cb2a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./category-actions.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-2596cb2a\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./category-actions.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
 
 /***/ })
 /******/ ]);
