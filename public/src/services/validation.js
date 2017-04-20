@@ -153,7 +153,7 @@ export const unverfiedBusinessSignupValidation = {
 
   name: {
     required: true,
-    message: 'name is required.',
+    message: 'Name is required.',
     trigger: 'blur',
   },
   email: [{
@@ -167,7 +167,7 @@ export const unverfiedBusinessSignupValidation = {
   }],
   shortDescription: {
     required: true,
-    message: 'a short description is required.',
+    message: 'Short description is required.',
     trigger: 'blur',
   },
   mobile: [{
