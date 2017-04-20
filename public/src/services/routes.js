@@ -6,6 +6,7 @@ import Home from '../components/pages/Index/home.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
+import verifiedBusinessSignup from '../components/Business/verifiedBusinessSignup.vue';
 import adminBusiness from '../components/Admin/unverifiedBusinessPage.vue';
 import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
@@ -37,6 +38,9 @@ const routes = [{
 }, {
   path: '/client/login',
   component: clientLogin,
+}, {
+  path: '/confirm/signup/:token',
+  component: verifiedBusinessSignup,
 }, {
   path: '/client/signup',
   component: clientSignUp,

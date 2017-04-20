@@ -4897,7 +4897,8 @@ var Visitor = function Visitor() {
     locations: BASE + '/visitor/search/locations',
     viewBusiness: function viewBusiness(businessID) {
       return BASE + '/business/' + businessID;
-    }
+    },
+    businessCategories: BASE + '/categories/business'
   };
 };
 
@@ -5594,10 +5595,11 @@ var EventBus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return clientSignUpValidation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return loginRules; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return clientForgotPassword; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return clientForgotPassword; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return verifiedBusinessSignupRules; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return categoryRules; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return clientForgotPasswordMail; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return unverfiedBusinessSignupValidation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return unverfiedBusinessSignupValidation; });
 /* unused harmony default export */ var _unused_webpack_default_export = ({});
 
 var clientSignUpValidation = {
@@ -5739,6 +5741,76 @@ var clientForgotPassword = {
   }]
 };
 
+var verifiedBusinessSignupRules = {
+  password: [{
+    required: true,
+    message: 'Please enter your password',
+    trigger: 'blur'
+  }, {
+    pattern: /^(?=.*\d).{8,15}$/,
+    message: 'Password must be between 8 and 15 characters and contains at least one number.',
+    trigger: 'blur'
+  }, {
+    validator: function validator(rule, value, callBack) {
+      this.$refs.form.validateField('confirmPassword');
+      callBack();
+    },
+
+    trigger: ['blur', 'change']
+  }],
+  confirmPassword: [{
+    required: true,
+    message: 'Please confirm your password',
+    trigger: 'blur'
+  }, {
+    validator: function validator(rule, value, callBack) {
+      if (this.form.password.length > 0) {
+        if (this.form.password !== value) {
+          callBack([new Error('Password and Confirm Password must match!')]);
+        } else {
+          callBack();
+        }
+      } else {
+        callBack();
+      }
+    },
+
+    trigger: ['blur', 'change']
+  }],
+  description: [{
+    required: true,
+    message: 'Please enter a description for your business activity',
+    trigger: 'blur'
+  }],
+  workingHours: [{
+    required: true,
+    messsage: 'Please enter your business working hours',
+    trigger: 'blur'
+  }],
+  categories: [{
+    validator: function validator(rule, value, callBack) {
+      if (value.length === 0) {
+        callBack([new Error('Please choose at least one category for your business')]);
+      } else {
+        callBack();
+      }
+    },
+
+    trigger: 'blur'
+  }],
+  branches: [{
+    validator: function validator(rule, value, callBack) {
+      if (value.length === 0) {
+        callBack([new Error('Please add at least one branch for your business')]);
+      } else {
+        callBack();
+      }
+    },
+
+    trigger: 'blur'
+  }]
+};
+
 var categoryRules = {
   type: [{
     required: true,
@@ -5757,7 +5829,9 @@ var clientForgotPasswordMail = {
     message: 'Email is required.',
     trigger: 'blur'
   }, {
-    type: 'email', message: 'Please input correct email address', trigger: 'blur,change'
+    type: 'email',
+    message: 'Please input correct email address',
+    trigger: 'blur,change'
   }]
 };
 
@@ -5788,8 +5862,7 @@ var unverfiedBusinessSignupValidation = {
     trigger: 'blur'
   }, {
     pattern: /^01[0-2][0-9]{8}$/,
-    message: 'Mobile number must be 11 digits in the following format 01xxxxxxxxx.',
-    trigger: 'blur'
+    message: 'Mobile number must be 11 digits in the following format 01xxxxxxxxx.'
   }]
 };
 
@@ -30082,24 +30155,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_pages_checkout_checkout_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_pages_checkout_checkout_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Client_login_vue__ = __webpack_require__(234);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_Client_login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_Client_login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Admin_unverifiedBusinessPage_vue__ = __webpack_require__(228);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Admin_unverifiedBusinessPage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_Admin_unverifiedBusinessPage_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Client_confirmEmail_vue__ = __webpack_require__(233);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Client_confirmEmail_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_Client_confirmEmail_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Client_signup_vue__ = __webpack_require__(235);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Client_signup_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_Client_signup_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_pages_SharedLogin_loginSelect_vue__ = __webpack_require__(239);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_pages_SharedLogin_loginSelect_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_pages_SharedLogin_loginSelect_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_Business_login_vue__ = __webpack_require__(230);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_Business_login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_Business_login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_Admin_editCategory_vue__ = __webpack_require__(225);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_Admin_editCategory_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_Admin_editCategory_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_Admin_removeClient_vue__ = __webpack_require__(227);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_Admin_removeClient_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_Admin_removeClient_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_Admin_login_vue__ = __webpack_require__(226);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_Admin_login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_Admin_login_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_Admin_dashboard_dashboard_vue__ = __webpack_require__(224);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_Admin_dashboard_dashboard_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_Admin_dashboard_dashboard_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Business_verifiedBusinessSignup_vue__ = __webpack_require__(382);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Business_verifiedBusinessSignup_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_Business_verifiedBusinessSignup_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Admin_unverifiedBusinessPage_vue__ = __webpack_require__(228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Admin_unverifiedBusinessPage_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_Admin_unverifiedBusinessPage_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Client_confirmEmail_vue__ = __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Client_confirmEmail_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_Client_confirmEmail_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_Client_signup_vue__ = __webpack_require__(235);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_Client_signup_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_Client_signup_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_pages_SharedLogin_loginSelect_vue__ = __webpack_require__(239);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_pages_SharedLogin_loginSelect_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_pages_SharedLogin_loginSelect_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_Business_login_vue__ = __webpack_require__(230);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_Business_login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_Business_login_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_Admin_editCategory_vue__ = __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_Admin_editCategory_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__components_Admin_editCategory_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_Admin_removeClient_vue__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__components_Admin_removeClient_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__components_Admin_removeClient_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_Admin_login_vue__ = __webpack_require__(226);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__components_Admin_login_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__components_Admin_login_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_Admin_dashboard_dashboard_vue__ = __webpack_require__(224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__components_Admin_dashboard_dashboard_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__components_Admin_dashboard_dashboard_vue__);
+
 
 
 
@@ -30137,20 +30213,23 @@ var routes = [{
   path: '/client/login',
   component: __WEBPACK_IMPORTED_MODULE_7__components_Client_login_vue___default.a
 }, {
+  path: '/confirm/signup/:token',
+  component: __WEBPACK_IMPORTED_MODULE_8__components_Business_verifiedBusinessSignup_vue___default.a
+}, {
   path: '/client/signup',
-  component: __WEBPACK_IMPORTED_MODULE_10__components_Client_signup_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_11__components_Client_signup_vue___default.a
 }, {
   path: '/admin/business',
-  component: __WEBPACK_IMPORTED_MODULE_8__components_Admin_unverifiedBusinessPage_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_9__components_Admin_unverifiedBusinessPage_vue___default.a
 }, {
   path: '/client/confirm/:token',
-  component: __WEBPACK_IMPORTED_MODULE_9__components_Client_confirmEmail_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_10__components_Client_confirmEmail_vue___default.a
 }, {
   path: '/login',
-  component: __WEBPACK_IMPORTED_MODULE_11__components_pages_SharedLogin_loginSelect_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_12__components_pages_SharedLogin_loginSelect_vue___default.a
 }, {
   path: '/business/login',
-  component: __WEBPACK_IMPORTED_MODULE_12__components_Business_login_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_13__components_Business_login_vue___default.a
 }, {
   path: '/client/forgot',
   component: __WEBPACK_IMPORTED_MODULE_2__components_Client_Forgot_vue___default.a
@@ -30159,19 +30238,19 @@ var routes = [{
   component: __WEBPACK_IMPORTED_MODULE_3__components_Client_Reset_vue___default.a
 }, {
   path: '/admin/login',
-  component: __WEBPACK_IMPORTED_MODULE_15__components_Admin_login_vue___default.a
+  component: __WEBPACK_IMPORTED_MODULE_16__components_Admin_login_vue___default.a
 }, {
   path: '/admin/dashboard',
-  component: __WEBPACK_IMPORTED_MODULE_16__components_Admin_dashboard_dashboard_vue___default.a,
+  component: __WEBPACK_IMPORTED_MODULE_17__components_Admin_dashboard_dashboard_vue___default.a,
   children: [{
     path: 'confirm',
-    component: __WEBPACK_IMPORTED_MODULE_8__components_Admin_unverifiedBusinessPage_vue___default.a
+    component: __WEBPACK_IMPORTED_MODULE_9__components_Admin_unverifiedBusinessPage_vue___default.a
   }, {
     path: 'client/remove',
-    component: __WEBPACK_IMPORTED_MODULE_14__components_Admin_removeClient_vue___default.a
+    component: __WEBPACK_IMPORTED_MODULE_15__components_Admin_removeClient_vue___default.a
   }, {
     path: 'categories/edit',
-    component: __WEBPACK_IMPORTED_MODULE_13__components_Admin_editCategory_vue___default.a
+    component: __WEBPACK_IMPORTED_MODULE_14__components_Admin_editCategory_vue___default.a
   }]
 }];
 
@@ -31610,13 +31689,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -31870,7 +31942,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         shortDescription: '',
         mobile: ''
       }),
-      rules2: __WEBPACK_IMPORTED_MODULE_2__services_validation__["e" /* unverfiedBusinessSignupValidation */],
+      rules2: __WEBPACK_IMPORTED_MODULE_2__services_validation__["f" /* unverfiedBusinessSignupValidation */],
       errors: [],
       success: false,
       signupSuccess: ''
@@ -32211,8 +32283,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    __WEBPACK_IMPORTED_MODULE_2__services_validation__["f" /* clientForgotPassword */].confirmPassword[1].validator = __WEBPACK_IMPORTED_MODULE_2__services_validation__["f" /* clientForgotPassword */].confirmPassword[1].validator.bind(this);
-    __WEBPACK_IMPORTED_MODULE_2__services_validation__["f" /* clientForgotPassword */].password[2].validator = __WEBPACK_IMPORTED_MODULE_2__services_validation__["f" /* clientForgotPassword */].password[2].validator.bind(this);
+    __WEBPACK_IMPORTED_MODULE_2__services_validation__["g" /* clientForgotPassword */].confirmPassword[1].validator = __WEBPACK_IMPORTED_MODULE_2__services_validation__["g" /* clientForgotPassword */].confirmPassword[1].validator.bind(this);
+    __WEBPACK_IMPORTED_MODULE_2__services_validation__["g" /* clientForgotPassword */].password[2].validator = __WEBPACK_IMPORTED_MODULE_2__services_validation__["g" /* clientForgotPassword */].password[2].validator.bind(this);
     return {
       form: new __WEBPACK_IMPORTED_MODULE_0__services_Form__["a" /* default */]({
         token: this.$route.params.token,
@@ -32225,7 +32297,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       showPassword: 'password',
       showConfirm: 'password',
       loading: false,
-      rules: __WEBPACK_IMPORTED_MODULE_2__services_validation__["f" /* clientForgotPassword */]
+      rules: __WEBPACK_IMPORTED_MODULE_2__services_validation__["g" /* clientForgotPassword */]
     };
   },
 
@@ -36355,7 +36427,7 @@ exports.push([module.i, "\n.business-signup-top {\n    background: #9D50BB; /* f
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 204 */
@@ -39574,7 +39646,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "show-icon": ""
       }
     })
-  })), _vm._v(" "), _vm._v("\n<<<<<<< HEAD\n                v-if=\"clients.length > 0\"\n=======\n>>>>>>> 4dccc5408d13d631384d6d5636fefb30c273cd8e\n                :data=\"clients\"\n                :striped=\"true\"\n                :narrowed=\"false\"\n                :mobile-cards=\"true\"\n                :paginated=\"true\"\n                :per-page=\"10\"\n                :pagination-simple=\"false\"\n                default-sort=\"name\"\n                render-html>\n\n            "), _c('b-table-column', {
+  })), _vm._v(" "), (_vm.clients.length > 0) ? _c('b-table', {
+    attrs: {
+      "data": _vm.clients,
+      "striped": true,
+      "narrowed": false,
+      "mobile-cards": true,
+      "paginated": true,
+      "per-page": 10,
+      "pagination-simple": false,
+      "default-sort": "name",
+      "render-html": ""
+    }
+  }, [_c('b-table-column', {
     attrs: {
       "field": "firstName",
       "label": "First Name",
@@ -39596,7 +39680,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "field": "_id",
       "component": "client-remove-btn"
     }
-  }), _vm._v(" "), _vm._v("\n<<<<<<< HEAD\n\n        "), _vm._v(" "), _c('div', {
+  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -39621,7 +39705,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.getClients($event)
       }
     }
-  }, [_vm._v("Refresh")])], 1)]), _vm._v("\n\n=======\n>>>>>>> 4dccc5408d13d631384d6d5636fefb30c273cd8e\n    ")], 1)
+  }, [_vm._v("Refresh")])], 1)])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -43364,11 +43448,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_Admin_accept_btn_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_Admin_accept_btn_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Admin_reject_btn_vue__ = __webpack_require__(359);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_Admin_reject_btn_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_Admin_reject_btn_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Admin_remove_client_btn_vue__ = __webpack_require__(360);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_Admin_remove_client_btn_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_Admin_remove_client_btn_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_Admin_category_actions_vue__ = __webpack_require__(358);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_Admin_category_actions_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_Admin_category_actions_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_routes_js__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_shared_gr_top_hero_vue__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_shared_gr_top_hero_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_shared_gr_top_hero_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_Admin_remove_client_btn_vue__ = __webpack_require__(360);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_Admin_remove_client_btn_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_Admin_remove_client_btn_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_Admin_category_actions_vue__ = __webpack_require__(358);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_Admin_category_actions_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_Admin_category_actions_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_routes_js__ = __webpack_require__(146);
+
 
 
 
@@ -43387,8 +43474,9 @@ window.axios = __WEBPACK_IMPORTED_MODULE_5_axios___default.a;
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('accept-btn', __WEBPACK_IMPORTED_MODULE_8__components_Admin_accept_btn_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('reject-btn', __WEBPACK_IMPORTED_MODULE_9__components_Admin_reject_btn_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('client-remove-btn', __WEBPACK_IMPORTED_MODULE_10__components_Admin_remove_client_btn_vue___default.a);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('category-actions-btns', __WEBPACK_IMPORTED_MODULE_11__components_Admin_category_actions_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('client-remove-btn', __WEBPACK_IMPORTED_MODULE_11__components_Admin_remove_client_btn_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('category-actions-btns', __WEBPACK_IMPORTED_MODULE_12__components_Admin_category_actions_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('gr-top-hero', __WEBPACK_IMPORTED_MODULE_10__components_shared_gr_top_hero_vue___default.a);
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_element_ui___default.a, {
@@ -43400,7 +43488,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_4_buef
 
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   el: '#root',
-  router: __WEBPACK_IMPORTED_MODULE_12__services_routes_js__["default"],
+  router: __WEBPACK_IMPORTED_MODULE_13__services_routes_js__["default"],
   components: {
     'gr-header': __WEBPACK_IMPORTED_MODULE_6__components_shared_header_vue___default.a,
     'gr-footer': __WEBPACK_IMPORTED_MODULE_7__components_shared_footer_vue___default.a
@@ -77859,6 +77947,536 @@ if(false) {
 __webpack_require__(302);
 module.exports = __webpack_require__(303);
 
+
+/***/ }),
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EndPoints__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_businessAuth__ = __webpack_require__(380);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    __WEBPACK_IMPORTED_MODULE_2__services_validation__["e" /* verifiedBusinessSignupRules */].confirmPassword[1].validator = __WEBPACK_IMPORTED_MODULE_2__services_validation__["e" /* verifiedBusinessSignupRules */].confirmPassword[1].validator.bind(this);
+    __WEBPACK_IMPORTED_MODULE_2__services_validation__["e" /* verifiedBusinessSignupRules */].password[2].validator = __WEBPACK_IMPORTED_MODULE_2__services_validation__["e" /* verifiedBusinessSignupRules */].password[2].validator.bind(this);
+    return {
+      form: new __WEBPACK_IMPORTED_MODULE_1__services_Form__["a" /* default */]({
+        password: '',
+        confirmPassword: '',
+        description: '',
+        workingHours: '',
+        categories: [],
+        branches: [{
+          location: '',
+          address: ''
+        }]
+      }),
+      categories: [],
+      locations: [],
+      loading: false,
+      errors: [],
+      success: false,
+      signupSuccess: '',
+      rules: __WEBPACK_IMPORTED_MODULE_2__services_validation__["e" /* verifiedBusinessSignupRules */]
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    this.getLocations();
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__services_EndPoints__["d" /* Visitor */])().businessCategories).then(function (response) {
+      _this.categories = response.data.results;
+    }).catch(function (e) {
+      _this.errors = e;
+    });
+  },
+
+  methods: {
+    getLocations: function getLocations() {
+      var _this2 = this;
+
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__services_EndPoints__["d" /* Visitor */])().locations).then(function (res) {
+        _this2.locations = res.data;
+      });
+    },
+    submitForm: function submitForm(formName) {
+      var _this3 = this;
+
+      this.form.branches = this.form.branches.filter(function (branch) {
+        return branch.location !== '' && branch.address !== '';
+      });
+      this.errors = [];
+      this.$refs[formName].validate(function (valid) {
+        if (valid) {
+          _this3.loading = true;
+          __WEBPACK_IMPORTED_MODULE_4__services_businessAuth__["a" /* default */].verifiedsignup(_this3.$route.params.token, _this3.form.data(), function (responseErrs, response) {
+            _this3.loading = false;
+            if (responseErrs) {
+              _this3.errors = responseErrs.errors.map(function (err) {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
+            } else {
+              _this3.success = true;
+              _this3.signupSuccess = response.message;
+              setTimeout(function () {
+                _this3.$router.push('/business/login');
+              }, 1000);
+            }
+          });
+        } else {
+          _this3.addBranch();
+        }
+      });
+    },
+    resetForm: function resetForm(formName) {
+      this.$refs[formName].resetFields();
+      this.form.branches = [];
+      this.addBranch();
+    },
+    addBranch: function addBranch() {
+      this.form.branches.push({
+        location: '',
+        address: ''
+      });
+    },
+    removeBranch: function removeBranch(idx) {
+      this.form.branches = this.form.branches.filter(function (branch, index) {
+        return idx !== index;
+      });
+      if (this.form.branches.length === 0) {
+        this.addBranch();
+      }
+    }
+  }
+});
+
+/***/ }),
+/* 380 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(4);
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  verifiedsignup: function verifiedsignup(token, data, callBack) {
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["c" /* Business */])().verifiedSignUp(token), data).then(function (response) {
+      return callBack(null, response.data);
+    }).catch(function (err) {
+      callBack(err.response.data, null);
+    });
+  }
+});
+
+/***/ }),
+/* 381 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+exports.push([module.i, "\n.location-select .el-input-group__prepend{\n    width: 25%;\n}\n.verified-signup-top{\n    background: #E44D26;  /* fallback for old browsers */\n    background: -webkit-linear-gradient(to right, #F16529, #E44D26);  /* Chrome 10-25, Safari 5.1-6 */\n    background: -webkit-linear-gradient(left, #F16529, #E44D26);\n    background: linear-gradient(to right, #F16529, #E44D26); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n}\n.error {\n    margin-bottom: 20px;\n}\n.demo-ruleForm {\n    margin-top: 30px;\n    margin-bottom: 40px;\n}\n", ""]);
+
+/***/ }),
+/* 382 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(384)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(379),
+  /* template */
+  __webpack_require__(383),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/hady/Desktop/GUC/SE/Sprint2/git-rekt-se/public/src/components/Business/verifiedBusinessSignup.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] verifiedBusinessSignup.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1b840ce2", Component.options)
+  } else {
+    hotAPI.reload("data-v-1b840ce2", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 383 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "verified-signup"
+  }, [_c('gr-top-hero', {
+    staticClass: "verified-signup-top",
+    attrs: {
+      "title": "Complete Signup",
+      "subtitle": "One more final step to obtain your account"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "columns is-mobile"
+  }, [_c('div', {
+    staticClass: "column is-half-desktop is-10-mobile is-10-tablet is-offset-1-mobile\n            is-offset-1-tablet is-offset-one-quarter-desktop"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.length > 0),
+      expression: "errors.length > 0"
+    }],
+    staticClass: "errors"
+  }, _vm._l((_vm.errors), function(error) {
+    return _c('el-alert', {
+      key: error,
+      staticClass: "error",
+      attrs: {
+        "title": error,
+        "type": "error",
+        "show-icon": ""
+      }
+    })
+  })), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.success),
+      expression: "success"
+    }],
+    staticClass: "errors"
+  }, [_c('el-alert', {
+    staticClass: "error",
+    attrs: {
+      "title": _vm.signupSuccess,
+      "type": "success",
+      "show-icon": ""
+    }
+  })], 1), _vm._v(" "), _c('el-form', {
+    ref: "form",
+    staticClass: "demo-ruleForm",
+    attrs: {
+      "model": _vm.form,
+      "rules": _vm.rules,
+      "label-width": "120px",
+      "label-position": "top"
+    }
+  }, [_c('el-form-item', {
+    attrs: {
+      "label": "Password",
+      "prop": "password"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "password"
+    },
+    model: {
+      value: (_vm.form.password),
+      callback: function($$v) {
+        _vm.form.password = $$v
+      },
+      expression: "form.password"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Confirm Password",
+      "prop": "confirmPassword"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "password"
+    },
+    model: {
+      value: (_vm.form.confirmPassword),
+      callback: function($$v) {
+        _vm.form.confirmPassword = $$v
+      },
+      expression: "form.confirmPassword"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Description",
+      "prop": "description"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "autosize": {
+        minRows: 2
+      }
+    },
+    model: {
+      value: (_vm.form.description),
+      callback: function($$v) {
+        _vm.form.description = $$v
+      },
+      expression: "form.description"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Working hours",
+      "prop": "workingHours"
+    }
+  }, [_c('el-input', {
+    attrs: {
+      "type": "textarea",
+      "autosize": {
+        minRows: 1
+      }
+    },
+    model: {
+      value: (_vm.form.workingHours),
+      callback: function($$v) {
+        _vm.form.workingHours = $$v
+      },
+      expression: "form.workingHours"
+    }
+  })], 1), _vm._v(" "), _c('el-form-item', {
+    attrs: {
+      "label": "Categories",
+      "prop": "categories"
+    }
+  }, [_c('el-select', {
+    attrs: {
+      "multiple": "",
+      "multiple-limit": 3,
+      "placeholder": "Select"
+    },
+    model: {
+      value: (_vm.form.categories),
+      callback: function($$v) {
+        _vm.form.categories = $$v
+      },
+      expression: "form.categories"
+    }
+  }, _vm._l((_vm.categories), function(category) {
+    return _c('el-option', {
+      key: category._id,
+      attrs: {
+        "label": category.title,
+        "value": category._id
+      }
+    })
+  }))], 1), _vm._v(" "), _vm._l((_vm.form.branches), function(branch, index) {
+    return _c('el-form-item', {
+      key: index,
+      staticClass: "location-select",
+      attrs: {
+        "label": 'Branch ' + (index + 1),
+        "prop": "branches"
+      }
+    }, [_c('el-input', {
+      attrs: {
+        "placeholder": "Please Enter Address here"
+      },
+      model: {
+        value: (branch.address),
+        callback: function($$v) {
+          branch.address = $$v
+        },
+        expression: "branch.address"
+      }
+    }, [_c('el-select', {
+      attrs: {
+        "placeholder": "Location"
+      },
+      slot: "prepend",
+      model: {
+        value: (branch.location),
+        callback: function($$v) {
+          branch.location = $$v
+        },
+        expression: "branch.location"
+      }
+    }, _vm._l((_vm.locations), function(location) {
+      return _c('el-option', {
+        key: location.value,
+        attrs: {
+          "label": location.label,
+          "value": location.value
+        }
+      })
+    })), _vm._v(" "), _c('el-button', {
+      on: {
+        "click": function($event) {
+          _vm.removeBranch(index)
+        }
+      },
+      slot: "append"
+    }, [_vm._v("Delete Branch")])], 1), _vm._v(" "), _c('el-button', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (index === _vm.form.branches.length - 1),
+        expression: "index === form.branches.length-1"
+      }],
+      staticStyle: {
+        "margin-top": "0.5em"
+      },
+      on: {
+        "click": _vm.addBranch
+      }
+    }, [_vm._v("New Branch")])], 1)
+  }), _vm._v(" "), _c('el-form-item', [_c('el-button', {
+    attrs: {
+      "type": "primary",
+      "loading": _vm.loading
+    },
+    on: {
+      "click": function($event) {
+        _vm.submitForm('form')
+      }
+    }
+  }, [_vm._v("Complete")]), _vm._v(" "), _c('el-button', {
+    on: {
+      "click": function($event) {
+        _vm.resetForm('form')
+      }
+    }
+  }, [_vm._v("Reset")])], 1)], 2)], 1)])], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1b840ce2", module.exports)
+  }
+}
+
+/***/ }),
+/* 384 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(381);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(3)("722c7ca6", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1b840ce2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./verifiedBusinessSignup.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-1b840ce2\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./verifiedBusinessSignup.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

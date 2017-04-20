@@ -8,6 +8,7 @@ import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import acceptbtn from '../../components/Admin/accept-btn.vue';
 import rejectbtn from '../../components/Admin/reject-btn.vue';
+import TopHero from '../../components/shared/gr-top-hero.vue';
 import clientRemoveBtn from '../../components/Admin/remove-client-btn.vue';
 import CategoryActions from '../../components/Admin/category-actions.vue';
 import router from '../../services/routes.js';
@@ -18,6 +19,7 @@ Vue.component('accept-btn', acceptbtn);
 Vue.component('reject-btn', rejectbtn);
 Vue.component('client-remove-btn', clientRemoveBtn);
 Vue.component('category-actions-btns', CategoryActions);
+Vue.component('gr-top-hero', TopHero);
 
 Vue.use(VueRouter);
 Vue.use(elementUI, {
@@ -33,5 +35,5 @@ new Vue({
   components: {
     'gr-header': header,
     'gr-footer': footer,
-  },
+  }
 });
