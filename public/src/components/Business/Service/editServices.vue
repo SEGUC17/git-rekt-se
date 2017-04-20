@@ -35,12 +35,13 @@
       </el-card>
       <div class="services-list">
         <el-table :data="services" :show-header="false" style="width: 100%">
-          <el-table-column prop="name">
+          <el-table-column prop="name" width="500">
           </el-table-column>
           <el-table-column align="right">
             <template scope="scope">
                  <div class="service-buttons">
                   <router-link tag="el-button" :to="offeringsURL(scope.row)"> <i class="el-icon-document"></i>Edit Offerings</router-link>
+                  <router-link tag="el-button" :to="couponsURL(scope.row)"><i class="fa fa-percent"></i> Edit Coupons</router-link>
                   <router-link tag="el-button" :to="galleryURL(scope.row)"><i class="el-icon-picture"></i> Edit Gallery</router-link>
                   <el-button icon="edit" @click="showEdit(scope.row)">
                     Edit Service
@@ -277,6 +278,9 @@
       },
       galleryURL(service) {
         return `/business/edit/${service._id}/gallery`;
+      },
+      couponsURL(service) {
+        return `/business/edit/${service._id}/coupons`;
       },
     },
   };
