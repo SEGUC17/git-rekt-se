@@ -7,7 +7,6 @@ import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import clientLogin from '../../components/Client/login.vue';
-import clientLogout from '../../components/Client/logout.vue';
 import businessEditPage from '../../components/Business/editPage.vue';
 import acceptbtn from '../../components/Admin/accept-btn.vue';
 import rejectbtn from '../../components/Admin/reject-btn.vue';
@@ -39,7 +38,6 @@ new Vue({
     'gr-header': header,
     'gr-footer': footer,
     'client-login': clientLogin,
-    'client-logout': clientLogout,
     'business-edit-page': businessEditPage,
   }
 });

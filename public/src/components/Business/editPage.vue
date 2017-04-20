@@ -55,7 +55,7 @@
             if (!businessAuth.user.authenticated) {                    
                 this.$router.push('/');
                 this.$toast.open({
-                    message: 'Not authorized for do such an operation.',
+                    message: 'Please login to edit your page',
                     position: 'bottom',
                     type: 'is-danger',
                 });
