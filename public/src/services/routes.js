@@ -2,6 +2,7 @@ import VueRouter from 'vue-router';
 import UnverifiedBusinessSignup from '../components/Business/UnverifiedSignup.vue';
 import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
+import ForgotPassword from '../components/Business/forgotPassword.vue';
 import Home from '../components/pages/Index/home.vue';
 import clientEditInfo from '../components/Client/clientEditInfo.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
@@ -17,7 +18,6 @@ import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
-
 
 const routes = [{
   path: '/',
@@ -36,6 +36,9 @@ const routes = [{
 }, {
   path: '/service/:ser_id/book',
   component: Checkout,
+}, {
+  path: '/api/v1/business/forgot',
+  component: ForgotPassword,
 }, {
   path: '/client/login',
   component: clientLogin,

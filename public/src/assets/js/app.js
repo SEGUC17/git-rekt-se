@@ -12,8 +12,8 @@ import TopHero from '../../components/shared/gr-top-hero.vue';
 import clientRemoveBtn from '../../components/Admin/remove-client-btn.vue';
 import CategoryActions from '../../components/Admin/category-actions.vue';
 import router from '../../services/routes.js';
-
-window.axios = axios;
+import forgotPassword from '../../components/business/forgotPassword.vue';
+Window.axios = axios;
 
 Vue.component('accept-btn', acceptbtn);
 Vue.component('reject-btn', rejectbtn);
@@ -33,6 +33,7 @@ new Vue({
   el: '#root',
   router,
   components: {
+    'forgot-password': forgotPassword,
     'gr-header': header,
     'gr-footer': footer,
   }
