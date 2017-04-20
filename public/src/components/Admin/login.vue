@@ -120,10 +120,4 @@
         background: linear-gradient(to right, #4ca2cd, #67B26F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         margin-bottom: 2em;
     }
-
-    @media screen and (max-width: 999px) {
-        .client-login-form {
-            margin: 2em;
-        }
-    }
 </style>

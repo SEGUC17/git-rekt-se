@@ -3,6 +3,7 @@ import UnverifiedBusinessSignup from '../components/Business/UnverifiedSignup.vu
 import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
 import Home from '../components/pages/Index/home.vue';
+import clientEditInfo from '../components/Client/clientEditInfo.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
@@ -56,7 +57,12 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
-}, {
+},
+{
+  path: '/client/edit',
+  component: clientEditInfo,
+},
+{
   path: '/client/forgot',
   component: Forgot,
 }, {
@@ -78,7 +84,8 @@ const routes = [{
     path: 'categories/edit',
     component: categoryCRUD,
   }],
-}];
+},
+];
 
 const router = new VueRouter({
   routes,

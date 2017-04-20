@@ -20,7 +20,7 @@ const reviewErrors = Strings.reviewErrors;
  */
 
 const businessValidationErrors = require('../shared/Strings')
-  .bussinessValidationErrors;
+    .bussinessValidationErrors;
 
 const clientSignupValidation = {
   email: {
@@ -520,6 +520,7 @@ const businessUpdateValidation = {
   },
 };
 
+
 const forgotPasswordValidation = {
   email: {
     notEmpty: {
@@ -530,6 +531,68 @@ const forgotPasswordValidation = {
     },
   },
 };
+
+const clientUpdateValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emailEmpty,
+    },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    isPassword: {
+      errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
+  firstName: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyFirstName,
+    },
+  },
+  lastName: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyLastName,
+    },
+  },
+  mobile: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyMobile,
+    },
+    matches: {
+      options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
+      errorMessage: clientValidationErrors.invalidMobile,
+    },
+  },
+  gender: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyGender,
+    },
+    matches: {
+      options: [/^(Male|Female)$/],
+      errorMessage: clientValidationErrors.invalidGender,
+    },
+  },
+  birthdate: {
+    isDate: {
+      errorMessage: clientValidationErrors.invalidBirthdate,
+    },
+  },
+};
+
+/**
+ * Checks the given password. If Empty or Can be generated
+ * from the regex then it passes.
+ * @param {String} password
+ */
+const validatePassword = (password) => {
+  if (password.length === 0) {
+    return true;
+  }
+  return /^(?=.*\d).{8,15}$/.test(password);
+};
+
 const serviceBookingValidation = {
   service: {
     isMongoId: {
@@ -577,6 +640,8 @@ const validation = {
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
+  validatePassword,
+  clientUpdateValidation,
   adminClientValidation,
   forgotPasswordValidation,
   serviceBookingValidation,
