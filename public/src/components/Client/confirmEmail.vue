@@ -42,6 +42,7 @@
 
 <script>
   import clientAuth from '../../services/auth/clientAuth';
+  import commonAuth from '../../services/auth/commonAuth';
   import resend from '../Client/resend.vue';
 
   export default {
@@ -71,6 +72,12 @@
       };
     },
     mounted() {
+      
+      if(commonAuth.isAuthenticated()){
+        this.$router.push('/');
+        return;
+      }
+      
       const loader = this.$loading({
         fullscreen: true,
       });

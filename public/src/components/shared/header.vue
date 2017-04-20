@@ -38,7 +38,7 @@
                             <span class="icon">
                                 <i class="fa fa-sign-in"></i>
                             </span>
-                            <span>Signup</span>
+                            <span>Login</span>
                         </router-link>
 
                         <logout-btn class="is-danger gr-nav-button" v-if="isAuthenticated" title="Logout"></logout-btn>
