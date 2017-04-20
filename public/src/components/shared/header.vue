@@ -1,39 +1,50 @@
 <template>
     <header>
         <nav class="nav">
+            <div class="container">
+                <!-- Navigation bar Left -->
+                <div class="nav-left">
+                    <router-link to="/#" class="logo nav-item" @click.native="active = false">
+                        <img src="assets/imgs/logo.svg" alt="logo">
+                    </router-link>
+                </div>
 
-            <!-- Navigation bar Center -->
+                <span class="nav-toggle" @click="active = !active">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
 
-            <div class="nav-left">
-                <router-link to="/#" class="logo nav-item"><img src="assets/imgs/logo.svg" alt="logo"></router-link>
-            </div>
+                <!-- Navigation bar Right -->
+                <div class="nav-right nav-menu" :class="active? 'is-active' : ''">
 
-            <!-- Navigation bar Center -->
-            <div class="nav-center nav-menu">
-                <router-link to="/#" class="nav-item">Home</router-link>
-                <router-link to="/about" class="nav-item">About Us</router-link>
-                <router-link to="/categories" class="nav-item">Categories</router-link>
-                <router-link to="/business/apply" class="nav-item">Business APPLY</router-link>
-            </div>
+                    <router-link to="/#" @click.native="active = false" class="nav-item">Home</router-link>
+                    <router-link to="/about" @click.native="active = false" class="nav-item">About Us</router-link>
+                    <router-link to="/categories" @click.native="active = false" class="nav-item">Categories</router-link>
+                    <router-link to="/business/apply" @click.native="active = false" class="nav-item">Business APPLY</router-link>
 
-            <!-- Navigation bar Right -->
-            <div class="nav-right nav-menu">
+                    <div class="nav-item">
 
-                <a class="button is-default gr-nav-button" v-if="!isAuthenticated">
-                    <span class="icon">
-                        <i class="fa fa-user"></i>
-                    </span>
-                    <span><router-link to="/client/signup" class="nav-item">Signup</router-link></span>
-                </a>
+                        <router-link class="button is-default gr-nav-button" to="/client/signup"
+                                     v-if="!isAuthenticated" @click.native="active = false">
+                            <span class="icon">
+                                <i class="fa fa-user"></i>
+                            </span>
+                            <span>Signup</span>
+                        </router-link>
 
-                <a class="button is-danger gr-nav-button" v-if="!isAuthenticated">
-                    <span class="icon">
-                        <i class="fa fa-sign-in"></i>
-                    </span>
-                    <router-link to="/login" class="nav-item no-link">Login</router-link>
-                </a>
+                        <router-link class="button is-danger gr-nav-button" to="/login"
+                                     v-if="!isAuthenticated" @click.native="active = false">
+                            <span class="icon">
+                                <i class="fa fa-sign-in"></i>
+                            </span>
+                            <span>Login</span>
+                        </router-link>
 
-                <logout-btn class="is-danger gr-nav-button" v-if="isAuthenticated" title="Logout"></logout-btn>
+                        <logout-btn class="is-danger gr-nav-button" v-if="isAuthenticated" title="Logout"></logout-btn>
+                    </div>
+
+                </div>
             </div>
         </nav>
     </header>
@@ -48,6 +59,7 @@
   export default {
     data() {
       return {
+        active: false,
         isAuthenticated: CommonAuth.isAuthenticated(),
       };
     },
