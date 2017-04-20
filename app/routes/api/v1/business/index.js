@@ -28,58 +28,58 @@ router.get('/:id', (req, res, next) => {
   console.log('hoba');
 
   Business.findOne({
-      _id: req.params.id,
-      _deleted: false,
-      _status: 'verified',
-    }, {
-          password: false,
-          _deleted: false,
-        })
+    _id: req.params.id,
+    _deleted: false,
+    _status: 'verified',
+  }, {
+    password: false,
+    _deleted: false,
+  })
         .populate([{
           path: 'branches',
           match: {
-              _deleted: false,
-            },
+            _deleted: false,
+          },
         }, {
           path: 'categories',
           match: {
-              _deleted: false,
-            },
+            _deleted: false,
+          },
         }])
         .exec()
         .then((business) => {
           if (!business) {
-              next(Strings.businessConfirmation.notFound);
-              return;
-            }
+            next(Strings.businessConfirmation.notFound);
+            return;
+          }
 
           returnedBusiness = {
-              _id: business.id,
-              name: business.name,
-              email: business.email,
-              shortDescription: business.shortDescription,
-              gallery: business.gallery,
-              phoneNumbers: business.phoneNumbers,
-              description: business.description,
-              workingHours: business.workingHours,
-              categories: business.categories,
-              branches: business.branches,
-            };
+            _id: business.id,
+            name: business.name,
+            email: business.email,
+            shortDescription: business.shortDescription,
+            gallery: business.gallery,
+            phoneNumbers: business.phoneNumbers,
+            description: business.description,
+            workingHours: business.workingHours,
+            categories: business.categories,
+            branches: business.branches,
+          };
 
           Service.find({
-              _business: business._id,
-              _deleted: false,
-            })
+            _business: business._id,
+            _deleted: false,
+          })
                 .populate([{
                   path: 'branches',
                   match: {
-                      _deleted: false,
-                    },
+                    _deleted: false,
+                  },
                 }, {
                   path: 'reviews',
                   match: {
-                      _deleted: false,
-                    },
+                    _deleted: false,
+                  },
                 }])
                 .exec()
                 .then((businessServices) => {
