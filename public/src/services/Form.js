@@ -70,11 +70,11 @@ export default class Form {
       axios[method](url, this.data(), headers)
         .then((response) => {
           this.onSuccess(response);
-          resolve(response.data, response);
+          resolve(response.data);
         })
         .catch((err) => {
           this.onFailure(err);
-          reject(err.response ? err.response.data.errors : err.message, err);
+          reject(err.response ? err.response.data.errors : err.message);
         });
     });
   }

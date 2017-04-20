@@ -125,11 +125,13 @@ const serviceFailure = {
   imageNotFound: 'Image not found!',
   notYourService: 'Can not modify a service that is not owned by your business!',
   missingField: 'Missing Field(s)!',
+  invalidService: 'This service is invalid.',
 };
 
 const serviceValidationErrors = {
   invalidServiceID: 'Invalid Service ID',
   invalidImageID: 'Invalid Image ID',
+  invalidStripeToken: 'Invalid Stripe Token',
 };
 
 const clientForgotPassword = {
@@ -251,12 +253,19 @@ const adminValidationErrors = {
   invalidBusinessID: 'Invalid Business ID',
   categoryTypeRequired: 'Category Type is required.',
   categoryTitleRequired: 'Category Title is required.',
+  invalidClientID: 'Invalid Client ID',
 };
 
 const adminSuccess = {
   categoryAdded: 'Category added succesfully!',
   categoryEdited: 'Category edited succesfully!',
   categoryDeleted: 'Category deleted succesfully!',
+  clientDeleted: 'Client removed succesfully',
+};
+
+const adminFailures = {
+  clientAlreadyDeleted: 'Client is already deleted',
+  categoryAlreadyDeleted: 'Category is already deleted',
 };
 
 /**
@@ -299,4 +308,5 @@ module.exports = {
   reviewSuccess,
   adminSuccess,
   searchErrors,
+  adminFailures,
 };
