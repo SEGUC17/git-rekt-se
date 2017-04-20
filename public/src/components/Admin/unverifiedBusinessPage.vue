@@ -18,7 +18,7 @@
                 default-sort="name"
                 render-html>
 
-            <b-table-column field="name" label="Name" width="40" sortable></b-table-column>
+            <b-table-column field="name" label="Name" sortable></b-table-column>
             <b-table-column field="email" label="Email" sortable></b-table-column>
             <b-table-column field="phoneNumbers" label="Phone Numbers" :format="getPhones"></b-table-column>
             <b-table-column field="_id" component="accept-btn"></b-table-column>
@@ -30,30 +30,21 @@
 
 <script>
   import axios from 'axios';
-  import { Admin } from '../../services/EndPoints';
+  import {Admin} from '../../services/EndPoints';
   import adminAuth from '../../services/auth/adminAuth';
-  import acceptbtn from './accept-btn.vue';
   import EventBus from '../../services/EventBus';
 
   export default {
-    components: {
-      'accept-btn': acceptbtn,
-    },
     data() {
       return {
         errors: [],
         businessData: [],
-        acceptDialogue: false,
-        rejectDialogue: false,
       };
     },
     mounted() {
       this.fetchBusiness();
-      EventBus.$on('BusinessConfirmed', (row) => {
-        const idx = this.businessData.indexOf(row);
-        if (idx > -1) {
-          this.businessData.splice(idx, 1);
-        }
+      EventBus.$on('BusinessConfirmed', () => {
+        this.fetchBusiness();
       });
     },
 
