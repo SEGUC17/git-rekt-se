@@ -1,83 +1,123 @@
 <template>
-  <div class="main-cnt">
-    <section class="search-header hero is-medium is-bold has-text-centered">
-      <div class="hero-body">
-        <h1 class="extra-large white">
-          Search For Services
-        </h1>
-        <h2 class="subtitle white">
-          Find services that can help you
-        </h2>
-      </div>
-    </section>
-    <div class="container search-body">
-      <el-alert v-for="error in errors" :key="error" :title="error" type="error" show-icon></el-alert>
-      <div class="el-row">
-        <div class="el-col el-col-24 el-col-xs-24 el-col-sm-6 search-tools">
-          <div class="block">
-            <span class="search-label">Service Name</span>
-            <el-input v-model="newQuery.name" @keyup.enter.native="performSearch" placeholder="Enter Name"></el-input>
-          </div>
-          <div class="block">
-            <span class="search-label">Min. Rating</span>
-            <el-slider v-model="newQuery.rating" :max="5"></el-slider>
-          </div>
-          <div class="block">
-            <span class="search-label">Price Range</span>
-            <el-slider v-model="priceRange" range :step="100" :max="10000" :format-tooltip="rangeTooltip"></el-slider>
-          </div>
-          <div class="block">
-            <span class="search-label">Location</span>
-            <el-select v-model="newQuery.location" filterable clearable placeholder="Select Location">
-              <el-option v-for="location in locationsDB" :key="location.value" :label="location.label" :value="location.value">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="block">
-            <span class="search-label">Sort By</span>
-            <el-select v-model="newQuery.sort" clearable placeholder="Select">
-              <el-option v-for="item in sortOptions" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </div>
-          <div class="block">
-            <el-button class="search-button" type="primary" @click="performSearch">Search</el-button>
-          </div>
-  
-        </div>
-        <div class="el-col el-col-24 el-col-xs-24 el-col-sm-18">
-          <section v-if="noResults" class="hero is-medium">
+    <div class="main-cnt">
+
+        <!-- Search Top Header -->
+        <section class="search-header hero is-bold">
             <div class="hero-body">
-              <div class="has-text-centered">
-                <h1 class="title">
-                  No Results Found
-                </h1>
-                <h2 class="subtitle">
-                  Please try searching for another query
-                </h2>
-              </div>
+                <div class="container">
+                    <h1 class="title extra-large white">
+                        Search For Services
+                      </h1>
+                    <h2 class="subtitle white">
+                        Find services that can help you.
+                     </h2>
+                </div>
             </div>
-          </section>
-          <search-result v-for="result in results" :service="result" :key="result._id"></search-result>
-          <el-row :gutter="20">
-            <el-col :span="12" :offset="6">
-              <el-pagination small layout="prev, pager, next" :current-page="parseInt(currentQuery.offset)" :total="count" @current-change="changePage">
-              </el-pagination>
-            </el-col>
-          </el-row>
+        </section>
+
+        <div class="container is-fluid columns">
+
+            <!-- Search filtering -->
+            <aside class="column search-sidebar is-2 is-offset-1">
+                <el-form label-position="top" class="search-form">
+                    <el-form-item label="Service Name">
+                        <el-input v-model="newQuery.name" @keyup.enter.native="performSearch"
+                                  placeholder="Enter Name">
+                        </el-input>
+                    </el-form-item>
+
+                    <el-form-item label="Min Rating">
+                        <el-slider v-model="newQuery.rating" :max="5"></el-slider>
+                    </el-form-item>
+
+                    <el-form-item label="Price Range">
+                        <el-slider v-model="priceRange" range :step="100" :max="10000"
+                                   :format-tooltip="rangeTooltip" size="large"></el-slider>
+                    </el-form-item>
+
+                    <el-form-item label="Location">
+                        <el-select v-model="newQuery.location" filterable clearable placeholder="Select Location">
+                            <el-option v-for="location in locationsDB" :key="location.value" :label="location.label"
+                                       :value="location.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item label="Sort By">
+                        <el-select v-model="newQuery.sort" clearable placeholder="Select">
+                            <el-option v-for="item in sortOptions" :key="item.value" :label="item.label"
+                                       :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
+                    <el-form-item>
+                        <el-button class="search-button" type="primary" @click="performSearch">Search</el-button>
+                    </el-form-item>
+                </el-form>
+            </aside>
+
+            <!-- Search results -->
+            <div class="search-results column is-8">
+
+                <!-- Alerts Div -->
+                <div class="alerts">
+                    <el-alert v-for="error in errors" :key="error" :title="error" class="error" type="error"
+                              show-icon></el-alert>
+                </div>
+
+                <!-- No Search Results -->
+                <section v-if="noResults" class="hero is-medium">
+                    <div class="hero-body">
+                        <div class="has-text-centered">
+                            <h1 class="title is-1 is-spaced">
+                                No search results
+                              </h1>
+                            <h2 class="subtitle">
+                                Try to search for another query.
+                             </h2>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Error occurred -->
+                <section v-if="errors.length > 0 && !noResults" class="hero is-medium">
+                    <div class="hero-body">
+                        <div class="has-text-centered">
+                            <h1 class="title is-1 is-spaced">
+                                Error(s) occurred during search.
+                               </h1>
+                            <h2 class="subtitle">
+                                please try again
+                             </h2>
+                        </div>
+                    </div>
+                </section>
+
+                <search-result v-for="result in results" :service="result" :key="result._id"></search-result>
+
+                <b-pagination
+                        v-show="errors.length === 0 && !noResults"
+                        :total="count"
+                        :current="parseInt(currentQuery.offset)"
+                        order="is-centered"
+                        size="default"
+                        :simple="false"
+                        :per-page="10"
+                        @change="changePage">
+                </b-pagination>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
   import Axios from 'axios';
-  
+
   import SearchResult from './search-result.vue';
   import { Visitor } from '../../../services/EndPoints';
   import Locations from '../Index/mainLocations';
-  
+
   export default {
     data() {
       return {
@@ -92,7 +132,6 @@
         {
           value: 2,
           label: 'Highest Rating',
-
         },
         ],
         currentQuery: this.$route.query,
@@ -106,7 +145,8 @@
           min: 0,
           max: 10000,
           location: (this.$route.query.location) ? this.$route.query.location : '',
-          sort: (this.$route.query.sort) ? this.$route.query.sort : '',
+          sort: (parseInt(this.$route.query.sort, 10) === 1 ||
+           parseInt(this.$route.query.sort, 10) === 2) ? parseInt(this.$route.query.sort, 10) : '',
         },
         errors: [],
       };
@@ -120,15 +160,28 @@
       this.execQuery();
     },
     methods: {
+      updateURL() {
+        const params = {};
+        Object.keys(this.currentQuery).forEach((key) => {
+          if (this.currentQuery[key]) {
+            params[key] = this.currentQuery[key];
+          }
+        });
+
+        this.$router.push({
+          path: '/search',
+          query: params,
+        });
+      },
       getLocations() {
         Axios
-          .get(Visitor().locations)
-          .then((res) => {
-            this.locationsDB = res.data;
-          })
-          .catch(() => {
-            this.locationsDB = Locations;
-          });
+            .get(Visitor().locations)
+            .then((res) => {
+              this.locationsDB = res.data;
+            })
+            .catch(() => {
+              this.locationsDB = Locations;
+            });
       },
       stringifyQuery(query) {
         let queryString = '?';
@@ -158,6 +211,7 @@
       },
       changePage(newPage) {
         this.currentQuery.offset = newPage;
+        this.updateURL();
         this.execQuery();
       },
       rangeTooltip(value) {
@@ -170,8 +224,10 @@
         this.newQuery.offset = 1;
         this.newQuery.min = Math.min(...this.priceRange);
         this.newQuery.max = (Math.max(...this.priceRange) === 10000) ?
-         undefined : Math.max(...this.priceRange);
+            undefined : Math.max(...this.priceRange);
         this.currentQuery = this.newQuery;
+  
+        this.updateURL();
         this.execQuery();
       },
       execQuery() {
@@ -180,51 +236,76 @@
           fullscreen: true,
         });
         Axios.get(`${Visitor().search}${this.stringifyQuery(this.currentQuery)}`)
-          .then((response) => {
-            loader.close();
-            this.noResults = false;
-            this.results = response.data.results;
-            this.count = response.data.count;
-          })
-          .catch((err) => {
-            loader.close();
-            if (err.response.data.errors[0] === 'No search results match the query.') {
-              this.noResults = true;
-              this.results = [];
-              this.count = 0;
-            } else {
-              this.errors = err.response.data.errors.map((error) => {
-                if (typeof error === 'string') {
-                  return error;
-                }
-                return error.msg;
-              });
-            }
-          });
+            .then((response) => {
+              loader.close();
+              this.noResults = false;
+              this.results = response.data.results;
+              this.count = response.data.count;
+            })
+            .catch((err) => {
+              loader.close();
+              if (err.response.data.errors[0] === 'No search results match the query.') {
+                this.noResults = true;
+                this.results = [];
+                this.count = 0;
+              } else {
+                this.errors = err.response.data.errors.map((error) => {
+                  if (typeof error === 'string') {
+                    return error;
+                  }
+                  return error.msg;
+                });
+              }
+            });
       },
     },
   };
 </script>
 
 <style>
-  
-  .search-header {
-    background: linear-gradient(180deg, rgba(0, 0, 0, .65), rgba(0, 0, 0, 0)), url('/assets/imgs/search/search_BG.JPG') 0 0/cover
-  }
-  
-  .el-pagination {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .search-body{ 
-    padding-top: 10px;
-  }
-  .search-tools {
-    padding: 15px;
-  }
-  
-  .search-button {
-    width: 100%;
-  }
+
+    .search-header {
+        background: #CB356B; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #BD3F32, #CB356B); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #BD3F32, #CB356B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+    .el-pagination {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .search-body {
+        padding-top: 10px;
+    }
+
+    .search-tools {
+        padding: 15px;
+    }
+
+    .search-sidebar {
+        margin-top: 1em;
+    }
+
+    .search-button {
+        width: 100%;
+    }
+
+    .search-form .el-form-item__label {
+        font-size: 1em;
+    }
+
+    .alerts {
+        margin-bottom: 1em;
+    }
+
+    @media screen and (max-width: 999px) {
+        .search-sidebar {
+            margin: 2em;
+        }
+
+        .search-results {
+            margin: 1em;
+        }
+    }
 </style>

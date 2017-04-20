@@ -492,6 +492,14 @@ const businessAddImageValidation = {
   },
 };
 
+const adminClientValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidClientID,
+    },
+  },
+};
+
 const businessEditImageValidation = {
   ser_id: {
     isMongoId: {
@@ -626,6 +634,7 @@ const validation = {
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
+  adminClientValidation,
   forgotPasswordValidation,
   serviceBookingValidation,
   couponAddValidation,
