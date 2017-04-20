@@ -210,7 +210,9 @@ const businessForgotPassword = {
 
 const serviceValidationCRUDErrors = {
   emptyName: 'Service Name is a required field',
+  nameTooLong: 'Service Name can be a maximum of 50 characters',
   emptyShortDescription: 'Service short description is a required field',
+  shortDescriptionTooLong: 'Service short description can be a maximum of 140 characters',
   invalidCategory: 'No such a category',
 };
 

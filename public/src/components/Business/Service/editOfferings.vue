@@ -35,18 +35,42 @@
         </el-form>
       </el-card>
       <div class="offerings-list">
-        <el-card class="offering-card" v-for="offering in offerings" :key="offering._id">
-          <!--Layout Stuff-->
-          <span>{{offering.address}}</span>
-          <div class="offering-buttons is-pulled-right">
-            <el-button icon="edit" @click="showEdit(offering)">
+        <el-table :data="offerings" :show-header="false" style="width: 100%">
+          <el-table-column>
+            <template scope="scope">
+              <el-icon name="time"></el-icon>
+              <span style="margin-left: 10px">{{ new Date(scope.row.startDate).toLocaleDateString() + " - " + new Date(scope.row.endDate).toLocaleDateString() }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column>
+            <template scope="scope">
+              <i class="fa fa-map-marker"></i>
+              <span style="margin-left: 10px">{{ scope.row.address + " - " + scope.row.location }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column>
+            <template scope="scope">
+              <i class="fa fa-money"></i>
+              <span style="margin-left: 10px">{{ scope.row.price }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column>
+            <template scope="scope">
+              <i class="fa fa-users"></i>
+              <span style="margin-left: 10px">{{ scope.row.capacity }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="right">
+            <template scope="scope">
+              <el-button icon="edit" @click="showEdit(scope.row)">
               Edit offering
             </el-button>
-            <el-button icon="delete" @click="showDelete(offering)" type="danger">
-              Delete offering
+            <el-button icon="delete" @click="showDelete(scope.row)" type="danger">
+               Delete offering
             </el-button>
-          </div>
-        </el-card>
+            </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
     <el-dialog title="Edit offering" v-model="editVisible" size="large">
@@ -127,18 +151,28 @@
       };
     },
     mounted() {
-      this.getOfferings();
-      Axios.get(Business().listBranches, {
-        headers: {
-          Authorization: BusinessAuth.getJWTtoken(),
-        },
-      })
-        .then((response) => {
-          this.branches = response.data.branches;
-        })
-        .catch((err) => {
-          this.generalErrors = err.response.data.errors;
+      BusinessAuth.refreshAuth();
+      if (!BusinessAuth.user.authenticated) {
+        this.$router.push('/');
+        this.$toast.open({
+          message: 'Not authorized for doing such an operation.',
+          position: 'bottom',
+          type: 'is-danger',
         });
+      } else {
+        this.getOfferings();
+        Axios.get(Business().listBranches, {
+          headers: {
+            Authorization: BusinessAuth.getJWTtoken(),
+          },
+        })
+          .then((response) => {
+            this.branches = response.data.branches;
+          })
+          .catch((err) => {
+            this.generalErrors = err.response.data.errors;
+          });
+      }
     },
     methods: {
       getOfferings() {
@@ -271,7 +305,7 @@
         offeringToReturn.branch = offering.branch;
         offeringToReturn.price = offering.price;
         offeringToReturn.capacity = offering.capacity;
-        offeringToReturn.dates = [offering.startDate, offering.endDate];
+        offeringToReturn.dates = [new Date(offering.startDate), new Date(offering.endDate)];
         return offeringToReturn;
       },
     },

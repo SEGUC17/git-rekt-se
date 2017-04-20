@@ -10,17 +10,17 @@
         <el-alert v-if="editSuccess" type="success" :title="editSuccess" show-icon></el-alert>
         <el-alert v-if="deleteSuccess" type="success" :title="deleteSuccess" show-icon></el-alert>
         <el-alert v-for="error in createErrors" :key="error" type="error" :title="error" show-icon></el-alert>
-        <el-form :model="newService" ref="createService" :rules="serviceRules" label-position="left">
-          <el-form-item label="Name" required prop="name">
-            <el-input v-model="newService.name" placeholder="The name of your service"></el-input>
+        <el-form :model="newService" ref="createServiceForm" :rules="serviceRules">
+          <el-form-item label="Name" prop="name">
+            <el-input v-model="newService.name" placeholder="The name of your service (Max 50 characters)"></el-input>
           </el-form-item>
-          <el-form-item label="Short Description" required prop="shortDescription">
+          <el-form-item label="Short Description" prop="shortDescription">
             <el-input type="textarea" v-model="newService.shortDescription" placeholder="A brief description of your service (Max 140 characters)"></el-input>
           </el-form-item>
-          <el-form-item label="Description">
+          <el-form-item label="Description" prop="description">
             <el-input type="textarea" v-model="newService.description" placeholder="A detailed description of your service"></el-input>
           </el-form-item>
-          <el-form-item label="Categories">
+          <el-form-item label="Categories" prop="categories">
             <el-select v-model="newService.categories" multiple placeholder="Categories your service falls under">
               <el-option v-for="item in categories" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
@@ -34,26 +34,31 @@
         </el-form>
       </el-card>
       <div class="services-list">
-        <el-card class="service-card" v-for="service in services" :key="service._id">
-          <span>{{service.name}}</span>
-          <div class="service-buttons is-pulled-right">
-            <router-link tag="el-button" :to="offeringsURL(service)"> <i class="el-icon-document"></i>Edit Offerings</router-link>
-            <router-link tag="el-button" :to="galleryURL(service)"><i class="el-icon-picture"></i> Edit Gallery</router-link>
-            <el-button icon="edit" @click="showEdit(service)">
-              Edit Service
-            </el-button>
-            <el-button icon="delete" @click="showDelete(service)" type="danger">
-              Delete Service
-            </el-button>
-          </div>
-        </el-card>
+        <el-table :data="services" :show-header="false" style="width: 100%">
+          <el-table-column prop="name">
+          </el-table-column>
+          <el-table-column align="right">
+            <template scope="scope">
+                 <div class="service-buttons">
+                  <router-link tag="el-button" :to="offeringsURL(scope.row)"> <i class="el-icon-document"></i>Edit Offerings</router-link>
+                  <router-link tag="el-button" :to="galleryURL(scope.row)"><i class="el-icon-picture"></i> Edit Gallery</router-link>
+                  <el-button icon="edit" @click="showEdit(scope.row)">
+                    Edit Service
+                  </el-button>
+                  <el-button icon="delete" @click="showDelete(scope.row)" type="danger">
+                    Delete Service
+                  </el-button>
+                </div>
+                </template>
+          </el-table-column>
+        </el-table>
       </div>
     </div>
      <el-dialog title="Edit Service" v-model="editVisible" size="large">
     <el-form ref="editService" :model="serviceToEdit" :rules="serviceRules" label-position="left">
       <el-alert v-for="error in editErrors" :key="error" type="error" :title="error" show-icon></el-alert>
           <el-form-item label="Name" required prop="name">
-            <el-input v-model="serviceToEdit.name" placeholder="The name of your service"></el-input>
+            <el-input v-model="serviceToEdit.name" placeholder="The name of your service (Max 50 characters)"></el-input>
           </el-form-item>
           <el-form-item label="Short Description" required prop="shortDescription">
             <el-input type="textarea" v-model="serviceToEdit.shortDescription" placeholder="A brief description of your service (Max 140 characters)"></el-input>
@@ -170,7 +175,7 @@
       createService() {
         this.createSuccess = '';
         this.createErrors = [];
-        this.$refs.createService.validate((valid) => {
+        this.$refs.createServiceForm.validate((valid) => {
           if (valid) {
             const loader = this.$loading({
               fullscreen: true,
@@ -257,7 +262,7 @@
         });
       },
       resetCreate() {
-        this.$refs.createService.resetFields();
+        this.$refs.createServiceForm.resetFields();
       },
       showEdit(service) {
         this.serviceToEdit = service;

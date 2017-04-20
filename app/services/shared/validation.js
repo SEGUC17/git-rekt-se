@@ -223,11 +223,24 @@ const serviceCreateValidation = {
     notEmpty: {
       errorMessage: serviceValidationCRUDErrors.emptyName,
     },
+    isLength: {
+      options: {
+        max: 50,
+      },
+      errorMessage: serviceValidationCRUDErrors.nameTooLong,
+    },
   },
   shortDescription: {
     notEmpty: {
       errorMessage: serviceValidationCRUDErrors.emptyShortDescription,
     },
+    isLength: {
+      options: {
+        max: 140,
+      },
+      errorMessage: serviceValidationCRUDErrors.shortDescriptionTooLong,
+    },
+
   },
 };
 

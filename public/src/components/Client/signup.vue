@@ -221,7 +221,6 @@
         }, this);
         this.info = true;
         this.message = 'These information where fetched from facebook, please fill the remaining fields.';
-        console.log(this.form.data());
       }
     },
     components: {
