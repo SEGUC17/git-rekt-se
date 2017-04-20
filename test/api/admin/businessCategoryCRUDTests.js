@@ -236,7 +236,7 @@ describe('Category CRUD Test Suite', () => {
             } else {
               chai.expect(res.body.message)
                 .to.equal('Category deleted succesfully!');
-              Category.count((err3, c) => {
+              Category.count({ _deleted: false }, (err3, c) => {
                 if (err3) {
                   done(err3);
                 } else {
