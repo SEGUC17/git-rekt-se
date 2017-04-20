@@ -15,7 +15,7 @@ import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
-
+import clientViewTransactions from '../components/Client/viewTransactions.vue';
 
 const routes = [{
   path: '/',
@@ -74,6 +74,9 @@ const routes = [{
     path: 'categories/edit',
     component: categoryCRUD,
   }],
+}, {
+  path: '/client/transactions',
+  component: clientViewTransactions,
 }];
 
 const router = new VueRouter({

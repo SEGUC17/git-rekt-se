@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
-const Bookings = require('../../../../models/service/Booking');
+const Offering = require('../../../../models/service/Offering');
+const Booking = require('../../../../models/service/Booking');
 const Client = require('../../../../models/client/Client');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const Strings = require('../../../../services/shared/Strings');
@@ -117,17 +118,19 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
  * Client View Transactions API Route.
  */
 router.get('/history', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
-  Bookings.find({
+  const projection = {
+    _deleted: false,
+    coupon: false,
+  };
+  Booking.find({
     _deleted: false,
     _client: req.user.id,
-  })
+  }, projection)
     .populate('_service', 'name')
-    .populate('_transaction', 'amount')
     .populate('_client', 'firstName lastName')
-    .populate('_offering')
+    .populate('_offering', 'location address price')
     .exec()
     .then((bookings) => {
-      console.log(bookings);
       res.json({
         bookings,
       });
