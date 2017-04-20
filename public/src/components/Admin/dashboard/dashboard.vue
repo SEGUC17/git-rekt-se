@@ -17,19 +17,19 @@
                         Categories
                       </p>
                     <ul class="menu-list">
-                        <li><a>Edit Categories</a></li>
+                        <li><router-link to="/admin/dashboard/categories/edit">Edit Categories</router-link></li>
                     </ul>
                     <p class="menu-label">
                         Clients
                       </p>
                     <ul class="menu-list">
-                        <li><a>Remove</a></li>
+                        <li><router-link to="/admin/dashboard/client/remove">Remove</router-link></li>
                     </ul>
                 </aside>
             </div>
 
             <!-- Content Component -->
-            <div class="column">
+            <div class="column is-8">
                 <router-view></router-view>
             </div>
         </div>

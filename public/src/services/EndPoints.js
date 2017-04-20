@@ -7,6 +7,7 @@ export const Visitor = () => ({
   relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/${offset}`,
   locations: `${BASE}/visitor/search/locations`,
   viewBusiness: businessID => `${BASE}/business/${businessID}`,
+  businessCategories: `${BASE}/categories/business`,
 });
 
 export const Client = () => {
@@ -62,6 +63,7 @@ export const Business = () => {
 export const Admin = () => {
   const generalBase = `${BASE}/admin/general`;
   const categoryBase = `${BASE}/admin/category`;
+  const clientBase = `${BASE}/admin/client`;
   return {
     login: `${BASE}/admin/auth/login`,
 
@@ -72,6 +74,9 @@ export const Admin = () => {
     createCategory: `${categoryBase}/add`,
     editCategory: categoryID => `${categoryBase}/edit/${categoryID}`,
     deleteCategory: categoryID => `${categoryBase}/delete/${categoryID}`,
+    listCategories: `${categoryBase}/list`,
+    listClients: `${clientBase}/list`,
+    deleteClient: clientID => `${clientBase}/delete/${clientID}`,
   };
 };
 

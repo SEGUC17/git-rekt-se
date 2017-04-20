@@ -10,11 +10,6 @@
 
   export default {
     props: ['data', 'row'],
-    data() {
-      return {
-        acceptDialogue: false,
-      };
-    },
     methods: {
       showAcceptDialog() {
         this.$dialog.confirm({
@@ -42,7 +37,7 @@
               this.$toast.open({
                 title: 'Success!',
                 message: 'Request approved!',
-                type: 'is-danger',
+                type: 'is-success',
               });
               EventBus.$emit('BusinessConfirmed', this.row);
               this.errors = [];
