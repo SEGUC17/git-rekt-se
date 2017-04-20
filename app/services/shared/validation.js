@@ -23,124 +23,124 @@ const businessValidationErrors = require('../shared/Strings')
     .bussinessValidationErrors;
 
 const clientSignupValidation = {
-    email: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyEmail,
-        },
-        isEmail: {
-            errorMessage: clientValidationErrors.invalidEmail,
-        },
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyEmail,
     },
-    password: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyPassword,
-        },
-        matches: {
-            options: [/^(?=.*\d).{8,15}$/],
-            errorMessage: clientValidationErrors.invalidPassword,
-        },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
     },
-    confirmPassword: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyConfirmation,
-        },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
     },
-    firstName: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyFirstName,
-        },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.invalidPassword,
     },
-    lastName: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyLastName,
-        },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
     },
-    mobile: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyMobile,
-        },
-        matches: {
-            options: [/^01[0-2]{1}[0-9]{8}$/], // Egyptian Mobile phone
-            errorMessage: clientValidationErrors.invalidMobile,
-        },
+  },
+  firstName: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyFirstName,
     },
-    gender: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyGender,
-        },
-        matches: {
-            options: [/^(Male|Female)$/],
-            errorMessage: clientValidationErrors.invalidGender,
-        },
+  },
+  lastName: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyLastName,
     },
-    birthdate: {
-        isDate: {
-            errorMessage: clientValidationErrors.invalidBirthdate,
-        },
+  },
+  mobile: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyMobile,
     },
+    matches: {
+      options: [/^01[0-2]{1}[0-9]{8}$/], // Egyptian Mobile phone
+      errorMessage: clientValidationErrors.invalidMobile,
+    },
+  },
+  gender: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyGender,
+    },
+    matches: {
+      options: [/^(Male|Female)$/],
+      errorMessage: clientValidationErrors.invalidGender,
+    },
+  },
+  birthdate: {
+    isDate: {
+      errorMessage: clientValidationErrors.invalidBirthdate,
+    },
+  },
 };
 
 const clientConfirmEmailValidation = {
-    email: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emailEmpty,
-        },
-        isEmail: {
-            errorMessage: clientValidationErrors.invalidEmail,
-        },
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emailEmpty,
     },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
 };
 
 const verifiedBusinessValidator = {
-    password: {
-        notEmpty: {
-            errorMessage: businessValidationErrors.passwordRequired,
-        },
-        matches: {
-            options: [/^(?=.*\d).{8,15}$/],
-            errorMessage: businessValidationErrors.passwordLength,
-        },
+  password: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.passwordRequired,
     },
-    workingHours: {
-        notEmpty: {
-            errorMessage: businessValidationErrors.workingHoursRequired,
-        },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: businessValidationErrors.passwordLength,
     },
-    description: {
-        notEmpty: {
-            errorMessage: businessValidationErrors.emptyDescription,
-        },
+  },
+  workingHours: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.workingHoursRequired,
     },
-    categories: {
-        notEmpty: {
-            errorMessage: businessValidationErrors.categoriesRequired,
-        },
+  },
+  description: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.emptyDescription,
     },
-    branches: {
-        notEmpty: {
-            errorMessage: businessValidationErrors.branchesRequired,
-        },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.categoriesRequired,
     },
+  },
+  branches: {
+    notEmpty: {
+      errorMessage: businessValidationErrors.branchesRequired,
+    },
+  },
 };
 
 const clientLoginValidation = {
-    email: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyEmail,
-        },
-        isEmail: {
-            errorMessage: clientValidationErrors.invalidEmail,
-        },
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyEmail,
     },
-    password: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyPassword,
-        },
-        matches: {
-            options: [/^(?=.*\d).{8,15}$/],
-            errorMessage: clientValidationErrors.invalidPassword,
-        },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
     },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.invalidPassword,
+    },
+  },
 };
 
 /**
@@ -148,70 +148,70 @@ const clientLoginValidation = {
  */
 
 const businessSignupValidation = {
-    email: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.emptyEmail,
-        },
-        isEmail: {
-            errorMessage: bussinessValidationErrors.invalidEmail,
-        },
+  email: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyEmail,
     },
-    name: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.emptyName,
-        },
+    isEmail: {
+      errorMessage: bussinessValidationErrors.invalidEmail,
     },
-    mobile: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.emptyMobile,
-        },
-        matches: {
-            options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
-            errorMessage: bussinessValidationErrors.invalidMobile,
-        },
+  },
+  name: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyName,
     },
-    shortDescription: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.emptyDescription,
-        },
+  },
+  mobile: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyMobile,
     },
+    matches: {
+      options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
+      errorMessage: bussinessValidationErrors.invalidMobile,
+    },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyDescription,
+    },
+  },
 };
 
 const clientResetPasswordValidation = {
-    password: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyPassword,
-        },
-        matches: {
-            options: [/^(?=.*\d).{8,15}$/],
-            errorMessage: clientValidationErrors.emptyPassword,
-        },
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
     },
-    confirmPassword: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyConfirmation,
-        },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
     },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
+    },
+  },
 };
 
 const businessLoginValidation = {
-    email: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.emptyEmail,
-        },
-        isEmail: {
-            errorMessage: bussinessValidationErrors.invalidEmail,
-        },
+  email: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyEmail,
     },
-    password: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.emptyPassword,
-        },
-        matches: {
-            options: [/^(?=.*\d).{8,15}$/],
-            errorMessage: bussinessValidationErrors.invalidPassword,
-        },
+    isEmail: {
+      errorMessage: bussinessValidationErrors.invalidEmail,
     },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
 };
 
 /**
@@ -219,77 +219,77 @@ const businessLoginValidation = {
  */
 
 const serviceCreateValidation = {
-    name: {
-        notEmpty: {
-            errorMessage: serviceValidationCRUDErrors.emptyName,
-        },
+  name: {
+    notEmpty: {
+      errorMessage: serviceValidationCRUDErrors.emptyName,
     },
-    shortDescription: {
-        notEmpty: {
-            errorMessage: serviceValidationCRUDErrors.emptyShortDescription,
-        },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: serviceValidationCRUDErrors.emptyShortDescription,
     },
+  },
 };
 
 const offeringCreateValidationBody = {
-    price: {
-        notEmpty: {
-            errorMessage: offeringValidationErrors.emptyPrice,
-        },
+  price: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyPrice,
     },
-    startDate: {
-        notEmpty: {
-            errorMessage: offeringValidationErrors.emptyStartDate,
-        },
+  },
+  startDate: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyStartDate,
     },
-    endDate: {
-        notEmpty: {
-            errorMessage: offeringValidationErrors.emptyEndDate,
-        },
+  },
+  endDate: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyEndDate,
     },
-    branch: {
-        isMongoId: {
-            errorMessage: offeringValidationErrors.invalidBranchID,
-        },
+  },
+  branch: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidBranchID,
     },
+  },
 };
 
 const ServiceCreateValidationParams = {
-    id: {
-        isMongoId: {
-            errorMessage: offeringValidationErrors.invalidServiceID,
-        },
+  id: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidServiceID,
     },
+  },
 };
 
 
 const offeringEditValidationParmas = {
-    id1: {
-        isMongoId: {
-            errorMessage: offeringValidationErrors.invalidServiceID,
-        },
+  id1: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidServiceID,
     },
-    id2: {
-        isMongoId: {
-            errorMessage: offeringValidationErrors.invalidOfferingID,
-        },
+  },
+  id2: {
+    isMongoId: {
+      errorMessage: offeringValidationErrors.invalidOfferingID,
     },
+  },
 };
 const businessResetPasswordValidation = {
-    password: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyPassword,
-        },
-        matches: {
-            options: [/^(?=.*\d).{8,15}$/],
-            errorMessage: clientValidationErrors.emptyPassword,
-        },
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
     },
-    confirmPassword: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyConfirmation,
-        },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
     },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
+    },
+  },
 };
 
 /**
@@ -297,62 +297,62 @@ const businessResetPasswordValidation = {
  */
 
 const visitorValidation = {
-    id: {
-        isMongoId: {
-            errorMessage: visitorValidationErrors.InvalidID,
-        },
+  id: {
+    isMongoId: {
+      errorMessage: visitorValidationErrors.InvalidID,
     },
-    offset: {
-        isInt: {
-            options: {
-                min: 1,
-            },
-            errorMessage: visitorValidationErrors.InvalidOffset,
-        },
+  },
+  offset: {
+    isInt: {
+      options: {
+        min: 1,
+      },
+      errorMessage: visitorValidationErrors.InvalidOffset,
     },
+  },
 };
 
 const businessEditInfoValidation = {
-    workingHours: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.workingHoursRequired,
-        },
+  workingHours: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.workingHoursRequired,
     },
-    description: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.emptyConfirmation,
-        },
+  },
+  description: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyConfirmation,
     },
-    categories: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.categoriesRequired,
-        },
+  },
+  categories: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.categoriesRequired,
     },
+  },
 };
 
 const businessAddValidation = {
-    branches: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.branchesRequired,
-        },
+  branches: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.branchesRequired,
     },
+  },
 };
 
 const businessEditValidation = {
-    'branch.location': {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.locationRequired,
-        },
-        isIn: {
-            options: [locations],
-            errorMessage: bussinessValidationErrors.locationInvalid,
-        },
+  'branch.location': {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.locationRequired,
     },
-    'branch.address': {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.addressRequired,
-        },
+    isIn: {
+      options: [locations],
+      errorMessage: bussinessValidationErrors.locationInvalid,
     },
+  },
+  'branch.address': {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.addressRequired,
+    },
+  },
 };
 
 /**
@@ -360,47 +360,47 @@ const businessEditValidation = {
  */
 
 const createReviewValidation = {
-    id: { in: 'params',
-        isMongoId: {
-            errorMessage: reviewErrors.invalidService,
-        },
+  id: { in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
     },
-    rating: { in: 'body',
-        notEmpty: {
-            errorMessage: reviewErrors.emptyRating,
-        },
+  },
+  rating: { in: 'body',
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
     },
+  },
 };
 
 const updateReviewValidation = {
-    id: { in: 'params',
-        isMongoId: {
-            errorMessage: reviewErrors.invalidService,
-        },
+  id: { in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
     },
-    review_id: { in: 'params',
-        isMongoId: {
-            errorMessage: reviewErrors.invalidReview,
-        },
+  },
+  review_id: { in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidReview,
     },
-    rating: { in: 'body',
-        notEmpty: {
-            errorMessage: reviewErrors.emptyRating,
-        },
+  },
+  rating: { in: 'body',
+    notEmpty: {
+      errorMessage: reviewErrors.emptyRating,
     },
+  },
 };
 
 const deleteReviewValidation = {
-    id: { in: 'params',
-        isMongoId: {
-            errorMessage: reviewErrors.invalidService,
-        },
+  id: { in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidService,
     },
-    review_id: { in: 'params',
-        isMongoId: {
-            errorMessage: reviewErrors.invalidReview,
-        },
+  },
+  review_id: { in: 'params',
+    isMongoId: {
+      errorMessage: reviewErrors.invalidReview,
     },
+  },
 };
 
 /**
@@ -408,44 +408,44 @@ const deleteReviewValidation = {
  */
 
 const adminLoginValidation = {
-    email: {
-        notEmpty: {
-            errorMessage: adminValidationErrors.emptyEmail,
-        },
-        isEmail: {
-            errorMessage: adminValidationErrors.invalidEmail,
-        },
+  email: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.emptyEmail,
     },
-    password: {
-        notEmpty: {
-            errorMessage: adminValidationErrors.emptyPassword,
-        },
-        matches: {
-            options: [/^(?=.*\d).{8,15}$/],
-            errorMessage: adminValidationErrors.invalidPassword,
-        },
+    isEmail: {
+      errorMessage: adminValidationErrors.invalidEmail,
     },
+  },
+  password: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: adminValidationErrors.invalidPassword,
+    },
+  },
 };
 
 const businessAddImageValidation = {
-    id: {
-        isMongoId: {
-            errorMessage: bussinessValidationErrors.invalidBusinessID,
-        },
+  id: {
+    isMongoId: {
+      errorMessage: bussinessValidationErrors.invalidBusinessID,
     },
+  },
 };
 
 const businessEditImageValidation = {
-    ser_id: {
-        isMongoId: {
-            errorMessage: bussinessValidationErrors.invalidBusinessID,
-        },
+  ser_id: {
+    isMongoId: {
+      errorMessage: bussinessValidationErrors.invalidBusinessID,
     },
-    im_id: {
-        isMongoId: {
-            errorMessage: bussinessValidationErrors.invalidBusinessID,
-        },
+  },
+  im_id: {
+    isMongoId: {
+      errorMessage: bussinessValidationErrors.invalidBusinessID,
     },
+  },
 };
 
 /**
@@ -453,112 +453,112 @@ const businessEditImageValidation = {
  */
 
 const serviceAddImageValidation = {
-    id: {
-        isMongoId: {
-            errorMessage: serviceValidationErrors.invalidServiceID,
-        },
+  id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
     },
+  },
 };
 
 const serviceEditImageValidation = {
-    ser_id: {
-        isMongoId: {
-            errorMessage: serviceValidationErrors.invalidServiceID,
-        },
+  ser_id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
     },
-    im_id: {
-        isMongoId: {
-            errorMessage: serviceValidationErrors.invalidImageID,
-        },
+  },
+  im_id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidImageID,
     },
+  },
 };
 
 const adminConfirmBusinessValidation = {
-    id: {
-        isMongoId: {
-            errorMessage: adminValidationErrors.invalidBusinessID,
-        },
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidBusinessID,
     },
+  },
 };
 
 const adminCategoryValidation = {
-    type: {
-        notEmpty: {
-            errorMessage: adminValidationErrors.categoryTypeRequired,
-        },
+  type: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.categoryTypeRequired,
     },
-    title: {
-        notEmpty: {
-            errorMessage: adminValidationErrors.categoryTitleRequired,
-        },
+  },
+  title: {
+    notEmpty: {
+      errorMessage: adminValidationErrors.categoryTitleRequired,
     },
+  },
 };
 
 const businessUpdateValidation = {
-    name: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.emptyName,
-        },
+  name: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyName,
     },
-    shortDescription: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.emptyDescription,
-        },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyDescription,
     },
-    phoneNumbers: {
-        notEmpty: {
-            errorMessage: bussinessValidationErrors.emptyMobile,
-        },
+  },
+  phoneNumbers: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyMobile,
     },
+  },
 };
 
 const clientUpdateValidation = {
-    email: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emailEmpty,
-        },
-        isEmail: {
-            errorMessage: clientValidationErrors.invalidEmail,
-        },
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emailEmpty,
     },
-    password: {
-        isPassword: {
-            errorMessage: bussinessValidationErrors.invalidPassword,
-        },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
     },
-    firstName: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyFirstName,
-        },
+  },
+  password: {
+    isPassword: {
+      errorMessage: bussinessValidationErrors.invalidPassword,
     },
-    lastName: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyLastName,
-        },
+  },
+  firstName: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyFirstName,
     },
-    mobile: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyMobile,
-        },
-        matches: {
-            options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
-            errorMessage: clientValidationErrors.invalidMobile,
-        },
+  },
+  lastName: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyLastName,
     },
-    gender: {
-        notEmpty: {
-            errorMessage: clientValidationErrors.emptyGender,
-        },
-        matches: {
-            options: [/^(Male|Female)$/],
-            errorMessage: clientValidationErrors.invalidGender,
-        },
+  },
+  mobile: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyMobile,
     },
-    birthdate: {
-        isDate: {
-            errorMessage: clientValidationErrors.invalidBirthdate,
-        },
+    matches: {
+      options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
+      errorMessage: clientValidationErrors.invalidMobile,
     },
+  },
+  gender: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyGender,
+    },
+    matches: {
+      options: [/^(Male|Female)$/],
+      errorMessage: clientValidationErrors.invalidGender,
+    },
+  },
+  birthdate: {
+    isDate: {
+      errorMessage: clientValidationErrors.invalidBirthdate,
+    },
+  },
 };
 
 /**
@@ -567,43 +567,43 @@ const clientUpdateValidation = {
  * @param {String} password
  */
 const validatePassword = (password) => {
-    if (password.length === 0) {
-        return true;
-    }
-    return /^(?=.*\d).{8,15}$/.test(password);
+  if (password.length === 0) {
+    return true;
+  }
+  return /^(?=.*\d).{8,15}$/.test(password);
 };
 
 const validation = {
-    clientResetPasswordValidation,
-    clientSignupValidation,
-    clientConfirmEmailValidation,
-    verifiedBusinessValidator,
-    clientLoginValidation,
-    adminLoginValidation,
-    businessSignupValidation,
-    businessLoginValidation,
+  clientResetPasswordValidation,
+  clientSignupValidation,
+  clientConfirmEmailValidation,
+  verifiedBusinessValidator,
+  clientLoginValidation,
+  adminLoginValidation,
+  businessSignupValidation,
+  businessLoginValidation,
 
-    serviceCreateValidation,
-    offeringCreateValidationBody,
-    ServiceCreateValidationParams,
-    offeringEditValidationParmas,
-    businessResetPasswordValidation,
-    visitorValidation,
-    businessEditInfoValidation,
-    adminConfirmBusinessValidation,
-    businessAddValidation,
-    businessEditValidation,
-    serviceAddImageValidation,
-    serviceEditImageValidation,
-    createReviewValidation,
-    updateReviewValidation,
-    deleteReviewValidation,
-    businessUpdateValidation,
-    businessAddImageValidation,
-    businessEditImageValidation,
-    adminCategoryValidation,
-    validatePassword,
-    clientUpdateValidation,
+  serviceCreateValidation,
+  offeringCreateValidationBody,
+  ServiceCreateValidationParams,
+  offeringEditValidationParmas,
+  businessResetPasswordValidation,
+  visitorValidation,
+  businessEditInfoValidation,
+  adminConfirmBusinessValidation,
+  businessAddValidation,
+  businessEditValidation,
+  serviceAddImageValidation,
+  serviceEditImageValidation,
+  createReviewValidation,
+  updateReviewValidation,
+  deleteReviewValidation,
+  businessUpdateValidation,
+  businessAddImageValidation,
+  businessEditImageValidation,
+  adminCategoryValidation,
+  validatePassword,
+  clientUpdateValidation,
 };
 
 module.exports = validation;

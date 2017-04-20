@@ -18,27 +18,27 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.json());
 router.use(expressValidator({
-    customValidators: {
-        isPassword: validationSchemas.validatePassword,
-    },
+  customValidators: {
+    isPassword: validationSchemas.validatePassword,
+  },
 }));
 
 /**
  * Get Client
  */
 router.get('/:id', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
-    const searchID = {
-        _id: req.params.id,
-        _deleted: false,
-    };
-    Client.findOne(searchID)
+  const searchID = {
+    _id: req.params.id,
+    _deleted: false,
+  };
+  Client.findOne(searchID)
         .exec()
         .then((client) => {
-            if (!client) {
-                next(Strings.clientFaliure.notFound);
-            } else {
-                res.json(client);
-            }
+          if (!client) {
+            next(Strings.clientFaliure.notFound);
+          } else {
+            res.json(client);
+          }
         })
         .catch(next);
 });
@@ -48,91 +48,93 @@ router.get('/:id', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
  */
 
 router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
-    if (req.user.id === req.params.id) {
+  if (req.user.id === req.params.id) {
         /**
          * The new data
          */
-        const userInfo = {
-            email: req.body.email,
-            password: req.body.password,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            mobile: req.body.mobile,
-            gender: req.body.gender,
-            birthdate: req.body.birthdate,
-        };
-        let emailChanged = false;
+    const userInfo = {
+      email: req.body.email,
+      password: req.body.password,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      mobile: req.body.mobile,
+      gender: req.body.gender,
+      birthdate: req.body.birthdate,
+    };
+    let emailChanged = false;
 
 
-        req.checkBody(validationSchemas.clientUpdateValidation);
-        req.checkBody('confirmPassword')
+    req.checkBody(validationSchemas.clientUpdateValidation);
+    req.checkBody('confirmPassword')
             .equals(req.body.password)
             .withMessage(Strings.clientValidationErrors.passwordMismatch);
-        req.getValidationResult()
+    req.getValidationResult()
             .then((result) => {
-                if (result.isEmpty()) {
-                    Client.findOne({
-                            _id: req.params.id,
-                        })
+              if (result.isEmpty()) {
+                Client.findOne({
+                  _id: req.params.id,
+                })
                         .exec()
                         .then((client) => {
-                            if (client.email === userInfo.email) {
-                                emailChanged = false;
-                            } else {
-                                emailChanged = true;
-                            }
+                          if (client.email === userInfo.email) {
+                            emailChanged = false;
+                          } else {
+                            emailChanged = true;
+                          }
                             /**
                              * Editing existing information
                              */
 
-                            client.firstName = userInfo.firstName;
-                            client.lastName = userInfo.lastName;
-                            client.mobile = userInfo.mobile;
-                            client.gender = userInfo.gender;
-                            client.birthdate = userInfo.birthdate;
-                            client.password = userInfo.password || client.password;
-                            client.email = userInfo.email;
+                          client.firstName = userInfo.firstName;
+                          client.lastName = userInfo.lastName;
+                          client.mobile = userInfo.mobile;
+                          client.gender = userInfo.gender;
+                          client.birthdate = userInfo.birthdate;
+                          client.password = userInfo.password || client.password;
+                          client.email = userInfo.email;
 
-                            if (emailChanged) {
-                                client.status = 'unconfirmed';
-                                client.save()
+                          if (emailChanged) {
+                            client.status = 'unconfirmed';
+                            client.save()
                                     .then((clientUnconfirmed) => {
-                                        ClientAuthenticator.generateConfirmationToken(req.body.email)
+                                      ClientAuthenticator.generateConfirmationToken(req.body.email)
                                             .then((token) => {
-                                                Mailer.clientConfirmEmail(req.body.email, req.hostname, token)
+                                              Mailer.clientConfirmEmail(
+                                                        req.body.email, req.hostname, token)
                                                     .then(() => {
-                                                        res.json({
-                                                            message: Strings.clientSuccess.editInformationWithEmail,
-                                                        });
+                                                      res.json({
+                                                        message: Strings.clientSuccess
+                                                                .editInformationWithEmail,
+                                                      });
                                                     })
                                                     .catch((e) => {
-                                                        next(e);
+                                                      next(e);
                                                     });
                                             })
                                             .catch((e) => {
-                                                next(e);
+                                              next(e);
                                             });
                                     })
                                     .catch(e => next(e));
-                            } else {
-                                client.save()
+                          } else {
+                            client.save()
                                     .then(() => {
-                                        res.json({
-                                            message: Strings.clientSuccess.editInformation,
-                                        });
+                                      res.json({
+                                        message: Strings.clientSuccess.editInformation,
+                                      });
                                     });
-                            }
+                          }
                         })
                         .catch((e) => {
-                            next(e);
+                          next(e);
                         });
-                } else {
-                    next(result.array());
-                }
+              } else {
+                next(result.array());
+              }
             });
-    } else {
-        next(Strings.clientLoginMessages.notLoggedIn);
-    }
+  } else {
+    next(Strings.clientLoginMessages.notLoggedIn);
+  }
 });
 
 /**

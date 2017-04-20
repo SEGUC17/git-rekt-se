@@ -8,13 +8,13 @@ export default class Form {
      *
      * @memberOf Form
      */
-    constructor(data = {}) {
-        this.keys = Object.keys(data);
-        this.keys.forEach((key) => {
-            this[key] = data[key];
-        }, this);
-        this.errors = new Errors();
-    }
+  constructor(data = {}) {
+    this.keys = Object.keys(data);
+    this.keys.forEach((key) => {
+      this[key] = data[key];
+    }, this);
+    this.errors = new Errors();
+  }
 
     /**
      * Sets the value of a specific attribute.
@@ -23,12 +23,12 @@ export default class Form {
      *
      * @memberOf Form
      */
-    set(key, value) {
-        if (!Object.prototype.hasOwnProperty.call(this, key)) {
-            throw new Error('Can only set values to keys that exist after creation!');
-        }
-        this[key] = value;
+  set(key, value) {
+    if (!Object.prototype.hasOwnProperty.call(this, key)) {
+      throw new Error('Can only set values to keys that exist after creation!');
     }
+    this[key] = value;
+  }
 
     /**
      * Resets the values of this form unless specific attributes were given.
@@ -36,11 +36,11 @@ export default class Form {
      *
      * @memberOf Form
      */
-    reset(keys = this.keys) {
-        keys.forEach((key) => {
-            this[key] = '';
-        }, this);
-    }
+  reset(keys = this.keys) {
+    keys.forEach((key) => {
+      this[key] = '';
+    }, this);
+  }
 
     /**
      * Returns the data of this form in JSON format.
@@ -48,13 +48,13 @@ export default class Form {
      *
      * @memberOf Form
      */
-    data() {
-        const data = {};
-        this.keys.forEach((key) => {
-            data[key] = this[key];
-        }, this);
-        return data;
-    }
+  data() {
+    const data = {};
+    this.keys.forEach((key) => {
+      data[key] = this[key];
+    }, this);
+    return data;
+  }
 
     /**
      * Submits this form using the given method and url,
@@ -64,20 +64,20 @@ export default class Form {
      * @returns {Promise}
      * @memberOf Form
      */
-    submit(method, url, headers = {}) {
-        this.errors.clear();
-        return new Promise((resolve, reject) => {
-            axios[method](url, this.data(), headers)
+  submit(method, url, headers = {}) {
+    this.errors.clear();
+    return new Promise((resolve, reject) => {
+      axios[method](url, this.data(), headers)
                 .then((response) => {
-                    this.onSuccess(response);
-                    resolve(response.data, response);
+                  this.onSuccess(response);
+                  resolve(response.data, response);
                 })
                 .catch((err) => {
-                    this.onFailure(err);
-                    reject(err.response ? err.response.data.errors : err.message, err);
+                  this.onFailure(err);
+                  reject(err.response ? err.response.data.errors : err.message, err);
                 });
-        });
-    }
+    });
+  }
 
     /**
      * Submits the form to the given url using a GET Request.
@@ -85,9 +85,9 @@ export default class Form {
      *
      * @memberOf Form
      */
-    get(url) {
-        return this.submit('get', url);
-    }
+  get(url) {
+    return this.submit('get', url);
+  }
 
     /**
      * Submits the form to the given url using a POST Request.
@@ -95,9 +95,9 @@ export default class Form {
      *
      * @memberOf Form
      */
-    post(url, headers = {}) {
-        return this.submit('post', url, headers);
-    }
+  post(url, headers = {}) {
+    return this.submit('post', url, headers);
+  }
 
     /**
      * Submits the form to the given url using a PUT Request.
@@ -105,9 +105,9 @@ export default class Form {
      *
      * @memberOf Form
      */
-    put(url) {
-        return this.submit('put', url);
-    }
+  put(url) {
+    return this.submit('put', url);
+  }
 
     /**
      * Submits the form to the given url using a DELETE Request.
@@ -115,9 +115,9 @@ export default class Form {
      *
      * @memberOf Form
      */
-    delete(url) {
-        return this.submit('delete', url);
-    }
+  delete(url) {
+    return this.submit('delete', url);
+  }
 
     /**
      * Called when request finishes successfully.
@@ -125,9 +125,9 @@ export default class Form {
      * @see {@link https://github.com/mzabriskie/axios#response-schema}
      * @memberOf Form
      */
-    onSuccess(response) {
-        this.reset();
-    }
+  onSuccess(response) {
+    this.reset();
+  }
 
     /**
      * Called when request finishes with an error.
@@ -135,13 +135,13 @@ export default class Form {
      * @see {@link https://github.com/mzabriskie/axios#handling-errors}
      * @memberOf Form
      */
-    onFailure(error) {
-        let errors;
-        if (error.response) {
-            errors = new Errors(error.response.data.errors);
-        } else {
-            errors = new Errors(error.message);
-        }
-        this.errors = errors;
+  onFailure(error) {
+    let errors;
+    if (error.response) {
+      errors = new Errors(error.response.data.errors);
+    } else {
+      errors = new Errors(error.message);
     }
+    this.errors = errors;
+  }
 }

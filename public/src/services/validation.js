@@ -82,14 +82,14 @@ export const clientSignUpValidation = {
 };
 
 export const loginRules = {
-    email: [{
-        required: true,
-        message: 'Email is required.',
-        trigger: 'blur',
-    }],
-    password: [{
-        required: true,
-        message: 'Password is required.',
-        trigger: 'blur',
-    }],
+  email: [{
+    required: true,
+    message: 'Email is required.',
+    trigger: 'blur',
+  }],
+  password: [{
+    required: true,
+    message: 'Password is required.',
+    trigger: 'blur',
+  }],
 };
