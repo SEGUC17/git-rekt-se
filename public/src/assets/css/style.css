@@ -30,14 +30,6 @@
   float: right !important;
 }
 
-.clearfix:after {
-  content: " ";
-  /* Older browser do not support empty content */
-  visibility: hidden;
-  display: block;
-  height: 0;
-  clear: both;
-}
 .white {
     color: #fff;
 }
@@ -48,4 +40,27 @@
 
 .box{
     border-radius: 0;
+}
+
+/*
+    Errors div style.
+*/
+
+.errors {
+    margin-bottom: 1.5em;
+}
+
+.modal-card-foot{
+    margin-top: 0 !important;
+}
+/*
+    Responsive form margin.
+*/
+
+.margin-bot-1{
+    margin-bottom: 1em;
+}
+
+.no-data p{
+    margin-top: 0.5em;
 }
