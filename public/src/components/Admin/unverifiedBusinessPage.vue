@@ -40,7 +40,7 @@
 
 <script>
   import axios from 'axios';
-  import { Admin } from '../../services/EndPoints';
+  import {Admin} from '../../services/EndPoints';
   import adminAuth from '../../services/auth/adminAuth';
   import EventBus from '../../services/EventBus';
 

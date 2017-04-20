@@ -10,7 +10,6 @@ import acceptbtn from '../../components/Admin/accept-btn.vue';
 import rejectbtn from '../../components/Admin/reject-btn.vue';
 import clientRemoveBtn from '../../components/Admin/remove-client-btn.vue';
 import CategoryActions from '../../components/Admin/category-actions.vue';
-
 import router from '../../services/routes.js';
 
 window.axios = axios;

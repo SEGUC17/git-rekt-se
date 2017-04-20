@@ -74,8 +74,7 @@ const routes = [{
     path: 'categories/edit',
     component: categoryCRUD,
   }],
-},
-];
+}];
 
 const router = new VueRouter({
   routes,
