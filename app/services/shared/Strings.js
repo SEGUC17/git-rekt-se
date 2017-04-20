@@ -3,7 +3,7 @@
  */
 
 const locations = require('../../seed/service/locations')
-  .join(', ');
+    .join(', ');
 
 /**
  *  General Strings
@@ -171,6 +171,7 @@ const reviewErrors = {
   invalidReview: 'This review does not exist.',
   userMismatchEdit: 'You did not create the review that you are trying to edit.',
   userMismatchDelete: 'You did not create the review that you are trying to delete.',
+  reviewFalure: 'The report on the specified review has failed!',
 };
 
 const reviewSuccess = {
