@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { Client } from '../../services/EndPoints';
+import {
+  Client,
+} from '../../services/EndPoints';
 
 export default {
   user: {
@@ -33,6 +35,22 @@ export default {
   },
 
   /**
+   * Confirm Client Email.
+   * @param token the confirmation token.
+   * @param callBack The callback to axios.
+   */
+
+  confirmEmail(token, callBack) {
+    axios
+      .post(Client()
+        .confirmEmail(token))
+      .then(response => callBack(null, response.data))
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
+  },
+
+  /**
    * Log out User.
    * @param callBack The callback to axios.
    */
@@ -51,12 +69,12 @@ export default {
             Authorization: currentToken,
           },
         })
-        .then((response) => {
-          callBack(null, response.data);
-        })
-        .catch((err) => {
-          callBack(err.response.data, null);
-        });
+      .then((response) => {
+        callBack(null, response.data);
+      })
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
   },
 
   /*

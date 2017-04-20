@@ -1,19 +1,28 @@
 import VueRouter from 'vue-router';
+import UnverifiedBusinessSignup from '../components/Business/UnverifiedSignup.vue';
 import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
 import Home from '../components/pages/Index/home.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
+import adminBusiness from '../components/Admin/unverifiedBusinessPage.vue';
+import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
+import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
+
 
 const routes = [{
   path: '/',
   component: Home,
+},
+{
+  path: '/business/apply',
+  component: UnverifiedBusinessSignup,
 }, {
   path: '/search',
   component: SearchPage,
@@ -27,15 +36,19 @@ const routes = [{
   path: '/client/signup',
   component: clientSignUp,
 }, {
+  path: '/admin/business',
+  component: adminBusiness,
+}, {
+  path: '/client/confirm/:token',
+  component: confirmEmail,
+}, {
   path: '/login',
   component: loginSelect,
 }, {
   path: '/business/login',
   component: businessLogin,
 }, {
-  path: '/admin/remove',
-  component: removeClient,
-}, { path: '/client/forgot',
+  path: '/client/forgot',
   component: Forgot,
 }, {
   path: '/client/reset/:token',
@@ -43,6 +56,16 @@ const routes = [{
 }, {
   path: '/admin/login',
   component: adminLogin,
+}, {
+  path: '/admin/dashboard',
+  component: adminDashboard,
+  children: [{
+    path: 'confirm',
+    component: adminBusiness,
+  }, {
+    path: 'client/remove',
+    component: removeClient,
+  }],
 }];
 
 const router = new VueRouter({
