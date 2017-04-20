@@ -3,11 +3,13 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
+const Bookings = require('../../../../models/service/Booking');
 const Client = require('../../../../models/client/Client');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const Strings = require('../../../../services/shared/Strings');
 const authMiddleWare = require('../../../../services/shared/jwtConfig');
 const errorHandler = require('../../../../services/shared/errorHandler');
+
 
 const router = express.Router();
 
@@ -109,6 +111,28 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
   } else {
     next(Strings.clientLoginMessages.notLoggedIn);
   }
+});
+
+/**
+ * Client View Transactions API Route.
+ */
+router.get('/history', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
+  Bookings.find({
+    _deleted: false,
+    _client: req.user.id,
+  })
+    .populate('_service', 'name')
+    .populate('_transaction', 'amount')
+    .populate('_client', 'firstName lastName')
+    .populate('_offering')
+    .exec()
+    .then((bookings) => {
+      console.log(bookings);
+      res.json({
+        bookings,
+      });
+    })
+    .catch(next);
 });
 
 /**
