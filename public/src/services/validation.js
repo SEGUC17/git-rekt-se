@@ -146,7 +146,7 @@ export const categoryRules = {
   title: [{
     required: true,
     message: 'title is required.',
-  }]
+  }],
 };
 
 export const clientForgotPasswordMail = {
