@@ -6,6 +6,7 @@ import Home from '../components/pages/Index/home.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
+import verifiedBusinessSignup from '../components/Business/verifiedBusinessSignup.vue';
 import adminBusiness from '../components/Admin/unverifiedBusinessPage.vue';
 import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
@@ -15,7 +16,6 @@ import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
-import clientLogout from '../components/Client/logout.vue';
 import testreport from '../components/Client/testreport.vue';
 
 
@@ -39,6 +39,9 @@ const routes = [{
 }, {
   path: '/client/login',
   component: clientLogin,
+}, {
+  path: '/confirm/signup/:token',
+  component: verifiedBusinessSignup,
 }, {
   path: '/client/signup',
   component: clientSignUp,
@@ -75,8 +78,8 @@ const routes = [{
   }, {
     path: 'categories/edit',
     component: categoryCRUD,
-  },
- {
+  }],
+}, {
   path: '/client/reportreview',
   component: testreport,
 }];
