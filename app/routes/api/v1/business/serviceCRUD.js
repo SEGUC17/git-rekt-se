@@ -16,7 +16,7 @@ const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
 const validator = require('../../../../services/shared/validation');
 const Strings = require('../../../../services/shared/Strings');
-const BusinessUtils = require('../../../../services/business/businessUtils');
+const serviceDeleteUtils = require('../../../../services/shared/serviceDeleteUtils');
 const createServiceUtils = require('../../../../services/business/createServiceUtils');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
@@ -518,7 +518,7 @@ router.post('/:id/delete', businessAuthMiddleware, (req, res, next) => {
                 /**
                  * Delete here
                  */
-                BusinessUtils.deleteService(service)
+                serviceDeleteUtils.deleteServices([service])
                 .then((resultService) => {
                   res.json({
                     message: Strings.serviceSuccess.serviceDeleted,
@@ -598,7 +598,7 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                   _offering: offeringID,
                 })
                 .then((bookings) => {
-                  BusinessUtils.deleteBookings(bookings)
+                  serviceDeleteUtils.deleteBookings(bookings)
                   .then(() => {
                     service.markModified('offerings');
                     service.save()
