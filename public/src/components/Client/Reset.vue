@@ -71,8 +71,8 @@
 
 <script>
   import Form from '../../services/Form';
-  import {Client} from '../../services/EndPoints';
-  import {clientForgotPassword} from '../../services/validation';
+  import { Client } from '../../services/EndPoints';
+  import { clientForgotPassword } from '../../services/validation';
   import commonAuth from '../../services/auth/commonAuth';
 
   export default {

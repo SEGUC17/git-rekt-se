@@ -221,7 +221,6 @@ router.post('/confirm/signup/:token', (req, res, next) => {
   /**
    * Form Validation
    */
-  console.log(req.body);
 
   req.checkBody(businessValidator);
   req.checkBody('confirmPassword')
@@ -235,7 +234,6 @@ router.post('/confirm/signup/:token', (req, res, next) => {
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        console.log(22);
         BusinessAuthenticator.verifyBusiness(token)
           .then((payload) => {
             Business.findOne({
