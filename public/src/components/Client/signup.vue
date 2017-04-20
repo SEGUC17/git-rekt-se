@@ -245,9 +245,7 @@
         }
 
         .extra-large {
-            padding-top: 0.5em;
             font-size: 3em;
-
         }
     }
 </style>
