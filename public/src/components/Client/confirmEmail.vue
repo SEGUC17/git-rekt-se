@@ -116,10 +116,6 @@
         padding: 2em;
     }
 
-    .errors {
-        margin: 2em;
-    }
-
     .confirmation-icon {
         font-size: 10em;
         color: #42d885;

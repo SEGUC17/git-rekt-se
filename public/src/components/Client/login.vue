@@ -13,8 +13,9 @@
             </div>
         </section>
 
-        <div class="client-login-form columns">
-            <div class="column is-half is-offset-one-quarter">
+        <div class="client-login-form columns is-mobile">
+            <div class="column is-half-desktop is-12-mobile is-12-tablet
+                               is-offset-one-quarter-desktop">
 
                 <div class="centered-fb">
                     <a @click.prevent="redirectFacebook">
@@ -23,14 +24,15 @@
                 </div>
 
                 <hr>
+
                 <div v-show="info">
                     <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
                 </div>
-                <div v-show="errors.length > 0">
-                    <div class="error" v-for="error in errors">
-                        <el-alert :title="error" type="error" show-icon>
-                        </el-alert>
-                    </div>
+
+                <div class="errors" v-show="errors.length > 0">
+                    <el-alert v-for="error in errors" class="error" :title="error"
+                              type="error" :key="error" show-icon>
+                    </el-alert>
                 </div>
 
                 <div v-show="logged_in">
@@ -110,8 +112,6 @@
                 this.loginSuccess = response.message;
               }
             });
-          } else {
-            this.errors.push('Please fill in all the fields.');
           }
         });
       },
@@ -199,9 +199,5 @@
     .forgot-help{
         margin-bottom: 1em;
     }
-    @media screen and (max-width: 999px) {
-        .client-login-form {
-            margin: 2em;
-        }
-    }
+
 </style>

@@ -85,9 +85,9 @@ export const Service = () => {
 };
 
 export default {
-  Visitor,
   Client,
   Business,
+  Visitor,
   Admin,
   Service,
 };
