@@ -76,7 +76,6 @@
               this.errors = [];
             })
             .catch((err) => {
-                console.log(err);
               this.errors = err.resposne.data.errors.map((e) => {
                 if (typeof e === 'string') {
                   return e;

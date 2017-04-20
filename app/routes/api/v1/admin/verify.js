@@ -21,7 +21,6 @@ router.use(expressValidator({}));
  * View all business application.
  */
 router.get('/business', AdminAuth, (req, res, next) => {
-  console.log('im  here');
   Business.find({
     _deleted: false,
     _status: 'unverified',
