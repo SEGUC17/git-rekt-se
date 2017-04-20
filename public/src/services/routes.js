@@ -6,7 +6,6 @@ import Home from '../components/pages/Index/home.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
-<<<<<<< HEAD
 import adminBusiness from '../components/Admin/unverifiedBusinessPage.vue';
 import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
@@ -16,10 +15,8 @@ import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
-=======
 import clientLogout from '../components/Client/logout.vue';
 import testreport from '../components/Client/testreport.vue';
->>>>>>> b48234d73d9c50fc23d280c744c1a85375fcbda0
 
 
 const routes = [{
@@ -43,7 +40,6 @@ const routes = [{
   path: '/client/login',
   component: clientLogin,
 }, {
-<<<<<<< HEAD
   path: '/client/signup',
   component: clientSignUp,
 }, {
@@ -79,14 +75,10 @@ const routes = [{
   }, {
     path: 'categories/edit',
     component: categoryCRUD,
-  }],
-=======
-  path: '/client/logout',
-  component: clientLogout,
-}, {
+  },
+ {
   path: '/client/reportreview',
   component: testreport,
->>>>>>> b48234d73d9c50fc23d280c744c1a85375fcbda0
 }];
 
 const router = new VueRouter({
