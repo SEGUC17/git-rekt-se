@@ -50,6 +50,9 @@
     margin-bottom: 1.5em;
 }
 
+.modal-card-foot{
+    margin-top: 0 !important;
+}
 /*
     Responsive form margin.
 */

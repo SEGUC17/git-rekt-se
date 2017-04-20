@@ -61,6 +61,7 @@ export const Admin = () => {
   return {
     login: `${BASE}/admin/auth/login`,
 
+    viewBusiness: `${generalBase}/business`,
     acceptBusiness: businessID => `${generalBase}/confirm/${businessID}`,
     denyBusiness: businessID => `${generalBase}/deny/${businessID}`,
 
