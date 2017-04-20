@@ -32962,6 +32962,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -32984,11 +32993,17 @@ var headers = {
     getTransactions: function getTransactions() {
       var _this = this;
 
+      var loader = this.$loading({
+        fullscreen: true,
+        text: 'Loading Transactions..'
+      });
       axios.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["a" /* Client */])().getTransactions, headers).then(function (res) {
         _this.bookings = res.data.bookings;
+        loader.close();
       }).catch(function (err) {
         _this.errors = true;
         _this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+        loader.close();
       });
     }
   },
@@ -38887,18 +38902,64 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('el-table', {
+  return _c('div', [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.success || _vm.error),
+      expression: "success || error"
+    }],
+    staticClass: "column is-half is-offset-one-quarter"
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.error),
+      expression: "error"
+    }]
+  }, [_c('el-alert', {
+    attrs: {
+      "title": _vm.message,
+      "type": "error",
+      "show-icon": ""
+    },
+    on: {
+      "close": function($event) {
+        _vm.error = false
+      }
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.success),
+      expression: "success"
+    }]
+  }, [_c('el-alert', {
+    attrs: {
+      "title": _vm.message,
+      "type": "success",
+      "show-icon": ""
+    },
+    on: {
+      "close": function($event) {
+        _vm.success = false
+      }
+    }
+  })], 1)]), _vm._v(" "), _c('el-table', {
     attrs: {
       "data": _vm.bookings,
       "border": ""
     }
   }, [_c('el-table-column', {
     attrs: {
-      "label": "Date"
+      "label": "Date",
+      "header-align": "center"
     },
     scopedSlots: _vm._u([
       ["default", function(scope) {
         return [_c('el-icon', {
+          staticClass: "align-icon",
           attrs: {
             "name": "date"
           }
@@ -38908,16 +38969,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
       "label": "Service Name",
+      "header-align": "center",
       "prop": "_service.name"
     }
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "label": "Address"
+      "label": "Address",
+      "header-align": "center"
     },
     scopedSlots: _vm._u([
       ["default", function(scope) {
         return [_c('i', {
-          staticClass: "fa fa-location-arrow align-icon",
+          staticClass: "fa fa-location-arrow align-icon location-icon",
           attrs: {
             "aria-hidden": "true"
           }
@@ -38926,7 +38989,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     ])
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "label": "Status"
+      "label": "Status",
+      "header-align": "center"
     },
     scopedSlots: _vm._u([
       ["default", function(scope) {
@@ -38940,7 +39004,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     ])
   }), _vm._v(" "), _c('el-table-column', {
     attrs: {
-      "label": "Price"
+      "label": "Price",
+      "header-align": "center"
     },
     scopedSlots: _vm._u([
       ["default", function(scope) {
@@ -78082,7 +78147,7 @@ module.exports = __webpack_require__(306);
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.align-icon {\n  margin-top: 5px;\n}\n.confirmed {\n  color: #00ff00;\n}\n.pending {\n  color: #0000ff;\n}\n.rejected {\n  color: #ff0000;\n}\n", ""]);
+exports.push([module.i, "\n.align-icon {\n  margin-top: 5px;\n  margin-right: 5px;\n}\n.confirmed {\n  color: #00ff00;\n}\n.pending {\n  color: #0000ff;\n}\n.rejected {\n  color: #ff0000;\n}\n.location-icon {\n  color: #1d71f7;\n}\n", ""]);
 
 /***/ }),
 /* 383 */
