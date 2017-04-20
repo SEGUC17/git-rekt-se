@@ -443,7 +443,7 @@ const adminClientValidation = {
   },
 };
 
-const adminReviewValidation = {
+const clientReviewValidation = {
   id: {
     isMongoId: {
       errorMessage: adminValidationErrors.invalidReviewID,
@@ -588,7 +588,7 @@ const validation = {
   adminClientValidation,
   forgotPasswordValidation,
   serviceBookingValidation,
-  adminReviewValidation,
+  clientReviewValidation,
 };
 
 module.exports = validation;

@@ -16,32 +16,36 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
+router.get('/test', (req, res, next) => {
+  new Review({
+    rating: 5,
+  }).save().then(() => res.json({
+    message: 'sucess',
+  })).catch(e => next([e]));
+});
+
 router.post('/report/:id', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
-  req.checkParams(validator.adminReviewValidation);
+  req.checkParams(validator.clientReviewValidation);
   req.getValidationResult()
         .then((result) => {
           if (result.isEmpty()) {
+            const reviewID = req.params.id;
             Review.findOne({
-              _id: req.params.id,
-            }, (err, result2) => {
-              if (err) {
-                next(err);
-                return;
-              }
-              if (!result2 || result2._deleted) {
-                next(Strings.reviewErrors.reviewFalure);
-                return;
-              }
-              result2.reports += 1;
-              result2.save((err2) => {
-                if (err2) {
-                  return next(err2);
+              _id: reviewID,
+            }).then((review) => {
+              if (review) {
+                if (review._deleted) {
+                  next([Strings.reviewErrors.reviewIsDeleted]);
+                } else {
+                  review.reports += 1;
+                  review.save().then(() => res.json({
+                    message: Strings.clientSuccess.reviewReported,
+                  })).catch(e => next([e]));
                 }
-                return res.json({
-                  message: Strings.clientSuccess.reviewReported,
-                });
-              });
-            });
+              } else {
+                next([Strings.reviewErrors.reviewFaliure]);
+              }
+            }).catch(e => next([e]));
           } else {
             next(result.array());
           }
