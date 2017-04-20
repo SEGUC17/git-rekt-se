@@ -71,7 +71,6 @@
         },
         methods: {
             getBusinesses() {
-                console.log(11);
                 axios
                     .get(Admin().listBusiness, {
                         headers: {
@@ -79,8 +78,8 @@
                         },
                     })
                     .then((response) => {
-                        console.log(22);
                         this.businesses = response.data.results;
+                        console.log(this.businesses);
                         this.errors = [];
                     })
                     .catch((err) => {
@@ -94,14 +93,18 @@
                     });
             },
             deleteClicked(business) {
+                console.log('why');
                 this.currName = business.name;
                 this.currID = business._id;
                 this.currEmail = business.email;
                 this.sure = true;
             },
             confirmDeletion() {
+                console.log(1111);
+                console.log(adminAuth.getJWTtoken());
+
                 axios
-                    .post(Admin().deleteBusiness(this.currid), {
+                    .post(Admin().deleteBusiness(this.currID), {
                         headers: {
                             Authorization: adminAuth.getJWTtoken(),
                         }

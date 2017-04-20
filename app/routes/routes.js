@@ -49,10 +49,10 @@ module.exports = (app) => {
    * Admin Routes.
    */
 
+  app.use('/api/v1/admin/business', AdminBusinessAPI);
   app.use('/api/v1/admin/auth', AdminAuthAPI);
   app.use('/api/v1/admin/general', AdminConfirmAPI);
   app.use('/api/v1/admin/category', AdminCatAPI);
-  app.use('/api/v1/admin/business', AdminBusinessAPI);
 
   /**
    * Service Routes.
