@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { Client } from '../../services/EndPoints';
+import {
+  Client,
+} from '../../services/EndPoints';
 
 export default {
   user: {
@@ -20,18 +22,32 @@ export default {
 
   login(data, callBack) {
     axios
-        .post(Client()
-            .login, data)
-        .then((response) => {
-          this.user.authenticated = true;
-          localStorage.setItem('client_token', response.data.token);
-          localStorage.setItem('client_email', response.data.email);
-          localStorage.setItem('client_id', response.data.id);
-          return callBack(null, response.data);
-        })
-        .catch((err) => {
-          callBack(err.response.data, null);
-        });
+      .post(Client()
+        .login, data)
+      .then((response) => {
+        this.user.authenticated = true;
+        this.storeData(response);
+        return callBack(null, response.data);
+      })
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
+  },
+
+  /**
+   * Confirm Client Email.
+   * @param token the confirmation token.
+   * @param callBack The callback to axios.
+   */
+
+  confirmEmail(token, callBack) {
+    axios
+      .post(Client()
+        .confirmEmail(token))
+      .then(response => callBack(null, response.data))
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
   },
 
   /**
@@ -53,12 +69,12 @@ export default {
             Authorization: currentToken,
           },
         })
-        .then((response) => {
-          callBack(null, response.data);
-        })
-        .catch((err) => {
-          callBack(err.response.data, null);
-        });
+      .then((response) => {
+        callBack(null, response.data);
+      })
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
   },
 
   /*
@@ -75,6 +91,12 @@ export default {
 
   refreshAuth() {
     this.user.authenticated = !!localStorage.getItem('client_token');
+  },
+
+  storeData(response) {
+    localStorage.setItem('client_token', response.data.token);
+    localStorage.setItem('client_email', response.data.email);
+    localStorage.setItem('client_id', response.data.id);
   },
 
   /**

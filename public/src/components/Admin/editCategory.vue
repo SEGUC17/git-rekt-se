@@ -32,7 +32,7 @@
                     <el-table :data="categories" border style="width: 100%">
                         <el-table-column label="Title">
                             <template scope="scope">
-                                <span style="margin-left: 10px">{{ scope.row.title }}</span>
+                                                <span style="margin-left: 10px">{{ scope.row.title }}</span>
 </template>
                 </el-table-column>
                 <el-table-column
@@ -87,8 +87,8 @@
         categoryRules
     } from '../../services/validation.js';
     import EndPoints from '../../services/EndPoints.js';
-    import BusinessAuth from '../../services/auth/';
-
+    import AdminAuth from '../../services/auth/adminAuth.js';
+    
     export default {
         data() {
             return {
@@ -129,9 +129,9 @@
                         const loader = this.$loading({
                             fullscreen: true,
                         });
-                        Axios.post(EndPoints.Admin().createCategory, this.newCategory {
+                        Axios.post(EndPoints.Admin().createCategory, this.newCategory, {
                                 headers: {
-                                    Authorization: BusinessAuth.getJWTtoken(),
+                                    Authorization: AdminAuth.getJWTtoken(),
                                 },
                             })
                             .then((response) => {
@@ -162,7 +162,11 @@
                             fullscreen: true,
                         });
                         //TODO: add auth
-                        Axios.post(EndPoints.Admin().editCategory(this.categoryToEdit._id), this.categoryToEdit)
+                        Axios.post(EndPoints.Admin().editCategory(this.categoryToEdit._id), this.categoryToEdit, {
+                                headers: {
+                                    Authorization: AdminAuth.getJWTtoken(),
+                                },
+                            })
                             .then((response) => {
                                 this.editSuccess = response.data.message;
                                 this.editVisible = false;
@@ -187,7 +191,11 @@
                 const loader = this.$loading({
                     fullscreen: true,
                 });
-                Axios.post(EndPoints.Admin().deleteCategory(this.categoryToDelete._id), null)
+                Axios.post(EndPoints.Admin().deleteCategory(this.categoryToDelete._id), null, {
+                        headers: {
+                            Authorization: AdminAuth.getJWTtoken(),
+                        },
+                    })
                     .then((response) => {
                         this.deleteSuccess = response.data.message;
                         this.deleteVisible = false;
@@ -212,7 +220,11 @@
                     fullscreen: true,
                 });
                 //TODO: add authentication
-                Axios.get(EndPoints.Admin().listCategories)
+                Axios.get(EndPoints.Admin().listCategories, {
+                        headers: {
+                            Authorization: AdminAuth.getJWTtoken(),
+                        },
+                    })
                     .then((response) => {
                         loader.close();
                         this.categories = response.data.category;
@@ -241,7 +253,11 @@
         },
         mounted() {
             this.getCategories();
-            Axios.get(EndPoints.Admin().listCategories) //TODO: add auth  
+            Axios.get(EndPoints.Admin().listCategories, {
+                    headers: {
+                        Authorization: AdminAuth.getJWTtoken(),
+                    },
+                }) //TODO: add auth  
                 .then((response) => {
                     this.categories = response.data.category;
                 })

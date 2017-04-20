@@ -13,6 +13,7 @@ export const Client = () => {
   const authBase = `${BASE}/client/auth`;
   const profileBase = `${BASE}/client/profile`;
   return {
+    finalizeFb: `${authBase}/fb/finalize/login`,
     login: `${authBase}/login`,
     signup: `${authBase}/signup`,
     resend: `${authBase}/confirmation/send`,
@@ -60,6 +61,7 @@ export const Admin = () => {
   return {
     login: `${BASE}/admin/auth/login`,
 
+    viewBusiness: `${generalBase}/business`,
     acceptBusiness: businessID => `${generalBase}/confirm/${businessID}`,
     denyBusiness: businessID => `${generalBase}/deny/${businessID}`,
 
@@ -85,9 +87,9 @@ export const Service = () => {
 };
 
 export default {
-  Visitor,
   Client,
   Business,
+  Visitor,
   Admin,
   Service,
 };

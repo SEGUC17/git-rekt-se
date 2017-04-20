@@ -17,8 +17,23 @@ mongoose.Promise = Promise;
 
 router.use(bodyParser.json());
 router.use(expressValidator({}));
-
-
+/**
+ * View all business application.
+ */
+router.get('/business', AdminAuth, (req, res, next) => {
+  console.log('im  here');
+  Business.find({
+    _deleted: false,
+    _status: 'unverified',
+  })
+    .exec()
+    .then((businesses) => {
+      if (businesses) {
+        res.json(businesses);
+      }
+    })
+    .catch(err => next(err));
+});
 /**
  * Accept the application of the business.
  * Send an email with token to continue signup.
