@@ -443,6 +443,14 @@ const adminClientValidation = {
   },
 };
 
+const adminReviewValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidReviewID,
+    },
+  },
+};
+
 const businessEditImageValidation = {
   ser_id: {
     isMongoId: {
@@ -580,6 +588,7 @@ const validation = {
   adminClientValidation,
   forgotPasswordValidation,
   serviceBookingValidation,
+  adminReviewValidation,
 };
 
 module.exports = validation;

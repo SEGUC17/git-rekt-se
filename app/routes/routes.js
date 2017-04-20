@@ -1,11 +1,11 @@
 const AdminAuthAPI = require('./api/v1/admin/auth');
 const AdminConfirmAPI = require('./api/v1/admin/verify');
-const AdminClientAPI = require('./api/v1/admin/clientRemoval');
 const ClientAuthAPI = require('./api/v1/client/auth');
 const BusinessAuthAPI = require('./api/v1/business/auth');
 const BusinessEditInformationAPI = require('./api/v1/business/editinformation');
 const RelatedBusinessAPI = require('./api/v1/business/related');
 const ClientProfileAPI = require('./api/v1/client/profile');
+const ClientReviewAPI = require('./api/v1/client/review');
 const ViewServiceAPI = require('./api/v1/service/index');
 const RelatedServiceAPI = require('./api/v1/service/related');
 const businessProfileAPI = require('./api/v1/business/profile');
@@ -35,6 +35,7 @@ module.exports = (app) => {
 
   app.use('/api/v1/client/auth', ClientAuthAPI);
   app.use('/api/v1/client/profile', ClientProfileAPI);
+  app.use('/api/v1/client/review', ClientReviewAPI);
 
   /**
    * Business Routes.
@@ -52,7 +53,6 @@ module.exports = (app) => {
   app.use('/api/v1/admin/auth', AdminAuthAPI);
   app.use('/api/v1/admin/general', AdminConfirmAPI);
   app.use('/api/v1/admin/category', AdminCatAPI);
-  app.use('/api/v1/admin/client', AdminClientAPI);
 
   /**
    * Service Routes.
