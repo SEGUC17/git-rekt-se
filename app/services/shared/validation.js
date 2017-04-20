@@ -435,6 +435,14 @@ const businessAddImageValidation = {
   },
 };
 
+const adminClientValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidClientID,
+    },
+  },
+};
+
 const businessEditImageValidation = {
   ser_id: {
     isMongoId: {
@@ -512,6 +520,16 @@ const businessUpdateValidation = {
   },
 };
 
+const forgotPasswordValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emailEmpty,
+    },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
+};
 const serviceBookingValidation = {
   service: {
     isMongoId: {
@@ -559,6 +577,8 @@ const validation = {
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
+  adminClientValidation,
+  forgotPasswordValidation,
   serviceBookingValidation,
 };
 

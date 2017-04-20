@@ -86,10 +86,4 @@
     .no-margin-bottom {
         margin-bottom: 0 !important;
     }
-
-    @media screen and (max-width: 999px) {
-        .hero-body {
-            padding-top: 4em;
-        }
-    }
 </style>
