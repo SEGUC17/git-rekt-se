@@ -452,6 +452,14 @@ const businessEditImageValidation = {
  * Client validation.
  */
 
+const serviceViewGalleryValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+};
+
 const serviceAddImageValidation = {
   id: {
     isMongoId: {
@@ -560,6 +568,7 @@ const validation = {
   businessEditImageValidation,
   adminCategoryValidation,
   serviceBookingValidation,
+  serviceViewGalleryValidation,
 };
 
 module.exports = validation;

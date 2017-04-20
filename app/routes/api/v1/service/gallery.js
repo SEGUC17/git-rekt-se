@@ -40,10 +40,42 @@ const upload = multer({
 
 
 /**
+ * Get service gallery Images.
+ */
+
+router.get('/:id/gallery', (req, res, next) => {
+  req.checkParams(validationSchemas.serviceViewGalleryValidation);
+  req.getValidationResult()
+    .then((result) => {
+      if (result.isEmpty()) {
+        console.log('valid');
+        Service.findOne({
+          _id: req.params.id,
+          _deleted: false,
+        })
+          .exec()
+          .then((service) => {
+            if (service) {
+              console.log('found service');
+              res.json(service.gallery);
+            } else {
+              next(Strings.serviceFailure.invalidService);
+            }
+          })
+          .catch(err => next([err]));
+      } else {
+        next(Strings.serviceValidationErrors.invalidServiceID);
+      }
+    })
+    .catch(err => next([err]));
+});
+
+
+/**
  * Add Image to service gallery.
  */
 
-router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, next) => { // ensureauthenticated
+router.post('/:id/gallery/add', upload.single('path'), BusinessAuth, (req, res, next) => {
   req.checkParams(validationSchemas.serviceAddImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -56,22 +88,32 @@ router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, 
           .then((service) => {
             if (service) {
               // check whether logged in business matches the service provider
-              if (`${service._business}` === `${req.user._id}`) {
-                const image = ({
-                  path: req.file.filename,
-                  description: req.body.description,
-                });
-                service.gallery.push(image);
-                service.save()
+              // if (`${service._business}` === `${req.user._id}`) {
+              if (req.file) {
+                console.log('found file');
+                if (req.file.mimetype.split('/')[0] === 'image') {
+                  console.log('its an image');
+                  const image = ({
+                    path: req.file.filename,
+                    description: req.body.description,
+                  });
+                  service.gallery.push(image);
+                  service.save()
                   .then(() => {
                     res.json({
                       message: Strings.serviceSuccess.imageAdd,
                     });
                   })
                   .catch(saveErr => next(saveErr));
+                } else {
+                  next(Strings.serviceFailure.invalidFile);
+                }
               } else {
-                next(Strings.serviceFailure.notYourService);
+                next(Strings.serviceFailure.imageNotFound);
               }
+              // } else {
+              //   next(Strings.serviceFailure.notYourService);
+              // }
             } else {
               next(Strings.serviceFailure.invalidService);
             }
@@ -96,6 +138,7 @@ router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
       if (result.isEmpty()) {
         Service.findOne({
           _id: req.params.ser_id,
+          _deleted: false,
         })
           .exec()
           .then((service) => {
@@ -142,6 +185,7 @@ router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => 
       if (result.isEmpty()) {
         Service.findOne({
           _id: req.params.ser_id,
+          _deleted: false,
         })
           .exec()
           .then((service) => {

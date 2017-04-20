@@ -77,9 +77,10 @@ export const Service = () => {
     updateReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
     deleteReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/delete`,
 
+    viewGallery: serviceID => `${serviceBase}/${serviceID}/gallery`,
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,
-    editImage: (serviceID, imageID) => `${serviceBase}/${serviceID}/gallery/${imageID}/edit`,
-    deleteImage: (serviceID, imageID) => `${serviceBase}/${serviceID}/gallery/${imageID}/delete`,
+    editImage: (serviceID, imageID) => `${serviceBase}/${serviceID}/gallery/edit/${imageID}`,
+    deleteImage: (serviceID, imageID) => `${serviceBase}/${serviceID}/gallery/delete/${imageID}`,
 
     validateCoupon: `${bookingBase}/coupon/validate`,
     makeBooking: `${bookingBase}`,

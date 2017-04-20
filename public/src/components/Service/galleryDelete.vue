@@ -31,25 +31,22 @@
             };
     
         },
-        props: ['imageID'],
+        // props: ['imageID'],
     
         methods: {
             deleteImage(imageID) {
                 this.deleteDialog = false;
                 axios.post(EndPoints.Service().deleteImage(this.$route.params.id, imageID))
-                    .then(() => {
+                    .then((res) => {
                         this.$emit('imageDelete');
                         this.$notify({
                             title: 'Success!',
-                            message: 'Image Deleted!',
+                            message: res.data.message,
                             type: 'success'
                         });
                     })
                     .catch(err => {
-                        for (var i = 0; i < err.response.data.errors.length; i++) {
-                            this.errors.push(err.response.data.errors[i]);
-                        };
-                        document.body.scrollTop = document.documentElement.scrollTop = 0;
+                         this.$emit('imageEditError', err.response.data.errors);
                     });
             },
         },    

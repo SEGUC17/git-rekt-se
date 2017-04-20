@@ -33,30 +33,25 @@
                     description: '',
                 },
                 formLabelWidth: '120px',
-                errors: [],
             };
     
         },
-        // props: ['imageID'],
     
         methods: {
             editImage(imageID) {
                 this.editDialog = false;
                 axios.post(EndPoints.Service().editImage(this.$route.params.id, imageID), this.editForm)
-                    .then(() => {
+                    .then((res) => {
                         this.resetForm();
                         this.$emit('imageEdit');
                         this.$notify({
                             title: 'Success!',
-                            message: 'Description Edited!',
+                            message: res.data.message,
                             type: 'success'
                         });
                     })
                     .catch(err => {
-                        for (var i = 0; i < err.response.data.errors.length; i++) {
-                            this.errors.push(err.response.data.errors[i]);
-                        };
-                        document.body.scrollTop = document.documentElement.scrollTop = 0;
+                        this.$emit('imageEditError', err.response.data.errors);
                     });
             },
             resetForm() {
