@@ -116,7 +116,8 @@ describe('Client Removal Test Suite', () => {
   });
 
   /**
-   * Failing Test 3: It should throw Invalid id error whenever deleting a client with an invalid monogo id
+   * Failing Test 3: It should throw Invalid id error whenever
+   * deleting a client with an invalid monogo id
    */
 
   it('should return an error message when invalid id is passed', (done) => {
