@@ -1,31 +1,34 @@
 <template>
-    <div class="columns is-mobile">
-        <div class="column is-half is-offset-one-quarter">
-            <div>
-                <div class="alert">
-                    <div class="message" v-show="alert_show">
-                        <el-alert :title="message" type="info" show-icon></el-alert>
-                    </div>
-                    <div class="error" v-show="error_show">
-                        <el-alert  :title="errors" type="error" show-icon></el-alert>
-                    </div>
-    
-                    <div class="error" v-show="form.errors.has('serverError')">
-                        <el-alert  :title="form.errors.getAll('serverError')" type="error" show-icon></el-alert>
-                    </div>
+    <div class="business-reset-password">
+        <section class="business-forgot-top hero is-bold">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="title extra-large white">
+                        Forgot Password
+                    </h1>
                 </div>
+            </div>
+        </section>
     
-                <h1 class="title has-text-centered">Forgot Password</h1>
+        <div class="reset-password-form columns">
+            <div class="column is-8 is-offset-2">
+                <div class="error-alerts">
+                    <el-alert :title="message" v-show="successShow" type="success" show-icon></el-alert>
+                    <el-alert :title="error" v-show="errorShow" type="success" show-icon></el-alert>
+                </div>
+                <div class="login-form">
+                    <el-form :model="form" ref="form" :rules="rules">
+                        <el-form-item prop="email" label="Email">
+                            <el-input v-model="form.email" type="email" icon="message">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="submitForm('form')" :loading="loading">Forgot Password
+                            </el-button>
+                        </el-form-item>
     
-                <el-form :model="form" ref="form" :rules="rules" label-width="100px" class="demo-ruleForm">
-                    <el-form-item label="Email" prop="email">
-                        <el-input type="text" v-model="form.email" auto-complete="off"></el-input>
-                    </el-form-item>
-    
-                    <el-form-item>
-                        <el-button type="primary" @click="submitForm('form')">Submit</el-button>
-                    </el-form-item>
-                </el-form>
+                    </el-form>
+                </div>
             </div>
         </div>
     </div>
@@ -33,10 +36,12 @@
 
 <script>
     import Form from '../../services/Form';
-    import EndPoints from '../../services/EndPoints';
+    import {
+        Business
+    } from '../../services/EndPoints';
     import {
         forgotPasswordValidation
-    } from '../../services/forgotPasswordValidation';
+    } from '../../services/validation';
     
     export default {
         data() {
@@ -47,36 +52,53 @@
                 errors: '',
                 rules: forgotPasswordValidation,
                 message: '',
-                alert_show: false,
-                error_show: false,
-    
+                successShow: false,
+                errorShow: false,
+                loading: false,
             };
         },
         methods: {
             submitForm(formName) {
+                this.error_show = false;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.form.post(EndPoints.Business().forgot)
+                        this.form.post(Business().forgot)
                             .then((data) => {
+                                this.loading = false;
                                 this.message = data.message;
-                                this.alert_show = true;
-                                this.error_show = false;
+                                this.successShow = true;
                             })
                             .catch((err) => {
-                                this.alert_show = false;
-                                this.error_show = true;
+                                this.errorShow = true;
+                                this.loading = false;
+                                this.errors = err;
                             });
                     } else {
+                        this.loading = false;
                         this.errors = 'Please insert correct inputs';
-                        this.alert_show = false;
-                        this.error_show = true;
+                        this.errorShow = true;
+    
                     }
                 });
-            },
-            hasErrors() {
-                const errors = this.$refs.form.$children.filter(el => el.validateMessage.length > 0);
-                return errors.length > 0;
             },
         }
     }
 </script>
+
+<style>
+    .business-forgot-top {
+        background: #159957;
+        /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #155799, #159957);
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #155799, #159957);
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        margin-bottom: 2em;
+    }
+    
+    @media screen and (max-width: 999px) {
+        .reset-password-form {
+            margin: 2em;
+        }
+    }
+</style>

@@ -37,7 +37,7 @@ const routes = [{
   path: '/service/:ser_id/book',
   component: Checkout,
 }, {
-  path: '/api/v1/business/forgot',
+  path: '/business/forgot',
   component: ForgotPassword,
 }, {
   path: '/client/login',
