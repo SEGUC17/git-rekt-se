@@ -23,7 +23,7 @@
                         Clients
                       </p>
                     <ul class="menu-list">
-                        <li><a>Remove</a></li>
+                        <li><router-link to="/admin/dashboard/client/remove">Remove</router-link></li>
                     </ul>
                 </aside>
             </div>

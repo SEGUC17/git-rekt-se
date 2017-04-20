@@ -253,12 +253,18 @@ const adminValidationErrors = {
   invalidBusinessID: 'Invalid Business ID',
   categoryTypeRequired: 'Category Type is required.',
   categoryTitleRequired: 'Category Title is required.',
+  invalidClientID: 'Invalid Client ID',
 };
 
 const adminSuccess = {
   categoryAdded: 'Category added succesfully!',
   categoryEdited: 'Category edited succesfully!',
   categoryDeleted: 'Category deleted succesfully!',
+  clientDeleted: 'Client removed succesfully',
+};
+
+const adminFailures = {
+  clientAlreadyDeleted: 'Client is already deleted',
 };
 
 /**
@@ -301,4 +307,5 @@ module.exports = {
   reviewSuccess,
   adminSuccess,
   searchErrors,
+  adminFailures,
 };
