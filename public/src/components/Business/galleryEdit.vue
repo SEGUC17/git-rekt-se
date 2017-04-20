@@ -9,12 +9,12 @@
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                        <el-button @click="editDialogue = false">Cancel</el-button>
-                        <el-button type="primary" @click="editImage(imageID)">Confirm</el-button>
-                    </span>
+                                <el-button @click="editDialogue = false">Cancel</el-button>
+                                <el-button type="primary" @click="editImage(imageID)">Confirm</el-button>
+                            </span>
             </el-dialog>
         </div>
-      
+    
     
     </div>
 </template>
@@ -22,7 +22,8 @@
 <script>
     import axios from 'axios';
     import EndPoints from '../../services/EndPoints';
-    
+    import businessAuth from '../../services/auth/businessAuth'
+
     export default {
         data() {
             return {
@@ -42,26 +43,28 @@
         methods: {
             editImage(imageID) {
                 this.editDialogue = false;
-                axios.post(EndPoints.Business().editImage(this.$route.params.id, imageID), this.editForm)
-                    .then(() => {
+                axios.post(EndPoints.Business().editImage(this.$route.params.id, imageID), this.editForm, {
+                        headers: {
+                            Authorization: businessAuth.getJWTtoken()
+                        }
+                    })
+                    .then((res) => {
                         this.resetForm();
-                        this.$emit('imageEdit');
+                        this.$emit('imageEdit', res);
                         this.$notify({
                             title: 'Success!',
-                            message: 'Description Edited!',
+                            message: res.body.message,
                             type: 'success'
                         });
                     })
                     .catch(err => {
-                        for (var i = 0; i < err.response.data.errors.length; i++) {
-                            this.errors.push(err.response.data.errors[i]);
-                        };
+                        this.errors = err.response.data.errors;
                         document.body.scrollTop = document.documentElement.scrollTop = 0;
                     });
             },
             resetForm() {
                 this.editForm.description = '';
             }
-        },    
+        },
     };
 </script>

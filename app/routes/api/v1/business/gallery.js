@@ -39,10 +39,10 @@ const upload = multer({
   storage,
 });
 /**
- * view Image to service gallery.
+ * view service gallery Images.
  */
 
-router.get('/:id/gallery', (req, res, next) => { // BusinessAuth
+router.get('/:id/gallery', (req, res, next) => {
   req.checkParams(validationSchemas.businessAddImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -71,7 +71,7 @@ router.get('/:id/gallery', (req, res, next) => { // BusinessAuth
  * Add Image to service gallery.
  */
 
-router.post('/:id/gallery/add', upload.single('path'), (req, res, next) => { // BusinessAuth
+router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, next) => {
   req.checkParams(validationSchemas.businessAddImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -83,18 +83,26 @@ router.post('/:id/gallery/add', upload.single('path'), (req, res, next) => { // 
           .exec()
           .then((business) => {
             if (business) {
-              const image = ({
-                path: req.file.filename,
-                description: req.body.description,
-              });
-              business.gallery.push(image);
-              business.save()
+              if (req.file) {
+                if (req.file.mimetype.split('/')[0] === 'image') {
+                  const image = ({
+                    path: req.file.filename,
+                    description: req.body.description,
+                  });
+                  business.gallery.push(image);
+                  business.save()
                 .then(() => {
                   res.json({
                     message: Strings.serviceSuccess.imageAdd,
                   });
                 })
                 .catch(saveErr => next(saveErr));
+                } else {
+                  next(Strings.businessMessages.invalidFile);
+                }
+              } else {
+                next(Strings.businessMessages.imageNotFound);
+              }
             } else {
               next(['The required id is invalid.']);
             }
@@ -112,7 +120,7 @@ router.post('/:id/gallery/add', upload.single('path'), (req, res, next) => { // 
  * Edit Image in Business gallery.
  */
 
-router.post('/:ser_id/gallery/edit/:im_id', (req, res, next) => { // BusinessAuth
+router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -155,7 +163,7 @@ router.post('/:ser_id/gallery/edit/:im_id', (req, res, next) => { // BusinessAut
  * Delete Image in Business gallery.
  */
 
-router.post('/:ser_id/gallery/delete/:im_id', (req, res, next) => { // BusinessAuth
+router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => {
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -170,7 +178,7 @@ router.post('/:ser_id/gallery/delete/:im_id', (req, res, next) => { // BusinessA
               const image = business.gallery
                 .find(element => `${element._id}` === `${req.params.im_id}`);
               if (!image) {
-                next(Strings.businessMessages.invalidIamge);
+                next(Strings.businessMessages.invalidImage);
               } else {
                 const newGallery = business.gallery
                   .filter(element => `${element._id}` !== `${req.params.im_id}`);

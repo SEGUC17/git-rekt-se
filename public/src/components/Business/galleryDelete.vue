@@ -4,14 +4,14 @@
             <a class="button is-danger is-outlined" @click="deleteDialogue = true">
                 <span>Delete</span>
                 <span class="icon is-small">
-                  <i class="fa fa-times"></i>
-                </span>
+                          <i class="fa fa-times"></i>
+                        </span>
             </a>
             <el-dialog title="Delete Image" v-model="deleteDialogue">
                 <span slot="footer" class="dialog-footer">
                                 <el-button @click="deleteDialogue = false">Cancel</el-button>
                                 <el-button type="primary" @click="deleteImage(this.imageID)">Confirm</el-button>
-                              </span>
+                            </span>
             </el-dialog>
         </div>
     
@@ -21,7 +21,8 @@
 <script>
     import axios from 'axios';
     import EndPoints from '../../services/EndPoints';
-    
+    import businessAuth from '../../services/auth/businessAuth'
+
     export default {
         data() {
             return {
@@ -31,27 +32,29 @@
             };
     
         },
-        props: ['imageID'],
+        // props: ['imageID'],
     
         methods: {
             deleteImage(imageID) {
                 this.deleteDialogue = false;
-                axios.post(EndPoints.Business().deleteImage(this.$route.params.id, imageID))
-                    .then(() => {
-                        this.$emit('imageDelete');
+                axios.post(EndPoints.Business().deleteImage(this.$route.params.id, imageID), {
+                        headers: {
+                            Authorization: businessAuth.getJWTtoken()
+                        }
+                    })
+                    .then((res) => {
+                        this.$emit('imageDelete', res);
                         this.$notify({
                             title: 'Success!',
-                            message: 'Image Deleted!',
+                            message: res.body.message,
                             type: 'success'
                         });
                     })
                     .catch(err => {
-                        for (var i = 0; i < err.response.data.errors.length; i++) {
-                            this.errors.push(err.response.data.errors[i]);
-                        };
+                        this.errors = err.response.data.errors
                         document.body.scrollTop = document.documentElement.scrollTop = 0;
                     });
             },
-        },    
+        },
     };
 </script>
