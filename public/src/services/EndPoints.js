@@ -13,6 +13,7 @@ export const Visitor = () => ({
 export const Client = () => {
   const authBase = `${BASE}/client/auth`;
   const profileBase = `${BASE}/client/profile`;
+  const reviewBase = `${BASE}/client/review`;
   return {
     finalizeFb: `${authBase}/fb/finalize/login`,
     login: `${authBase}/login`,
@@ -61,6 +62,8 @@ export const Admin = () => {
   const generalBase = `${BASE}/admin/general`;
   const categoryBase = `${BASE}/admin/category`;
   const clientBase = `${BASE}/admin/client`;
+  const businessBase = `${BASE}/admin/business`;
+
   return {
     login: `${BASE}/admin/auth/login`,
 
@@ -74,6 +77,8 @@ export const Admin = () => {
     listCategories: `${categoryBase}/list`,
     listClients: `${clientBase}/list`,
     deleteClient: clientID => `${clientBase}/delete/${clientID}`,
+    deleteBusiness: businessID => `${businessBase}/delete/${businessID}`,
+    listBusiness: `${businessBase}/list`,
   };
 };
 
@@ -90,6 +95,8 @@ export const Service = () => {
     editImage: (serviceID, imageID) => `${serviceBase}/${serviceID}/gallery/edit/${imageID}`,
     deleteImage: (serviceID, imageID) => `${serviceBase}/${serviceID}/gallery/delete/${imageID}`,
 
+    viewService: serviceID => `${serviceBase}/${serviceID}`,
+    viewRelatedServices: (categoryID, offset) => `${serviceBase}/category/${categoryID}/${offset}`,
     validateCoupon: `${bookingBase}/coupon/validate`,
     makeBooking: `${bookingBase}`,
   };
