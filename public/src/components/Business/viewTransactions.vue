@@ -31,13 +31,13 @@
       
       <el-table-column label="Address" header-align="center">
         <template scope="scope">
-          {{ scope.row._offering.address + ', ' + scope.row._offering.location }}
+          {{ scope.row._service.offerings[0].address + ', ' + scope.row._service.offerings[0].location }}
         </template>
       </el-table-column>
 
       <el-table-column label="Amount" header-align="center">
         <template scope="scope">
-          {{ `${scope.row._offering.price} EGP`}}
+          {{ `${scope.row._service.offerings[0].price} EGP`}}
         </template>
       </el-table-column>
 
@@ -92,7 +92,7 @@
             loader.close();
           })
           .catch((err) => {
-            this.errors = true;
+            this.error = true;
             this.message = err.response ? err.response.data.errors.join(', ') : err.message;
             loader.close();
           });

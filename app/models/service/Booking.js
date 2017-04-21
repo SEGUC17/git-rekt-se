@@ -19,7 +19,6 @@ const bookingSchema = Schema({
   },
   _offering: {
     type: Schema.Types.ObjectId,
-    ref: 'Offering',
     required: true,
   },
   _coupon: {

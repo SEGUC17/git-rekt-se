@@ -116,14 +116,20 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
  */
 router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
   Booking.find({ _deleted: false }, { offering: false, _deleted: false })
-    .populate('_service', 'name _business')
+    .populate('_service', 'name _business offerings')
     .populate('_client', 'firstName lastName email')
     .populate('_transaction', 'stripe_charge')
-    .populate('_offering', 'location address price')
     .exec()
     .then((bookings) => {
-      console.log(req.user.id);
       bookings = bookings.filter(booking => `${booking._service._business}` === req.user.id);
+      bookings = bookings.map((booking) => {
+        booking._service.offerings = booking._service.offerings
+          .filter((offering) => {
+            return offering._id === booking._offering;
+          });
+        return booking;
+      });
+      console.log(bookings);
       res.json({
         bookings,
       });

@@ -32143,7 +32143,7 @@ var headers = {
         _this.bookings = res.data.bookings;
         loader.close();
       }).catch(function (err) {
-        _this.errors = true;
+        _this.error = true;
         _this.message = err.response ? err.response.data.errors.join(', ') : err.message;
         loader.close();
       });
@@ -41487,7 +41487,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     scopedSlots: _vm._u([
       ["default", function(scope) {
-        return [_vm._v("\n        " + _vm._s(scope.row._offering.address + ', ' + scope.row._offering.location) + "\n      ")]
+        return [_vm._v("\n        " + _vm._s(scope.row._service.offerings[0].address + ', ' + scope.row._service.offerings[0].location) + "\n      ")]
       }]
     ])
   }), _vm._v(" "), _c('el-table-column', {
@@ -41497,7 +41497,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     scopedSlots: _vm._u([
       ["default", function(scope) {
-        return [_vm._v("\n        " + _vm._s(((scope.row._offering.price) + " EGP")) + "\n      ")]
+        return [_vm._v("\n        " + _vm._s(((scope.row._service.offerings[0].price) + " EGP")) + "\n      ")]
       }]
     ])
   }), _vm._v(" "), _c('el-table-column', {
