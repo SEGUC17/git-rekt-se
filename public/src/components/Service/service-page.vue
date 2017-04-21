@@ -23,6 +23,8 @@
                         Book Now
 
 
+
+
                     </router-link>
                 </div>
             </div>
@@ -61,7 +63,7 @@
 
                                     <h6>
                                         <span><i class=" icon fa fa-location-arrow"></i></span>
-                                        {{ getBranchDetails(offering.branch).address }}
+                                        {{ getBranchAddress(offering.branch) }}
                                     </h6>
 
                                     <h6>
@@ -152,7 +154,7 @@
         businessWorkingHours: null,
         branches: null,
         reviews: null,
-        gallery: null,
+        gallery: [],
         activeName: 'first',
         categories: null,
         offerings: null,
@@ -164,10 +166,14 @@
       };
     },
     methods: {
-      getBranchDetails(offering) {
-        return this.branches.find((branch) => {
+      getBranchAddress(offering) {
+        const result = this.branches.find((branch) => {
           return branch._id === offering;
         });
+        if (result) {
+          return result.address;
+        }
+        return 'No Address.';
       },
 
       getRelatedService(serviceId) {
