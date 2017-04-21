@@ -39,37 +39,44 @@ router.get('/:id', (req, res, next) => {
       match: {
         _deleted: false,
       },
+      options: {
+        populate: {
+            path: '_client',
+            select: 'firstName lastName',
+          },
+      },
     },
     {
       path: 'categories',
       match: {
         _deleted: false,
       },
-    }])
+    },
+    ])
     .exec()
     .then((service) => {
       if (!service) {
         next(Strings.serviceFailure.serviceNotFound);
         return;
       }
-
       const returnedService = {
         name: service.name,
         shortDescription: service.shortDescription,
+        coverImage: service.coverImage,
         description: service.description,
-        businessName: service._business.name,
-        businessEmail: service._business.service,
-        businessShortDescription: service._business.shortDescription,
-        businessDescription: service._business.description,
-        businessPhoneNumbers: service._business.phoneNumbers,
-        businessGallery: service._business.gallery,
-        businessWorkingHours: service._business.workingHours,
         branches: service.branches,
         offerings: service.offerings,
         reviews: service.reviews,
         rating: service._avgRating,
         gallery: service.gallery,
+        categories: service.categories,
       };
+
+      if (service._business) {
+        returnedService.businessName = service._business.name;
+        returnedService.businessId = service._business._id;
+      }
+
       res.json(returnedService);
     })
     .catch((e) => {
