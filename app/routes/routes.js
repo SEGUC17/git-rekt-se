@@ -62,5 +62,6 @@ module.exports = (app) => {
    */
   app.use('/api/v1/service', ReviewCRUDAPI);
   app.use('/api/v1/service', ServiceGalleryAPI);
+  app.use('/api/v1/service', ViewServiceAPI);
   app.use('/api/v1/service/book', ServiceBookingAPI);
 };
