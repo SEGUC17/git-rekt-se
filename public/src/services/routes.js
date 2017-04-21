@@ -91,6 +91,9 @@ const routes = [{
   }, {
     path: 'categories/edit',
     component: categoryCRUD,
+  }, {
+    path: 'business/remove',
+    component: removeBusiness,
   }],
 }, {
   path: '/business/reset/:token',

@@ -10,6 +10,7 @@ import acceptbtn from '../../components/Admin/accept-btn.vue';
 import rejectbtn from '../../components/Admin/reject-btn.vue';
 import TopHero from '../../components/shared/gr-top-hero.vue';
 import clientRemoveBtn from '../../components/Admin/remove-client-btn.vue';
+import businessRemoveBtn from '../../components/Admin/remove-business-btn.vue';
 import CategoryActions from '../../components/Admin/category-actions.vue';
 import router from '../../services/routes.js';
 
@@ -19,6 +20,7 @@ window.axios = axios;
 Vue.component('accept-btn', acceptbtn);
 Vue.component('reject-btn', rejectbtn);
 Vue.component('client-remove-btn', clientRemoveBtn);
+Vue.component('business-remove-btn', businessRemoveBtn);
 Vue.component('category-actions-btns', CategoryActions);
 Vue.component('gr-top-hero', TopHero);
 

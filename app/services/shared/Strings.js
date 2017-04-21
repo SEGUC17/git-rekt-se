@@ -268,12 +268,6 @@ const adminFailures = {
   clientAlreadyDeleted: 'Client is already deleted',
   categoryAlreadyDeleted: 'Category is already deleted',
   businessAlreadyDeleted: 'Business is Already Deleted',
-
-};
-
-const adminFailures = {
-  clientAlreadyDeleted: 'Client is already deleted',
-  categoryAlreadyDeleted: 'Category is already deleted',
 };
 
 /**

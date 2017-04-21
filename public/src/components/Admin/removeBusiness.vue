@@ -1,40 +1,25 @@
 <template>
-    <div class="columns is-mobile">
-        <div class="column is-half is-offset-one-quarter">
+    <div class="remove-business">
+        <div class="errors" v-show="errors.length > 0">
+            <el-alert v-for="error in errors" class="error" :title="error" type="error" :key="error | appendRandom" show-icon></el-alert>
+        </div>
     
-            <h1 class="title has-text-centered">Business list</h1>
+        <b-table v-if="businesses.length > 0" :data="businesses" :striped="true" :narrowed="false" :mobile-cards="true" :paginated="true" :per-page="10" :pagination-simple="false" default-sort="name" render-html>
     
-            <div v-show="errors.length > 0">
-                <div class="error" v-for="error in errors">
-                    <el-alert :title="error" type="error" show-icon>
-                    </el-alert>
-                </div>
+            <b-table-column field="name" label="Name" sortable></b-table-column>
+            <b-table-column field="email" label="Email" sortable></b-table-column>
+            <b-table-column field="_id" component="business-remove-btn"></b-table-column>
+        </b-table>
+    
+        <!-- No data found. -->
+        <div class="no-data hero" v-show="businesses.length === 0">
+            <div class="hero-body has-text-centered">
+                <el-icon name="circle-close" class="confirmation-icon icon-fail"></el-icon>
+                <p class="title is-2">No Businesses Found.</p>
+                <a class="button is-info" @click.prevent="getBusinesses">Refresh</a>
             </div>
-    
-            <el-dialog title="Confirm Deletion" v-model="sure" size="tiny">
-                <span>Are you sure you want to delete {{currName}} with Email {{currEmail}}?</span>
-                <span slot="footer" class="dialog-footer">
-              <el-button @click="sure = false">Cancel</el-button>
-              <el-button class="button is-primary" @click="sure = false,confirmDeletion(), shownot = true">Confirm</el-button>
-            </span>
-            </el-dialog>
-    
-            <el-table :data="businesses" border style="width: 100%" empty-text="No Businesses" :default-sort="defaultSort">
-                <el-table-column prop="name" label="Business Name" sortable>
-                </el-table-column>
-                <el-table-column prop="email" label="Business Email" sortable>
-                </el-table-column>
-                <el-table-column label="Operation">
-                    <template scope="scope">
-                <el-button class="button is-danger"@click="deleteClicked(scope.row)" >Delete &nbsp; 
-                    <span class="icon">
-                        <i class="fa fa-trash-o"></i>
-                    </span></el-button>
-</template>
-            </el-table-column>
-        </el-table>
+        </div>
     </div>
-</div>
 </template>
 
 <script>
@@ -43,21 +28,14 @@
         Admin
     } from '../../services/EndPoints';
     import adminAuth from '../../services/auth/adminAuth';
+    import EventBus from '../../services/EventBus';
     
     export default {
         data() {
             return {
                 errors: [],
                 businesses: [],
-                sure: false,
-                shownot: false,
-                currID: '',
-                currName: '',
-                currEmail: '',
-                defaultSort: {
-                    prop: 'name',
-                    order: 'ascending'
-                },
+                email: '',
             };
         },
         mounted() {
@@ -70,10 +48,19 @@
                 });
             } else {
                 this.getBusinesses();
+                EventBus.$on('BusinessRemoved', () => {
+                    this.getBusinesses();
+                });
+                EventBus.$on('BusinessRemoveError', (errors) => {
+                    this.errors = errors;
+                });
             }
         },
         methods: {
             getBusinesses() {
+                const loader = this.$loading({
+                    fullscreen: true,
+                });
                 axios
                     .get(Admin().listBusiness, {
                         headers: {
@@ -81,6 +68,7 @@
                         },
                     })
                     .then((response) => {
+                        loader.close();
                         this.businesses = response.data.results;
                         this.errors = [];
                     })
@@ -91,38 +79,8 @@
                             }
                             return err.msg;
                         });
+                        loader.close();
                         this.businesses = [];
-                    });
-            },
-            deleteClicked(business) {
-                this.currName = business.name;
-                this.currID = business._id;
-                this.currEmail = business.email;
-                this.sure = true;
-            },
-            confirmDeletion() {
-    
-                axios
-                    .post(Admin().deleteBusiness(this.currID), null, {
-                        headers: {
-                            Authorization: adminAuth.getJWTtoken(),
-                        },
-                    })
-                    .then((response) => {
-                        this.$notify({
-                            title: 'Success',
-                            message: response.data.message,
-                            type: 'success',
-                        });
-                        this.getBusinesses();
-                    })
-                    .catch((error) => {
-                        this.errors = error.response.data.errors.map((err) => {
-                            if (typeof err === 'string') {
-                                return err;
-                            }
-                            return err.msg;
-                        });
                     });
             },
         },
