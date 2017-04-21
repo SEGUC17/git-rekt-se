@@ -5,7 +5,7 @@
                 <el-alert @close="closeError(idx)" :title="error" type="error" show-icon></el-alert>
             </div>
         </div>
-        <el-button class="button is-primary" @click="addDialog = true">Add Image</el-button>
+        <el-button class="button is-primary" v-if="business.authenticated" @click="addDialog = true">Add Image</el-button>
         <el-dialog title="Add an Image" v-model="addDialog">
             <form method="post" @submit.prevent="onSubmit" enctype="multipart/form-data">
     
@@ -24,20 +24,20 @@
             </form>
         </el-dialog>
         <template>
-            <el-row>
-                <el-col :span="8" v-for="image in images":key="image._id" v-bind:data="image">
-                    <el-card :body-style="{ padding: '0px' }">
-                        <img src="image.path" class="image">
-                        <div style="padding: 14px;">
-                            <span>{{image.description}}</span>
-                            <div class="bottom clearfix">
-                                <editButton @error="handleError":key="image._id" :imageID="image._id"></editButton>
-                                <deleteButton @error="handleError" :key="image._id" :imageID="image._id"></deleteButton>
+                <el-row>
+                    <el-col :span="8" v-for="image in images":key="image._id" v-bind:data="image">
+                        <el-card :body-style="{ padding: '0px' }">
+                            <img src="image.path" class="image">
+                            <div style="padding: 14px;">
+                                <span>{{image.description}}</span>
+                                <div class="bottom clearfix">
+                                    <editButton v-if="business.authenticated" @success="onSuccess" @error="onError":key="image._id" :imageID="image._id"></editButton>
+                                    <deleteButton v-if="business.authenticated" @success="onSuccess" @error="onError" :key="image._id" :imageID="image._id"></deleteButton>
+                                </div>
                             </div>
-                        </div>
-                    </el-card>
-                </el-col>
-            </el-row>
+                        </el-card>
+                    </el-col>
+                </el-row>
 </template>
         
     </div>
@@ -54,6 +54,7 @@
     export default {
         data() {
             return {
+                business: businessAuth.user,
                 errors: [],
                 images: [],
                 form: new Form({
@@ -135,6 +136,7 @@
                     })
                     .then((res) => {
                         this.form.reset();
+                        this.errors = [];
                         this.$emit('imageAdd');
                         this.$notify({
                             title: 'Success!',
@@ -147,8 +149,16 @@
                         document.body.scrollTop = document.documentElement.scrollTop = 0;
                     });
             },
-            handleError() {
-                this.errors = ['An error occured.'];
+            onError(err) {
+                this.errors = err.response.data.errors;
+            },
+            onSuccess(res) {
+                this.errors = [];
+                this.$notify({
+                    title: 'Success!',
+                    message: res.data.message,
+                    type: 'success'
+                });
             }
         }
     }

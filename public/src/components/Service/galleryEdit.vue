@@ -14,7 +14,7 @@
                     </span>
             </el-dialog>
         </div>
-      
+    
     
     </div>
 </template>
@@ -22,7 +22,8 @@
 <script>
     import axios from 'axios';
     import EndPoints from '../../services/EndPoints';
-    
+    import businessAuth from '../../services/auth/businessAuth'
+
     export default {
         data() {
             return {
@@ -40,23 +41,22 @@
         methods: {
             editImage(imageID) {
                 this.editDialog = false;
-                axios.post(EndPoints.Service().editImage(this.$route.params.id, imageID), this.editForm)
+                axios.post(EndPoints.Service().editImage(this.$route.params.id, imageID), this.editForm, {
+                        headers: {
+                            Authorization: businessAuth.getJWTtoken()
+                        }
+                    })
                     .then((res) => {
                         this.resetForm();
-                        this.$emit('imageEdit');
-                        this.$notify({
-                            title: 'Success!',
-                            message: res.data.message,
-                            type: 'success'
-                        });
+                        this.$emit('success', res);
                     })
                     .catch(err => {
-                        this.$emit('error',err.response.data.errors);
+                        this.$emit('error', err);
                     });
             },
             resetForm() {
                 this.editForm.description = '';
             }
-        },    
+        },
     };
 </script>
