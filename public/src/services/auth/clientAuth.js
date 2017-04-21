@@ -15,11 +15,16 @@ export default {
   },
 
   /**
-   * Login User.
-   * @param data The data to send in the request body.
-   * @param callBack The callback to axios.
+   * An Error first callback for handling login.
+   * @callback handler
+   * @param {Error} error
+   * @param {*} data
    */
-
+  /**
+   * Login User.
+   * @param {Object} data - The data to send in the request body.
+   * @param {handler} callBack - Handles/Updates the view after login fails or succeeds.
+   */
   login(data, callBack) {
     axios
       .post(Client()
@@ -35,11 +40,16 @@ export default {
   },
 
   /**
-   * Confirm Client Email.
-   * @param token the confirmation token.
-   * @param callBack The callback to axios.
+   * An Error first callback for handling login.
+   * @callback handler
+   * @param {Error} error
+   * @param {*} data
    */
-
+  /**
+   * Confirm Client Email.
+   * @param {string} token - The confirmation token.
+   * @param {handler} callBack - Handles/Updates the view after confirmation fails or succeeds.
+   */
   confirmEmail(token, callBack) {
     axios
       .post(Client()
@@ -51,10 +61,15 @@ export default {
   },
 
   /**
-   * Log out User.
-   * @param callBack The callback to axios.
+   * An Error first callback for handling login.
+   * @callback handler
+   * @param {Error} error
+   * @param {*} data
    */
-
+  /**
+   * Log out User.
+   * @param {handler} callBack - Handles/Updates the view after logout fails or succeeds.
+   */
   logout(callBack) {
     this.user.authenticated = false;
     const currentToken = this.getJWTtoken();
@@ -77,22 +92,27 @@ export default {
       });
   },
 
-  /*
-   * Get the JWT for Header.
-   * */
-
+  /**
+   * Returns the JWT Token in a format to be used
+   * in the Request's Authorization Header.
+   * @returns {string} - In the format `JWT TOKEN_HERE`
+   */
   getJWTtoken() {
     return `JWT ${localStorage.getItem('client_token')}`;
   },
 
-  /*
-   * Refresh the status of the user.
-   * */
-
+  /**
+   * Refreshes the user's status.
+   */
   refreshAuth() {
     this.user.authenticated = !!localStorage.getItem('client_token');
   },
 
+  /**
+   * Stores the data using the Browser's localStorage.
+   * @param {ResponseSchema} response - Axios Response Object.
+   * @see {@link https://github.com/mzabriskie/axios#response-schema}
+   */
   storeData(response) {
     localStorage.setItem('client_token', response.data.token);
     localStorage.setItem('client_email', response.data.email);
@@ -100,12 +120,11 @@ export default {
   },
 
   /**
-   * Return the status of the user.
+   * Return whether the user is authenticated or no.
+   * @returns {boolean} - true if user authenticated, false otherwise.
    */
-
   isAuthenticated() {
     this.refreshAuth();
     return this.user.authenticated;
   },
-
 };

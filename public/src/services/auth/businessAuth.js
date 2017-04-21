@@ -15,11 +15,16 @@ export default {
   },
 
   /**
-   * Login User.
-   * @param data The data to send in the request body.
-   * @param callBack The callback to axios.
+   * An Error first callback for handling login.
+   * @callback handler
+   * @param {Error} error
+   * @param {*} data
    */
-
+  /**
+   * Login User.
+   * @param {Object} data - The data to send in the request body.
+   * @param {handler} callBack - Handles/Updates the view after login fails or succeeds.
+   */
   login(data, callBack) {
     axios
       .post(Business()
@@ -37,10 +42,16 @@ export default {
   },
 
   /**
-   * Log out User.
-   * @param callBack The callback to axios.
+   * An Error first callback for handling login.
+   * @callback handler
+   * @param {Error} error
+   * @param {*} data
    */
 
+  /**
+   * Log out User.
+   * @param {handler} callBack - Handles/Updates the view after logout fails or succeeds.
+   */
   logout(callBack) {
     this.user.authenticated = false;
     const currentToken = this.getJWTtoken();
@@ -63,12 +74,19 @@ export default {
       });
   },
 
-/**
- * Complete business registration.
- * @param {String} token the registration token.
- * @param {any} data the data to send with the request.
- * @param {any} callBack the callback to axios.
- */
+  /**
+   * An Error first callback for handling login.
+   * @callback handler
+   * @param {Error} error
+   * @param {*} data
+   */
+
+ /**
+  * Complete business registration.
+  * @param {String} token - The registration token.
+  * @param {*} data - The data to send with the request.
+  * @param {handler} callBack - Handles/Updates the view after verification fails or succeeds.
+  */
   verifiedsignup(token, data, callBack) {
     axios
       .post(Business()
@@ -78,26 +96,27 @@ export default {
         callBack(err.response.data, null);
       });
   },
-  /*
-   * Get the JWT for Header.
-   * */
 
+  /**
+  * Returns the JWT Token in a format to be used
+  * in the Request's Authorization Header.
+  * @returns {string} - In the format `JWT TOKEN_HERE`
+  */
   getJWTtoken() {
     return `JWT ${localStorage.getItem('business_token')}`;
   },
 
-  /*
-   * Refresh the status of the user.
-   * */
-
+  /**
+   * Refreshes the status of the user.
+   */
   refreshAuth() {
     this.user.authenticated = !!localStorage.getItem('business_token');
   },
 
   /**
-   * Return the status of the user.
+   * Returns whether the user is authenticated or no.
+   * @returns {boolean} - true if user authenticated, false otherwise.
    */
-
   isAuthenticated() {
     this.refreshAuth();
     return this.user.authenticated;

@@ -20,6 +20,9 @@ import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 
+/**
+ * Front-End Routes.
+ */
 const routes = [{
   path: '/',
   component: Home,
@@ -89,9 +92,15 @@ const routes = [{
   component: reset,
 }];
 
+/**
+ * Instantiate A Vue Router.
+ */
 const router = new VueRouter({
   routes,
   linkActiveClass: 'is-active',
 });
 
+/**
+ * Export the router.
+ */
 export default router;

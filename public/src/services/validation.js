@@ -1,3 +1,6 @@
+/**
+ * This contains the Front-End Validation Rules.
+ */
 
 /*
 * Client Side Form Validation Schemas.
@@ -91,6 +94,10 @@ export const clientSignUpValidation = {
     trigger: 'change',
   }],
 };
+
+/**
+ * Login Rules.
+ */
 export const loginRules = {
   email: [{
     required: true,
@@ -103,6 +110,10 @@ export const loginRules = {
     trigger: 'blur',
   }],
 };
+
+/**
+ * Client Forgot Password Rules.
+ */
 export const clientForgotPassword = {
   password: [{
     required: true,
@@ -138,6 +149,10 @@ export const clientForgotPassword = {
     trigger: ['blur', 'change'],
   }],
 };
+
+/**
+ * Verified Business Sign Up Rules.
+ */
 export const verifiedBusinessSignupRules = {
   password: [{
     required: true,
@@ -203,6 +218,10 @@ export const verifiedBusinessSignupRules = {
     trigger: 'blur',
   }],
 };
+
+/**
+ * Category Rules.
+ */
 export const categoryRules = {
   type: [{
     required: true,
@@ -214,6 +233,10 @@ export const categoryRules = {
     message: 'title is required.',
   }],
 };
+
+/**
+ * Client Forgot Password Mail Rules.
+ */
 export const clientForgotPasswordMail = {
   email: [{
     required: true,
@@ -227,6 +250,10 @@ export const clientForgotPasswordMail = {
   },
   ],
 };
+
+/**
+ * Unverified Business SignUp Rules.
+ */
 export const unverfiedBusinessSignupValidation = {
 
   name: {
@@ -257,6 +284,10 @@ export const unverfiedBusinessSignupValidation = {
     message: 'Mobile number must be 11 digits in the following format 01xxxxxxxxx.',
   }],
 };
+
+/**
+ * Client Edit Information Rules.
+ */
 export const clientEditInfoValidation = {
   email: [{
     message: 'Please Enter a valid email.',
@@ -302,6 +333,10 @@ export const clientEditInfoValidation = {
     trigger: 'change',
   }],
 };
+
+/**
+ * Forgot Password Validation Rules.
+ */
 export const forgotPasswordValidation = {
   email: [{
     required: true,
@@ -313,6 +348,10 @@ export const forgotPasswordValidation = {
     trigger: 'blur',
   }],
 };
+
+/**
+ * Business Reset Password Rules.
+ */
 export const BusinessResetFormValidation = {
   password: [{
     required: true,
