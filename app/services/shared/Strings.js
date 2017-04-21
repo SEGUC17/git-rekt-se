@@ -1,14 +1,12 @@
 /**
  * Constant Strings.
  */
-
 const locations = require('../../seed/service/locations')
   .join(', ');
 
 /**
  *  General Strings.
  */
-
 const generalErrors = {
   mailerError: 'An issue occured while sending the email.',
   generalError: 'An error occurred trying to handle this request.',
@@ -17,7 +15,6 @@ const generalErrors = {
 /**
  * Business Validation Errors Strings.
  */
-
 const bussinessValidationErrors = {
   emptyEmail: 'Email is a required field.',
   invalidEmail: 'Invalid Email.',
@@ -40,6 +37,9 @@ const bussinessValidationErrors = {
   locationInvalid: `Invalid location. Must be any of [${locations}]`,
 };
 
+/**
+ * Business Success Messages.
+ */
 const businessSuccess = {
   unverifiedSignup: 'Signup Successful, A representative will contact you soon.',
   emailConfirmation: 'Please check your email for the email confirmation.',
@@ -50,6 +50,9 @@ const businessSuccess = {
   logout: 'You have been logged out.',
 };
 
+/**
+ * Business Login Messages.
+ */
 const businessLoginMessages = {
   invalidCreds: 'Invalid Credentials.',
   loginSuccess: 'Business Login Success.',
@@ -58,6 +61,9 @@ const businessLoginMessages = {
   invalidToken: 'Invalid Token',
 };
 
+/**
+ * Admin Response Messages.
+ */
 const businessConfirmation = {
   alreadyConfirmed: 'Business was already confirmed.',
   notFound: 'Business not found.',
@@ -67,6 +73,9 @@ const businessConfirmation = {
   pending: 'Business has already been sent an email',
 };
 
+/**
+ * Business Messages.
+ */
 const businessMessages = {
   allFieldsEmpty: 'All fields are empty. Atleast 1 field is needed.',
   businessDoesntExist: 'Business Doesn\'t Exist',
@@ -80,9 +89,12 @@ const businessMessages = {
 };
 
 /**
- * Client Strings
+ * Client Strings.
  */
 
+/**
+ * Client Validation Errors Messages.
+ */
 const clientValidationErrors = {
   emptyEmail: 'Email is a required field.',
   invalidEmail: 'Invalid Email.',
@@ -100,6 +112,9 @@ const clientValidationErrors = {
   userExists: 'User already exists.',
 };
 
+/**
+ * Client Success Messages.
+ */
 const clientSuccess = {
   signup: 'Signup Successful, Please check your email for the email confirmation.',
   emailConfirmation: 'Please check your email for the email confirmation.',
@@ -108,6 +123,9 @@ const clientSuccess = {
   logout: 'You have been logged out.',
 };
 
+/**
+ * Service Success Messages.
+ */
 const serviceSuccess = {
   imageAdd: 'Image added successfully!',
   imageEdit: 'Description updated succesfully!',
@@ -120,6 +138,9 @@ const serviceSuccess = {
   offeringDeleted: 'Offering has been deleted successfully',
 };
 
+/**
+ * Service Failure Messages.
+ */
 const serviceFailure = {
   serviceNotFound: 'The specified service was not found.',
   imageNotFound: 'Image not found!',
@@ -128,18 +149,27 @@ const serviceFailure = {
   invalidService: 'This service is invalid.',
 };
 
+/**
+ * Service Validation Errors Messages.
+ */
 const serviceValidationErrors = {
   invalidServiceID: 'Invalid Service ID',
   invalidImageID: 'Invalid Image ID',
   invalidStripeToken: 'Invalid Stripe Token',
 };
 
+/**
+ * Client Forgot Password Messages.
+ */
 const clientForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
   INVALID_RESET_TOKEN: 'Invalid reset token.',
   PASSWORD_RESET_SUCCESS: 'Password Changed Successfully.',
 };
 
+/**
+ * Client Login Success Messages.
+ */
 const clientLoginMessages = {
   invalidCreds: 'Invalid Credentials.',
   loginSuccess: 'Client Login Success.',
@@ -149,11 +179,17 @@ const clientLoginMessages = {
   notLoggedIN: 'You need to be logged in.',
 };
 
+/**
+ * Client Confirmation Messages.
+ */
 const clientConfirmation = {
   emailAlreadyConfirmed: 'User email already confirmed.',
   notFound: 'User not found.',
 };
 
+/**
+ * Client Verification Messages.
+ */
 const clientVerfication = {
   invalidToken: 'This token is invalid or has expired.',
   verificationSuccess: 'Your e-mail has been successfully confirmed.',
@@ -162,9 +198,12 @@ const clientVerfication = {
 };
 
 /**
- * Review Strings
+ * Review Strings.
  */
 
+/**
+ * Review Error Messages.
+ */
 const reviewErrors = {
   invalidService: 'The service you are trying to review does not exist.',
   emptyRating: 'You must provide a rating in your review.',
@@ -174,6 +213,9 @@ const reviewErrors = {
   userMismatchDelete: 'You did not create the review that you are trying to delete.',
 };
 
+/**
+ * Review Success Messages.
+ */
 const reviewSuccess = {
   createSuccess: 'Review added successfully.',
   updateSuccess: 'Review updated successfully.',
@@ -184,20 +226,32 @@ const reviewSuccess = {
  * Visitor Strings
  */
 
+/**
+ * Visitor Error Messages.
+ */
 const visitorErrors = {
   NoRelatedBusinesses: 'No related businesses',
   NoRelatedServices: 'No related services',
 };
 
+/**
+ * Business Information Changed Messages.
+ */
 const businessInformationChanged = {
   UPDATE_SUCCESSFULL: 'Your information has been updated successfully.',
 };
 
+/**
+ * Visitor Validation Errors Messages.
+ */
 const visitorValidationErrors = {
   InvalidID: 'Invalid category ID',
   InvalidOffset: 'Invalid Offset',
 };
 
+/**
+ * Business Forgot Password Messages.
+ */
 const businessForgotPassword = {
   CHECK_YOU_EMAIL: 'You should recieve an email to reset your password, if the email exists.',
   INVALID_RESET_TOKEN: 'Invalid reset token.',
@@ -208,12 +262,18 @@ const businessForgotPassword = {
  * Service Strings
  */
 
+/**
+ * Service Validation Error Messages.
+ */
 const serviceValidationCRUDErrors = {
   emptyName: 'Service Name is a required field',
   emptyShortDescription: 'Service short description is a required field',
   invalidCategory: 'No such a category',
 };
 
+/**
+ * Offering Validation Error Messages.
+ */
 const offeringValidationError = {
   emptyPrice: 'Offering Price is a required field',
   emptyStartDate: 'Offering Start Date is a required field',
@@ -235,12 +295,18 @@ const offeringValidationError = {
  * Admin Strings
  */
 
+/**
+ * Admin Login Messages.
+ */
 const adminLoginMessages = {
   invalidCreds: 'Invalid Credentials.',
   loginSuccess: 'Admin Login Success.',
   invalidToken: 'Invalid Token',
 };
 
+/**
+ * Admin Validation Error Messages.
+ */
 const adminValidationErrors = {
   emptyEmail: 'Email is a required field.',
   invalidEmail: 'Invalid Email.',
@@ -256,6 +322,9 @@ const adminValidationErrors = {
   invalidClientID: 'Invalid Client ID',
 };
 
+/**
+ * Admin Success Messages.
+ */
 const adminSuccess = {
   categoryAdded: 'Category added succesfully!',
   categoryEdited: 'Category edited succesfully!',
@@ -263,6 +332,9 @@ const adminSuccess = {
   clientDeleted: 'Client removed succesfully',
 };
 
+/**
+ * Admin Failure Messages.
+ */
 const adminFailures = {
   clientAlreadyDeleted: 'Client is already deleted',
   categoryAlreadyDeleted: 'Category is already deleted',
@@ -272,10 +344,16 @@ const adminFailures = {
  * Search Strings
  */
 
+/**
+ * Search Error Messages.
+ */
 const searchErrors = {
   emptySearchResult: 'No search results match the query.',
 };
 
+/**
+ * Client Failure Messages.
+ */
 const clientFaliure = {
   notFound: 'The required client was not found.',
 };
