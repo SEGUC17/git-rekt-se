@@ -117,6 +117,8 @@ router.post('/forgot', (req, res, next) => {
 
   Business.findOne({
     email: req.body.email,
+    _deleted: false,
+    _status: 'verified',
   })
     .exec()
     .then((business) => {
@@ -129,7 +131,7 @@ router.post('/forgot', (req, res, next) => {
 
       return business.save()
         .then(() => {
-          Mailer.forgotPasswordEmail(email, req.headers.host, resetToken)
+          Mailer.forgotPasswordBusinessEmail(email, req.headers.host, resetToken)
             .then(() => res.json({
               message: Strings.businessForgotPassword.CHECK_YOU_EMAIL,
             }))

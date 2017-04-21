@@ -104,7 +104,7 @@ describe('View Services Tests', () => {
 
 
   it('it should not GET a Service by the non existence id', (done) => {
-    const route = '/api/v1/service/'.concat(4);
+    const route = '/api/v1/service/000000000000000000000000';
     req.get(route)
       .end((err, res) => {
         chai.expect(res.body).to.have.property('errors');

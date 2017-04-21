@@ -1,76 +1,52 @@
 <template>
-    <footer class="footer columns">
-        <div class="column is-9 left-footer2">
-            &copy; 2016 Backbone - All Rights Reserved.
+    <footer>
+        <div class="container">
+            <hr>
+            <div class="columns">
+                <div class="left-footer has-text-left column is-6">
+                    &copy; Gitrekt, Inc.
+                </div>
+
+                <div class="right-footer has-text-right column is-6">
+                    <router-link to="/privacy" class="footer-link">privacy &nbsp;</router-link>
+                    <router-link to="/terms" class="footer-link">terms &nbsp;</router-link>
+                    <a href="https://github.com/SEGUC17/git-rekt-se" class="footer-link">github &nbsp;</a>
+                    <a href="https://facebook.com/gitrektse" class="footer-link">facebook &nbsp;</a>
+                    <a href="https://twitter.com/gitrektse" class="footer-link">twitter &nbsp;</a>
+                </div>
+            </div>
         </div>
-        <div class="column is-3 right-footer2">
-            <a href="#" class="icon-link">
-                <div class="img-icons-2 is-danger"><i class="fa fa-facebook">&nbsp;</i></div>
-            </a>
-            <a href="#" class="icon-link">
-                <div class="img-icons-2"><i class="fa fa-google-plus">&nbsp;</i></div>
-            </a>
-            <a href="#" class="icon-link">
-                <div class="img-icons-2"><i class="fa fa-twitter">&nbsp;</i></div>
-            </a>
-            <a href="#" class="icon-link">
-                <div class="img-icons-2"><i class="fa fa-linkedin">&nbsp;</i></div>
-            </a>
-        </div>
-        <div class="clearfix"></div>
     </footer>
 </template>
 
 <script>
-    export default {
-    
-    };
+  export default {};
 </script>
 
 <style>
-    .footer {
-        padding: 1.5rem 0.5rem 0rem !important;
+    footer {
+        color: #767676;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        padding-bottom: 1em;
+
     }
-    
-    .white {
-        color: #fff;
+
+    .footer-link {
+        color: #767676;
+        font-size: 0.8em;
     }
-    
-    .footer-icons {
-        padding: 5px;
+
+    .footer-link:hover {
+        color: #333333;
     }
-    
-    .img-icons-2 {
-        display: inline-block;
-        width: 32px;
-        height: 32px;
-        padding-left: 3px;
-        line-height: 32px;
-        font-size: 16px;
-        text-align: center;
-    }
-    
-    .icon-link {
-        border: 1px solid rgba(0, 0, 0, 0.4);
-        padding-top: 15px !important;
-    }
-    
-    .right-footer2 {
-        text-align: right;
-    }
-    
-    .left-footer2 {
-        padding-left: 30px;
-        text-align: left;
-    }
-    
-    @media screen and (max-width: 999px) {
-        .right-footer2 {
+
+    @media screen and (max-width: 999px){
+        .left-footer,
+        .right-footer {
+            padding: 0;
             text-align: center;
         }
-        .left-footer2{
-            text-align: center;
-            padding-left: 0;
-        }
     }
+
 </style>

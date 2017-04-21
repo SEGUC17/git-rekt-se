@@ -22,6 +22,15 @@ require('dotenv')
 
 if (process.env.DEBUG_MODE) {
   app.use(logger('dev'));
+
+  /**
+   * Add Delay to test frontend.
+   */
+
+  app.use((req, res, next) => {
+    const delay = Math.floor(((Math.random() * 500) + 300));
+    setTimeout(next, delay);
+  });
 }
 
 /**
@@ -41,6 +50,7 @@ passport.use('facebook_strategy', fbConfig.facebookStrategy);
 
 app.use(passport.initialize());
 
+
 /**
  * API ROUTES.
  */
@@ -53,7 +63,7 @@ require('./routes/routes')(app);
 
 app.use(express.static(path.join(__dirname, '../public/dist/')));
 
-app.get('/*', (req, res) => res.redirect(`/#${req.path}`));
+app.get('/*', (req, res) => res.redirect(`/#${req.originalUrl}`));
 
 /**
  * Generic Error Handling Middlewares.
