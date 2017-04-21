@@ -103,6 +103,7 @@ export const loginRules = {
     trigger: 'blur',
   }],
 };
+
 export const clientForgotPassword = {
   password: [{
     required: true,
@@ -227,6 +228,33 @@ export const clientForgotPasswordMail = {
   },
   ],
 };
+
+export const businessAddCoupon = {
+  code: [{
+    required: true,
+    message: 'Please input Coupon Code',
+    trigger: 'blur',
+  }],
+  discount: [{
+    type: 'number',
+    required: true,
+    message: 'Please input Discount Value',
+    trigger: 'change',
+  }],
+  startDate: [{
+    type: 'date',
+    required: true,
+    message: 'Please pick a Start date',
+    trigger: 'change',
+  }],
+  endDate: [{
+    type: 'date',
+    required: true,
+    message: 'Please pick an End date',
+    trigger: 'change',
+  }],
+};
+
 export const unverfiedBusinessSignupValidation = {
 
   name: {

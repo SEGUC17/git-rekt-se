@@ -21,6 +21,7 @@ import businessLogin from '../components/Business/login.vue';
 import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
+import Coupon from '../components/Service/couponPage.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 import notfound from '../components/pages/404.vue';
 
@@ -72,8 +73,10 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
-},
-{
+}, {
+  path: '/service/:ser_id/coupons',
+  component: Coupon,
+}, {
   path: '/client/edit',
   component: clientEditInfo,
 },
