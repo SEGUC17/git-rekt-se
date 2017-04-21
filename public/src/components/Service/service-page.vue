@@ -37,11 +37,9 @@
 
                 <!-- Service Description -->
                 <div class="box">
-                    <div class="content">
                         <p>
                             {{ description }}
                         </p>
-                    </div>
                 </div>
 
                 <!-- Navigation tabs -->

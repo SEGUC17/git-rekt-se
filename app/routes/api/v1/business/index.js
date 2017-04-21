@@ -25,8 +25,6 @@ router.use(expressValidator({}));
 router.get('/:id', (req, res, next) => {
   let returnedBusiness;
 
-  console.log('hoba');
-
   Business.findOne({
     _id: req.params.id,
     _deleted: false,

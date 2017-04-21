@@ -1,341 +1,226 @@
 <template>
-    <div>
-        <div class="gallery" :style="backgroundStyle">
-            <h1 class="extra-large white">
-                {{name}}
-            </h1>
-    
-            <h2 class="subtitle white">
-                {{shortDescription}}
-            </h2>
+    <div class="business-page">
+        <!-- Business Info -->
+        <div class="hero bus-page-top">
+            <div class="hero-body">
+                <div class="container">
+                    <div class="service-categories is-spaced">
+                            <span class="search-tag tag is-dark is-small" v-for="category in categories"
+                                  :key="category._id">{{ category.title }}</span>
+                    </div>
+                    <div class="title is-2 white"> {{ name }} </div>
+
+                    <div class="subtitle white">{{ shortDescription }}</div>
+
+                    <div class="subtitle white is-marginless">
+                        <span><i class="icon is-medium fa fa-envelope" style="padding-top: 0.25em"></i></span>
+                        {{ email }}
+
+                    </div>
+                    <div class="subtitle white is-marginless">
+                        <span><i class="icon is-medium fa fa-phone" style="padding-top: 0.25em"></i></span>
+                        <span v-for="num in phoneNumbers">{{ num }} </span>
+                    </div>
+                    <div class="workinghours">
+                        <div class="subtitle white is-marginless">
+                            <span><i class="icon is-medium fa fa-clock-o" style="padding-top: 0.25em"></i></span>
+                            Working Hours
+
+                        </div>
+                        <pre class="subtitle white" style="padding-left: 1.9em">{{ workingHours }}</pre>
+                    </div>
+
+                </div>
+            </div>
         </div>
-    
-        <div class="content">
-            <el-row :gutter="20">
-                <el-col :span="16">
-                    <div class="grid-content">
-                        <hr class="description">
-                        <p> {{description}} </p>
+
+        <!-- Business Description -->
+        <div class="columns">
+            <!-- Left Pane -->
+            <div class="column is-7 is-offset-1">
+
+                <!-- Service Description -->
+                <div class="box">
+                    <div class="content is-marginless">
+                        <p>
+                            {{ description }}
+                        </p>
                     </div>
-                    <div class="grid-content">
-                        <hr class="services">
-                        <el-collapse accordion>
-                            <el-collapse-item v-for="service in services" :key="service" :title="service.name">
-                                <div>{{service.shortDescription}}
-                                    <el-button class="right" @click="bookService(service)">Book Now</el-button>
-                                    <el-button class="right" @click="viewService(service)">View</el-button>
+                </div>
+
+                <!-- Navigation tabs -->
+                <div class="tabs">
+                    <ul>
+                        <li @click="active = 1" :class="{ 'is-active': (active === 1) }"><a>Services</a></li>
+                        <li @click="active = 2" :class="{ 'is-active': (active === 2) }"><a>Gallery</a></li>
+                        <li @click="active = 3" :class="{ 'is-active': (active === 3) }"><a>Branches</a></li>
+                    </ul>
+                </div>
+
+                <!-- Gallery Tab -->
+                    <transition name="fade">
+                        <div class="no-gallery" v-show="active === 2" v-if="gallery.length === 0">
+                            <h3 class="title has-text-centered">
+                                No Gallery found.
+                            </h3>
+                        </div>
+                        <div class="gallery" v-if="gallery.length > 0" v-show="active === 2">
+                            <el-carousel :interval="1000" arrow="always">
+                                <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
+                                    <img :src="'uploads/' + item.path" class="extended"/>
+                                </el-carousel-item>
+                            </el-carousel>
+                        </div>
+                    </transition>
+
+                <!-- Branches Tab -->
+                    <transition name="fade">
+                        <div class="branches" v-show="active === 3">
+                            <div class="box" v-for="branch in branches">
+                                <div class="content branches">
+                                    <div class="branch">
+                                        <h4> {{ branch.location }} </h4>
+                                        <h6>
+                                            <span><i class=" icon fa fa-location-arrow"></i></span>
+                                            {{ branch.address }}
+                                        </h6>
+                                    </div>
                                 </div>
-                            </el-collapse-item>
-                        </el-collapse>
-                    </div>
-                </el-col>
-                <el-col :span="8">
-                    <div class="grid-content">
-                        <hr class="info">
-                        <p> Working hours: {{workingHours}} </p>
-                    </div>
-                    <div class="grid-content">
-                        <hr class="categories">
-                        <el-tag type="primary" v-for="category in categories" :key="category">{{category.title}}</el-tag>
-                    </div>
-                    <div class="grid-content">
-                        <hr class="contacts">
-                        <h6> Email: {{email}} </h6>
-                        <h6> Numbers: </h6>
-                        <ul>
-                            <li v-for="num in phoneNumbers">
-                                {{ num }}
-                            </li>
-                        </ul>
-                        <h6> Branches: </h6>
-                        <ul>
-                            <li v-for="branch in branches">
-                                {{ branch.location }},{{branch.address}}
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="grid-content">
-                        <hr class="related">
-                        <ul>
-                            <li v-for="business in related">
-                                <div @click="relatedView(business)">
-                                    {{ business.name }}
+                            </div>
+                        </div>
+                    </transition>
+
+                <!-- Services Tab -->
+                <transition name="fade">
+                    <div class="services" v-show="active === 1">
+                        <router-link :to="`/service/${service._id}`" class="service-search-result box"
+                                     v-for="service in services" :key="service._id">
+                            <div class="content services">
+                                <div class="service">
+                                    <h4> {{ service.name }} </h4>
+                                    <h6>
+                                        <span><i class=" icon fa fa-edit"></i></span>
+                                        {{ service.shortDescription }}
+                                    </h6>
+                                    <el-rate class="rating-search" :value="service._avgRating"
+                                             disabled :max="5">
+                                    </el-rate>
                                 </div>
-                            </li>
-                        </ul>
+                            </div>
+                        </router-link>
                     </div>
-                </el-col>
-            </el-row>
+                </transition>
+            </div>
+
+            <!-- Right Pane -->
+            <div class="column is-3">
+                <!-- Related -->
+                <div class="panel">
+                    <p class="panel-heading"> Related Businesses </p>
+                    <a class="dark-link panel-block"
+                       @click.prevent="load(bus._id)"
+                       v-for="bus in related"
+                       :key="bus._id"
+                       :href="`/business/${bus._id}`">
+                        <p>
+                            {{ bus.name }}
+                        </p>
+                    </a>
+                </div>
+            </div>
         </div>
-    
-    
+
     </div>
 </template>
 
 <script>
-    import axios from 'axios';
-    import EndPoints from '../../../services/EndPoints';
-    export default {
-        data() {
-            return {
-                images: [{
-                    path: 'http://www.solidbackgrounds.com/images/2560x1440/2560x1440-black-solid-color-background.jpg'
-                }],
-                currentNumber: 0,
-                timer: null,
-    
-                id: '',
-                name: '',
-                email: '',
-                shortDescription: '',
-                gallery: [],
-                phoneNumbers: [],
-                description: '',
-                workingHours: '',
-                categories: [],
-                branches: [],
-                services: [],
-    
-                //related businesses
-                related: [],
-            }
-        },
-        mounted: function() {
-            this.load(this.$route.params.id)
-        },
-    
-        computed: {
-            backgroundStyle: function() {
-                return {
-                    //add .path when adding gallery
-                    'background-image': 'url("' + this.images[this.currentNumber % this.images.length].path + '")'
-                }
-            }
-        },
-    
-        methods: {
-            startRotation: function() {
-                this.timer = setInterval(this.next, 5000);
-            },
-    
-            next: function() {
-                this.currentNumber += 1
-            },
-            prev: function() {
-                this.currentNumber -= 1
-            },
-            viewService(service) {
-                const serviceID = service._id;
-                let url = `/service/${serviceID}`;
-                this.$router.push(url);
-            },
-            bookService(service) {
-                const serviceID = service._id;
-                let url = `/service/${serviceID}/book`;
-                this.$router.push(url);
-            },
-            relatedView(business) {
-                const businessID = business._id;
-                let url = `/business/${businessID}`;
-                this.$router.push(url);
-                this.load(businessID);
-            },
-            load(id) {
-                this.startRotation();
-    
-                axios.get(EndPoints.Visitor().viewBusiness(id))
-                    .then((business) => {
-                        this.id = business.data.id;
-                        this.name = business.data.name;
-                        this.email = business.data.email;
-                        this.shortDescription = business.data.shortDescription;
-                        this.gallery = business.data.gallery;
-                        this.phoneNumbers = business.data.phoneNumbers;
-                        this.description = business.data.description;
-                        this.workingHours = business.data.workingHours;
-                        this.categories = business.data.categories;
-                        this.branches = business.data.branches;
-                        this.services = business.data.services;
-    
-                        //uncomment this when you add gallery .setting the slider
-                        if (this.gallery.length > 0) {
-                            this.images = this.gallery;
-                        }
-    
-                        console.log(this.images);
-    
-                        //getting related businesses
-                        axios.get(EndPoints.Visitor().relatedBusiness(this.categories[0]._id, 1))
-                            .then((res) => {
-                                this.related = res.data.results;
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                            });
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-    
-            }
-        }
-    };
+  import axios from 'axios';
+  import {Visitor} from '../../../services/EndPoints';
+
+  export default {
+    data() {
+      return {
+        id: '',
+        name: '',
+        active: 1,
+        email: '',
+        shortDescription: '',
+        gallery: [],
+        phoneNumbers: [],
+        description: '',
+        workingHours: '',
+        categories: [],
+        branches: [],
+        services: [],
+        related: [],
+      };
+    },
+    mounted() {
+      this.load(this.$route.params.id);
+    },
+
+    methods: {
+      viewService(service) {
+        const serviceID = service._id;
+        const url = `/service/${serviceID}`;
+        this.$router.push(url);
+      },
+      bookService(service) {
+        const serviceID = service._id;
+        const url = `/service/${serviceID}/book`;
+        this.$router.push(url);
+      },
+      relatedView(business) {
+        const businessID = business._id;
+        const url = `/business/${businessID}`;
+        this.$router.push(url);
+        this.load(businessID);
+      },
+      load(id) {
+        axios.get(Visitor().viewBusiness(id))
+            .then((business) => {
+              this.id = business.data.id;
+              this.name = business.data.name;
+              this.email = business.data.email;
+              this.shortDescription = business.data.shortDescription;
+              this.gallery = business.data.gallery;
+              this.phoneNumbers = business.data.phoneNumbers;
+              this.description = business.data.description;
+              this.workingHours = business.data.workingHours;
+              this.categories = business.data.categories;
+              this.branches = business.data.branches;
+              this.services = business.data.services;
+
+              axios.get(Visitor().relatedBusiness(this.categories[0]._id, 1))
+                  .then((res) => {
+                    this.related = res.data.results;
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+      },
+    },
+  };
 </script>
 
 <style>
-    .extra-large {
-        font-size: 4em;
-        line-height: 1.2em;
+    .bus-page-top {
+        background: #cb2d3e;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #ef473a, #cb2d3e);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #ef473a, #cb2d3e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        margin-bottom: 2em;
     }
-    
-    .gallery {
-        padding-top: 145px;
-        padding-bottom: 120px;
-        text-align: center;
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
+
+    pre {
+        background: transparent;
+        font: inherit;
     }
-    
-    .hero-text {
-        text-align: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-    }
-    
-    hr.style1 {
-        border-top: 1px solid lightgrey;
-    }
-    
-    hr.description {
-        border-top: 3px double #8c8b8b;
-        text-align: center;
-    }
-    
-    hr.description:after {
-        content: 'Description';
-        display: inline-block;
-        position: relative;
-        top: -22px;
-        padding: 0 10px;
-        background: #ffffff;
-        color: #8c8b8b;
-        font-size: 24px;
-    }
-    
-    hr.info {
-        border-top: 3px double #8c8b8b;
-        text-align: center;
-    }
-    
-    hr.info:after {
-        content: 'General info';
-        display: inline-block;
-        position: relative;
-        padding: 0 5px;
-        top: -22px;
-        background: #ffffff;
-        color: #8c8b8b;
-        font-size: 24px;
-    }
-    
-    hr.categories {
-        border-top: 3px double #8c8b8b;
-        text-align: center;
-    }
-    
-    hr.categories:after {
-        content: 'Categories';
-        display: inline-block;
-        position: relative;
-        padding: 0 5px;
-        top: -22px;
-        background: #ffffff;
-        color: #8c8b8b;
-        font-size: 24px;
-    }
-    
-    hr.contacts {
-        border-top: 3px double #8c8b8b;
-        text-align: center;
-    }
-    
-    hr.contacts:after {
-        content: 'Contacts';
-        display: inline-block;
-        position: relative;
-        padding: 0 5px;
-        top: -22px;
-        background: #ffffff;
-        color: #8c8b8b;
-        font-size: 24px;
-    }
-    
-    hr.related {
-        border-top: 3px double #8c8b8b;
-        text-align: center;
-    }
-    
-    hr.related:after {
-        content: 'Related Services';
-        display: inline-block;
-        position: relative;
-        padding: 0 5px;
-        top: -22px;
-        background: #ffffff;
-        color: #8c8b8b;
-        font-size: 24px;
-    }
-    
-    hr.services {
-        border-top: 3px double #8c8b8b;
-        text-align: center;
-    }
-    
-    hr.services:after {
-        content: 'Our Services';
-        display: inline-block;
-        position: relative;
-        padding: 0 5px;
-        top: -22px;
-        background: #ffffff;
-        color: #8c8b8b;
-        font-size: 24px;
-    }
-    
-    hr.reviews {
-        border-top: 3px double #8c8b8b;
-        text-align: center;
-    }
-    
-    hr.reviews:after {
-        content: 'Reviews';
-        display: inline-block;
-        position: relative;
-        padding: 0 5px;
-        top: -22px;
-        background: #ffffff;
-        color: #8c8b8b;
-        font-size: 24px;
-    }
-    
-    .grid-content {
-        border: 1px solid #8c8b8b;
-        border-radius: 25px;
-        padding: 25px;
-        margin: 20px;
-    }
-    
-    .content {
-        margin: 30px;
-        max-width: 720;
-    }
-    
-    .right {
-        float: right;
-        margin: 5px;
+
+    a.box:hover, a.box:focus{
+        box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px #eee;
     }
 </style>
