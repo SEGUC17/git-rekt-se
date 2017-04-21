@@ -5,25 +5,29 @@
     flex-direction: column;
 }
 
+#root{
+  overflow: hidden;
+}
 
-#grcontent {
-    flex: 1;
+#grcontent{
+  flex: 1;
+}
+
+.extra-large {
+  font-size: 4em;
+  line-height: 1.2em;
+}
+
+.intro-container {
+  padding: 5em;
 }
 
 .el-menu-header {
-    border-radius: 0;
+  border-radius: 0;
 }
 
 .el-menu-item-right {
-    float: right !important;
-}
-
-.clearfix:after {
-    content: " "; /* Older browser do not support empty content */
-    visibility: hidden;
-    display: block;
-    height: 0;
-    clear: both;
+  float: right !important;
 }
 
 .white {
@@ -32,4 +36,31 @@
 
 .login-form {
     margin-top: 2em;
+}
+
+.box{
+    border-radius: 0;
+}
+
+/*
+    Errors div style.
+*/
+
+.errors {
+    margin-bottom: 1.5em;
+}
+
+.modal-card-foot{
+    margin-top: 0 !important;
+}
+/*
+    Responsive form margin.
+*/
+
+.margin-bot-1{
+    margin-bottom: 1em;
+}
+
+.no-data p{
+    margin-top: 0.5em;
 }

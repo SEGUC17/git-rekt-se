@@ -99,7 +99,6 @@
     methods: {
       resendEmail(formName) {
         this.$refs[formName].validate((valid) => {
-          console.log(valid);
           if (valid) {
             this.errors = [];
             this.resend = true;
@@ -114,10 +113,6 @@
     .email-confirmed {
         border-radius: 0;
         padding: 2em;
-    }
-
-    .errors {
-        margin: 2em;
     }
 
     .confirmation-icon {
