@@ -1,9 +1,10 @@
+import axios from 'axios';
+import moment from 'moment';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import elementUI from 'element-ui';
 import locale from 'element-ui/lib/locale/lang/en'
 import Buefy from 'buefy'
-import axios from 'axios';
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import acceptbtn from '../../components/Admin/accept-btn.vue';
@@ -26,9 +27,11 @@ Vue.filter('appendRandom', (e) => {
   return `${e}${Math.random() * 10000000}`;
 });
 
+Vue.filter('moment', date => moment(date).format('dddd MMMM Do YYYY.'));
+
 Vue.use(VueRouter);
 Vue.use(elementUI, {
-    locale
+  locale
 });
 Vue.use(Buefy, {
   defaultIconPack: 'fa',

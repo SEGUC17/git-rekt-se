@@ -5,6 +5,7 @@ import Reset from '../components/Client/Reset.vue';
 import reset from '../components/Business/reset.vue';
 import ForgotPassword from '../components/Business/forgotPassword.vue';
 import Home from '../components/pages/Index/home.vue';
+import servicePage from '../components/Service/service-page.vue';
 import clientEditInfo from '../components/Client/clientEditInfo.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
@@ -20,6 +21,7 @@ import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 
+
 const routes = [{
   path: '/',
   component: Home,
@@ -31,6 +33,9 @@ const routes = [{
 {
   path: '/business/apply',
   component: UnverifiedBusinessSignup,
+}, {
+  path: '/service/:id',
+  component: servicePage,
 }, {
   path: '/search',
   component: SearchPage,
@@ -93,6 +98,7 @@ const routes = [{
   component: reset,
 },
 ];
+
 
 const router = new VueRouter({
   routes,
