@@ -85,21 +85,20 @@
                 this.addErrors.splice(idx, 1);
             },
             onSubmit() {
-                this.addDialog = false;
                 if (this.form.path) {
                     if (this.isImage(this.form.path)) {
                         let data = new FormData();
                         data.append('path', this.form.path);
                         data.append('description', this.form.description);
-    
+                        
+                        this.addDialog = false;
                         this.form.errors.clear();
                         this.addImage(data);
                     } else {
-                        this.errors = ['You can only submit Images.'];
-                        this.form.path = '';
+                        this.addErrors = ['You can only submit Images.'];
                     }
                 } else {
-                    this.errors = ['Image is required.'];
+                    this.addErrors = ['Image is required.'];
                 }
             },
             fileChanged(e) {
