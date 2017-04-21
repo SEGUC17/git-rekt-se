@@ -24,7 +24,7 @@ export const Client = () => {
     logout: `${authBase}/logout`,
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
-    getTransactions: `${profileBase}/history`,
+    getTransactions: `${profileBase}/transaction/history`,
     getInfo: clientID => `${profileBase}/${clientID}`,
   };
 };

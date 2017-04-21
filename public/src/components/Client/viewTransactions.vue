@@ -80,8 +80,8 @@
       },
     },
     mounted() {
-      if(!clientAuth.isAuthenticated){
-        this.router.push('/');
+      if(!clientAuth.isAuthenticated()){
+        this.$router.push('/');
         this.$toast.open({
           type: 'is-danger',
           position: 'bottom',

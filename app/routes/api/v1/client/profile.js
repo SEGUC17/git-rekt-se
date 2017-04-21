@@ -143,7 +143,7 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
 /**
  * Client View Transactions API Route.
  */
-router.get('/history', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
+router.get('/transaction/history', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
   const projection = {
     _deleted: false,
     coupon: false,
@@ -162,7 +162,6 @@ router.get('/history', authMiddleWare.clientAuthMiddleware, (req, res, next) => 
           .filter(offering => offering._id === booking._offering);
         return booking;
       });
-      console.log(bookings);
       res.json({
         bookings,
       });
