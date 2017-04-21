@@ -62,12 +62,10 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
-},
-{
+}, {
   path: '/client/edit',
   component: clientEditInfo,
-},
-{
+}, {
   path: '/client/forgot',
   component: Forgot,
 }, {

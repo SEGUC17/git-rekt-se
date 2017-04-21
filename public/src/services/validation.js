@@ -369,6 +369,7 @@ export const offeringRules = {
     defaultField: {
       type: 'date',
       required: true,
+      message: 'Please enter a duration for your offering',
     },
     message: 'Please enter a valid duration for your offering',
     trigger: 'blur',

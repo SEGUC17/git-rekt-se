@@ -434,8 +434,10 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                     if (validBranch) {
                       let validOffering = false;
                       let offeringDoc;
+                      let oldbranch;
                       service.offerings.forEach((offering) => {
                         if (`${offering._id}` === offeringID && !offering._deleted) {
+                          oldbranch = offering.branch;
                           offering.startDate = reqData.startDate;
                           offering.endDate = reqData.endDate;
                           offering.location = reqData.location;
@@ -448,12 +450,10 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                         }
                       });
                       if (validOffering) {
-                        const oldbranch = offeringDoc.branch;
-
                         let oldexist = false; // old branch before edit exist
 
                         service.offerings.forEach((offering) => {
-                          if (offering.branch === oldbranch && offeringID !== `${offering._id}` && !offering._deleted) {
+                          if (`${offering}` !== offeringID && `${offering.branch}` === `${oldbranch}` && !offering._deleted) {
                             oldexist = true;
                           }
                         });
@@ -589,7 +589,7 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                 let branchExist = false; // branch of this offering
                 const oldbranch = offeringDoc.branch;
                 service.offerings.forEach((offer) => {
-                  if (!`${offer}` === offeringID && offer.branch === oldbranch && !offer._deleted) {
+                  if (`${offer}` !== offeringID && `${offer.branch}` === `${oldbranch}` && !offer._deleted) {
                     branchExist = true;
                   }
                 });
@@ -614,14 +614,6 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                   .catch(e => next(e));
                 })
                 .catch(e => next(e));
-                service.markModified('offerings');
-                service.save()
-                  .then(() => {
-                    res.json({
-                      message: Strings.serviceSuccess.offeringDeleted,
-                    });
-                  })
-                  .catch(e => next(e));
               } else {
                 next([Strings.offeringValidationError.invalidOperation]);
               }
