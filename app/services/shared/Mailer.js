@@ -86,11 +86,32 @@ exports.notifyAdminOfNewBusinessSignup = () => {
 exports.forgotPasswordEmail = (email, host, resetToken) => {
   const mailOptions = {
     to: email,
-    from: 'passwordreset@demo.com',
-    subject: 'Node.js Password Reset',
+    from: 'mohamedelzarei@gmail.com',
+    subject: '[Git-Rekt] Reset Password',
     text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
       'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-      'http://'}${host}/reset/${resetToken}\n\n` +
+      'http://'}${host}/client/reset/${resetToken}\n\n` +
+      'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+  };
+
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(mailOptions, (err, information) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(information);
+    });
+  });
+};
+
+exports.forgotPasswordBusinessEmail = (email, host, resetToken) => {
+  const mailOptions = {
+    to: email,
+    from: 'mohamedelzarei@gmail.com',
+    subject: '[Git-Rekt] Reset Password',
+    text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+      'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+      'http://'}${host}/business/reset/${resetToken}\n\n` +
       'If you did not request this, please ignore this email and your password will remain unchanged.\n',
   };
 
