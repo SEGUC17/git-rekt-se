@@ -118,7 +118,7 @@ router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) =
   Booking.find({ _deleted: false }, { offering: false, _deleted: false })
     .populate('_service', 'name _business offerings')
     .populate('_client', 'firstName lastName email')
-    .populate('_transaction', 'stripe_charge')
+    .populate('_transaction', 'stripe_charge amount')
     .exec()
     .then((bookings) => {
       bookings = bookings.filter(booking => `${booking._service._business}` === req.user.id);

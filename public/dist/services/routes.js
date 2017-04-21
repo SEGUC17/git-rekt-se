@@ -39860,7 +39860,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     scopedSlots: _vm._u([
       ["default", function(scope) {
-        return [_vm._v("\n        " + _vm._s(((scope.row._service.offerings[0].price) + " EGP")) + "\n      ")]
+        return [_vm._v("\n        " + _vm._s(((scope.row._transaction.amount / 100.0) + " EGP")) + "\n      ")]
       }]
     ])
   }), _vm._v(" "), _c('el-table-column', {

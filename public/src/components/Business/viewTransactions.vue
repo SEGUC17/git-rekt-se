@@ -37,7 +37,7 @@
 
       <el-table-column label="Amount" header-align="center">
         <template scope="scope">
-          {{ `${scope.row._service.offerings[0].price} EGP`}}
+          {{ `${scope.row._transaction.amount / 100.0} EGP`}}
         </template>
       </el-table-column>
 
