@@ -11,7 +11,7 @@
                       </p>
                     <ul class="menu-list">
                         <li><router-link to="/admin/dashboard/confirm">Accept/Reject</router-link></li>
-                        <li><a>Remove</a></li>
+                        <li><router-link to="/admin/dashboard/business/remove">Remove</router-link></li>
                     </ul>
                     <p class="menu-label">
                         Categories
