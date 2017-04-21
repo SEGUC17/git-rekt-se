@@ -101,7 +101,24 @@
             <el-alert type="success" show-icon v-if="editReviewSuccess" :title="editReviewSuccess"></el-alert>
             <el-alert type="success" show-icon v-if="deleteReviewSuccess" :title="deleteReviewSuccess"></el-alert>
   
-            <create-review :serviceID="serviceID" @created="handleCreate"></create-review>
+            <create-review v-if="clientID" :serviceID="serviceID" @created="handleCreate"></create-review>
+            <div v-else>
+              <h3>
+                Leave a review...</h3>
+              <el-form label-width="120px">
+                <el-form-item label="Rating" required>
+                  <el-rate disabled></el-rate>
+                </el-form-item>
+                <el-form-item label="Review">
+                  <el-input type="textarea" disabled placeholder="Enter your review here (Max 512 characters)"></el-input>
+                </el-form-item>
+                <el-form-item class="is-pulled-right">
+                  <el-popover ref="popover" placement="top-start" title="Cannot Leave Review" width="200" trigger="hover" content="You need to be logged in to leave a review.">
+                  </el-popover>
+                  <el-button v-popover:popover type="primary">Create</el-button>
+                </el-form-item>
+              </el-form>
+            </div>
             <edit-review :serviceID="serviceID" :review="reviewToEdit" :visible="editReviewVisible" @edited="handleEdit" @cancelEdit="handleEditCancel"></edit-review>
             <delete-review :serviceID="serviceID" :reviewID="reviewToDelete._id" :visible="deleteReviewVisible" @deleted="handleDelete" @cancelDelete="handleDeleteCancel"></delete-review>
   
@@ -337,8 +354,8 @@
   
   
   /*
-           Transition.
-          */
+                 Transition.
+                */
   
   .fade-enter-active,
   .fade-leave-active {
