@@ -1,155 +1,130 @@
 <template>
-    <div>
-        <section class="hero is-primary is-medium" :style="backgroundStyle">
+    <div class="service-page">
+        <!-- Service Info -->
+        <div class="hero service-info">
             <div class="hero-body">
                 <div class="container">
-                    <h1 class="title">
-                        {{businessName}}
-                    </h1>
-                    <h2 class="subtitle">
-                        {{name}}
-                    </h2>
-                    Current rating:
-                    <el-rate v-model="rating" disabled show-text text-color="#ff9900" text-template="{value} points">
-                    </el-rate>
+                    <div class="service-categories is-spaced">
+                            <span class="search-tag tag is-dark is-small" v-for="category in categories"
+                                  :key="category._id">{{ category.title }}</span>
+                    </div>
+                    <div class="title is-2 white"> {{ name }} </div>
+
+                    <div class="subtitle white"> {{ businessName }} </div>
+
+                    <div class="subtitle white">{{ shortDescription }}</div>
+                    <div class="rating">
+                        <el-rate class="is-pulled-left" v-model="rating" disabled :max="5"></el-rate>
+                    </div>
+
+                    <router-link :to="`${$route.params.id}/book`"
+                                 class="button white is-warning is-pulled-right"
+                                 style="font-size: 1.2em">
+                        Book Now
+
+
+                    </router-link>
                 </div>
-            </div>
-        </section>
-        <div v-show="errors.length > 0">
-            <div class="error" v-for="error in errors">
-                <el-alert :title="error" type="error" show-icon>
-                </el-alert>
             </div>
         </div>
+
+        <!-- Service Description -->
         <div class="columns">
-            <div class="column is-one-quarter">
-            </div>
-    
-            <div class="column">
-                <el-tabs v-model="activeName" @tab-click="handleClick">
-                    <el-tab-pane label="Info" name="first">
-                        <article class="box" style="margin:2em">
-                            <h1 class="title" style="margin-bottom:1em">Description:</h1>
-                            <div>{{description}}</div>
-                        </article>
-    
-                    </el-tab-pane>
-                    <el-tab-pane label="Gallery" name="second">
-                        <div>
-                            <template>
-                                                <el-carousel :interval="5000" arrow="always">
-                                                    <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
-                                                        <img :src="item.path" class="extended" > </img>
-                                                    </el-carousel-item>
-                                                </el-carousel>
-                            </template>
+            <!-- Left Pane -->
+            <div class="column is-7 is-offset-1">
+
+                <!-- Service Description -->
+                <div class="box">
+                    <div class="content">
+                        <p>
+                            {{ description }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Navigation tabs -->
+                <div class="tabs">
+                    <ul>
+                        <li @click="active = 1" :class="{ 'is-active': (active === 1) }"><a>Offerings</a></li>
+                        <li @click="active = 2" :class="{ 'is-active': (active === 2) }"><a>Gallery</a></li>
+                        <li @click="active = 3" :class="{ 'is-active': (active === 3) }"><a>Reviews</a></li>
+                    </ul>
+                </div>
+
+                <!-- Offering Tab -->
+                <transition name="fade">
+                    <div class="offerings" v-show="active === 1">
+                        <div class="box" v-for="offering in offerings">
+                            <div class="content offerings">
+                                <div class="offering">
+                                    <h4> {{ offering.location }} </h4>
+
+                                    <h6>
+                                        <span><i class=" icon fa fa-location-arrow"></i></span>
+                                        {{ getBranchDetails(offering.branch).address }}
+                                    </h6>
+
+                                    <h6>
+                                        <span><i class=" icon fa fa-calendar"></i></span>
+                                        {{ offering.startDate | moment }}
+                                    </h6>
+
+                                    <h6>
+                                        <span><i class=" icon fa fa-calendar"></i></span>
+                                        {{ offering.endDate | moment }}
+                                    </h6>
+
+                                    <h6>
+                                        <span><i class=" icon fa fa-money"></i></span>
+                                        {{ offering.price }} EGP
+                                    </h6>
+
+                                </div>
                             </div>
-                    </el-tab-pane>
-                    <el-tab-pane label="Offerings" name="third">
-                          <div class="box cyan-bg" v-for="offer in offerings" style="margin-top:2em; margin-bottom:2em">
-                    <div class="columns">
-                        <div class="column">
-                            <p>
-                                <h1 class="title">
-                                    {{offer.address}}
-                                </h1>
-                                <h2 class="subtitle">
-                                    {{offer.location}}
-                                </h2>
-                                 <h2 class="subtitle">
-                                    {{new Date(offer.startDate).toLocaleDateString()}} - {{new Date(offer.endDate).toLocaleDateString()}}
-                                </h2>
-                            </p>
-                        </div>
-                        <div class="column">
-                            <span class="subtitle">EGP {{offer.price}}</span>
-                        </div>
-                        <div class="column">
-                            <el-button type="success" @click="BookNow()">Book Now</el-button>
                         </div>
                     </div>
-    
-                </div>
-                    </el-tab-pane>
-                        <el-tab-pane label="Ratings" name="fourth">
-                                <el-card class="box-card" v-for="review in reviews" v-bind:data="review" v-bind:key="review">
-                                    <div slot="header" class="clearfix">
-                                       <p> <span v-text="review._client.firstName"> </span>  <span v-text="review._client.lastName"> </span> </p>
-                                        
-                                        <span style="line-height: 36px;">
-                                            <el-rate v-model="review.rating" disabled show-text text-color="#ff9900" text-template="{value} points"></el-rate>
-                                        </span>
-                                        <el-button style="float: right;" type="primary">Operation button</el-button>
-                                    </div>
-                                    <div class="text item">
-                                        {{review.description}}
-                                    </div>
-                                </el-card>
-                        </el-tab-pane>
-                </el-tabs>
+                </transition>
+
+                <!-- Gallery Tab -->
+                <transition name="fade">
+                    <div class="no-gallery" v-show="active === 2" v-if="gallery.length === 0">
+                        <h3 class="title has-text-centered">
+                            No Gallery found.
+                        </h3>
+                    </div>
+                    <div class="gallery" v-if="gallery.length > 0" v-show="active === 2">
+                        <el-carousel :interval="3000" arrow="never">
+                            <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
+                                <img :src="'uploads/' + item.path" class="extended"/>
+                            </el-carousel-item>
+                        </el-carousel>
+                    </div>
+                </transition>
+
+                <!-- Reviews Tab -->
+                <transition name="fade">
+                    <div class="reviews">
+
+                    </div>
+                </transition>
             </div>
-    
-            <div class="column">
-    
-                <div class="card">
-                    <header class="card-header">
-                        <p class="card-header-title">
-                            Contact us.
-                        </p>
-                    </header>
-                    <div class="card-content">
-                        <div class="content">
-                            Email: {{businessEmail}}
-                        </div>
-                        <div class="content">
-                            Phone numbers:
-                            <ul>
-                                <li v-for="number in businessPhoneNumbers">{{number}}</li>
-                            </ul>
-                        </div>
-                    </div>
-    
-                </div>
-                <div class="card">
-                    <header class="card-header">
-                        <p class="card-header-title">
-                            Categories:
-                        </p>
-                    </header>
-                    <div class="card-content">
-                        <div class="content">
-                            <ul>
-                                <span class="tag is-black" v-for="category in categories">{{category.title}}</span>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <header class="card-header">
-                        <p class="card-header-title">
-                            Related services:
-                        </p>
-                    </header>
-                    <div class="card-content">
-                        <div class="content">
-                            <!--card starts here-->
 
-                            <el-row>
-                                <el-col :span="8" v-for="relatedService in relatedServices" v-bind:data="relatedService" v-bind:key="relatedService.name">
-                                    <el-card :body-style="{ padding: '0px' }">
-                                        <img :src="relatedService.coverImage" class="image">
-                                        <div style="padding: 14px;">
-                                            <span>{{relatedService.name}}</span>
-                                            <div class="bottom clearfix">
-                                                <el-button type="text" class="button is-primary" @click="goTo(relatedService._id)"> Check it now </el-button>
-                                            </div>
-                                        </div>
-                                    </el-card>
-                                </el-col>
-                            </el-row>
-
-                        </div>
-                    </div>
+            <!-- Right Pane -->
+            <div class="column is-3">
+                <div class="panel">
+                    <p class="panel-heading"> Related Services </p>
+                    <a class="dark-link panel-block"
+                       @click.prevent="getRelatedService(service._id)"
+                       v-for="service in relatedServices"
+                       :key="service._id"
+                       :href="`/service/${service._id}`">
+                        <figure class="related-image image is-64x64" v-if="service.coverImage">
+                            <img :src="'uploads/' + service.coverImage" alt="Image">
+                        </figure>
+                        <p>
+                            {{ service.name }}
+                        </p>
+                    </a>
                 </div>
             </div>
         </div>
@@ -158,195 +133,137 @@
 
 
 <script>
-    import axios from 'axios';
-    import EndPoints from '../../services/EndPoints.js';
-    
-    export default {
-        data() {
-            return {
-                name: '',
-                shortDescription: '',
-                description: '',
-                coverImage: '',
-                businessName: '',
-                businessEmail: '',
-                businessShortDescription: '',
-                businessDescription: '',
-                businessPhoneNumbers: null,
-                businessGallery: null,
-                businessWorkingHours: null,
-                branches: null,
-                reviews: null,
-                gallery: null,
-                activeName: 'first',
-                categories: null,
-                offerings: null,
-                relatedServices: null,
-                current: '',
-                errors: [],
-                rating:0,
-            };
-        },
-        methods: {
-            //send get request to obtain service info using service id
-            getService() {
-                const loader = this.$loading({
-                    fullscreen: true,
-                });
-                axios.get(EndPoints.Service().viewService(this.$route.params.id)).then((res) => {
-                    loader.close();
-                    const service = res.data;
-                    this.name = service.name,
-                        this.shortDescription = service.shortDescription,
-                        this.description = service.description,
-                        this.businessName = service.businessName,
-                        this.businessEmail = service.businessEmail,
-                        this.coverImage = service.coverImage,
-                        this.businessShortDescription = service.businessShortDescription,
-                        this.businessDescription = service.businessDescription,
-                        this.businessPhoneNumbers = service.businessPhoneNumbers,
-                        this.businessGallery = service.businessGallery,
-                        this.businessWorkingHours = service.businessWorkingHours,
-                        this.branches = service.branches,
-                        this.reviews = service.reviews,
-                        this.gallery = service.gallery,
-                        this.categories = service.categories,
-                        this.offerings = service.offerings,
-                        this.rating =service.rating,
-                        this.getRelatedServices();
-                }).catch((error) => {
-                    loader.close();
-                    this.errors = error.response.data.errors.map((err) => {
-                        if (typeof err === 'string') {
-                            return err;
-                        }
-                        return err.msg;
-                    });
-                });
-            },
-            //obtains 3 related services from on of the categories
-            getRelatedServices() {
-                if (this.categories.length === 0)
-                    return;
-                axios.get(EndPoints.Service().viewRelatedServices(this.categories[0]._id, 1)).then((res) => {
-                    this.relatedServices = res.data.results;
-                }).catch(() => this.relatedServices = []);
-            },
-            //in case extra functionality is needed
-            handleClick(tab, event) {},
-            //link to booking
-            BookNow() {
-                alert('booking');
-            },
-            goTo(relatedID) {
-                this.$router.push((relatedID));
-                this.$router.go((relatedID));
+  import axios from 'axios';
+  import EndPoints from '../../services/EndPoints';
+
+  export default {
+    data() {
+      return {
+        name: '',
+        shortDescription: '',
+        description: '',
+        coverImage: '',
+        businessName: '',
+        businessEmail: '',
+        businessShortDescription: '',
+        businessDescription: '',
+        businessPhoneNumbers: null,
+        businessGallery: null,
+        businessWorkingHours: null,
+        branches: null,
+        reviews: null,
+        gallery: null,
+        activeName: 'first',
+        categories: null,
+        offerings: null,
+        relatedServices: null,
+        current: '',
+        errors: [],
+        active: 1,
+        rating: 0,
+      };
+    },
+    methods: {
+      getBranchDetails(offering) {
+        return this.branches.find((branch) => {
+          return branch._id === offering;
+        });
+      },
+
+      getRelatedService(serviceId) {
+        this.$router.push(`/service/${serviceId}`);
+        this.getService(serviceId);
+      },
+
+      //send get request to obtain service info using service id
+
+      getService(serviceId = this.$route.params.id) {
+        const loader = this.$loading({
+          fullscreen: true,
+        });
+        axios.get(EndPoints.Service().viewService(serviceId)).then((res) => {
+          loader.close();
+          const service = res.data;
+          this.name = service.name,
+              this.shortDescription = service.shortDescription,
+              this.description = service.description,
+              this.businessName = service.businessName,
+              this.businessEmail = service.businessEmail,
+              this.coverImage = service.coverImage,
+              this.businessShortDescription = service.businessShortDescription,
+              this.businessDescription = service.businessDescription,
+              this.businessPhoneNumbers = service.businessPhoneNumbers,
+              this.businessGallery = service.businessGallery,
+              this.businessWorkingHours = service.businessWorkingHours,
+              this.branches = service.branches,
+              this.reviews = service.reviews,
+              this.gallery = service.gallery,
+              this.categories = service.categories,
+              this.offerings = service.offerings,
+              this.rating = service.rating,
+              this.getRelatedServices();
+        }).catch((error) => {
+          loader.close();
+          this.errors = error.response.data.errors.map((err) => {
+            if (typeof err === 'string') {
+              return err;
             }
-        },
-        mounted() {
-            this.getService();
-        },
-        computed: {
-            backgroundStyle() {
-                return {
-                    'background-image': 'url("' + this.coverImage + '")'
-                }
-            },
-    
-    
-        }
-    }
+            return err.msg;
+          });
+        });
+      },
+      //obtains 3 related services from on of the categories
+      getRelatedServices() {
+        if (this.categories.length === 0)
+          return;
+        axios.get(EndPoints.Service().viewRelatedServices(this.categories[0]._id, 1)).then((res) => {
+          this.relatedServices = res.data.results;
+        }).catch(() => this.relatedServices = []);
+      },
+      //in case extra functionality is needed
+      handleClick(tab, event) {
+      },
+      //link to booking
+      BookNow() {
+        alert('booking');
+      },
+      goTo(relatedID) {
+        this.$router.push((relatedID));
+        this.$router.go((relatedID));
+      }
+    },
+    mounted() {
+      this.getService();
+    },
+  };
 </script>
 
 <style>
-    .time {
-        font-size: 13px;
-        color: #999;
+    .service-info {
+        background: #c0392b; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #8e44ad, #c0392b); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #8e44ad, #c0392b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        margin-bottom: 2em;
     }
-    
-    .bottom {
-        margin-top: 13px;
-        line-height: 12px;
+
+    .related-image {
+        margin: 0.5em;
     }
-    
-    .button {
-        padding: 0;
-        float: right;
+
+    .panel-block.is-active {
+        border-left-color: #dbdbdb;
     }
-    
-    .image {
-        width: 100%;
-        display: block;
+
+    /*
+     Transition.
+    */
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s
     }
-    
-    .clearfix:before,
-    .clearfix:after {
-        display: table;
-        content: "";
-    }
-    
-    .clearfix:after {
-        clear: both
-    }
-    
-    .cyan-bg {
-        background-color: lightblue;
-    }
-    
-    .time {
-        font-size: 13px;
-        color: #999;
-    }
-    
-    .bottom {
-        margin-top: 13px;
-        line-height: 12px;
-    }
-    
-    .button {
-        padding: 0;
-        float: right;
-    }
-    
-    .image {
-        width: 100%;
-        display: block;
-    }
-    
-    .clearfix:before,
-    .clearfix:after {
-        display: table;
-        content: "";
-    }
-    
-    .clearfix:after {
-        clear: both
-    }
-    
-    .extended {
-        width: 100%;
-        height: 100%;
-    }
-    
-    .text {
-        font-size: 14px;
-    }
-    
-    .item {
-        padding: 18px 0;
-    }
-    
-    .clearfix:before,
-    .clearfix:after {
-        display: table;
-        content: "";
-    }
-    
-    .clearfix:after {
-        clear: both
-    }
-    
-    .box-card {
-        width: 480px;
+
+    .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */
+    {
+        opacity: 0
     }
 </style>
