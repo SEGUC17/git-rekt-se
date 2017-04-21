@@ -33,61 +33,62 @@ router.get('/:id', (req, res, next) => {
     password: false,
     _deleted: false,
   })
-    .populate([{
-      path: 'branches',
-      match: {
-        _deleted: false,
-      },
-    }, {
-      path: 'categories',
-      match: {
-        _deleted: false,
-      },
-    }])
-    .exec()
-    .then((business) => {
-      if (!business) {
-        next(Strings.businessConfirmation.notFound);
-        return;
-      }
-
-      returnedBusiness = {
-        _id: business.id,
-        name: business.name,
-        email: business.email,
-        shortDescription: business.shortDescription,
-        phoneNumbers: business.phoneNumbers,
-        description: business.description,
-        workingHours: business.workingHours,
-        categories: business.categories,
-        branches: business.branches,
-      };
-
-      Service.find({
-        _business: business._id,
-        _deleted: false,
-      })
         .populate([{
           path: 'branches',
           match: {
             _deleted: false,
           },
         }, {
-          path: 'reviews',
+          path: 'categories',
           match: {
             _deleted: false,
           },
         }])
         .exec()
-        .then((businessServices) => {
-          returnedBusiness.services = businessServices;
-          res.json(returnedBusiness);
+        .then((business) => {
+          if (!business) {
+            next(Strings.businessConfirmation.notFound);
+            return;
+          }
+
+          returnedBusiness = {
+            _id: business.id,
+            name: business.name,
+            email: business.email,
+            shortDescription: business.shortDescription,
+            gallery: business.gallery,
+            phoneNumbers: business.phoneNumbers,
+            description: business.description,
+            workingHours: business.workingHours,
+            categories: business.categories,
+            branches: business.branches,
+          };
+
+          Service.find({
+            _business: business._id,
+            _deleted: false,
+          })
+                .populate([{
+                  path: 'branches',
+                  match: {
+                    _deleted: false,
+                  },
+                }, {
+                  path: 'reviews',
+                  match: {
+                    _deleted: false,
+                  },
+                }])
+                .exec()
+                .then((businessServices) => {
+                  returnedBusiness.services = businessServices;
+                  res.json(returnedBusiness);
+                })
+                .catch(e => next(e));
         })
-        .catch(e => next(e));
-    })
-    .catch((err) => {
-      next(err);
-    });
+        .catch((err) => {
+          next(err);
+        });
 });
 
 router.use(errorHandler);
