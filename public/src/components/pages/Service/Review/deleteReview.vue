@@ -22,7 +22,7 @@
         errors: [],
       };
     },
-    props: ['serviceID', 'visible'],
+    props: ['serviceID', 'oldReview', 'visible'],
     methods: {
       deleteReview() {
         this.errors = [];

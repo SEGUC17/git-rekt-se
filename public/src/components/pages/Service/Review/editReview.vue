@@ -2,10 +2,10 @@
 <el-dialog title="Edit Review" v-model="dialogVisible">
   <el-alert type="error" show-icon v-for="error in errors" :title="error">
   <el-form ref="editReview" :model="review" :rules="rules" label-width="120px">
-    <el-form-item label: "Rating" prop="rating">
+    <el-form-item label: "Rating" prop="rating" required>
       <el-rate v-model.number="review.rating"></el-rate>
     </el-form-item>
-    <el-form-item label: "Review">
+    <el-form-item label: "Review" prop="description">
       <el-input type="textArea" v-model="review.description"></el-input>
     </el-form-item>
     </el-form>

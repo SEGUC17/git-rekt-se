@@ -5,14 +5,14 @@
     <h3>
       Leave a review...</h3>
     <el-form ref="postReview" :model.number="review" :rules="rules" label-width="120px">
-      <el-form-item label: "Rating" prop="rating">
-        <el-rate v-model="review.rating"></el-rate>
+      <el-form-item label: "Rating" prop="rating" required>
+        <el-rate v-model.number="review.rating"></el-rate>
       </el-form-item>
-      <el-form-item label: "Review">
-        <el-input type="textArea" v-model="review.description"></el-input>
+      <el-form-item label: "Review" prop="description">
+        <el-input type="textArea" v-model="review.description" placeholder="Enter your review here (Max 512 characters)"></el-input>
       </el-form-item>
       <el-form-item class="is-pulled-right">
-        <el-button type="primary" @click="createReview">Create</el-button>
+        <el-button type="primary" :disabled="loggedin" @click="createReview">Create</el-button>
       </el-form-item>
     </el-form>
 </template>
@@ -33,6 +33,7 @@
         rules: ReviewRules,
         success: '',
         errors: [],
+        loggedin: ClientAuth.user.authenticated,
       };
     },
     props: ['serviceID'],

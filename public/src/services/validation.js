@@ -352,13 +352,20 @@ export const BusinessResetFormValidation = {
 
 export const reviewRules = {
   rating: [{
+    type: 'number',
     required: true,
     message: 'Please enter a rating',
     trigger: 'blur',
   }, {
+    type: 'number',
     min: 0,
     max: 5,
     message: 'Rating can only be a value between 1 & 5',
     trigger: 'blur',
   }],
+  description: {
+    max: 512,
+    message: 'A review can have at maximum 512 characters.',
+    trigger: 'change',
+  },
 };

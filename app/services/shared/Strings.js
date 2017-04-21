@@ -168,7 +168,8 @@ const clientVerfication = {
 const reviewErrors = {
   invalidService: 'The service you are trying to review does not exist.',
   emptyRating: 'You must provide a rating in your review.',
-  outOfRangeRating: 'The rating must be between 0 & 4.',
+  outOfRangeRating: 'The rating must be between 0 & 5.',
+  descriptionTooLong: 'The review can have a maximum of 512 characters.',
   alreadyReviewedService: 'You have already reviewed this service.',
   invalidReview: 'This review does not exist.',
   userMismatchEdit: 'You did not create the review that you are trying to edit.',
