@@ -22,10 +22,10 @@ import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
+import notfound from '../components/pages/404.vue';
 
 
 const routes = [{
-
   path: '/',
   component: Home,
 },
@@ -105,9 +105,15 @@ const routes = [{
   }, {
     path: '/business/reset/:token',
     component: reset,
+  },{
+    path: '/404',
+    component: notfound,
   }, {
     path: '/business/:id',
     component: businessPage,
+  }, {
+    path: '/*',
+    redirect: '/404',
   }];
 
 
