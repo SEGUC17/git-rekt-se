@@ -12,8 +12,9 @@ import TopHero from '../../components/shared/gr-top-hero.vue';
 import clientRemoveBtn from '../../components/Admin/remove-client-btn.vue';
 import CategoryActions from '../../components/Admin/category-actions.vue';
 import router from '../../services/routes.js';
+import reset from '../../components/business/reset.vue';
+Window.axios = axios;
 
-window.axios = axios;
 
 Vue.component('accept-btn', acceptbtn);
 Vue.component('reject-btn', rejectbtn);
@@ -23,7 +24,7 @@ Vue.component('gr-top-hero', TopHero);
 
 Vue.use(VueRouter);
 Vue.use(elementUI, {
-  locale
+    locale
 });
 Vue.use(Buefy, {
   defaultIconPack: 'fa',
