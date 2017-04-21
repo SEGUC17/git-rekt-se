@@ -124,9 +124,7 @@ router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) =
       bookings = bookings.filter(booking => `${booking._service._business}` === req.user.id);
       bookings = bookings.map((booking) => {
         booking._service.offerings = booking._service.offerings
-          .filter((offering) => {
-            return offering._id === booking._offering;
-          });
+          .filter(offering => offering._id === booking._offering);
         return booking;
       });
       console.log(bookings);
