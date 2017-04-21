@@ -309,6 +309,42 @@ export const clientEditInfoValidation = {
     message: 'Invalid Date format.',
     required: true,
     trigger: 'change',
+  }, {
+    validator(rule, value, callBack) {
+      console.log(222);
+      if (this.form.birthdate.getFullYear() >= new Date().getFullYear()) {
+        callBack([new Error('Please enter a valid birthdate')]);
+      } else {
+        callBack();
+      }
+    },
+    trigger: ['blur', 'change'],
+  }],
+  password: [{
+    pattern: /^(?=.*\d).{8,15}$/,
+    message: 'Password must be 8-15 chars and contains at least one number.',
+    trigger: 'blur',
+  }, {
+    validator(rule, value, callBack) {
+      this.$refs.form.validateField('confirmPassword');
+      callBack();
+    },
+    trigger: ['blur', 'change'],
+  }],
+  confirmPassword: [{
+    validator(rule, value, callBack) {
+      console.log(11);
+      if (this.form.password && this.form.confirmPassword) {
+        if (this.form.password !== value) {
+          callBack([new Error('Password and password confirmation mismatch.')]);
+        } else {
+          callBack();
+        }
+      } else {
+        callBack();
+      }
+    },
+    trigger: ['blur', 'change'],
   }],
 };
 export const forgotPasswordValidation = {

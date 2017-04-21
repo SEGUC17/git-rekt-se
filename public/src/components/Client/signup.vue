@@ -127,7 +127,7 @@
       clientSignUpValidation.password[2].validator = clientSignUpValidation.password[2]
           .validator.bind(this);
       clientSignUpValidation.birthdate[2].validator = clientSignUpValidation.birthdate[2]
-          .validator.bind(this)
+          .validator.bind(this);
       return {
         form: new Form({
           id: '',

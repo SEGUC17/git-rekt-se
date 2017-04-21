@@ -43,18 +43,18 @@
                         <el-input v-model="form.email"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="Password" required>
-                        <el-input v-model="form.password" :type="showPassword" prop="password"
-                                  placeholder="***************">
+                    <el-form-item label="Password" prop="password">
+                        <el-input v-model="form.password" :type="showPassword"
+                                  placeholder="Password">
                             <div slot="append">
                                     <el-button @click="onShowPassword"><i class="fa fa-eye"></i></el-button>
                             </div>
                         </el-input>
                     </el-form-item>
 
-                    <el-form-item label="Confirm Password" required>
-                        <el-input v-model="form.confirmPassword" :type="showConfirm" prop="confirmPassword"
-                                  placeholder="***************">
+                    <el-form-item label="Confirm Password" prop="confirmPassword">
+                        <el-input v-model="form.confirmPassword" :type="showConfirm"
+                                  placeholder="Confirm Password">
                             <div slot="append">
                                     <el-button @click="onShowConfirmPassword"><i class="fa fa-eye"></i></el-button>
                             </div>
@@ -72,7 +72,7 @@
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item label="Birthdate" required>
+                    <el-form-item label="Birthdate" required prop="birthdate">
                         <el-date-picker v-model="form.birthdate" type="date" :format="'dd-MM-yyyy'"></el-date-picker>
                     </el-form-item>
 
@@ -100,6 +100,12 @@
 
   export default {
     data() {
+      clientEditInfoValidation.confirmPassword[0].validator = clientEditInfoValidation.confirmPassword[0]
+          .validator.bind(this);
+      clientEditInfoValidation.password[1].validator = clientEditInfoValidation.password[1]
+          .validator.bind(this);
+      clientEditInfoValidation.birthdate[1].validator = clientEditInfoValidation.birthdate[1]
+        .validator.bind(this);
       return {
         form: new Form({
           email: '',
@@ -119,6 +125,7 @@
         success: false,
         error: false,
         successMessage: '',
+        passwordEdited: false,
       };
     },
     mounted() {
@@ -190,6 +197,9 @@
         this.success = false;
         this.successMessage = '';
         this.form.errors = new Errors();
+        if(this.form.password) {
+          this.passwordEdited = true;
+        }
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.loading = true;
@@ -202,7 +212,24 @@
                   this.loading = false;
                   this.success = true;
                   this.successMessage = data.message;
-                  this.fillForm();
+                  if(this.passwordEdited) {
+                    clientAuth.logout((error, response) => {
+                      if(error) {
+                        this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+                      } else {
+                        setTimeout(() => {
+                          this.$toast.open({
+                            message: 'Please login again.',
+                            type: 'is-success',
+                            position: 'bottom',
+                          });
+                          this.$router.push('/');
+                        }, 1000);
+                      }
+                    })
+                  } else {
+                      this.fillForm();
+                  }
                 }).catch((err) => {
               this.loading = false;
               this.error = true;
