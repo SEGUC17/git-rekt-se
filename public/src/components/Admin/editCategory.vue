@@ -117,10 +117,11 @@
 
 <script>
   import axios from 'axios';
-  import {categoryRules} from '../../services/validation';
-  import {Admin} from '../../services/EndPoints';
+  import { categoryRules } from '../../services/validation';
+  import { Admin } from '../../services/EndPoints';
   import AdminAuth from '../../services/auth/adminAuth';
   import EventBus from '../../services/EventBus';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
     data() {
@@ -176,12 +177,22 @@
                 })
                 .catch((error) => {
                   loader.close();
-                  this.createErrors = error.response.data.errors.map((err) => {
-                    if (typeof err === 'string') {
-                      return err;
-                    }
-                    return err.msg;
-                  });
+                  if (JWTCheck(error)){
+                    AdminAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      message: 'Session Expired, please login',
+                      type: 'is-danger',
+                      position: 'bottom',
+                    });
+                  } else {
+                    this.createErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
                 });
           }
         });
@@ -207,12 +218,22 @@
                 })
                 .catch((error) => {
                   loader.close();
-                  this.editErrors = error.response.data.errors.map((err) => {
-                    if (typeof err === 'string') {
-                      return err;
-                    }
-                    return err.msg;
-                  });
+                  if(JWTCheck(error)) {
+                    AdminAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      message: 'Session Expired, please login',
+                      type: 'is-danger',
+                      position: 'bottom',
+                    });
+                  } else {
+                    this.editErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
                 });
           }
         });
@@ -236,12 +257,22 @@
             })
             .catch((error) => {
               loader.close();
-              this.deleteErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                return err.msg;
-              });
+              if(JWTCheck(error)) {
+                AdminAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  message: 'Session Expired, please login',
+                  type: 'is-danger',
+                  position: 'bottom',
+                });
+              } else {
+                this.deleteErrors = error.response.data.errors.map((err) => {
+                  if (typeof err === 'string') {
+                    return err;
+                  }
+                  return err.msg;
+                });
+              }
             });
       },
       resetCreate() {
@@ -262,12 +293,22 @@
             })
             .catch((error) => {
               loader.close();
-              this.generalErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                return err.msg;
-              });
+              if (JWTCheck(error)) {
+                AdminAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  message: 'Session Expired, please login',
+                  type: 'is-danger',
+                  position: 'bottom',
+                });             
+              } else {
+                this.generalErrors = error.response.data.errors.map((err) => {
+                  if (typeof err === 'string') {
+                    return err;
+                  }
+                  return err.msg;
+                });
+              }
             });
       },
       showEdit(category) {
@@ -296,12 +337,22 @@
             this.categories = response.data.category;
           })
           .catch((error) => {
-            this.generalErrors = error.response.data.errors.map((err) => {
-              if (typeof err === 'string') {
-                return err;
-              }
-              return err.msg;
-            });
+            if(JWTCheck(error)) {
+              AdminAuth.removeData();
+              this.$router.push('/');
+              this.$toast.open({
+                message: 'Session Expired, please login',
+                type: 'is-danger',
+                position: 'bottom',
+              });
+            } else {
+              this.generalErrors = error.response.data.errors.map((err) => {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
+            }
           });
     },
 

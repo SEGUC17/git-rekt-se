@@ -59,7 +59,14 @@ export default {
       this.user.authenticated = false;
     }
   },
-
+  /**
+   * Removes the data from localStorage.
+   */
+  removeData() {
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_email');
+    localStorage.removeItem('admin_id');
+  },
   /**
    * Return the status of the user.
    * @returns {boolean} - true if the user is authenticated, false otherwise.

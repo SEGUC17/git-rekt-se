@@ -6153,6 +6153,14 @@ var Form = function () {
     }
   },
 
+  /**
+   * Removes the data from localStorage.
+   */
+  removeData: function removeData() {
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_email');
+    localStorage.removeItem('admin_id');
+  },
 
   /**
    * Return the status of the user.
@@ -30976,6 +30984,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_EndPoints__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_adminAuth__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_EventBus__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__ = __webpack_require__(405);
 //
 //
 //
@@ -31093,6 +31102,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -31155,12 +31165,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.getCategories();
           }).catch(function (error) {
             loader.close();
-            _this.createErrors = error.response.data.errors.map(function (err) {
-              if (typeof err === 'string') {
-                return err;
-              }
-              return err.msg;
-            });
+            if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__["a" /* default */])(error)) {
+              __WEBPACK_IMPORTED_MODULE_3__services_auth_adminAuth__["a" /* default */].removeData();
+              _this.$router.push('/');
+              _this.$toast.open({
+                message: 'Session Expired, please login',
+                type: 'is-danger',
+                position: 'bottom'
+              });
+            } else {
+              _this.createErrors = error.response.data.errors.map(function (err) {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
+            }
           });
         }
       });
@@ -31186,12 +31206,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this2.getCategories();
           }).catch(function (error) {
             loader.close();
-            _this2.editErrors = error.response.data.errors.map(function (err) {
-              if (typeof err === 'string') {
-                return err;
-              }
-              return err.msg;
-            });
+            if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__["a" /* default */])(error)) {
+              __WEBPACK_IMPORTED_MODULE_3__services_auth_adminAuth__["a" /* default */].removeData();
+              _this2.$router.push('/');
+              _this2.$toast.open({
+                message: 'Session Expired, please login',
+                type: 'is-danger',
+                position: 'bottom'
+              });
+            } else {
+              _this2.editErrors = error.response.data.errors.map(function (err) {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
+            }
           });
         }
       });
@@ -31215,12 +31245,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         loader.close();
       }).catch(function (error) {
         loader.close();
-        _this3.deleteErrors = error.response.data.errors.map(function (err) {
-          if (typeof err === 'string') {
-            return err;
-          }
-          return err.msg;
-        });
+        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__["a" /* default */])(error)) {
+          __WEBPACK_IMPORTED_MODULE_3__services_auth_adminAuth__["a" /* default */].removeData();
+          _this3.$router.push('/');
+          _this3.$toast.open({
+            message: 'Session Expired, please login',
+            type: 'is-danger',
+            position: 'bottom'
+          });
+        } else {
+          _this3.deleteErrors = error.response.data.errors.map(function (err) {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
+        }
       });
     },
     resetCreate: function resetCreate() {
@@ -31241,12 +31281,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this4.categories = response.data.category;
       }).catch(function (error) {
         loader.close();
-        _this4.generalErrors = error.response.data.errors.map(function (err) {
-          if (typeof err === 'string') {
-            return err;
-          }
-          return err.msg;
-        });
+        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__["a" /* default */])(error)) {
+          __WEBPACK_IMPORTED_MODULE_3__services_auth_adminAuth__["a" /* default */].removeData();
+          _this4.$router.push('/');
+          _this4.$toast.open({
+            message: 'Session Expired, please login',
+            type: 'is-danger',
+            position: 'bottom'
+          });
+        } else {
+          _this4.generalErrors = error.response.data.errors.map(function (err) {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
+        }
       });
     },
     showEdit: function showEdit(category) {
@@ -31275,12 +31325,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }).then(function (response) {
       _this5.categories = response.data.category;
     }).catch(function (error) {
-      _this5.generalErrors = error.response.data.errors.map(function (err) {
-        if (typeof err === 'string') {
-          return err;
-        }
-        return err.msg;
-      });
+      if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__["a" /* default */])(error)) {
+        __WEBPACK_IMPORTED_MODULE_3__services_auth_adminAuth__["a" /* default */].removeData();
+        _this5.$router.push('/');
+        _this5.$toast.open({
+          message: 'Session Expired, please login',
+          type: 'is-danger',
+          position: 'bottom'
+        });
+      } else {
+        _this5.generalErrors = error.response.data.errors.map(function (err) {
+          if (typeof err === 'string') {
+            return err;
+          }
+          return err.msg;
+        });
+      }
     });
   }
 });

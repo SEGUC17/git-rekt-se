@@ -7,6 +7,7 @@
   import { Admin } from '../../services/EndPoints';
   import adminAuth from '../../services/auth/adminAuth';
   import EventBus from '../../services/EventBus';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
     props: ['data', 'row'],
@@ -48,10 +49,21 @@
               loader.close();
             })
             .catch((err) => {
-              this.errors = err.response.data.errors;
-              document.body.scrollTop = 0;
-              document.documentElement.scrollTop = 0;
               loader.close();
+              if (JWTCheck(err)){
+                AdminAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  message: 'Session Expired, please login',
+                  type: 'is-danger',
+                  position: 'bottom',
+                });
+              } else {
+                this.errors = err.response.data.errors;
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+              }
+              
             });
       },
     },
