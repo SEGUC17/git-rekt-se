@@ -79,8 +79,8 @@ router.get('/:id', (req, res, next) => {
       };
       res.json(returnedService);
     })
-    .catch(() => {
-      next(Strings.serviceFailure.serviceNotFound);
+    .catch((e) => {
+      next(e);
     });
 });
 

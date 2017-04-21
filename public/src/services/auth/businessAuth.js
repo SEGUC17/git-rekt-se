@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { Business } from '../../services/EndPoints';
+import {
+  Business,
+} from '../../services/EndPoints';
 
 export default {
   user: {
@@ -20,18 +22,18 @@ export default {
 
   login(data, callBack) {
     axios
-        .post(Business()
-            .login, data)
-        .then((response) => {
-          this.user.authenticated = true;
-          localStorage.setItem('business_token', response.data.token);
-          localStorage.setItem('business_email', response.data.email);
-          localStorage.setItem('business_id', response.data.id);
-          return callBack(null, response.data);
-        })
-        .catch((err) => {
-          callBack(err.response.data, null);
-        });
+      .post(Business()
+        .login, data)
+      .then((response) => {
+        this.user.authenticated = true;
+        localStorage.setItem('business_token', response.data.token);
+        localStorage.setItem('business_email', response.data.email);
+        localStorage.setItem('business_id', response.data.id);
+        return callBack(null, response.data);
+      })
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
   },
 
   /**
@@ -53,25 +55,40 @@ export default {
             Authorization: currentToken,
           },
         })
-        .then((response) => {
-          callBack(null, response.data);
-        })
-        .catch((err) => {
-          callBack(err.response.data, null);
-        });
+      .then((response) => {
+        callBack(null, response.data);
+      })
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
   },
 
+/**
+ * Complete business registration.
+ * @param {String} token the registration token.
+ * @param {any} data the data to send with the request.
+ * @param {any} callBack the callback to axios.
+ */
+  verifiedsignup(token, data, callBack) {
+    axios
+      .post(Business()
+        .verifiedSignUp(token), data)
+      .then(response => callBack(null, response.data))
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
+  },
   /*
-  * Get the JWT for Header.
-  * */
+   * Get the JWT for Header.
+   * */
 
   getJWTtoken() {
     return `JWT ${localStorage.getItem('business_token')}`;
   },
 
   /*
-  * Refresh the status of the user.
-  * */
+   * Refresh the status of the user.
+   * */
 
   refreshAuth() {
     this.user.authenticated = !!localStorage.getItem('business_token');
