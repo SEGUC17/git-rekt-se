@@ -43,7 +43,6 @@ router.get('/:id/:offset', (req, res, next) => {
               shortDescription: true,
               coverImage: true,
               _business: true,
-              _id: false,
             }, {
               skip: (offset - 1) * 10,
               limit: 10,
