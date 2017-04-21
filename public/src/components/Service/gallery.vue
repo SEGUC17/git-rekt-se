@@ -7,6 +7,11 @@
         </div>
         <el-button class="button is-primary" v-if="business.authenticated" @click="addDialog = true">Add Image</el-button>
         <el-dialog title="Add an Image" v-model="addDialog">
+                    <div v-show="addErrors.length>0">
+            <div class="error" v-for="(error,idx) in addErrors">
+                <el-alert @close="closeAddError(idx)" :title="error" type="error" show-icon></el-alert>
+            </div>
+        </div>
             <form method="post" @submit.prevent="onSubmit" enctype="multipart/form-data">
     
                 <label class="label">Description</label>
@@ -56,6 +61,7 @@
             return {
                 business: businessAuth.user,
                 errors: [],
+                addErrors: [],
                 images: [],
                 form: new Form({
                     description: '',
@@ -74,6 +80,9 @@
         methods: {
             closeError(idx) {
                 this.errors.splice(idx, 1);
+            },
+            closeAddError(idx) {
+                this.addErrors.splice(idx, 1);
             },
             onSubmit() {
                 this.addDialog = false;
@@ -99,9 +108,9 @@
                     this.form.path = files[0];
                     // the path is changed to the possibly illegal file for consistency with submission
                     if (this.isImage(files[0])) {
-                        this.errors = [];
+                        this.addErrors = [];
                     } else {
-                        this.errors = ['Only Images are allowed.'];
+                        this.addErrors = ['Only Images are allowed.'];
                     }
                 }
             },
