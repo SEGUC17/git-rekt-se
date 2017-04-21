@@ -61,7 +61,11 @@ describe('Client Removal Test Suite', () => {
       .then((client2) => {
         removedUserID = client2._id;
         req = supertest(app)
-          .get(`/api/v1/admin/client/delete/${client2._id}`)
+          .post(`/api/v1/admin/client/delete/${client2._id}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
           .expect('Content-Type', /json/)
           .set('Authorization', `JWT ${token}`)
           .send()
@@ -85,7 +89,11 @@ describe('Client Removal Test Suite', () => {
    */
   it('should return an error message when deleting a deleted user', (done) => {
     req = supertest(app)
-      .get(`/api/v1/admin/client/delete/${removedUserID}`)
+      .post(`/api/v1/admin/client/delete/${removedUserID}`, {
+        headers: {
+          Authorization: token,
+        },
+      })
       .set('Authorization', `JWT ${token}`)
       .send()
       .expect('Content-Type', /json/)
@@ -104,7 +112,11 @@ describe('Client Removal Test Suite', () => {
       .save()
       .then((client2) => {
         req = supertest(app)
-          .get(`/api/v1/admin/client/delete/${client2._id}`)
+          .post(`/api/v1/admin/client/delete/${client2._id}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
           .set('Authorization', `JWT ${token}`)
           .send()
           .expect('Content-Type', /json/)
@@ -116,13 +128,17 @@ describe('Client Removal Test Suite', () => {
   });
 
   /**
-   * Failing Test 3: It should throw Invalid id error whenever
-   * deleting a client with an invalid monogo id
+   * Failing Test 3: It should throw Invalid id
+   * error whenever deleting a client with an invalid monogo id
    */
 
   it('should return an error message when invalid id is passed', (done) => {
     req = supertest(app)
-      .get('/api/v1/admin/client/delete/4')
+      .post('/api/v1/admin/client/delete/000000000000000', {
+        headers: {
+          Authorization: token,
+        },
+      })
       .set('Authorization', `JWT ${token}`)
       .send()
       .expect('Content-Type', /json/)

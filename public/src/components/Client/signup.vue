@@ -14,7 +14,7 @@
             </div>
         </section>
 
-        <div class="columns">
+        <div class="columns is-mobile">
             <div v-if="!success" class="column is-half-desktop is-10-mobile is-10-tablet is-offset-1-mobile
                                 is-offset-1-tablet is-offset-one-quarter-desktop">
 
