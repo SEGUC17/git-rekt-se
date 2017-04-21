@@ -62,7 +62,6 @@
                         this.addImage(data);
                     } else {
                         this.errors = ['You can only submit Images.'];
-                        this.form.path = '';
                     }
                 } else {
                     this.errors = ['Image is required.'];

@@ -10,7 +10,7 @@
             <el-dialog title="Delete Image" v-model="deleteDialogue">
                 <span slot="footer" class="dialog-footer">
                                 <el-button @click="deleteDialogue = false">Cancel</el-button>
-                                <el-button type="primary" @click="deleteImage(this.imageID)">Confirm</el-button>
+                                <el-button type="primary" @click="deleteImage(imageID)">Confirm</el-button>
                             </span>
             </el-dialog>
         </div>
