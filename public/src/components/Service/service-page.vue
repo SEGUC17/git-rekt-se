@@ -1,144 +1,136 @@
 <template>
-    <div class="service-page">
-
-        <!-- Service Info -->
-        <div class="hero service-info">
-            <div class="hero-body">
-                <div class="container">
-                    <div class="service-categories is-spaced">
-                            <span class="search-tag tag is-dark is-small" v-for="category in categories"
-                                  :key="category._id">{{ category.title }}</span>
-                    </div>
-                    <div class="title is-2 white"> {{ name }} </div>
-
-                    <div class="subtitle white">
-                        <router-link class="white" :to="`/business/${businessId}`">{{ businessName }}</router-link>
-                    </div>
-
-                    <div class="subtitle white">{{ shortDescription }}</div>
-                    <div class="rating">
-                        <el-rate class="is-pulled-left" v-model="rating" disabled :max="5"></el-rate>
-                    </div>
-
-                    <router-link :to="`${$route.params.id}/book`"
-                                 class="button white is-warning is-pulled-right"
-                                 style="font-size: 1.2em">
-                        Book Now
-
-
-                    </router-link>
-                </div>
-            </div>
+  <div class="service-page">
+  
+    <!-- Service Info -->
+    <div class="hero service-info">
+      <div class="hero-body">
+        <div class="container">
+          <div class="service-categories is-spaced">
+            <span class="search-tag tag is-dark is-small" v-for="category in categories" :key="category._id">{{ category.title }}</span>
+          </div>
+          <div class="title is-2 white"> {{ name }} </div>
+  
+          <div class="subtitle white">
+            <router-link class="white" :to="`/business/${businessId}`">{{ businessName }}</router-link>
+          </div>
+  
+          <div class="subtitle white">{{ shortDescription }}</div>
+          <div class="rating">
+            <el-rate class="is-pulled-left" v-model="rating" disabled :max="5"></el-rate>
+          </div>
+  
+          <router-link :to="`${$route.params.id}/book`" class="button white is-warning is-pulled-right" style="font-size: 1.2em">
+            Book Now
+  
+  
+          </router-link>
         </div>
       </div>
     </div>
   
+  
     <!-- Service Description -->
-        <div class="columns">
-            <!-- Left Pane -->
-            <div class="column is-7 is-offset-1">
-
-                <!-- Service Description -->
-                <div class="box">
-                    <pre class="content is-marginless">{{ description || "No Description."}}</pre>
+    <div class="columns">
+      <!-- Left Pane -->
+      <div class="column is-7 is-offset-1">
+  
+        <!-- Service Description -->
+        <div class="box">
+          <pre class="content is-marginless">{{ description || "No Description."}}</pre>
+        </div>
+  
+        <!-- Navigation tabs -->
+        <div class="tabs">
+          <ul>
+            <li @click="active = 1" :class="{ 'is-active': (active === 1) }"><a>Offerings</a></li>
+            <li @click="active = 2" :class="{ 'is-active': (active === 2) }"><a>Gallery</a></li>
+            <li @click="active = 3" :class="{ 'is-active': (active === 3) }"><a>Reviews</a></li>
+          </ul>
+        </div>
+  
+        <!-- Offering Tab -->
+        <transition name="fade">
+          <div class="offerings" v-show="active === 1">
+            <div class="box" v-for="offering in offerings">
+              <div class="content offerings">
+                <div class="offering">
+                  <h4> {{ offering.location }} </h4>
+  
+                  <h6>
+                    <span><i class=" icon fa fa-location-arrow"></i></span> {{ getBranchAddress(offering.branch) }}
+                  </h6>
+  
+                  <h6>
+                    <span><i class=" icon fa fa-calendar"></i></span> {{ offering.startDate | moment }}
+                  </h6>
+  
+                  <h6>
+                    <span><i class=" icon fa fa-calendar"></i></span> {{ offering.endDate | moment }}
+                  </h6>
+  
+                  <h6>
+                    <span><i class=" icon fa fa-money"></i></span> {{ offering.price }} EGP
+                  </h6>
+  
                 </div>
-
-                <!-- Navigation tabs -->
-                <div class="tabs">
-                    <ul>
-                        <li @click="active = 1" :class="{ 'is-active': (active === 1) }"><a>Offerings</a></li>
-                        <li @click="active = 2" :class="{ 'is-active': (active === 2) }"><a>Gallery</a></li>
-                        <li @click="active = 3" :class="{ 'is-active': (active === 3) }"><a>Reviews</a></li>
-                    </ul>
-                </div>
-
-                <!-- Offering Tab -->
-                <transition name="fade">
-                    <div class="offerings" v-show="active === 1">
-                        <div class="box" v-for="offering in offerings">
-                            <div class="content offerings">
-                                <div class="offering">
-                                    <h4> {{ offering.location }} </h4>
-
-                                    <h6>
-                                        <span><i class=" icon fa fa-location-arrow"></i></span>
-                                        {{ getBranchAddress(offering.branch) }}
-                                    </h6>
-
-                                    <h6>
-                                        <span><i class=" icon fa fa-calendar"></i></span>
-                                        {{ offering.startDate | moment }}
-                                    </h6>
-
-                                    <h6>
-                                        <span><i class=" icon fa fa-calendar"></i></span>
-                                        {{ offering.endDate | moment }}
-                                    </h6>
-
-                                    <h6>
-                                        <span><i class=" icon fa fa-money"></i></span>
-                                        {{ offering.price }} EGP
-                                    </h6>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </transition>
-
-                <!-- Gallery Tab -->
-                <transition name="fade">
-                    <div class="no-gallery" v-show="active === 2" v-if="gallery.length === 0">
-                        <h3 class="title has-text-centered">
-                            No Gallery found.
-                        </h3>
-                    </div>
-                    <div class="gallery" v-if="gallery.length > 0" v-show="active === 2">
-                        <el-carousel :interval="1000" arrow="always">
-                            <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
-                                <img :src="'uploads/' + item.path" class="extended"/>
-                            </el-carousel-item>
-                        </el-carousel>
-                    </div>
-                </transition>
-
-                <!-- Reviews Tab -->
-
-                <div class="columns" v-show="active === 3">
-                    <div class="column">
+              </div>
+            </div>
+          </div>
+        </transition>
+  
+        <!-- Gallery Tab -->
+        <transition name="fade">
+          <div class="no-gallery" v-show="active === 2" v-if="gallery.length === 0">
+            <h3 class="title has-text-centered">
+              No Gallery found.
+            </h3>
+          </div>
+          <div class="gallery" v-if="gallery.length > 0" v-show="active === 2">
+            <el-carousel :interval="1000" arrow="always">
+              <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
+                <img :src="'uploads/' + item.path" class="extended" />
+              </el-carousel-item>
+            </el-carousel>
+          </div>
+        </transition>
+  
+        <!-- Reviews Tab -->
+  
+        <div class="columns" v-show="active === 3">
+          <div class="column">
             <el-alert type="success" show-icon v-if="editReviewSuccess" :title="editReviewSuccess"></el-alert>
             <el-alert type="success" show-icon v-if="deleteReviewSuccess" :title="deleteReviewSuccess"></el-alert>
   
-              <create-review :serviceID="serviceID" @created="handleCreate"></create-review>
-              <edit-review :serviceID="serviceID" :review="reviewToEdit" :visible="editReviewVisible" @edited="handleEdit" @cancelEdit="handleEditCancel"></edit-review>
-              <delete-review :serviceID="serviceID" :reviewID="reviewToDelete._id" :visible="deleteReviewVisible" @deleted="handleDelete" @cancelDelete="handleDeleteCancel"></delete-review>
+            <create-review :serviceID="serviceID" @created="handleCreate"></create-review>
+            <edit-review :serviceID="serviceID" :review="reviewToEdit" :visible="editReviewVisible" @edited="handleEdit" @cancelEdit="handleEditCancel"></edit-review>
+            <delete-review :serviceID="serviceID" :reviewID="reviewToDelete._id" :visible="deleteReviewVisible" @deleted="handleDelete" @cancelDelete="handleDeleteCancel"></delete-review>
   
           </div>
         </div>
   
         <transition name="fade">
-              <div class="no-reviews" v-show="active === 3" v-if="reviews.length === 0">
-                <h3 class="title has-text-centered">
-                  No Reviews found.
-                </h3>
-              </div>
+          <div class="no-reviews" v-show="active === 3" v-if="reviews.length === 0">
+            <h3 class="title has-text-centered">
+              No Reviews found.
+            </h3>
+          </div>
   
-              <div class="reviews" v-if="reviews.length > 0" v-show="active === 3">
-                <div class="box" v-for="review in reviews">
-                  <div class="content reviews-content">
-                    <div class="review">
-                      <h4> {{ review._client.firstName }} {{ review._client.lastName }} </h4>
-                      <el-button-group class="is-pulled-right" v-if="`${review._client._id}` === `${clientID}`">
-                        <el-button icon="edit" @click="showEdit(review)"></el-button>
-                        <el-button type="danger" icon="delete" @click="showDelete(review)"></el-button>
-                      </el-button-group>
-                      <el-rate class="rating-search" :value="review.rating" disabled :max="5"></el-rate>
-                      <br>
-                      <p class="non-breaking"> {{ review.description }} </p>
-                    </div>
-                  </div>
+          <div class="reviews" v-if="reviews.length > 0" v-show="active === 3">
+            <div class="box" v-for="review in reviews">
+              <div class="content reviews-content">
+                <div class="review">
+                  <h4> {{ review._client.firstName }} {{ review._client.lastName }} </h4>
+                  <el-button-group class="is-pulled-right" v-if="`${review._client._id}` === `${clientID}`">
+                    <el-button icon="edit" @click="showEdit(review)"></el-button>
+                    <el-button type="danger" icon="delete" @click="showDelete(review)"></el-button>
+                  </el-button-group>
+                  <el-rate class="rating-search" :value="review.rating" disabled :max="5"></el-rate>
+                  <br>
+                  <p class="non-breaking"> {{ review.description }} </p>
                 </div>
               </div>
+            </div>
+          </div>
         </transition>
       </div>
   
@@ -345,8 +337,8 @@
   
   
   /*
-       Transition.
-      */
+           Transition.
+          */
   
   .fade-enter-active,
   .fade-leave-active {

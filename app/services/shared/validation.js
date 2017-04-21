@@ -371,7 +371,7 @@ const createReviewValidation = {
     },
     isInt: {
       options: [{
-        min: 0,
+        min: 1,
         max: 5,
       }],
       errorMessage: reviewErrors.outOfRangeRating,
@@ -403,7 +403,7 @@ const updateReviewValidation = {
     },
     isInt: {
       options: [{
-        min: 0,
+        min: 1,
         max: 5,
       }],
       errorMessage: reviewErrors.outOfRangeRating,

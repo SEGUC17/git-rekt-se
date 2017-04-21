@@ -358,10 +358,10 @@ export const reviewRules = {
     trigger: 'blur',
   }, {
     type: 'number',
-    min: 0,
+    min: 1,
     max: 5,
-    message: 'Rating can only be a value between 0 & 5',
-    trigger: 'blur',
+    message: 'Rating can only be a value between 1 & 5',
+    trigger: 'change',
   }],
   description: {
     max: 512,

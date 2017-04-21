@@ -30,7 +30,7 @@
     data() {
       return {
         review: {
-          rating: undefined,
+          rating: 0,
           description: '',
         },
         rules: reviewRules,
