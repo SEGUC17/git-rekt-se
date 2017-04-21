@@ -18,17 +18,18 @@ const AdminCatAPI = require('./api/v1/admin/category');
 const BusinessGalleryAPI = require('./api/v1/business/gallery');
 const VisitorSearchAPI = require('./api/v1/visitor/search');
 const ViewBussinessAPI = require('./api/v1/business/index');
+const BusinessCategoriesAPI = require('./api/v1/business/categories');
 
 module.exports = (app) => {
   /**
    * Visitor Routes.
    */
-
   app.use('/api/v1/visitor/search', VisitorSearchAPI);
   app.use('/api/v1/service', ViewServiceAPI);
   app.use('/api/v1/service/category', RelatedServiceAPI);
   app.use('/api/v1/business/category', RelatedBusinessAPI);
   app.use('/api/v1/business', ViewBussinessAPI);
+  app.use('/api/v1/categories', BusinessCategoriesAPI);
 
   /**
    * Client Routes.

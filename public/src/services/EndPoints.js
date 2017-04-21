@@ -7,6 +7,7 @@ export const Visitor = () => ({
   relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/${offset}`,
   locations: `${BASE}/visitor/search/locations`,
   viewBusiness: businessID => `${BASE}/business/${businessID}`,
+  businessCategories: `${BASE}/categories/business`,
 });
 
 export const Client = () => {
@@ -22,6 +23,7 @@ export const Client = () => {
     logout: `${authBase}/logout`,
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
+    getInfo: clientID => `${profileBase}/${clientID}`,
   };
 };
 

@@ -290,6 +290,10 @@ const searchErrors = {
   emptySearchResult: 'No search results match the query.',
 };
 
+const clientFaliure = {
+  notFound: 'The required client was not found.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
@@ -297,6 +301,7 @@ module.exports = {
   clientLoginMessages,
   clientConfirmation,
   clientForgotPassword,
+  clientFaliure,
 
   clientVerfication,
   bussinessValidationErrors,
