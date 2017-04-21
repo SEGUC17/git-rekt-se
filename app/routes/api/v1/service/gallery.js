@@ -73,7 +73,7 @@ router.get('/:id/gallery', (req, res, next) => {
  * Add Image to service gallery.
  */
 
-router.post('/:id/gallery/add', upload.single('path'), BusinessAuth, (req, res, next) => {
+router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, next) => {
   req.checkParams(validationSchemas.serviceAddImageValidation);
   req.getValidationResult()
     .then((result) => {
