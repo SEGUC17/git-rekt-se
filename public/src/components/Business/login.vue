@@ -13,14 +13,14 @@
             </div>
         </section>
 
-        <div class="bus-login-form columns">
-            <div class="column is-half is-offset-one-quarter">
+        <div class="bus-login-form columns is-mobile">
+            <div class="column is-half-desktop is-10-mobile is-10-tablet
+                               is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop">
 
-                <div v-show="errors.length > 0">
-                    <div class="error" v-for="error in errors">
-                        <el-alert :title="error" type="error" show-icon>
-                        </el-alert>
-                    </div>
+                <div class="errors" v-show="errors.length > 0">
+                    <el-alert v-for="error in errors" class="error" :title="error"
+                              type="error" :key="error | appendRandom" show-icon>
+                    </el-alert>
                 </div>
 
                 <div v-show="logged_in">
@@ -39,6 +39,10 @@
                         <el-input v-model="form.password" placeholder="Password" type="password"></el-input>
                     </el-form-item>
 
+                    <span class="help forgot-help">
+                            <router-link to="/business/forgot" class="is-semi-dark">Forgot password?</router-link>
+                    </span>
+
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('form')">Login</el-button>
                     </el-form-item>
@@ -54,6 +58,7 @@
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
   import { loginRules } from '../../services/validation';
+  import EventBus from '../../services/EventBus';
 
   export default {
     data() {
@@ -95,6 +100,7 @@
                 this.loginSuccess = response.message;
                 setTimeout(() => {
                   this.$router.push('/');
+                  EventBus.$emit('UpdateNavigation');
                 }, 1000);
               }
             });
@@ -113,19 +119,5 @@
         background: -webkit-linear-gradient(to right, #2F0743, #41295a); /* Chrome 10-25, Safari 5.1-6 */
         background: linear-gradient(to right, #2F0743, #41295a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         margin-bottom: 2em;
-    }
-
-    .error {
-        margin-top: 20px;
-    }
-
-    .error:first-child {
-        margin-top: 0;
-    }
-
-    @media screen and (max-width: 999px) {
-        .bus-login-form {
-            margin: 2em;
-        }
     }
 </style>

@@ -13,46 +13,64 @@
             </div>
         </section>
 
-        <div class="client-login-form columns">
-            <div class="column is-half is-offset-one-quarter">
+        <div class="client-login-form columns is-mobile">
+            <div class="column is-half-desktop is-10-mobile is-10-tablet
+                               is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop">
 
-                <div v-show="errors.length > 0">
-                    <div class="error" v-for="error in errors">
-                        <el-alert :title="error" type="error" show-icon>
-                        </el-alert>
-                    </div>
+                <div class="centered-fb">
+                    <a @click.prevent="redirectFacebook">
+                        <img src="assets/imgs/fb-login.png" alt="Facebook Login" width="50%">
+                    </a>
                 </div>
 
-                <div v-show="logged_in">
-                    <el-alert :title="loginSuccess" type="success" show-icon>
+                <hr>
+
+                <div v-show="info">
+                    <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
+                </div>
+
+                <div class="errors" v-show="errors.length > 0">
+                    <el-alert v-for="error in errors" class="error" :title="error"
+                              type="error" :key="error" show-icon>
                     </el-alert>
                 </div>
 
+                <div v-show="logged_in">
+                    <el-alert @close="logged_in = false" :title="loginSuccess" type="success" show-icon>
+                    </el-alert>
+                </div>
 
                 <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top"
-                          class="login-form">
+                         class="login-form">
                     <el-form-item label="Email" prop="email">
-                        <el-input v-model="form.email" placeholder="Email"></el-input>
+                        <el-input v-model="form.email" placeholder="Email" icon="message"></el-input>
                     </el-form-item>
 
                     <el-form-item label="Password" prop="password">
-                        <el-input v-model="form.password" placeholder="Password" type="password"></el-input>
+                        <el-input v-model="form.password" placeholder="Password" type="password" icon="edit"></el-input>
                     </el-form-item>
+                    <span class="help forgot-help">
+                            <router-link to="/client/forgot" class="is-semi-dark">Forgot password?</router-link>
+                    </span>
 
                     <el-form-item>
                         <el-button type="primary" @click="submitForm('form')">Login</el-button>
                     </el-form-item>
                 </el-form>
+
             </div>
         </div>
     </div>
 </template>
 
 <script>
+  import axios from 'axios';
   import clientAuth from '../../services/auth/clientAuth';
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
-  import { loginRules } from '../../services/validation';
+  import {loginRules} from '../../services/validation';
+  import {Client} from '../../services/EndPoints';
+  import EventBus from '../../services/EventBus';
 
   export default {
     data() {
@@ -62,17 +80,17 @@
           password: '',
         }),
         rules: loginRules,
+        info: false,
         logged_in: false,
         loginSuccess: '',
+        message: '',
         errors: [],
       };
     },
-    mounted() {
-      if (Authenticator.isAuthenticated()) {
-        this.$router.push('/');
-      }
-    },
     methods: {
+      redirectFacebook() {
+        window.location.href = 'http://localhost:3000/api/v1/client/auth/fb/login';
+      },
       submitForm(formName) {
         this.errors = [];
         this.$refs[formName].validate((valid) => {
@@ -90,23 +108,75 @@
                   return err.msg;
                 });
               } else {
-                this.logged_in = true;
+                this.afterLoginHandler();
                 this.loginSuccess = response.message;
-                setTimeout(() => {
-                  this.$router.push('/');
-                }, 1000);
               }
             });
-          } else {
-            this.errors.push('Please fill in all the fields.');
           }
         });
       },
+
+      afterLoginHandler() {
+        this.logged_in = true;
+        setTimeout(() => {
+          this.$router.go({
+            path: '/',
+          });
+          EventBus.$emit('UpdateNavigation');
+        }, 1000);
+      },
+
+      facebookLogin() {
+        const query = this.$route.query;
+        if (query && query.is_facebook === 'true') {
+          const token = query.token;
+          if (!token || token.length === 0) {
+            return;
+          }
+          const loader = this.$loading({
+            fullscreen: true,
+            text: 'Signing in..',
+          });
+          axios.post(Client().finalizeFb, {
+            token,
+          })
+              .then((response) => {
+                loader.close();
+                this.afterLoginHandler(response);
+                this.loginSuccess = response.data.message;
+                clientAuth.storeData(response);
+              }).catch((err) => {
+            this.errors = this.errors
+                .concat(err.response ? err.response.data.errors : [err.message]);
+            loader.close();
+          });
+        }
+      },
+    },
+    mounted() {
+      if (Authenticator.isAuthenticated()) {
+        this.$router.push('/');
+        return;
+      }
+
+     const query = this.$route.query;
+      if(query.error){
+        this.info = true;
+        this.message = query.error;
+      }
+
+      this.facebookLogin();
     },
   };
 </script>
 
 <style>
+    .centered-fb img {
+        display: block;
+        width: 250px;
+        margin: auto;
+    }
+
     .error {
         margin-top: 20px;
     }
@@ -122,9 +192,12 @@
         margin-bottom: 2em;
     }
 
-    @media screen and (max-width: 999px) {
-        .client-login-form {
-            margin: 2em;
-        }
+    .is-semi-dark {
+        color: #717171;
     }
+
+    .forgot-help{
+        margin-bottom: 1em;
+    }
+
 </style>
