@@ -1,3 +1,10 @@
+
+/*
+* Client Side Form Validation Schemas.
+* Async-validator.
+* https://github.com/yiminghe/async-validator
+* */
+
 export const clientSignUpValidation = {
   email: [{
     required: true,
@@ -84,7 +91,6 @@ export const clientSignUpValidation = {
     trigger: 'change',
   }],
 };
-
 export const loginRules = {
   email: [{
     required: true,
@@ -132,7 +138,6 @@ export const clientForgotPassword = {
     trigger: ['blur', 'change'],
   }],
 };
-
 export const verifiedBusinessSignupRules = {
   password: [{
     required: true,
@@ -198,7 +203,6 @@ export const verifiedBusinessSignupRules = {
     trigger: 'blur',
   }],
 };
-
 export const categoryRules = {
   type: [{
     required: true,
@@ -210,7 +214,6 @@ export const categoryRules = {
     message: 'title is required.',
   }],
 };
-
 export const clientForgotPasswordMail = {
   email: [{
     required: true,
@@ -224,7 +227,6 @@ export const clientForgotPasswordMail = {
   },
   ],
 };
-
 export const unverfiedBusinessSignupValidation = {
 
   name: {
@@ -253,6 +255,64 @@ export const unverfiedBusinessSignupValidation = {
   }, {
     pattern: /^01[0-2][0-9]{8}$/,
     message: 'Mobile number must be 11 digits in the following format 01xxxxxxxxx.',
+  }],
+};
+
+export const clientEditInfoValidation = {
+  email: [{
+    message: 'Please Enter a valid email.',
+    required: true,
+    trigger: 'blur',
+  }, {
+    type: 'email',
+    message: 'Must be an email.',
+    trigger: 'blur',
+  }],
+  firstName: [{
+    message: 'First name is required.',
+    trigger: 'blur',
+    required: true,
+  }],
+  lastName: [{
+    message: 'Last name is required.',
+    trigger: 'blur',
+    required: true,
+  }],
+  mobile: [{
+    message: 'Mobile number is required.',
+    trigger: 'blur',
+    required: true,
+  }, {
+    pattern: /^01[0-2]{1}[0-9]{8}$/,
+    message: 'Please enter a valid Egyptian mobile number.',
+    trigger: 'blur',
+  }],
+  gender: [{
+    message: 'Gender is required.',
+    trigger: 'change',
+  }, {
+    type: 'enum',
+    enum: ['Male', 'Female'],
+    message: 'Please Choose a correct gender.',
+    trigger: 'change',
+  }],
+  birthdate: [{
+    type: 'date',
+    message: 'Invalid Date format.',
+    required: true,
+    trigger: 'change',
+  }],
+};
+
+export const forgotPasswordValidation = {
+  email: [{
+    required: true,
+    message: 'Please Enter a valid email.',
+    trigger: 'blur',
+  }, {
+    type: 'email',
+    message: 'Must be an email.',
+    trigger: 'blur',
   }],
 };
 
@@ -324,9 +384,4 @@ export const offeringRules = {
     message: 'The capacity cannot be lower than 0',
     trigger: 'change',
   }],
-};
-
-export default {
-  serviceRules,
-  offeringRules,
 };

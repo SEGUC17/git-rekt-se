@@ -2,7 +2,9 @@ import VueRouter from 'vue-router';
 import UnverifiedBusinessSignup from '../components/Business/UnverifiedSignup.vue';
 import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
+import ForgotPassword from '../components/Business/forgotPassword.vue';
 import Home from '../components/pages/Index/home.vue';
+import clientEditInfo from '../components/Client/clientEditInfo.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
@@ -19,6 +21,7 @@ import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 import editServices from '../components/Business/Service/editServices.vue';
 import editOfferings from '../components/Business/Service/editOfferings.vue';
 
+
 const routes = [{
   path: '/',
   component: Home,
@@ -34,6 +37,9 @@ const routes = [{
 }, {
   path: '/service/:ser_id/book',
   component: Checkout,
+}, {
+  path: '/business/forgot',
+  component: ForgotPassword,
 }, {
   path: '/client/login',
   component: clientLogin,
@@ -55,7 +61,12 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
-}, {
+},
+{
+  path: '/client/edit',
+  component: clientEditInfo,
+},
+{
   path: '/client/forgot',
   component: Forgot,
 }, {
