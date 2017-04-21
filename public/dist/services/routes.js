@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 399);
+/******/ 	return __webpack_require__(__webpack_require__.s = 402);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4985,6 +4985,7 @@ var Admin = function Admin() {
   var categoryBase = BASE + '/admin/category';
   var clientBase = BASE + '/admin/client';
   var businessBase = BASE + '/admin/business';
+
   return {
     login: BASE + '/admin/auth/login',
 
@@ -5973,24 +5974,6 @@ var EventBus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__clientAuth__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__businessAuth__ = __webpack_require__(17);
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  isAuthenticated: function isAuthenticated() {
-    __WEBPACK_IMPORTED_MODULE_1__businessAuth__["a" /* default */].refreshAuth();
-    __WEBPACK_IMPORTED_MODULE_0__clientAuth__["a" /* default */].refreshAuth();
-    return __WEBPACK_IMPORTED_MODULE_1__businessAuth__["a" /* default */].user.authenticated || __WEBPACK_IMPORTED_MODULE_0__clientAuth__["a" /* default */].user.authenticated;
-  }
-});
-
-/***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(4);
@@ -6058,6 +6041,24 @@ var EventBus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
   isAuthenticated: function isAuthenticated() {
     this.refreshAuth();
     return this.user.authenticated;
+  }
+});
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__clientAuth__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__businessAuth__ = __webpack_require__(17);
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  isAuthenticated: function isAuthenticated() {
+    __WEBPACK_IMPORTED_MODULE_1__businessAuth__["a" /* default */].refreshAuth();
+    __WEBPACK_IMPORTED_MODULE_0__clientAuth__["a" /* default */].refreshAuth();
+    return __WEBPACK_IMPORTED_MODULE_1__businessAuth__["a" /* default */].user.authenticated || __WEBPACK_IMPORTED_MODULE_0__clientAuth__["a" /* default */].user.authenticated;
   }
 });
 
@@ -30139,6 +30140,9 @@ var routes = [{
   }, {
     path: 'categories/edit',
     component: __WEBPACK_IMPORTED_MODULE_18__components_Admin_editCategory_vue___default.a
+  }, {
+    path: 'business/remove',
+    component: __WEBPACK_IMPORTED_MODULE_13__components_Admin_removeBusiness_vue___default.a
   }]
 }, {
   path: '/business/reset/:token',
@@ -30998,7 +31002,7 @@ module.exports = function spread(callback) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_gr_top_hero_vue__ = __webpack_require__(146);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_gr_top_hero_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__shared_gr_top_hero_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_adminAuth__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_adminAuth__ = __webpack_require__(11);
 //
 //
 //
@@ -31068,7 +31072,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_validation__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_EndPoints__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_adminAuth__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_adminAuth__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_EventBus__ = __webpack_require__(10);
 //
 //
@@ -31385,7 +31389,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_auth_adminAuth__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_auth_adminAuth__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(7);
 //
@@ -31506,7 +31510,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_adminAuth__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_adminAuth__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EventBus__ = __webpack_require__(10);
 //
 //
 //
@@ -31531,21 +31536,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 
 
 
@@ -31556,18 +31547,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             errors: [],
             businesses: [],
-            sure: false,
-            shownot: false,
-            currID: '',
-            currName: '',
-            currEmail: '',
-            defaultSort: {
-                prop: 'name',
-                order: 'ascending'
-            }
+            email: ''
         };
     },
     mounted: function mounted() {
+        var _this = this;
+
         if (!__WEBPACK_IMPORTED_MODULE_2__services_auth_adminAuth__["a" /* default */].isAuthenticated()) {
             this.$router.push('/');
             this.$toast.open({
@@ -31577,50 +31562,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         } else {
             this.getBusinesses();
+            __WEBPACK_IMPORTED_MODULE_3__services_EventBus__["a" /* default */].$on('BusinessRemoved', function () {
+                _this.getBusinesses();
+            });
+            __WEBPACK_IMPORTED_MODULE_3__services_EventBus__["a" /* default */].$on('BusinessRemoveError', function (errors) {
+                _this.errors = errors;
+            });
         }
     },
 
     methods: {
         getBusinesses: function getBusinesses() {
-            var _this = this;
+            var _this2 = this;
 
+            var loader = this.$loading({
+                fullscreen: true
+            });
             __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Admin */])().listBusiness, {
                 headers: {
                     Authorization: __WEBPACK_IMPORTED_MODULE_2__services_auth_adminAuth__["a" /* default */].getJWTtoken()
                 }
             }).then(function (response) {
-                _this.businesses = response.data.results;
-                _this.errors = [];
-            }).catch(function (error) {
-                _this.errors = error.response.data.errors.map(function (err) {
-                    if (typeof err === 'string') {
-                        return err;
-                    }
-                    return err.msg;
-                });
-                _this.businesses = [];
-            });
-        },
-        deleteClicked: function deleteClicked(business) {
-            this.currName = business.name;
-            this.currID = business._id;
-            this.currEmail = business.email;
-            this.sure = true;
-        },
-        confirmDeletion: function confirmDeletion() {
-            var _this2 = this;
-
-            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Admin */])().deleteBusiness(this.currID), null, {
-                headers: {
-                    Authorization: __WEBPACK_IMPORTED_MODULE_2__services_auth_adminAuth__["a" /* default */].getJWTtoken()
-                }
-            }).then(function (response) {
-                _this2.$notify({
-                    title: 'Success',
-                    message: response.data.message,
-                    type: 'success'
-                });
-                _this2.getBusinesses();
+                loader.close();
+                _this2.businesses = response.data.results;
+                _this2.errors = [];
             }).catch(function (error) {
                 _this2.errors = error.response.data.errors.map(function (err) {
                     if (typeof err === 'string') {
@@ -31628,6 +31593,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                     return err.msg;
                 });
+                loader.close();
+                _this2.businesses = [];
             });
         }
     }
@@ -31642,7 +31609,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_adminAuth__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_adminAuth__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EventBus__ = __webpack_require__(10);
 //
 //
@@ -31756,7 +31723,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_adminAuth__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_adminAuth__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EventBus__ = __webpack_require__(10);
 //
 //
@@ -32074,7 +32041,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_auth_businessAuth__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_commonAuth__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_commonAuth__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_Form__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_validation__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_EventBus__ = __webpack_require__(10);
@@ -32301,7 +32268,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EndPoints__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_auth_commonAuth__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_auth_commonAuth__ = __webpack_require__(12);
 //
 //
 //
@@ -32588,7 +32555,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_commonAuth__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_commonAuth__ = __webpack_require__(12);
 //
 //
 //
@@ -32961,7 +32928,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_auth_clientAuth__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_commonAuth__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_commonAuth__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Client_resend_vue__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Client_resend_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Client_resend_vue__);
 //
@@ -33087,7 +33054,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_clientAuth__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_commonAuth__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_commonAuth__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Form__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_validation__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_EndPoints__ = __webpack_require__(4);
@@ -33369,7 +33336,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__resend_vue__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__resend_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__resend_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_commonAuth__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_commonAuth__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EndPoints__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_validation__ = __webpack_require__(7);
 //
@@ -34149,7 +34116,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_auth_commonAuth__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_auth_commonAuth__ = __webpack_require__(12);
 //
 //
 //
@@ -39316,99 +39283,80 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "columns is-mobile"
+    staticClass: "remove-business"
   }, [_c('div', {
-    staticClass: "column is-half is-offset-one-quarter"
-  }, [_c('h1', {
-    staticClass: "title has-text-centered"
-  }, [_vm._v("Business list")]), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
       value: (_vm.errors.length > 0),
       expression: "errors.length > 0"
-    }]
+    }],
+    staticClass: "errors"
   }, _vm._l((_vm.errors), function(error) {
-    return _c('div', {
-      staticClass: "error"
-    }, [_c('el-alert', {
+    return _c('el-alert', {
+      key: _vm._f("appendRandom")(error),
+      staticClass: "error",
       attrs: {
         "title": error,
         "type": "error",
         "show-icon": ""
       }
-    })], 1)
-  })), _vm._v(" "), _c('el-dialog', {
-    attrs: {
-      "title": "Confirm Deletion",
-      "size": "tiny"
-    },
-    model: {
-      value: (_vm.sure),
-      callback: function($$v) {
-        _vm.sure = $$v
-      },
-      expression: "sure"
-    }
-  }, [_c('span', [_vm._v("Are you sure you want to delete " + _vm._s(_vm.currName) + " with Email " + _vm._s(_vm.currEmail) + "?")]), _vm._v(" "), _c('span', {
-    staticClass: "dialog-footer",
-    slot: "footer"
-  }, [_c('el-button', {
-    on: {
-      "click": function($event) {
-        _vm.sure = false
-      }
-    }
-  }, [_vm._v("Cancel")]), _vm._v(" "), _c('el-button', {
-    staticClass: "button is-primary",
-    on: {
-      "click": function($event) {
-        _vm.sure = false, _vm.confirmDeletion(), _vm.shownot = true
-      }
-    }
-  }, [_vm._v("Confirm")])], 1)]), _vm._v(" "), _c('el-table', {
-    staticStyle: {
-      "width": "100%"
-    },
+    })
+  })), _vm._v(" "), (_vm.businesses.length > 0) ? _c('b-table', {
     attrs: {
       "data": _vm.businesses,
-      "border": "",
-      "empty-text": "No Businesses",
-      "default-sort": _vm.defaultSort
+      "striped": true,
+      "narrowed": false,
+      "mobile-cards": true,
+      "paginated": true,
+      "per-page": 10,
+      "pagination-simple": false,
+      "default-sort": "name",
+      "render-html": ""
     }
-  }, [_c('el-table-column', {
+  }, [_c('b-table-column', {
     attrs: {
-      "prop": "name",
-      "label": "Business Name",
+      "field": "name",
+      "label": "Name",
       "sortable": ""
     }
-  }), _vm._v(" "), _c('el-table-column', {
+  }), _vm._v(" "), _c('b-table-column', {
     attrs: {
-      "prop": "email",
-      "label": "Business Email",
+      "field": "email",
+      "label": "Email",
       "sortable": ""
     }
-  }), _vm._v(" "), _c('el-table-column', {
+  }), _vm._v(" "), _c('b-table-column', {
     attrs: {
-      "label": "Operation"
-    },
-    scopedSlots: _vm._u([
-      ["default", function(scope) {
-        return [_c('el-button', {
-          staticClass: "button is-danger",
-          on: {
-            "click": function($event) {
-              _vm.deleteClicked(scope.row)
-            }
-          }
-        }, [_vm._v("Delete   \n                    "), _c('span', {
-          staticClass: "icon"
-        }, [_c('i', {
-          staticClass: "fa fa-trash-o"
-        })])])]
-      }]
-    ])
-  })], 1)], 1)])
+      "field": "_id",
+      "component": "business-remove-btn"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.businesses.length === 0),
+      expression: "businesses.length === 0"
+    }],
+    staticClass: "no-data hero"
+  }, [_c('div', {
+    staticClass: "hero-body has-text-centered"
+  }, [_c('el-icon', {
+    staticClass: "confirmation-icon icon-fail",
+    attrs: {
+      "name": "circle-close"
+    }
+  }), _vm._v(" "), _c('p', {
+    staticClass: "title is-2"
+  }, [_vm._v("No Businesses Found.")]), _vm._v(" "), _c('a', {
+    staticClass: "button is-info",
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.getBusinesses($event)
+      }
+    }
+  }, [_vm._v("Refresh")])], 1)])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -39898,7 +39846,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "to": "/admin/dashboard/confirm"
     }
-  }, [_vm._v("Accept/Reject")])], 1), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c('p', {
+  }, [_vm._v("Accept/Reject")])], 1), _vm._v(" "), _c('li', [_c('router-link', {
+    attrs: {
+      "to": "/admin/dashboard/business/remove"
+    }
+  }, [_vm._v("Remove")])], 1)]), _vm._v(" "), _c('p', {
     staticClass: "menu-label"
   }, [_vm._v("\n                    Categories\n                  ")]), _vm._v(" "), _c('ul', {
     staticClass: "menu-list"
@@ -39917,9 +39869,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Remove")])], 1)])])]), _vm._v(" "), _c('div', {
     staticClass: "column is-8"
   }, [_c('router-view')], 1)])], 1)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', [_c('a', [_vm._v("Remove")])])
-}]}
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -42682,7 +42632,10 @@ module.exports = function(module) {
 /* 396 */,
 /* 397 */,
 /* 398 */,
-/* 399 */
+/* 399 */,
+/* 400 */,
+/* 401 */,
+/* 402 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(148);
