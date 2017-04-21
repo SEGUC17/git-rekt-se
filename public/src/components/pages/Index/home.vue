@@ -19,9 +19,12 @@
                     </div>
 
                     <div class="column is-2">
-                        <el-autocomplete class="full-width" v-model="location" :fetch-suggestions="querySearch"
-                                         placeholder="Locations" size="large">
-                        </el-autocomplete>
+                        <el-select class="full-width" v-model="location" filterable clearable placeholder="Locations"
+                                   size="large">
+                            <el-option v-for="loc in locations" :key="loc.value" :label="loc.label"
+                                       :value="loc.value">
+                            </el-option>
+                        </el-select>
                     </div>
 
                     <div class="column is-2">
@@ -35,6 +38,9 @@
                         <div class="field has-text-left">
                             <el-button size="large" type="success" @keydown.enter="searchClicked"
                                        @click="searchClicked">Search
+
+
+
 
                             </el-button>
                         </div>
@@ -95,7 +101,7 @@
   import card from '../../shared/gr-card.vue';
   import locs from './mainLocations';
   import priceRanges from './priceRanges';
-  import { Visitor } from '../../../services/EndPoints';
+  import {Visitor} from '../../../services/EndPoints';
 
   export default {
     data() {
@@ -129,27 +135,18 @@
               this.locations = locs;
             });
       },
-
-      querySearch(query, cb) {
-        const locations = this.locations;
-        const results = [];
-        locations.forEach((loc) => {
-          if (loc.value.toLowerCase().indexOf(query.toLowerCase()) !== -1) {
-            results.push(loc);
-          }
-        });
-        cb(results);
-      },
-
         /*
          * Generate search URI.
          */
 
       searchClicked() {
-        let url = '/search';
+        const url = '/search';
+        const params = {
+          offset: 1,
+        };
 
         if (this.name) {
-          url += `?name=${this.name}`;
+          params.name = this.name;
         }
 
         const priceRange = this.price.split('-');
@@ -158,23 +155,19 @@
           const min = parseInt(priceRange[0], 10);
           const max = parseInt(priceRange[1], 10);
           if (!isNaN(min) && !isNaN(max)) {
-            if (this.name) {
-              url += `&min=${min}&max=${max}`;
-            } else {
-              url += `?min=${min}&max=${max}`;
-            }
+            params.min = min;
+            params.max = max;
           }
         }
 
         if (this.location) {
-          if (this.name || priceRange.length === 2) {
-            url += `&location=${this.location}`;
-          } else {
-            url += `?location=${this.location}`;
-          }
+          params.location = this.location;
         }
 
-        this.$router.push(url);
+        this.$router.push({
+          path: url,
+          query: params,
+        });
       },
     },
 

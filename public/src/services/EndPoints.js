@@ -7,12 +7,14 @@ export const Visitor = () => ({
   relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/${offset}`,
   locations: `${BASE}/visitor/search/locations`,
   viewBusiness: businessID => `${BASE}/business/${businessID}`,
+  businessCategories: `${BASE}/categories/business`,
 });
 
 export const Client = () => {
   const authBase = `${BASE}/client/auth`;
   const profileBase = `${BASE}/client/profile`;
   return {
+    finalizeFb: `${authBase}/fb/finalize/login`,
     login: `${authBase}/login`,
     signup: `${authBase}/signup`,
     resend: `${authBase}/confirmation/send`,
@@ -21,6 +23,7 @@ export const Client = () => {
     logout: `${authBase}/logout`,
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
+    getInfo: clientID => `${profileBase}/${clientID}`,
   };
 };
 
@@ -57,15 +60,20 @@ export const Business = () => {
 export const Admin = () => {
   const generalBase = `${BASE}/admin/general`;
   const categoryBase = `${BASE}/admin/category`;
+  const clientBase = `${BASE}/admin/client`;
   return {
     login: `${BASE}/admin/auth/login`,
 
+    viewBusiness: `${generalBase}/business`,
     acceptBusiness: businessID => `${generalBase}/confirm/${businessID}`,
     denyBusiness: businessID => `${generalBase}/deny/${businessID}`,
 
     createCategory: `${categoryBase}/add`,
     editCategory: categoryID => `${categoryBase}/edit/${categoryID}`,
     deleteCategory: categoryID => `${categoryBase}/delete/${categoryID}`,
+    listCategories: `${categoryBase}/list`,
+    listClients: `${clientBase}/list`,
+    deleteClient: clientID => `${clientBase}/delete/${clientID}`,
   };
 };
 
@@ -88,9 +96,9 @@ export const Service = () => {
 };
 
 export default {
-  Visitor,
   Client,
   Business,
+  Visitor,
   Admin,
   Service,
 };
