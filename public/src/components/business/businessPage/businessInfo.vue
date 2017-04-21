@@ -39,13 +39,9 @@
             <!-- Left Pane -->
             <div class="column is-7 is-offset-1">
 
-                <!-- Service Description -->
+                <!-- Business Full Description -->
                 <div class="box">
-                    <div class="content is-marginless">
-                        <p>
-                            {{ description }}
-                        </p>
-                    </div>
+                    <pre class="content is-marginless">{{ description || "No Description."}}</pre>
                 </div>
 
                 <!-- Navigation tabs -->
@@ -92,7 +88,12 @@
 
                 <!-- Services Tab -->
                 <transition name="fade">
-                    <div class="services" v-show="active === 1">
+                    <div class="no-services" v-show="active === 1" v-if="services.length === 0">
+                        <h3 class="title has-text-centered">
+                            No Services found.
+                        </h3>
+                    </div>
+                    <div class="services" v-show="active === 1" v-if="services.length > 0">
                         <router-link :to="`/service/${service._id}`" class="service-search-result box"
                                      v-for="service in services" :key="service._id">
                             <div class="content services">
@@ -118,7 +119,7 @@
                 <div class="panel">
                     <p class="panel-heading"> Related Businesses </p>
                     <a class="dark-link panel-block"
-                       @click.prevent="load(bus._id)"
+                       @click.prevent="relatedView(bus._id)"
                        v-for="bus in related"
                        :key="bus._id"
                        :href="`/business/${bus._id}`">
@@ -135,7 +136,7 @@
 
 <script>
   import axios from 'axios';
-  import {Visitor} from '../../../services/EndPoints';
+  import { Visitor } from '../../../services/EndPoints';
 
   export default {
     data() {
@@ -144,6 +145,7 @@
         name: '',
         active: 1,
         email: '',
+        loader: '',
         shortDescription: '',
         gallery: [],
         phoneNumbers: [],
@@ -170,13 +172,15 @@
         const url = `/service/${serviceID}/book`;
         this.$router.push(url);
       },
-      relatedView(business) {
-        const businessID = business._id;
-        const url = `/business/${businessID}`;
+      relatedView(id) {
+        const url = `/business/${id}`;
         this.$router.push(url);
-        this.load(businessID);
+        this.load(id);
       },
       load(id) {
+        this.loader = this.$loading({
+          fullscreen: true,
+        });
         axios.get(Visitor().viewBusiness(id))
             .then((business) => {
               this.id = business.data.id;
@@ -193,14 +197,17 @@
 
               axios.get(Visitor().relatedBusiness(this.categories[0]._id, 1))
                   .then((res) => {
+                    this.loader.close();
                     this.related = res.data.results;
+                    this.related = this.related
+                        .filter(bus => bus._id !== this.$route.params.id);
                   })
-                  .catch((err) => {
-                    console.log(err);
+                  .catch(() => {
+                    this.loader.close();
                   });
             })
-            .catch((err) => {
-              console.log(err);
+            .catch(() => {
+              this.loader.close();
             });
       },
     },
@@ -218,6 +225,8 @@
     pre {
         background: transparent;
         font: inherit;
+        white-space:pre-wrap;
+        word-wrap:break-word;
     }
 
     a.box:hover, a.box:focus{

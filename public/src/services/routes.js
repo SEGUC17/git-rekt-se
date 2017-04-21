@@ -29,88 +29,86 @@ const routes = [{
   path: '/',
   component: Home,
 },
-{
-  path: '/business/:id',
-  component: businessPage,
-},
-{
-  path: '/client/reset/:token',
-  component: Reset,
-},
-{
-  path: '/business/apply',
-  component: UnverifiedBusinessSignup,
-}, {
-  path: '/service/:id',
-  component: servicePage,
-}, {
-  path: '/search',
-  component: SearchPage,
-}, {
-  path: '/service/:ser_id/book',
-  component: Checkout,
-}, {
-  path: '/business/forgot',
-  component: ForgotPassword,
-}, {
-  path: '/client/login',
-  component: clientLogin,
-}, {
-  path: '/confirm/signup/:token',
-  component: verifiedBusinessSignup,
-}, {
-  path: '/admin/removebusiness',
-  component: removeBusiness,
-}, {
-  path: '/client/signup',
-  component: clientSignUp,
-}, {
-  path: '/admin/business',
-  component: adminBusiness,
-}, {
-  path: '/client/confirm/:token',
-  component: confirmEmail,
-}, {
-  path: '/login',
-  component: loginSelect,
-}, {
-  path: '/business/login',
-  component: businessLogin,
-},
-{
-  path: '/client/edit',
-  component: clientEditInfo,
-},
-{
-  path: '/client/forgot',
-  component: Forgot,
-}, {
-  path: '/client/reset/:token',
-  component: Reset,
-}, {
-  path: '/admin/login',
-  component: adminLogin,
-}, {
-  path: '/admin/dashboard',
-  component: adminDashboard,
-  children: [{
-    path: 'confirm',
+  {
+    path: '/client/reset/:token',
+    component: Reset,
+  },
+  {
+    path: '/business/apply',
+    component: UnverifiedBusinessSignup,
+  }, {
+    path: '/service/:id',
+    component: servicePage,
+  }, {
+    path: '/search',
+    component: SearchPage,
+  }, {
+    path: '/service/:ser_id/book',
+    component: Checkout,
+  }, {
+    path: '/business/forgot',
+    component: ForgotPassword,
+  }, {
+    path: '/client/login',
+    component: clientLogin,
+  }, {
+    path: '/confirm/signup/:token',
+    component: verifiedBusinessSignup,
+  }, {
+    path: '/admin/removebusiness',
+    component: removeBusiness,
+  }, {
+    path: '/client/signup',
+    component: clientSignUp,
+  }, {
+    path: '/admin/business',
     component: adminBusiness,
   }, {
-    path: 'client/remove',
-    component: removeClient,
+    path: '/client/confirm/:token',
+    component: confirmEmail,
   }, {
-    path: 'categories/edit',
-    component: categoryCRUD,
+    path: '/login',
+    component: loginSelect,
   }, {
-    path: 'business/remove',
-    component: removeBusiness,
-  }],
-}, {
-  path: '/business/reset/:token',
-  component: reset,
-},
-];
+    path: '/business/login',
+    component: businessLogin,
+  },
+  {
+    path: '/client/edit',
+    component: clientEditInfo,
+  },
+  {
+    path: '/client/forgot',
+    component: Forgot,
+  }, {
+    path: '/client/reset/:token',
+    component: Reset,
+  }, {
+    path: '/admin/login',
+    component: adminLogin,
+  }, {
+    path: '/admin/dashboard',
+    component: adminDashboard,
+    children: [{
+      path: 'confirm',
+      component: adminBusiness,
+    }, {
+      path: 'client/remove',
+      component: removeClient,
+    }, {
+      path: 'categories/edit',
+      component: categoryCRUD,
+    }, {
+      path: 'business/remove',
+      component: removeBusiness,
+    }],
+  }, {
+    path: '/business/reset/:token',
+    component: reset,
+  }, {
+    path: '/business/:id',
+    component: businessPage,
+  }];
 
 
 const router = new VueRouter({

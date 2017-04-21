@@ -37,9 +37,7 @@
 
                 <!-- Service Description -->
                 <div class="box">
-                        <p>
-                            {{ description }}
-                        </p>
+                        <pre class="content is-marginless">{{ description || "No Description."}}</pre>
                 </div>
 
                 <!-- Navigation tabs -->
@@ -157,7 +155,7 @@
 
 <script>
   import axios from 'axios';
-  import {Service} from '../../services/EndPoints';
+  import { Service } from '../../services/EndPoints';
 
   export default {
     data() {
