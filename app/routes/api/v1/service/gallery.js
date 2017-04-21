@@ -48,7 +48,6 @@ router.get('/:id/gallery', (req, res, next) => {
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        console.log('valid');
         Service.findOne({
           _id: req.params.id,
           _deleted: false,
@@ -56,7 +55,6 @@ router.get('/:id/gallery', (req, res, next) => {
           .exec()
           .then((service) => {
             if (service) {
-              console.log('found service');
               res.json(service.gallery);
             } else {
               next(Strings.serviceFailure.invalidService);
@@ -90,9 +88,7 @@ router.post('/:id/gallery/add', upload.single('path'), BusinessAuth, (req, res, 
               // check whether logged in business matches the service provider
               if (`${service._business}` === `${req.user._id}`) {
                 if (req.file) {
-                  console.log('found file');
                   if (req.file.mimetype.split('/')[0] === 'image') {
-                    console.log('its an image');
                     const image = ({
                       path: req.file.filename,
                       description: req.body.description,

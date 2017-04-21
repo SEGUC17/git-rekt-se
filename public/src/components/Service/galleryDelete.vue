@@ -46,7 +46,7 @@
                         });
                     })
                     .catch(err => {
-                         this.$emit('imageEditError', err.response.data.errors);
+                         this.$emit('error', err.response.data.errors);
                     });
             },
         },    

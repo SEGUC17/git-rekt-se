@@ -24,20 +24,20 @@
             </form>
         </el-dialog>
         <template>
-        <el-row>
-            <el-col :span="8" v-for="image in images":key="image._id" v-bind:data="image">
-                <el-card :body-style="{ padding: '0px' }">
-                    <img src="image.path" class="image">
-                    <div style="padding: 14px;">
-                        <span>{{image.description}}</span>
-                        <div class="bottom clearfix">
-                            <!--<editButton :key="image._id" :imageID="image._id"></editButton>
-                            <deleteButton :key="image._id" :imageID="image._id"></deleteButton>-->
+            <el-row>
+                <el-col :span="8" v-for="image in images":key="image._id" v-bind:data="image">
+                    <el-card :body-style="{ padding: '0px' }">
+                        <img src="image.path" class="image">
+                        <div style="padding: 14px;">
+                            <span>{{image.description}}</span>
+                            <div class="bottom clearfix">
+                                <editButton @error="handleError":key="image._id" :imageID="image._id"></editButton>
+                                <deleteButton @error="handleError" :key="image._id" :imageID="image._id"></deleteButton>
+                            </div>
                         </div>
-                    </div>
-                </el-card>
-            </el-col>
-        </el-row>
+                    </el-card>
+                </el-col>
+            </el-row>
 </template>
         
     </div>
@@ -62,6 +62,10 @@
                 }),
                 addDialog: false,
             }
+        },
+        components: {
+            editButton: editButton,
+            deleteButton: deleteButton,
         },
         mounted() {
             this.getGallery();
@@ -143,6 +147,9 @@
                         document.body.scrollTop = document.documentElement.scrollTop = 0;
                     });
             },
+            handleError() {
+                this.errors = ['An error occured.'];
+            }
         }
     }
 </script>
