@@ -28,17 +28,14 @@
         data() {
             return {
                 editDialogue: false,
-                deleteDialogue: false,
-                imageID: '58f62f053d83196d9cfae112',
                 editForm: {
                     description: '',
                 },
                 formLabelWidth: '120px',
-                errors: [],
             };
     
         },
-        // props: ['imageID'],
+        props: ['imageID'],
     
         methods: {
             editImage(imageID) {
@@ -50,16 +47,10 @@
                     })
                     .then((res) => {
                         this.resetForm();
-                        this.$emit('imageEdit', res);
-                        this.$notify({
-                            title: 'Success!',
-                            message: res.body.message,
-                            type: 'success'
-                        });
+                        this.$emit('success', res);
                     })
                     .catch(err => {
-                        this.errors = err.response.data.errors;
-                        document.body.scrollTop = document.documentElement.scrollTop = 0;
+                        this.$emit('error', err.response.data.errors);
                     });
             },
             resetForm() {

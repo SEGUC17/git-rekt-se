@@ -27,32 +27,24 @@
         data() {
             return {
                 deleteDialogue: false,
-                imageID: '58f62f053d83196d9cfae112',
-                errors: [],
             };
     
         },
-        // props: ['imageID'],
+        props: ['imageID'],
     
         methods: {
             deleteImage(imageID) {
                 this.deleteDialogue = false;
-                axios.post(EndPoints.Business().deleteImage(this.$route.params.id, imageID), {
+                axios.post(EndPoints.Business().deleteImage(this.$route.params.id, imageID),null, {
                         headers: {
                             Authorization: businessAuth.getJWTtoken()
                         }
                     })
                     .then((res) => {
-                        this.$emit('imageDelete', res);
-                        this.$notify({
-                            title: 'Success!',
-                            message: res.body.message,
-                            type: 'success'
-                        });
+                        this.$emit('success', res);
                     })
                     .catch(err => {
-                        this.errors = err.response.data.errors
-                        document.body.scrollTop = document.documentElement.scrollTop = 0;
+                        this.$emit('error',err.response.data.errors);
                     });
             },
         },

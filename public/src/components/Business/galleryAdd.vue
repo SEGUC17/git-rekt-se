@@ -2,6 +2,13 @@
     <div>
         <el-button class="button is-primary" @click="addDialogue = true">Add Image</el-button>
         <el-dialog title="Add an Image" v-model="addDialogue">
+            <div>
+                <div v-show="errors.length>0">
+                    <div class="error" v-for="(error,idx) in errors">
+                        <el-alert @close="closeError(idx)" :title="error" type="error" show-icon></el-alert>
+                    </div>
+                </div>
+            </div>
             <form method="post" @submit.prevent="onSubmit" enctype="multipart/form-data">
     
                 <label class="label">Description</label>
@@ -26,7 +33,7 @@
     import EndPoints from '../../services/EndPoints';
     import Form from '../../services/Form';
     import businessAuth from '../../services/auth/businessAuth'
-
+    
     export default {
         data() {
             return {
@@ -40,6 +47,9 @@
         },
     
         methods: {
+            closeError(idx) {
+                this.errors.splice(idx, 1);
+            },
             onSubmit() {
                 this.addDialog = false;
                 if (this.form.path) {
@@ -84,18 +94,12 @@
                             Authorization: businessAuth.getJWTtoken()
                         }
                     })
-                    .then(() => {
+                    .then((res) => {
                         this.form.reset();
-                        this.$emit('imageAdd', res);
-                        this.$notify({
-                            title: 'Success!',
-                            message: res.body.message,
-                            type: 'success'
-                        });
+                        this.$emit('success', res);
                     })
                     .catch(err => {
-                        this.errors = err.response.data.errors
-                        document.body.scrollTop = document.documentElement.scrollTop = 0;
+                        this.$emit('error', err.response.data.errors);
                     });
             },
     
