@@ -23,12 +23,10 @@ import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 const routes = [{
   path: '/',
   component: Home,
-},
-{
+}, {
   path: '/client/reset/:token',
   component: Reset,
-},
-{
+}, {
   path: '/business/apply',
   component: UnverifiedBusinessSignup,
 }, {
@@ -61,12 +59,10 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
-},
-{
+}, {
   path: '/client/edit',
   component: clientEditInfo,
-},
-{
+}, {
   path: '/client/forgot',
   component: Forgot,
 }, {
@@ -91,8 +87,7 @@ const routes = [{
 }, {
   path: '/business/reset/:token',
   component: reset,
-},
-];
+}];
 
 const router = new VueRouter({
   routes,
