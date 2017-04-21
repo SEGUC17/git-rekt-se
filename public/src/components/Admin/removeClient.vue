@@ -2,14 +2,11 @@
     <div class="remove-client">
         <div class="errors" v-show="errors.length > 0">
             <el-alert v-for="error in errors" class="error" :title="error"
-                      type="error" :key="error" show-icon></el-alert>
+                      type="error" :key="error | appendRandom" show-icon></el-alert>
         </div>
 
         <b-table
-<<<<<<< HEAD
                 v-if="clients.length > 0"
-=======
->>>>>>> 4dccc5408d13d631384d6d5636fefb30c273cd8e
                 :data="clients"
                 :striped="true"
                 :narrowed="false"
@@ -25,7 +22,6 @@
             <b-table-column field="email" label="Email"></b-table-column>
             <b-table-column field="_id" component="client-remove-btn"></b-table-column>
         </b-table>
-<<<<<<< HEAD
 
         <!-- No data found. -->
         <div class="no-data hero" v-show="clients.length === 0">
@@ -35,9 +31,6 @@
                 <a class="button is-info" @click.prevent="getClients">Refresh</a>
             </div>
         </div>
-
-=======
->>>>>>> 4dccc5408d13d631384d6d5636fefb30c273cd8e
     </div>
 </template>
 

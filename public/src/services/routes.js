@@ -2,11 +2,17 @@ import VueRouter from 'vue-router';
 import UnverifiedBusinessSignup from '../components/Business/UnverifiedSignup.vue';
 import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
+import reset from '../components/Business/reset.vue';
+import ForgotPassword from '../components/Business/forgotPassword.vue';
 import Home from '../components/pages/Index/home.vue';
+import servicePage from '../components/Service/service-page.vue';
+import clientEditInfo from '../components/Client/clientEditInfo.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
+import verifiedBusinessSignup from '../components/Business/verifiedBusinessSignup.vue';
 import adminBusiness from '../components/Admin/unverifiedBusinessPage.vue';
+import removeBusiness from '../components/Admin/removeBusiness.vue';
 import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
@@ -29,14 +35,26 @@ const routes = [{
   path: '/business/apply',
   component: UnverifiedBusinessSignup,
 }, {
+  path: '/service/:id',
+  component: servicePage,
+}, {
   path: '/search',
   component: SearchPage,
 }, {
   path: '/service/:ser_id/book',
   component: Checkout,
 }, {
+  path: '/business/forgot',
+  component: ForgotPassword,
+}, {
   path: '/client/login',
   component: clientLogin,
+}, {
+  path: '/confirm/signup/:token',
+  component: verifiedBusinessSignup,
+}, {
+  path: '/admin/removebusiness',
+  component: removeBusiness,
 }, {
   path: '/client/signup',
   component: clientSignUp,
@@ -52,7 +70,12 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
-}, {
+},
+{
+  path: '/client/edit',
+  component: clientEditInfo,
+},
+{
   path: '/client/forgot',
   component: Forgot,
 }, {
@@ -73,11 +96,18 @@ const routes = [{
   }, {
     path: 'categories/edit',
     component: categoryCRUD,
+  }, {
+    path: 'business/remove',
+    component: removeBusiness,
   }],
 }, {
   path: '/client/transactions',
   component: clientViewTransactions,
-}];
+}, {  
+  path: '/business/reset/:token',
+  component: reset,
+},
+];
 
 const router = new VueRouter({
   routes,
