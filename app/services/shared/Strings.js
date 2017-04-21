@@ -242,6 +242,7 @@ const couponValidationError = {
   invalidEndDate: 'Invalid End Date',
   invalidCoupon: 'No such coupon',
   invalidCouponID: 'Coupon is invalid',
+  couponAlreadyExists: 'A coupon with the same code exists for this service',
 };
 
 
