@@ -23,7 +23,7 @@
       <el-table-column label="Address" header-align="center">
         <template scope="scope">
           <i class="fa fa-location-arrow align-icon location-icon" aria-hidden="true"></i>
-          <span>{{ `${scope.row._offering.address}, ${scope.row._offering.location}` }}</span>
+          <span>{{ `${scope.row._service.offerings[0].address}, ${scope.row._service.offerings[0].location}` }}</span>
         </template>
       </el-table-column>
 
@@ -37,7 +37,7 @@
       <el-table-column label="Price" header-align="center">
         <template scope="scope">
           <i class="fa fa-money align-icon" aria-hidden="true"></i>
-          <span>{{ `${scope.row._offering.price} EGP` }}</span>
+          <span>{{ `${scope.row._transaction.amount / 100.0} EGP` }}</span>
         </template>
       </el-table-column>
     </el-table>

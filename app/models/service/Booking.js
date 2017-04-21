@@ -20,7 +20,6 @@ const bookingSchema = Schema({
   },
   _offering: {
     type: Schema.Types.ObjectId,
-    ref: 'Offering',
     required: true,
   },
   _coupon: {
@@ -35,6 +34,10 @@ const bookingSchema = Schema({
     type: String,
     enum: ['pending', 'confirmed', 'rejected'],
     default: 'pending',
+  },
+  date: {
+    type: Date,
+    default: Date.now,
   },
   _deleted: {
     type: Boolean,

@@ -126,11 +126,17 @@ router.get('/history', authMiddleWare.clientAuthMiddleware, (req, res, next) => 
     _deleted: false,
     _client: req.user.id,
   }, projection)
-    .populate('_service', 'name')
+    .populate('_service', 'name offerings')
     .populate('_client', 'firstName lastName')
-    .populate('_offering', 'location address price')
+    .populate('_transaction', 'amount')
     .exec()
     .then((bookings) => {
+      bookings = bookings.map((booking) => {
+        booking._service.offerings = booking._service.offerings
+          .filter(offering => offering._id === booking._offering);
+        return booking;
+      });
+      console.log(bookings);
       res.json({
         bookings,
       });
