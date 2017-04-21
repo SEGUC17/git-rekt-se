@@ -88,7 +88,7 @@ router.post('/:id/coupons/add', BusinessAuth, (req, res, next) => {
                   .exec()
                   .then((coup) => {
                     if (coup) {
-                      next(Strings.couponValidationError.couponAlreadyExists);
+                      next([Strings.couponValidationError.couponAlreadyExists]);
                     } else if (new Date(req.body.endDate)
                     // check that the given expiration date is not in the past,
                     // & before the start date
