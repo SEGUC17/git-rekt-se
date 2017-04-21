@@ -294,6 +294,8 @@ router.post('/forgot', (req, res, next) => {
 
       Client.findOne({
         email: req.body.email,
+        _status: 'confirmed',
+        _deleted: false,
       })
     .exec()
     .then((client) => {
