@@ -7,14 +7,17 @@ const Client = require('../../models/client/Client');
 const mongoose = require('mongoose');
 const Strings = require('../shared/Strings');
 
+/**
+ * Change Mongoose's default Promise to the default one.
+ */
 mongoose.Promise = Promise;
 
 /**
  * Generate 1 Hour JWT token.
  * @private
  * @param {*} payload the payload to inject in the token.
+ * @returns {string} - A JWT Token.
  */
-
 const generateToken = payload =>
   jwt.sign(payload, process.env.JWT_KEY_CLIENT, {
     expiresIn: '1h',
@@ -22,8 +25,10 @@ const generateToken = payload =>
 
 /**
  * Generate Token for Client Email Confirmation.
+ * @param {string} email - Client Email.
+ * @returns {Promise<string>} - Resolves with JWT Token if no error occurs,
+ * otherwise rejects.
  */
-
 exports.generateConfirmationToken = (email) => {
   const token = generateToken({
     email,
@@ -53,9 +58,21 @@ exports.generateConfirmationToken = (email) => {
 
 
 /**
- * Login Client.
+ * Represents the Object sent to the Business Upon Login Success.
+ * @typedef {Object} ClientLoginSuccess
+ * @property {string} message - Success Message.
+ * @property {string} email - Email.
+ * @property {mongoose.ObjectId} id - ID in Mongoose DB.
+ * @property {string} token - A JWT Token.
  */
 
+/**
+ * Login Client.
+ * @param {string} email - The Client's Email.
+ * @param {string} password - The Clients Password.
+ * @returns {Promise<ClientLoginSuccess>} - Resolves if no error occurs and client has valid
+ * credentials, otherwise rejects.
+ */
 exports.loginClient = (email, password) => new Promise((resolve, reject) => {
   Client.findOne({
     email,
@@ -96,8 +113,10 @@ exports.loginClient = (email, password) => new Promise((resolve, reject) => {
 
 /**
  * Login Client facebook.
+ * @param {string} email - Client's Email.
+ * @param {string} id - Client's ID.
+ * @returns {string} - A JWT Token encapsulating a a JWT Token. (because why not =D).
  */
-
 exports.loginFacebook = (email, id) => {
   const token = jwt.sign({
     id,
@@ -116,6 +135,11 @@ exports.loginFacebook = (email, id) => {
   return encapsulate;
 };
 
+/**
+ * Finalize Login through facebook.
+ * @param {string} token - A JWT Token.
+ * @returns {Promise} - Resolves if no error occurs, otherwise rejects.
+ */
 exports.finalizeLoginFacebook = token =>
   new Promise((resolve, reject) => {
     jwt.verify(token, process.env.JWT_KEY_CLIENT, (err, decoded) => {

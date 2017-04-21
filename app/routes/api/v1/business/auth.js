@@ -17,6 +17,9 @@ const errorHandler = require('../../../../services/shared/errorHandler');
 const InvalidToken = require('../../../../models/shared/InvalidToken');
 const jwtConfig = require('../../../../services/shared/jwtConfig');
 
+/**
+ * Change Mongoose Promise Library with the default one.
+ */
 mongoose.Promise = Promise;
 
 const router = express.Router();
@@ -34,7 +37,7 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Business signup route.
+ * Business Signup API Route.
  */
 
 router.post('/unverified/signup', (req, res, next) => {
@@ -83,7 +86,7 @@ router.post('/unverified/signup', (req, res, next) => {
 
 
 /**
- * Business login route.
+ * Business Login API Route.
  */
 
 router.post('/verified/login', (req, res, next) => {
@@ -101,7 +104,7 @@ router.post('/verified/login', (req, res, next) => {
 });
 
 /**
- * Business forgot password
+ * Business Forgot Password API Route.
  */
 
 router.post('/forgot', (req, res, next) => {
@@ -143,7 +146,7 @@ router.post('/forgot', (req, res, next) => {
 
 
 /**
- * Business reset password
+ * Business Reset Password API Route.
  */
 
 router.post('/reset', (req, res, next) => {
@@ -216,7 +219,7 @@ router.post('/logout', jwtConfig.businessAuthMiddleware, (req, res, next) => {
 });
 
 /**
- * Verified Business Signup
+ * Verified Business Signup API Route.
  */
 
 router.post('/confirm/signup/:token', (req, res, next) => {

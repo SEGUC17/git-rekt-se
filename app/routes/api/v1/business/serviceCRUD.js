@@ -17,12 +17,15 @@ const Strings = require('../../../../services/shared/Strings');
 const createServiceUtils = require('../../../../services/business/createServiceUtils');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
+/**
+ * Change Mongoose Promise Library with the default one.
+ */
 mongoose.Promise = Promise;
 
 const router = express.Router();
 
 /*
-    Multer Config.
+ * Multer Config.
  */
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -55,7 +58,7 @@ router.use(expressValidator({}));
  */
 
 /**
- * Business create a service
+ * Business Create A Service API Route.
  */
 
 router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req, res, next) => {
@@ -117,7 +120,8 @@ router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req
 });
 
 /**
- * Business create offering
+ * Business Create Offering API Route.
+ * `id` is Service ID for which the offering belongs to.
  */
 
 router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => {
@@ -220,7 +224,8 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
 
 
 /**
- * Business edit a service
+ * Business Edit A Service API Route.
+ * `id` is the Service ID.
  */
 
 router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (req, res, next) => {
@@ -295,7 +300,7 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
 });
 
 /**
- * Business edit offering
+ * Business Edit Offering API Route.
  * id1 is the service id
  * id2 is the id of offering
  */
@@ -426,7 +431,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
 });
 
 /**
- * Business delete service
+ * Business Delete Service API Route.
  */
 
 router.post('/:id/delete', businessAuthMiddleware, (req, res, next) => {
@@ -474,7 +479,7 @@ router.post('/:id/delete', businessAuthMiddleware, (req, res, next) => {
 });
 
 /**
- * Business delete offering
+ * Business Delete Offering API Route.
  */
 
 router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, next) => {

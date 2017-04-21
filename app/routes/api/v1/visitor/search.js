@@ -7,10 +7,14 @@ const errorHandler = require('../../../../services/shared/errorHandler');
 const locations = require('../../../../seed/service/locations');
 
 const router = express.Router();
+
+/**
+ * Change Mongoose Promise Library with the default one.
+ */
 mongoose.Promise = Promise;
 
 /**
- * Search for a service route.
+ * Search For A Service API Route.
  */
 
 router.get('/', (req, res, next) => {

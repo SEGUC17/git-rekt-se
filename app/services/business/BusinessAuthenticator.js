@@ -9,11 +9,22 @@ const Strings = require('../shared/Strings');
 
 mongoose.Promise = Promise;
 
+/**
+ * Represents the Object sent to the Business Upon Login Success.
+ * @typedef {Object} BusinessLoginSuccess
+ * @property {string} message - Success Message.
+ * @property {string} email - Email.
+ * @property {mongoose.ObjectId} id - ID in Mongoose DB.
+ * @property {string} token - A JWT Token.
+ */
 
 /**
  * Login Business.
+ * @param {string} email - Business' Email.
+ * @param {string} password - Business' Password.
+ * @returns {Promise<BusinessLoginSuccess>} - Resolves if no error occurs and has valid
+ * credentials, otherwise rejects.
  */
-
 exports.loginBusiness = (email, password) => new Promise((resolve, reject) => {
   Business.findOne({
     email,
@@ -53,8 +64,9 @@ exports.loginBusiness = (email, password) => new Promise((resolve, reject) => {
 
 /**
  * Verify's a token and decodes it.
+ * @param {string} token - A JWT Token.
+ * @returns {Promise<Object>} - Resolves if no error occurs, otherwise rejects.
  */
-
 exports.verifyBusiness = token => new Promise((resolve, reject) => {
   jwt.verify(token, process.env.JWT_KEY_BUSSINES, (err, decoded) => {
     if (err) {
@@ -67,8 +79,10 @@ exports.verifyBusiness = token => new Promise((resolve, reject) => {
 
 /**
  * Generate Verify SignUp Token.
+ * @param {string} email - Business Email.
+ * @returns {Promise<string>} - Resolves with a JWT Token if no error occurs,
+ * otherwise rejects.
  */
-
 exports.generateSignUpToken = (email) => {
   const token = jwt.sign({
     email,

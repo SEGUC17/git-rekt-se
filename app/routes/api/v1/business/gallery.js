@@ -40,7 +40,7 @@ const upload = multer({
 });
 
 /**
- * Add Image to service gallery.
+ * Add Image To Service Gallery API Route.
  */
 
 router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, next) => {
@@ -80,7 +80,7 @@ router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, 
 
 
 /**
- * Edit Image in Business gallery.
+ * Edit Image In Business Gallery API Route.
  */
 
 router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
@@ -122,7 +122,7 @@ router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
 });
 
 /**
- * Delete Image in Business gallery.
+ * Delete Image In Business Gallery API Route.
  */
 
 router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => {

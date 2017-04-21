@@ -17,7 +17,7 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Related Services Route.
+ * Related Services API Route.
  */
 
 router.get('/:id/:offset', (req, res, next) => {
