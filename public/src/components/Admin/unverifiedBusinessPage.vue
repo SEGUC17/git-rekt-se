@@ -1,7 +1,7 @@
 <template>
     <div class="confirm-business-table">
 
-        <div v-show="errors.length>0">
+        <div v-if="errors.length>0">
             <div class="error" v-for="(error,idx) in errors">
                 <el-alert @close="closeError(idx)" :title="error" type="error" show-icon></el-alert>
             </div>

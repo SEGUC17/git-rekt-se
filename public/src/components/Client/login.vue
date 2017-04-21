@@ -29,7 +29,7 @@
                     <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
                 </div>
 
-                <div class="errors" v-show="errors.length > 0">
+                <div class="errors" v-if="errors.length > 0">
                     <el-alert v-for="error in errors" class="error" :title="error"
                               type="error" :key="error" show-icon>
                     </el-alert>

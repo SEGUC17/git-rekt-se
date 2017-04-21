@@ -16,7 +16,7 @@
         <div class="client-login-form columns">
             <div class="column is-half is-offset-one-quarter">
 
-                <div v-show="errors.length > 0">
+                <div v-if="errors.length > 0">
                     <div class="error" v-for="error in errors">
                         <el-alert :title="error" type="error" show-icon>
                         </el-alert>

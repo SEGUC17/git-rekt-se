@@ -1,6 +1,6 @@
 <template>
     <div class="remove-client">
-        <div class="errors" v-show="errors.length > 0">
+        <div class="errors" v-if="errors.length > 0">
             <el-alert v-for="error in errors" class="error" :title="error"
                       type="error" :key="error | appendRandom" show-icon></el-alert>
         </div>

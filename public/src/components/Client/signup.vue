@@ -32,14 +32,14 @@
                 </div>
 
                 <!-- Backend Form Errors-->
-                <div class="errors" v-show="!form.errors.isEmpty()">
+                <div class="errors" v-if="!form.errors.isEmpty()">
                     <el-alert v-for="key in form.keys" v-show="form.errors.has(key)"
                               @close="form.errors.remove(key)" class="error"
                               type="error" :key="error"
                               :title="form.errors.getAll(key, ' | ') || '' " show-icon>
                     </el-alert>
 
-                    <el-alert v-show="form.errors.has('serverError')"
+                    <el-alert v-if="form.errors.has('serverError')"
                               @close="form.errors.remove('serverError')"
                               class="error"
                               :title="form.errors.getAll('serverError', ' | ') || ''" type="error"
