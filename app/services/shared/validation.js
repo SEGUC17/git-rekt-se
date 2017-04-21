@@ -20,7 +20,7 @@ const reviewErrors = Strings.reviewErrors;
  */
 
 const businessValidationErrors = require('../shared/Strings')
-  .bussinessValidationErrors;
+    .bussinessValidationErrors;
 
 const clientSignupValidation = {
   email: {
@@ -455,6 +455,13 @@ const businessEditImageValidation = {
     },
   },
 };
+const businessdeletionValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidBusinessID,
+    },
+  },
+};
 
 /**
  * Client validation.
@@ -555,7 +562,6 @@ const validatePhoneNumber = (phoneNumbers) => {
   return valid.length === phoneNumbers.length;
 };
 
-
 const forgotPasswordValidation = {
   email: {
     notEmpty: {
@@ -563,6 +569,55 @@ const forgotPasswordValidation = {
     },
     isEmail: {
       errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
+};
+
+const clientUpdateValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emailEmpty,
+    },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
+  password: {
+    isPassword: {
+      errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
+  firstName: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyFirstName,
+    },
+  },
+  lastName: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyLastName,
+    },
+  },
+  mobile: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyMobile,
+    },
+    matches: {
+      options: [/^01[0-2]{1}[0-9]{8}/], // Egyptian Mobile phone
+      errorMessage: clientValidationErrors.invalidMobile,
+    },
+  },
+  gender: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyGender,
+    },
+    matches: {
+      options: [/^(Male|Female)$/],
+      errorMessage: clientValidationErrors.invalidGender,
+    },
+  },
+  birthdate: {
+    isDate: {
+      errorMessage: clientValidationErrors.invalidBirthdate,
     },
   },
 };
@@ -616,7 +671,9 @@ const validation = {
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
+  clientUpdateValidation,
   adminClientValidation,
+  businessdeletionValidation,
   forgotPasswordValidation,
   serviceBookingValidation,
 };

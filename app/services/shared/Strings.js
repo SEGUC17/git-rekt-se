@@ -261,11 +261,13 @@ const adminSuccess = {
   categoryEdited: 'Category edited succesfully!',
   categoryDeleted: 'Category deleted succesfully!',
   clientDeleted: 'Client removed succesfully',
+  businessDeleted: 'Business removed succesfully',
 };
 
 const adminFailures = {
   clientAlreadyDeleted: 'Client is already deleted',
   categoryAlreadyDeleted: 'Category is already deleted',
+  businessAlreadyDeleted: 'Business is Already Deleted',
 };
 
 /**
@@ -276,6 +278,10 @@ const searchErrors = {
   emptySearchResult: 'No search results match the query.',
 };
 
+const clientFaliure = {
+  notFound: 'The required client was not found.',
+};
+
 module.exports = {
   generalErrors,
   clientValidationErrors,
@@ -283,6 +289,7 @@ module.exports = {
   clientLoginMessages,
   clientConfirmation,
   clientForgotPassword,
+  clientFaliure,
 
   clientVerfication,
   bussinessValidationErrors,
