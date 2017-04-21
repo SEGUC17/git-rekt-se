@@ -13,7 +13,7 @@
                     <el-alert :title="successMessage" type="success" show-icon></el-alert>
                 </div>
 
-                <div class="errors" v-if="!form.errors.isEmpty()">
+                <div class="errors" v-show="!form.errors.isEmpty()">
                     <el-alert v-for="key in form.keys" v-if="form.errors.has(key)"
                               @close="form.errors.remove(key)" class="error"
                               type="error" :key="error"
