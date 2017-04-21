@@ -5,7 +5,7 @@
 
         <div class="errors" v-show="generalErrors.length > 0">
             <el-alert v-for="error in generalErrors" class="error" :title="error"
-                      type="error" :key="error" show-icon></el-alert>
+                      type="error" :key="error | appendRandom" show-icon></el-alert>
         </div>
 
 
@@ -22,7 +22,7 @@
         <el-dialog title="Add Category" v-model="addVisible" size="large">
             <div class="errors" v-show="createErrors.length > 0">
                 <el-alert v-for="error in createErrors" class="error" :title="error"
-                          type="error" :key="error" show-icon></el-alert>
+                          type="error" :key="error | appendRandom" show-icon></el-alert>
             </div>
             <el-form :model="newCategory" ref="createCategory" :rules="categoryRules" label-position="top">
 
@@ -49,7 +49,8 @@
 
         <el-dialog title="Edit Category" v-model="editVisible" size="large">
             <div class="errors">
-                <el-alert v-for="error in editErrors" type="error" :key="error" :title="error" show-icon></el-alert>
+                <el-alert v-for="error in editErrors" type="error" 
+                          :key="error | appendRandom" :title="error" show-icon></el-alert>
             </div>
             <el-form ref="editCategory" :model="categoryToEdit" :rules="categoryRules" label-position="top">
 

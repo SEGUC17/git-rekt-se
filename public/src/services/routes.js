@@ -2,6 +2,7 @@ import VueRouter from 'vue-router';
 import UnverifiedBusinessSignup from '../components/Business/UnverifiedSignup.vue';
 import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
+import reset from '../components/Business/reset.vue';
 import ForgotPassword from '../components/Business/forgotPassword.vue';
 import Home from '../components/pages/Index/home.vue';
 import clientEditInfo from '../components/Client/clientEditInfo.vue';
@@ -87,6 +88,9 @@ const routes = [{
     path: 'categories/edit',
     component: categoryCRUD,
   }],
+}, {
+  path: '/business/reset/:token',
+  component: reset,
 },
 ];
 
