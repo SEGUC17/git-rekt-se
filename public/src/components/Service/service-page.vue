@@ -25,6 +25,7 @@
                                  style="font-size: 1.2em">
                         Book Now
 
+
                     </router-link>
                 </div>
             </div>
@@ -37,7 +38,7 @@
 
                 <!-- Service Description -->
                 <div class="box">
-                        <pre class="content is-marginless">{{ description || "No Description."}}</pre>
+                    <pre class="content is-marginless">{{ description || "No Description."}}</pre>
                 </div>
 
                 <!-- Navigation tabs -->
@@ -155,7 +156,7 @@
 
 <script>
   import axios from 'axios';
-  import { Service } from '../../services/EndPoints';
+  import {Service} from '../../services/EndPoints';
 
   export default {
     data() {
@@ -220,14 +221,9 @@
           this.offerings = service.offerings;
           this.rating = service.rating;
           this.getRelatedServices(loader);
-        }).catch((error) => {
+        }).catch(() => {
           loader.close();
-          this.errors = error.response.data.errors.map((err) => {
-            if (typeof err === 'string') {
-              return err;
-            }
-            return err.msg;
-          });
+          this.$router.push('/404');
         });
       },
       // obtains 3 related services from on of the categories

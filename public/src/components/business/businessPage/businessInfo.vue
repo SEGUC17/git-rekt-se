@@ -204,10 +204,12 @@
                   })
                   .catch(() => {
                     this.loader.close();
+                    this.$router.push('/404');
                   });
             })
             .catch(() => {
               this.loader.close();
+              this.$router.push('/404');
             });
       },
     },
