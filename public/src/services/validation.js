@@ -89,6 +89,15 @@ export const clientSignUpValidation = {
     type: 'date',
     message: 'Invalid Date format.',
     trigger: 'change',
+  }, {
+    validator(rule, value, callBack) {
+      if (this.form.birthdate.getFullYear() >= new Date().getFullYear()) {
+        callBack([new Error('Please enter a valid birthdate')]);
+      } else {
+        callBack();
+      }
+    },
+    trigger: ['blur', 'change'],
   }],
 };
 export const loginRules = {

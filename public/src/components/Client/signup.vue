@@ -92,7 +92,7 @@
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item label="Birthdate">
+                    <el-form-item label="Birth Date" prop="birthdate">
                         <el-date-picker v-model="form.birthdate" type="date" :format="'dd-MM-yyyy'"
                                         placeholder="1-1-1990"></el-date-picker>
                     </el-form-item>
@@ -126,6 +126,8 @@
           .validator.bind(this);
       clientSignUpValidation.password[2].validator = clientSignUpValidation.password[2]
           .validator.bind(this);
+      clientSignUpValidation.birthdate[2].validator = clientSignUpValidation.birthdate[2]
+          .validator.bind(this)
       return {
         form: new Form({
           id: '',
