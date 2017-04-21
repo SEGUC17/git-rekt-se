@@ -12,6 +12,7 @@ import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
 import verifiedBusinessSignup from '../components/Business/verifiedBusinessSignup.vue';
 import adminBusiness from '../components/Admin/unverifiedBusinessPage.vue';
+import removeBusiness from '../components/Admin/removeBusiness.vue';
 import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
@@ -51,6 +52,9 @@ const routes = [{
 }, {
   path: '/confirm/signup/:token',
   component: verifiedBusinessSignup,
+}, {
+  path: '/admin/removebusiness',
+  component: removeBusiness,
 }, {
   path: '/client/signup',
   component: clientSignUp,
@@ -92,6 +96,9 @@ const routes = [{
   }, {
     path: 'categories/edit',
     component: categoryCRUD,
+  }, {
+    path: 'business/remove',
+    component: removeBusiness,
   }],
 }, {
   path: '/business/reset/:token',
