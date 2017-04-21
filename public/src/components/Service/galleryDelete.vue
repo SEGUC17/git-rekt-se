@@ -28,12 +28,11 @@
         data() {
             return {
                 deleteDialog: false,
-                imageID: '58f62f053d83196d9cfae112',
                 errors: [],
             };
     
         },
-        // props: ['imageID'],
+        props: ['imageID'],
     
         methods: {
             deleteImage(imageID) {

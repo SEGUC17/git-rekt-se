@@ -137,7 +137,7 @@
                     .then((res) => {
                         this.form.reset();
                         this.errors = [];
-                        this.$emit('imageAdd');
+                        this.getGallery();
                         this.$notify({
                             title: 'Success!',
                             message: res.data.message,
@@ -154,6 +154,7 @@
             },
             onSuccess(res) {
                 this.errors = [];
+                this.getGallery();
                 this.$notify({
                     title: 'Success!',
                     message: res.data.message,

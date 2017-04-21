@@ -29,7 +29,6 @@
             return {
                 editDialog: false,
                 deleteDialog: false,
-                imageID: '58f62f053d83196d9cfae112',
                 editForm: {
                     description: '',
                 },
@@ -37,6 +36,7 @@
             };
     
         },
+        props: ['imageID'],
     
         methods: {
             editImage(imageID) {
