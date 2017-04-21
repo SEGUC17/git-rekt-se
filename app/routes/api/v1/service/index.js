@@ -41,9 +41,9 @@ router.get('/:id', (req, res, next) => {
       },
       options: {
         populate: {
-          path: '_client',
-          select: 'firstName lastName',
-        },
+            path: '_client',
+            select: 'firstName lastName',
+          },
       },
     },
     {
@@ -51,7 +51,8 @@ router.get('/:id', (req, res, next) => {
       match: {
         _deleted: false,
       },
-    }])
+    },
+    ])
     .exec()
     .then((service) => {
       if (!service) {
@@ -63,13 +64,6 @@ router.get('/:id', (req, res, next) => {
         shortDescription: service.shortDescription,
         coverImage: service.coverImage,
         description: service.description,
-        businessName: service._business.name,
-        businessEmail: service._business.email,
-        businessShortDescription: service._business.shortDescription,
-        businessDescription: service._business.description,
-        businessPhoneNumbers: service._business.phoneNumbers,
-        businessGallery: service._business.gallery,
-        businessWorkingHours: service._business.workingHours,
         branches: service.branches,
         offerings: service.offerings,
         reviews: service.reviews,
@@ -77,6 +71,12 @@ router.get('/:id', (req, res, next) => {
         gallery: service.gallery,
         categories: service.categories,
       };
+
+      if (service._business) {
+        returnedService.businessName = service._business.name;
+        returnedService.businessId = service._business._id;
+      }
+
       res.json(returnedService);
     })
     .catch((e) => {

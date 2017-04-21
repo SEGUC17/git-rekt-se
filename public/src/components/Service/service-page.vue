@@ -1,5 +1,6 @@
 <template>
     <div class="service-page">
+
         <!-- Service Info -->
         <div class="hero service-info">
             <div class="hero-body">
@@ -10,7 +11,9 @@
                     </div>
                     <div class="title is-2 white"> {{ name }} </div>
 
-                    <div class="subtitle white"> {{ businessName }} </div>
+                    <div class="subtitle white">
+                        <router-link class="white" :to="`/business/${businessId}`">{{ businessName }}</router-link>
+                    </div>
 
                     <div class="subtitle white">{{ shortDescription }}</div>
                     <div class="rating">
@@ -21,9 +24,6 @@
                                  class="button white is-warning is-pulled-right"
                                  style="font-size: 1.2em">
                         Book Now
-
-
-
 
                     </router-link>
                 </div>
@@ -95,7 +95,7 @@
                         </h3>
                     </div>
                     <div class="gallery" v-if="gallery.length > 0" v-show="active === 2">
-                        <el-carousel :interval="3000" arrow="never">
+                        <el-carousel :interval="1000" arrow="always">
                             <el-carousel-item v-for="item in gallery" v-bind:data="item" v-bind:key="item">
                                 <img :src="'uploads/' + item.path" class="extended"/>
                             </el-carousel-item>
@@ -104,9 +104,32 @@
                 </transition>
 
                 <!-- Reviews Tab -->
-                <transition name="fade">
-                    <div class="reviews">
 
+                <div class="columns" v-show="active === 3">
+                    <div class="column">
+                        <a href="#" class="button is-primary is-pulled-right">Add Review</a>
+                    </div>
+                </div>
+
+                <transition name="fade">
+                    <div class="no-reviews" v-show="active === 3" v-if="reviews.length === 0">
+                        <h3 class="title has-text-centered">
+                            No Reviews found.
+                        </h3>
+                    </div>
+
+                    <div class="reviews" v-if="reviews.length > 0" v-show="active === 3">
+                        <div class="box" v-for="review in reviews">
+                            <div class="content reviews-content">
+                                <div class="review">
+                                    <h4> {{ review._client.firstName }} {{ review._client.lastName }} </h4>
+                                    <el-rate class="rating-search" :value="review.rating"
+                                             disabled :max="5"></el-rate>
+                                    <br>
+                                    <p> {{ review.description }} </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </transition>
             </div>
@@ -136,7 +159,7 @@
 
 <script>
   import axios from 'axios';
-  import EndPoints from '../../services/EndPoints';
+  import {Service} from '../../services/EndPoints';
 
   export default {
     data() {
@@ -146,19 +169,20 @@
         description: '',
         coverImage: '',
         businessName: '',
+        businessId: '',
         businessEmail: '',
         businessShortDescription: '',
         businessDescription: '',
         businessPhoneNumbers: null,
         businessGallery: null,
         businessWorkingHours: null,
-        branches: null,
-        reviews: null,
+        branches: [],
+        reviews: [],
         gallery: [],
         activeName: 'first',
-        categories: null,
-        offerings: null,
-        relatedServices: null,
+        categories: [],
+        offerings: [],
+        relatedServices: [],
         current: '',
         errors: [],
         active: 1,
@@ -167,9 +191,7 @@
     },
     methods: {
       getBranchAddress(offering) {
-        const result = this.branches.find((branch) => {
-          return branch._id === offering;
-        });
+        const result = this.branches.find(branch => branch._id === offering);
         if (result) {
           return result.address;
         }
@@ -181,33 +203,27 @@
         this.getService(serviceId);
       },
 
-      //send get request to obtain service info using service id
+      // send get request to obtain service info using service id
 
       getService(serviceId = this.$route.params.id) {
         const loader = this.$loading({
           fullscreen: true,
         });
-        axios.get(EndPoints.Service().viewService(serviceId)).then((res) => {
-          loader.close();
+        axios.get(Service().viewService(serviceId)).then((res) => {
           const service = res.data;
-          this.name = service.name,
-              this.shortDescription = service.shortDescription,
-              this.description = service.description,
-              this.businessName = service.businessName,
-              this.businessEmail = service.businessEmail,
-              this.coverImage = service.coverImage,
-              this.businessShortDescription = service.businessShortDescription,
-              this.businessDescription = service.businessDescription,
-              this.businessPhoneNumbers = service.businessPhoneNumbers,
-              this.businessGallery = service.businessGallery,
-              this.businessWorkingHours = service.businessWorkingHours,
-              this.branches = service.branches,
-              this.reviews = service.reviews,
-              this.gallery = service.gallery,
-              this.categories = service.categories,
-              this.offerings = service.offerings,
-              this.rating = service.rating,
-              this.getRelatedServices();
+          this.name = service.name;
+          this.shortDescription = service.shortDescription;
+          this.description = service.description;
+          this.businessName = service.businessName;
+          this.businessId = service.businessId;
+          this.coverImage = service.coverImage;
+          this.branches = service.branches;
+          this.reviews = service.reviews;
+          this.gallery = service.gallery;
+          this.categories = service.categories;
+          this.offerings = service.offerings;
+          this.rating = service.rating;
+          this.getRelatedServices(loader);
         }).catch((error) => {
           loader.close();
           this.errors = error.response.data.errors.map((err) => {
@@ -218,25 +234,28 @@
           });
         });
       },
-      //obtains 3 related services from on of the categories
-      getRelatedServices() {
-        if (this.categories.length === 0)
+      // obtains 3 related services from on of the categories
+      getRelatedServices(loader) {
+        if (this.categories.length === 0) {
+          loader.close();
           return;
-        axios.get(EndPoints.Service().viewRelatedServices(this.categories[0]._id, 1)).then((res) => {
-          this.relatedServices = res.data.results;
-        }).catch(() => this.relatedServices = []);
-      },
-      //in case extra functionality is needed
-      handleClick(tab, event) {
-      },
-      //link to booking
-      BookNow() {
-        alert('booking');
+        }
+        axios
+            .get(Service().viewRelatedServices(this.categories[0]._id, 1))
+            .then((res) => {
+              loader.close();
+              this.relatedServices = res.data.results;
+              this.relatedServices = this.relatedServices
+                  .filter(service => service._id !== this.$route.params.id);
+            }).catch(() => {
+          loader.close();
+          this.relatedServices = [];
+        });
       },
       goTo(relatedID) {
         this.$router.push((relatedID));
         this.$router.go((relatedID));
-      }
+      },
     },
     mounted() {
       this.getService();
@@ -271,5 +290,13 @@
     .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */
     {
         opacity: 0
+    }
+
+    .white a:hover {
+        color: #dbdbdb;
+    }
+
+    .el-carousel {
+        background: #eee;
     }
 </style>
