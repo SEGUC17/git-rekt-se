@@ -360,7 +360,7 @@ export const reviewRules = {
     type: 'number',
     min: 0,
     max: 5,
-    message: 'Rating can only be a value between 1 & 5',
+    message: 'Rating can only be a value between 0 & 5',
     trigger: 'blur',
   }],
   description: {

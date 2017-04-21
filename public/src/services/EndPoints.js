@@ -82,7 +82,7 @@ export const Service = () => {
   const bookingBase = `${BASE}/service/book`;
   return {
     createReview: serviceID => `${serviceBase}/${serviceID}/review`,
-    updateReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
+    editReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
     deleteReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/delete`,
 
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,

@@ -41,9 +41,9 @@ router.get('/:id', (req, res, next) => {
       },
       options: {
         populate: {
-            path: '_client',
-            select: 'firstName lastName',
-          },
+          path: '_client',
+          select: 'firstName lastName',
+        },
       },
     },
     {
