@@ -63,6 +63,7 @@ export const Admin = () => {
   const categoryBase = `${BASE}/admin/category`;
   const clientBase = `${BASE}/admin/client`;
   const businessBase = `${BASE}/admin/business`;
+
   return {
     login: `${BASE}/admin/auth/login`,
 
