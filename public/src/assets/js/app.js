@@ -15,15 +15,20 @@ import router from '../../services/routes.js';
 
 window.axios = axios;
 
+
 Vue.component('accept-btn', acceptbtn);
 Vue.component('reject-btn', rejectbtn);
 Vue.component('client-remove-btn', clientRemoveBtn);
 Vue.component('category-actions-btns', CategoryActions);
 Vue.component('gr-top-hero', TopHero);
 
+Vue.filter('appendRandom', (e) => {
+  return `${e}${Math.random() * 10000000}`;
+});
+
 Vue.use(VueRouter);
 Vue.use(elementUI, {
-  locale
+    locale
 });
 Vue.use(Buefy, {
   defaultIconPack: 'fa',

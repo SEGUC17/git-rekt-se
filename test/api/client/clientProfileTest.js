@@ -83,7 +83,6 @@ describe('Client Profile API', () => {
                          * Error happend with request, fail the test
                          * with the error message.
                          */
-                      console.log(token);
                       if (err) {
                         done(err);
                       } else {

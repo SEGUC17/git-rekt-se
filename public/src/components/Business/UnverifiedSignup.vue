@@ -22,7 +22,7 @@
 
                         <div class="errors" v-show="errors.length > 0">
                             <el-alert v-for="error in errors" class="error" :title="error"
-                                      type="error" :key="error" show-icon></el-alert>
+                                      type="error" :key="error | appendRandom" show-icon></el-alert>
                         </div>
 
                         <div class="errors" v-show="success">
