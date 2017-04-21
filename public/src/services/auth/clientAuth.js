@@ -74,9 +74,7 @@ export default {
     this.user.authenticated = false;
     const currentToken = this.getJWTtoken();
 
-    localStorage.removeItem('client_token');
-    localStorage.removeItem('client_email');
-    localStorage.removeItem('client_id');
+    this.removeData();
 
     axios.post(Client()
         .logout, null, {
@@ -119,6 +117,14 @@ export default {
     localStorage.setItem('client_id', response.data.id);
   },
 
+  /**
+   * Removes the data from localStorage.
+   */
+  removeData() {
+    localStorage.removeItem('client_token');
+    localStorage.removeItem('client_email');
+    localStorage.removeItem('client_id');
+  },
   /**
    * Return whether the user is authenticated or no.
    * @returns {boolean} - true if user authenticated, false otherwise.

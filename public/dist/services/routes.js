@@ -15572,9 +15572,7 @@ module.exports = Vue$3;
     this.user.authenticated = false;
     var currentToken = this.getJWTtoken();
 
-    localStorage.removeItem('client_token');
-    localStorage.removeItem('client_email');
-    localStorage.removeItem('client_id');
+    this.removeData();
 
     __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["c" /* Client */])().logout, null, {
       headers: {
@@ -15617,6 +15615,15 @@ module.exports = Vue$3;
     localStorage.setItem('client_id', response.data.id);
   },
 
+
+  /**
+   * Removes the data from localStorage.
+   */
+  removeData: function removeData() {
+    localStorage.removeItem('client_token');
+    localStorage.removeItem('client_email');
+    localStorage.removeItem('client_id');
+  },
 
   /**
    * Return whether the user is authenticated or no.
@@ -41385,6 +41392,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EndPoints__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_clientAuth__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_validation__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__ = __webpack_require__(405);
 //
 //
 //
@@ -41477,6 +41485,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -41539,8 +41548,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.form.birthdate = _this.client.birthdate;
       }).catch(function (err) {
         loader.close();
-        _this.error = true;
-        _this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err)) {
+          __WEBPACK_IMPORTED_MODULE_4__services_auth_clientAuth__["a" /* default */].removeData();
+          _this.$router.push('/');
+          _this.$toast.open({
+            message: 'Session Expired, please login',
+            type: 'is-danger',
+            position: 'bottom'
+          });
+        } else {
+          _this.error = true;
+          _this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+        }
       });
     },
     onShowPassword: function onShowPassword() {
@@ -41569,9 +41588,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           _this2.client = response.data;
           resolve();
         }).catch(function (err) {
-          _this2.error = true;
-          _this2.message = err.response ? err.response.data.errors.join(' | ') : err.message;
-          reject(err);
+          if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err)) {
+            __WEBPACK_IMPORTED_MODULE_4__services_auth_clientAuth__["a" /* default */].removeData();
+            _this2.$router.push('/');
+            _this2.$toast.open({
+              message: 'Session Expired, please login',
+              type: 'is-danger',
+              position: 'bottom'
+            });
+          } else {
+            _this2.error = true;
+            _this2.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+            reject(err);
+          }
         });
       });
     },
@@ -41595,8 +41624,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this3.fillForm();
           }).catch(function (err) {
             _this3.loading = false;
-            _this3.error = true;
-            _this3.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+            if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err)) {
+              __WEBPACK_IMPORTED_MODULE_4__services_auth_clientAuth__["a" /* default */].removeData();
+              _this3.$router.push('/');
+              _this3.$toast.open({
+                message: 'Session Expired, please login',
+                type: 'is-danger',
+                position: 'bottom'
+              });
+            } else {
+              _this3.error = true;
+              _this3.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+            }
           });
         }
       });
@@ -42534,6 +42573,29 @@ if(false) {
  // When the module is disposed, remove the <style> tags
  module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 405 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * All the errors that can be thrown by JWT.
+ */
+var JWT_ERRORS = ['jwt expired', 'jwt malformed', 'jwt signature is required', 'invalid signature', 'jwt audience invalid. expected: [OPTIONS AUDIENCE]', 'jwt issuer invalid. expected: [OPTIONS ISSUER]', 'jwt id invalid. expected: [OPTIONS JWT ID]', 'jwt subject invalid. expected: [OPTIONS SUBJECT]'];
+
+/**
+ * Checks if the errors array contains a JWT Error.
+ * @param {[string]} errors - Arrays of strings representing
+ * errors sent from the server.
+ * @return {boolean} - whether it contains a JWT Error or no.
+ */
+/* harmony default export */ __webpack_exports__["a"] = (function (errors) {
+  errors = errors.filter(function (error) {
+    return JWT_ERRORS.includes(error);
+  });
+  return errors.length > 0;
+});
 
 /***/ })
 /******/ ]);

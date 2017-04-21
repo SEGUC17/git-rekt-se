@@ -54,7 +54,7 @@
   import {
     forgotPasswordValidation
   } from '../../services/validation';
-
+  
   export default {
     data() {
       return {

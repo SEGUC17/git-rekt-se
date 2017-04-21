@@ -94,9 +94,10 @@
   import axios from 'axios';
   import Form from '../../services/Form';
   import Errors from '../../services/Errors';
-  import {Client} from '../../services/EndPoints';
+  import { Client } from '../../services/EndPoints';
   import clientAuth from '../../services/auth/clientAuth';
-  import {clientEditInfoValidation} from '../../services/validation';
+  import { clientEditInfoValidation } from '../../services/validation';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
     data() {
@@ -151,8 +152,18 @@
             })
             .catch((err) => {
               loader.close();
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+              if (JWTCheck(err)){
+                clientAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  message: 'Session Expired, please login',
+                  type: 'is-danger',
+                  position: 'bottom',
+                });
+              } else {
+                this.error = true;
+                this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+              }
             });
       },
       onShowPassword() {
@@ -180,9 +191,19 @@
                 this.client = response.data;
                 resolve();
               }).catch((err) => {
-            this.error = true;
-            this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
-            reject(err);
+                if (JWTCheck(err)) {
+                  clientAuth.removeData();
+                  this.$router.push('/');
+                  this.$toast.open({
+                    message: 'Session Expired, please login',
+                    type: 'is-danger',
+                    position: 'bottom',
+                  });
+                } else {
+                  this.error = true;
+                  this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+                  reject(err);
+                }
           });
         });
       },
@@ -204,9 +225,19 @@
                   this.successMessage = data.message;
                   this.fillForm();
                 }).catch((err) => {
-              this.loading = false;
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+                  this.loading = false;
+                  if(JWTCheck(err)) {
+                    clientAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      message: 'Session Expired, please login',
+                      type: 'is-danger',
+                      position: 'bottom',
+                    });
+                  } else {
+                      this.error = true;
+                      this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+                  }
             });
           }
         });
