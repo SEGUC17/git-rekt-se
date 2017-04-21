@@ -16,7 +16,6 @@ const router = express.Router();
  */
 
 router.use(bodyParser.json());
-router.use(bodyParser.json());
 router.use(expressValidator({
   customValidators: {
     isPassword: validationSchemas.validatePassword,
@@ -44,7 +43,7 @@ router.get('/:id', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
 });
 
 /**
- * Client edit information route.
+ * Client Edit Information API Route.
  */
 
 router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) => {

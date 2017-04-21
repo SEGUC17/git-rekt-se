@@ -9,6 +9,9 @@ const expressValidator = require('express-validator');
 const mongoose = require('mongoose');
 const validator = require('../../../../services/shared/validation');
 
+/**
+ * Change Mongoose Promise Library with the default one.
+ */
 mongoose.Promise = Promise;
 
 const router = express.Router();
@@ -19,10 +22,15 @@ const router = express.Router();
 
 router.use(expressValidator({}));
 
+/**
+ * Bodyparser Middleware.
+ */
 router.use(bodyParser.json());
 
 /**
- * Delete a client with {id}.
+ * Admin Delete A Client API Route.
+ * `id` is the Client's ID.
+ * A Soft Delete is performed.
  */
 router.post('/delete/:id', AdminAuth, (req, res, next) => {
   req.checkParams(validator.adminClientValidation);

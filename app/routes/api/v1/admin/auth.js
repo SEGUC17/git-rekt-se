@@ -32,7 +32,7 @@ router.post('/create', (req, res) => {
 });
 
 /*
- * Admin Login route.
+ * Admin Login API Route.
  */
 
 router.post('/login', (req, res, next) => {

@@ -1,12 +1,12 @@
 /**
- * Constant Strings
+ * Constant Strings.
  */
 
 const locations = require('../../seed/service/locations')
   .join(', ');
 
 /**
- *  General Strings
+ *  General Strings.
  */
 
 const generalErrors = {
@@ -15,7 +15,7 @@ const generalErrors = {
 };
 
 /**
- * Business Strings
+ * Business Validation Errors Strings.
  */
 
 const bussinessValidationErrors = {

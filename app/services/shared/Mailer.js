@@ -21,6 +21,14 @@ const info = {
   from: 'mohamedelzarei@gmail.com',
 };
 
+/**
+ * Sends an email to the Client with a token to allow him to confirm his email.
+ * @param {string} email - Client's email address.
+ * @param {string} host - Website's address.
+ * @param {string} resetToken - JWT Token.
+ * @returns {Promise<string>} - Resolves if no error occured while
+ * sending the email, rejects otherwise.
+ */
 exports.clientConfirmEmail = (email, host, resetToken) => {
   const emailTemplateVars = {
     confirmUrl: `http://${host}/client/confirm/${resetToken}`,
@@ -52,6 +60,12 @@ exports.clientConfirmEmail = (email, host, resetToken) => {
   });
 };
 
+/**
+ * Sends an email to the Admin notifying
+ * him of a new Business Signing Up.
+ * @returns {Promise<string>} - Resolves if no error occured while
+ * sending the email, rejects otherwise.
+ */
 exports.notifyAdminOfNewBusinessSignup = () => {
   const emailContent = {
     from: info.from,
@@ -83,6 +97,14 @@ exports.notifyAdminOfNewBusinessSignup = () => {
   });
 };
 
+/**
+ * Sends an email to the Client to allow him to change his password.
+ * @param {string} email - Client's email address.
+ * @param {string} host - Website's address.
+ * @param {string} resetToken - JWT Token.
+ * @returns {Promise<string>} - Resolves if no error occured while
+ * sending the email, rejects otherwise.
+ */
 exports.forgotPasswordEmail = (email, host, resetToken) => {
   const mailOptions = {
     to: email,
@@ -104,6 +126,14 @@ exports.forgotPasswordEmail = (email, host, resetToken) => {
   });
 };
 
+/**
+ * Sends an email to the Business to allow him to change his password.
+ * @param {string} email - Business' email address.
+ * @param {string} host - Website's address.
+ * @param {string} resetToken - JWT Token.
+ * @returns {Promise<string>} - Resolves if no error occured while
+ * sending the email, rejects otherwise.
+ */
 exports.forgotPasswordBusinessEmail = (email, host, resetToken) => {
   const mailOptions = {
     to: email,
@@ -125,6 +155,15 @@ exports.forgotPasswordBusinessEmail = (email, host, resetToken) => {
   });
 };
 
+/**
+ * Sends an email to the Business informing
+ * him that he has been accepted.
+ * @param {string} mail - Business' email address.
+ * @param {string} host - Website's address.
+ * @param {string} token - JWT Token.
+ * @returns {Promise<string>} - Resolves if no error occured while
+ * sending the email, rejects otherwise.
+ */
 exports.notifyBusinessOfConfirmation = (host, mail, token) => {
   const emailContent = {
     from: info.from,
@@ -148,6 +187,13 @@ exports.notifyBusinessOfConfirmation = (host, mail, token) => {
   });
 };
 
+/**
+ * Sends an email to the Business informing
+ * him that his application has been denied.
+ * @param {string} mail - Business' email address.
+ * @returns {Promise<string>} - Resolves if no error occured while
+ * sending the email, rejects otherwise.
+ */
 exports.notifyBusinessOfDenial = (mail) => {
   const emailContent = {
     from: info.from,

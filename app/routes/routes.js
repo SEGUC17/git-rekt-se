@@ -19,9 +19,13 @@ const VisitorSearchAPI = require('./api/v1/visitor/search');
 const ViewBussinessAPI = require('./api/v1/business/index');
 const BusinessCategoriesAPI = require('./api/v1/business/categories');
 
+/**
+ * Configures the apps middlewares.
+ * @param app - Express App
+ */
 module.exports = (app) => {
   /**
-   * Visitor Routes.
+   * Visitor API Routes.
    */
   app.use('/api/v1/visitor/search', VisitorSearchAPI);
   app.use('/api/v1/service', ViewServiceAPI);
@@ -31,14 +35,14 @@ module.exports = (app) => {
   app.use('/api/v1/categories', BusinessCategoriesAPI);
 
   /**
-   * Client Routes.
+   * Client API Routes.
    */
 
   app.use('/api/v1/client/auth', ClientAuthAPI);
   app.use('/api/v1/client/profile', ClientProfileAPI);
 
   /**
-   * Business Routes.
+   * Business API Routes.
    */
   app.use('/api/v1/business/service', businessServiceAPI);
   app.use('/api/v1/business/auth', BusinessAuthAPI);
@@ -47,7 +51,7 @@ module.exports = (app) => {
   app.use('/api/v1/business', BusinessGalleryAPI);
 
   /**
-   * Admin Routes.
+   * Admin API Routes.
    */
 
   app.use('/api/v1/admin/auth', AdminAuthAPI);
@@ -56,7 +60,7 @@ module.exports = (app) => {
   app.use('/api/v1/admin/client', AdminClientAPI);
 
   /**
-   * Service Routes.
+   * Service API Routes.
    */
   app.use('/api/v1/service', ReviewCRUDAPI);
   app.use('/api/v1/service', ServiceGalleryAPI);
