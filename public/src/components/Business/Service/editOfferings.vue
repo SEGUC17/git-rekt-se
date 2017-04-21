@@ -100,7 +100,7 @@
     </span>
     </el-dialog>
     <el-dialog title="Delete Offering" v-model="deleteVisible" size="small">
-      <span>This cannot be undone. Delete this offering?</span>
+      <span>This cannot be undone. Delete this offering and its associated bookings?</span>
       <span slot="footer" class="dialog-footer">
       <el-button @click="deleteVisible = false">Cancel</el-button>
       <el-button type="danger" @click="deleteOffering">Delete</el-button>

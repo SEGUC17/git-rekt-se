@@ -356,7 +356,9 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
                     service.description = reqData.description;
                     service.categories = reqData.categories;
                     service._business = req.user._id;
-                    service.coverImage = req.file ? req.file.filename : undefined;
+                    if (req.body.changeImage) {
+                      service.coverImage = req.file ? req.file.filename : undefined;
+                    }
                     service.save()
                       .then(() => {
                         res.json({

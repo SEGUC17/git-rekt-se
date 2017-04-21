@@ -26,7 +26,10 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <!--TODO Upload Cover Image-->
+          <el-form-item label="Cover Image" prop="coverImage">
+            <input type="file" ref="createCoverImage" accept="image/*" @change="createFilechanged"></input>
+            <el-button v-if="newService.coverImage" @click="resetCreateImage">Remove</el-button>
+          </el-form-item>
           <el-form-item class="is-pulled-right">
             <el-button type="primary" @click="createService">Create</el-button>
             <el-button @click="resetCreate">Clear</el-button>
@@ -73,7 +76,14 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <!--TODO Upload Cover Image-->
+          <el-form-item label="Change Current Cover Image" prop="changeImage">
+            <el-switch v-model="changeImage" on-text="" off-text="" @change="autoClearEditImage"></el-switch>
+          </el-form-item>
+          <el-form-item v-if="changeImage" label="Cover Image" prop="coverImage">            
+            <input type="file" ref="editCoverImage" accept="image/*" @change="editFilechanged"></input>
+            <el-button v-if="serviceToEdit.coverImage" @click="resetEditImage">Remove</el-button>
+            <span>Current cover image will be removed if this field is empty</span>
+          </el-form-item>
         </el-form>
   <span slot="footer" class="dialog-footer">
     <el-button @click="editVisible = false">Cancel</el-button>
@@ -81,7 +91,7 @@
   </span>
 </el-dialog>
 <el-dialog title="Delete Service" v-model="deleteVisible" size="small">
-  <span>This cannot be undone. Delete this service?</span>
+  <span>This cannot be undone. Delete this service and its associated offerings, gallery, coupons and bookings?</span>
   <span slot="footer" class="dialog-footer">
     <el-button @click="deleteVisible = false">Cancel</el-button>
     <el-button type="danger" @click="deleteService">Delete</el-button>
@@ -107,6 +117,7 @@
           shortDescription: '',
           description: '',
           categories: '',
+          coverImage: '',
         },
         generalErrors: [],
         serviceRules,
@@ -118,7 +129,9 @@
           shortDescription: '',
           description: '',
           categories: '',
+          coverImage: '',
         },
+        changeImage: false,
         editVisible: false,
         editSuccess: '',
         editErrors: [],
@@ -181,7 +194,15 @@
             const loader = this.$loading({
               fullscreen: true,
             });
-            Axios.post(Business().createService, this.newService, {
+            const newForm = new FormData();
+            newForm.append('name', this.newService.name);
+            newForm.append('shortDescription', this.newService.shortDescription);
+            newForm.append('description', this.newService.description);
+            this.newService.categories.forEach((category) => {
+              newForm.append('categories[]', category);
+            }, this);
+            newForm.append('coverImage', this.newService.coverImage);
+            Axios.post(Business().createService, newForm, {
               headers: {
                 Authorization: BusinessAuth.getJWTtoken(),
               },
@@ -212,7 +233,18 @@
             const loader = this.$loading({
               fullscreen: true,
             });
-            Axios.post(Business().editService(this.serviceToEdit._id), this.serviceToEdit, {
+            const editForm = new FormData();
+            editForm.append('name', this.serviceToEdit.name);
+            editForm.append('shortDescription', this.serviceToEdit.shortDescription);
+            editForm.append('description', this.serviceToEdit.description);
+            this.serviceToEdit.categories.forEach((category) => {
+              editForm.append('categories[]', category);
+            }, this);
+            editForm.append('changeImage', this.changeImage);
+            if (this.changeImage) {
+              editForm.append('coverImage', this.serviceToEdit.coverImage);
+            }
+            Axios.post(Business().editService(this.serviceToEdit._id), editForm, {
               headers: {
                 Authorization: BusinessAuth.getJWTtoken(),
               },
@@ -222,6 +254,7 @@
               this.editVisible = false;
               loader.close();
               this.getServices();
+              this.resetEditImage();
             })
             .catch((error) => {
               loader.close();
@@ -264,8 +297,18 @@
       },
       resetCreate() {
         this.$refs.createServiceForm.resetFields();
+        this.resetCreateImage();
+      },
+      resetCreateImage() {
+        this.newService.coverImage = '';
+        this.$refs.createCoverImage.value = null;
+      },
+      resetEditImage() {
+        this.serviceToEdit.coverImage = '';
+        this.$refs.editCoverImage.value = null;
       },
       showEdit(service) {
+        this.changeImage = false;
         this.serviceToEdit = service;
         this.editVisible = true;
       },
@@ -281,6 +324,24 @@
       },
       couponsURL(service) {
         return `/business/edit/${service._id}/coupons`;
+      },
+      createFilechanged(e) {
+        const files = e.target.files || e.dataTransfer.files;
+        if (files.length > 0) {
+          this.newService.coverImage = files[0];
+        }
+      },
+      editFilechanged(e) {
+        const files = e.target.files || e.dataTransfer.files;
+        if (files.length > 0) {
+          this.serviceToEdit.coverImage = files[0];
+        }
+        this.$nextTick();
+      },
+      autoClearEditImage() {
+        if (!this.changeImage) {
+          this.resetEditImage();
+        }
       },
     },
   };
