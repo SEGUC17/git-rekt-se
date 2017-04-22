@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Offering = require('../service/Offering');
 
 const Schema = mongoose.Schema;
 
@@ -34,6 +33,10 @@ const bookingSchema = Schema({
     type: String,
     enum: ['pending', 'confirmed', 'rejected'],
     default: 'pending',
+  },
+  date: {
+    type: Date,
+    default: Date.now,
   },
   _deleted: {
     type: Boolean,
