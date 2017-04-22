@@ -7,8 +7,6 @@ import locale from 'element-ui/lib/locale/lang/en'
 import Buefy from 'buefy'
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
-import clientLogin from '../../components/Client/login.vue';
-import businessEditPage from '../../components/Business/editPage.vue';
 import acceptbtn from '../../components/Admin/accept-btn.vue';
 import rejectbtn from '../../components/Admin/reject-btn.vue';
 import TopHero from '../../components/shared/gr-top-hero.vue';
