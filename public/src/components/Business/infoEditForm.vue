@@ -1,5 +1,5 @@
 <template>
-  <div class="business-edit-listing-info">
+  <div class="business-edit-listing-info box">
 
     <!-- Errors -->
     <div class="errors" v-if="errors.length > 0">

@@ -10,11 +10,13 @@ const Service = require('../../../../models/service/Service');
 const Offering = require('../../../../models/service/Offering');
 const Branch = require('../../../../models/service/Branch');
 const Category = require('../../../../models/service/Category');
+const Booking = require('../../../../models/service/Booking');
 
 const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
 const validator = require('../../../../services/shared/validation');
 const Strings = require('../../../../services/shared/Strings');
+const serviceDeleteUtils = require('../../../../services/shared/serviceDeleteUtils');
 const createServiceUtils = require('../../../../services/business/createServiceUtils');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
@@ -201,17 +203,17 @@ router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req
                 .then(() => res.json({
                   message: Strings.serviceSuccess.serviceAdded,
                 }))
-                .catch(e => next([e]));
+                .catch(e => next(e));
             } else {
               next([Strings.serviceValidationCRUDErrors.invalidCategory]);
             }
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
     })
-    .catch(e => next([e]));
+    .catch(e => next(e));
 });
 
 /**
@@ -276,9 +278,9 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
 
                           });
                         })
-                        .catch(e => next([e]));
+                        .catch(e => next(e));
                     })
-                    .catch(e => next([e]));
+                    .catch(e => next(e));
                 } else {
                   next([Strings.offeringValidationError.invalidBranch]);
                 }
@@ -295,12 +297,12 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
               next([Strings.offeringValidationError.invalidService]);
             }
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
     })
-    .catch(e => next([e]));
+    .catch(e => next(e));
 });
 
 
@@ -354,7 +356,9 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
                     service.description = reqData.description;
                     service.categories = reqData.categories;
                     service._business = req.user._id;
-                    service.coverImage = req.file ? req.file.filename : undefined;
+                    if (req.body.changeImage) {
+                      service.coverImage = req.file ? req.file.filename : undefined;
+                    }
                     service.save()
                       .then(() => {
                         res.json({
@@ -366,17 +370,17 @@ router.post('/:id/edit', businessAuthMiddleware, upload.single('coverImage'), (r
                     next([Strings.offeringValidationError.invalidOperation]);
                   }
                 })
-                .catch(e => next([e]));
+                .catch(e => next(e));
             } else {
               next([Strings.serviceValidationCRUDErrors.invalidCategory]);
             }
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
     })
-    .catch(e => next([e]));
+    .catch(e => next(e));
 });
 
 /**
@@ -430,8 +434,10 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                     if (validBranch) {
                       let validOffering = false;
                       let offeringDoc;
+                      let oldbranch;
                       service.offerings.forEach((offering) => {
                         if (`${offering._id}` === offeringID && !offering._deleted) {
+                          oldbranch = offering.branch;
                           offering.startDate = reqData.startDate;
                           offering.endDate = reqData.endDate;
                           offering.location = reqData.location;
@@ -444,12 +450,10 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                         }
                       });
                       if (validOffering) {
-                        const oldbranch = offeringDoc.branch;
-
                         let oldexist = false; // old branch before edit exist
 
                         service.offerings.forEach((offering) => {
-                          if (offering.branch === oldbranch && offeringID !== `${offering._id}` && !offering._deleted) {
+                          if (`${offering._id}` !== offeringID && `${offering.branch}` === `${oldbranch}` && !offering._deleted) {
                             oldexist = true;
                           }
                         });
@@ -464,7 +468,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                             message: Strings.serviceSuccess.offeringEdited,
                           }))
                           .catch((e) => {
-                            next([e]);
+                            next(e);
                           });
                       } else {
                         next([Strings.offeringValidationError.invalidOffering]);
@@ -485,14 +489,14 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                   next([Strings.offeringValidationError.invalidService]);
                 }
               })
-              .catch(e => next([e]));
+              .catch(e => next(e));
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
     })
-    .catch(e => next([e]));
+    .catch(e => next(e));
 });
 
 /**
@@ -516,15 +520,13 @@ router.post('/:id/delete', businessAuthMiddleware, (req, res, next) => {
                 /**
                  * Delete here
                  */
-                service._deleted = true;
-                service.offerings.forEach((offer) => {
-                  offer._deleted = true;
-                });
-                service.save()
-                  .then(() => res.json({
+                serviceDeleteUtils.deleteServices([service])
+                .then((resultService) => {
+                  res.json({
                     message: Strings.serviceSuccess.serviceDeleted,
-                  }))
-                  .catch(e => next([e]));
+                  });
+                })
+                .catch(e => next(e));
               } else {
                 next([Strings.offeringValidationError.invalidOperation]);
               }
@@ -535,12 +537,12 @@ router.post('/:id/delete', businessAuthMiddleware, (req, res, next) => {
               next([Strings.offeringValidationError.invalidService]);
             }
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
     })
-    .catch(e => next([e]));
+    .catch(e => next(e));
 });
 
 /**
@@ -580,7 +582,6 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                     offeringDoc = offering;
                   }
                 });
-
                 if (!validOffering) {
                   next([Strings.offeringValidationError.invalidOffering]);
                   return;
@@ -588,32 +589,42 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                 let branchExist = false; // branch of this offering
                 const oldbranch = offeringDoc.branch;
                 service.offerings.forEach((offer) => {
-                  if (!`${offer}` === offeringID && offer.branch === oldbranch && !offer._deleted) {
+                  if (`${offer._id}` !== offeringID && `${offer.branch}` === `${oldbranch}` && !offer._deleted) {
                     branchExist = true;
                   }
-                  if (!branchExist) {
-                    service.branches.pull(oldbranch);
-                  }
                 });
-                service.markModified('offerings');
-                service.save()
+                if (!branchExist) {
+                  service.branches.pull(oldbranch);
+                }
+                Booking.find({
+                  _offering: offeringID,
+                })
+                .then((bookings) => {
+                  serviceDeleteUtils.deleteBookings(bookings)
                   .then(() => {
-                    res.json({
-                      message: Strings.serviceSuccess.offeringDeleted,
-                    });
+                    service.markModified('offerings');
+                    service.save()
+                      .then(() => {
+                        res.json({
+                          message: Strings.serviceSuccess.offeringDeleted,
+                        });
+                      })
+                      .catch(e => next(e));
                   })
                   .catch(e => next(e));
+                })
+                .catch(e => next(e));
               } else {
                 next([Strings.offeringValidationError.invalidOperation]);
               }
             }
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
       } else {
         next(result.array());
       }
     })
-    .catch(e => next([e]));
+    .catch(e => next(e));
 });
 
 /**

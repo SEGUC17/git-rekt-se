@@ -27,18 +27,16 @@ import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 import clientViewTransactions from '../components/Client/viewTransactions.vue';
 import notfound from '../components/pages/404.vue';
 import businessManagement from '../components/Business/manage/management.vue';
+import editServices from '../components/Business/Service/editServices.vue';
+import editOfferings from '../components/Business/Service/editOfferings.vue';
 import editBranches from '../components/Business/branchesEditForm.vue';
 import editFullInfo from '../components/Business/infoEditForm.vue';
+import createServices from '../components/Business/Service/createServices.vue';
 
 const routes = [{
   path: '/',
   component: Home,
-},
-{
-  path: '/client/reset/:token',
-  component: Reset,
-},
-{
+}, {
   path: '/business/apply',
   component: UnverifiedBusinessSignup,
 }, {
@@ -60,9 +58,6 @@ const routes = [{
   path: '/confirm/signup/:token',
   component: verifiedBusinessSignup,
 }, {
-  path: '/admin/removebusiness',
-  component: removeBusiness,
-}, {
   path: '/client/signup',
   component: clientSignUp,
 }, {
@@ -77,12 +72,10 @@ const routes = [{
 }, {
   path: '/business/login',
   component: businessLogin,
-},
-{
+}, {
   path: '/client/profile/edit',
   component: clientEditInfo,
-},
-{
+}, {
   path: '/client/forgot',
   component: Forgot,
 }, {
@@ -128,16 +121,28 @@ const routes = [{
   }, {
     path: 'edit/basic',
     component: businessEditInfo,
-  },{
+  }, {
     path: 'edit/branches',
     component: editBranches,
   }, {
     path: 'edit/info',
     component: editFullInfo,
   }, {
+    path: 'services/create',
+    component: createServices,
+  }, {
+    path: 'services/edit',
+    component: editServices,
+  }, {
     path: 'bookings',
     component: businessViewTransactions,
   }],
+}, {
+  path: '/business/editServices',
+  component: editServices,
+}, {
+  path: '/business/edit/:id/offerings',
+  component: editOfferings,
 }, {
   path: '/business/:id',
   component: businessPage,

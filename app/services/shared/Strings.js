@@ -212,7 +212,9 @@ const businessForgotPassword = {
 
 const serviceValidationCRUDErrors = {
   emptyName: 'Service Name is a required field',
+  nameTooLong: 'Service Name can be a maximum of 50 characters',
   emptyShortDescription: 'Service short description is a required field',
+  shortDescriptionTooLong: 'Service short description can be a maximum of 140 characters',
   invalidCategory: 'No such a category',
 };
 
@@ -223,11 +225,12 @@ const offeringValidationError = {
   emptyEndDate: 'Offering End Date is a required field',
   invalidEndDate: 'Invalid End Date',
   emptyLocation: 'Location is a required field',
+  emptyCapacity: 'Offering Capacity is a required field',
   invalidBranchID: 'Branch is invalid',
   invalidServiceID: 'Service is invalid',
   invalidService: 'No such a service',
   invalidOperation: 'Not authorized for doing such an operation',
-  invalidBranch: 'Your business doesnot have this branch',
+  invalidBranch: 'Your business does not have this branch',
   invalidOfferingID: 'Offering is invalid',
   invalidOffering: 'No such offering',
 };

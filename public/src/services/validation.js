@@ -316,6 +316,7 @@ export const unverfiedBusinessSignupValidation = {
     message: 'Mobile number must be 11 digits in the following format 01xxxxxxxxx.',
   }],
 };
+
 export const clientEditInfoValidation = {
   email: [{
     message: 'Please Enter a valid email.',
@@ -361,6 +362,7 @@ export const clientEditInfoValidation = {
     trigger: 'change',
   }],
 };
+
 export const forgotPasswordValidation = {
   email: [{
     required: true,
@@ -372,6 +374,78 @@ export const forgotPasswordValidation = {
     trigger: 'blur',
   }],
 };
+
+export const serviceRules = {
+  name: [{
+    required: true,
+    message: 'Please enter a name for your service',
+    trigger: 'blur',
+  }, {
+    max: 50,
+    message: 'The service name can have a maximum 50 characters',
+    trigger: 'change',
+  }],
+  shortDescription: [{
+    required: true,
+    message: 'Please enter a short description of your service',
+    trigger: 'blur',
+  }, {
+    max: 140,
+    message: 'The short description can have a maximum 140 characters',
+    trigger: 'change',
+  }],
+};
+
+export const offeringRules = {
+  branch: [{
+    required: true,
+    message: 'Please select a branch for your offering',
+    trigger: 'blur',
+  }],
+  price: [{
+    type: 'number',
+    message: 'Price must be a number',
+    trigger: 'change',
+  }, {
+    type: 'number',
+    required: true,
+    message: 'Please enter a price for your offering',
+    trigger: 'blur',
+  }, {
+    type: 'number',
+    min: 0,
+    message: 'The price cannot be lower than 0',
+    trigger: 'change',
+  }],
+  dates: [{
+    type: 'array',
+    required: true,
+    message: 'Please enter a duration for your offering',
+    trigger: 'blur',
+  }, {
+    type: 'array',
+    len: 2,
+    defaultField: {
+      type: 'date',
+      required: true,
+      message: 'Please enter a duration for your offering',
+    },
+    message: 'Please enter a valid duration for your offering',
+    trigger: 'blur',
+  }],
+  capacity: [{
+    type: 'number',
+    required: true,
+    message: 'Please enter a capacity for your offering',
+    trigger: 'blur',
+  }, {
+    type: 'number',
+    min: 0,
+    message: 'The capacity cannot be lower than 0',
+    trigger: 'change',
+  }],
+};
+
 export const BusinessResetFormValidation = {
   password: [{
     required: true,
