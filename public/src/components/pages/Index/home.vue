@@ -38,10 +38,6 @@
                         <div class="field has-text-left">
                             <el-button size="large" type="success" @keydown.enter="searchClicked"
                                        @click="searchClicked">Search
-
-
-
-
                             </el-button>
                         </div>
                     </div>
@@ -97,6 +93,9 @@
 </template>
 
 <script>
+ /**
+  * This component represents the Home page.
+  */
   import axios from 'axios';
   import card from '../../shared/gr-card.vue';
   import locs from './mainLocations';
@@ -104,6 +103,15 @@
   import {Visitor} from '../../../services/EndPoints';
 
   export default {
+   /**
+    * Data used by the component.
+    * locations: List of pre-defined locations
+    * List of pre-defined ranges.
+    * name: Search name entered by user.
+    * price: price range chosen by user.
+    * location: Locations retrieve from the server.
+    * loader: The loader Object, used when loading.
+    */
     data() {
       return {
         locations: locs,
@@ -114,12 +122,14 @@
         loader: '',
       };
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
 
-        /*
-         * Get list of locations from API.
-         */
-
+     /**
+      * Get list of locations from API.
+      */
       getLocations() {
         this.loader = this.$loading({
           fullscreen: true,
@@ -135,10 +145,9 @@
               this.locations = locs;
             });
       },
-        /*
-         * Generate search URI.
-         */
-
+      /**
+       * Generate Search URI.
+       */
       searchClicked() {
         const url = '/search';
         const params = {
@@ -170,11 +179,16 @@
         });
       },
     },
-
+    /**
+     * Ran when component is mounted on DOM.
+     * Fetch locations.
+     */
     mounted() {
       this.locations = this.getLocations();
     },
-
+    /**
+     * Sub-components, used by this component.
+     */
     components: {
       card,
     },

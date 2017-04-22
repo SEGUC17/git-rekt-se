@@ -42,9 +42,18 @@
 </template>
 
 <script>
+ /**
+  * This component represents the login component
+  * for both business and client.
+  */
   import Authenticator from '../../../services/auth/commonAuth';
 
-  export default{
+  export default {
+   /**
+    * Ran when component is mounted on DOM.
+    * If user is authenticated route him to home
+    * and display a message.
+    */
     mounted() {
       if (Authenticator.isAuthenticated()) {
         this.$router.push('/');

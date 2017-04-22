@@ -112,6 +112,9 @@
 </template>
 
 <script>
+ /**
+  * This component represents a set of search results.
+  */
   import Axios from 'axios';
 
   import SearchResult from './search-result.vue';
@@ -119,6 +122,9 @@
   import Locations from '../Index/mainLocations';
 
   export default {
+    /**
+     * 
+     */
     data() {
       return {
         noResults: false,
