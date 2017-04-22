@@ -74,7 +74,7 @@ const routes = [{
   component: businessLogin,
 },
 {
-  path: '/client/edit',
+  path: '/client/profile/edit',
   component: clientEditInfo,
 },
 {
