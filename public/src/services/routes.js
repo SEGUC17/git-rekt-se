@@ -55,9 +55,6 @@ const routes = [{
   path: '/client/login',
   component: clientLogin,
 }, {
-  path: '/business/editinfo',
-  component: businessEditInfo,
-}, {
   path: '/confirm/signup/:token',
   component: verifiedBusinessSignup,
 }, {
