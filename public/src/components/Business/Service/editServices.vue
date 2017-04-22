@@ -1,7 +1,19 @@
+<!--suppress JSUnresolvedFunction -->
 <template>
   <div class="services-list">
+
+    <!-- Get services-->
     <div class="box" v-for="service in services" :key="service._id">
       <div class="content">
+
+        <!-- General Errors -->
+        <div class="errors">
+          <el-alert v-for="error in generalErrors" :key="error"
+                    type="error" :title="error"
+                    class="error" show-icon
+                    @close="generalErrors.splice(error, 1)">
+          </el-alert>
+        </div>
 
         <div class="title is-4">{{ service.name }}</div>
         <p class="subtitle">{{ service.shortDescription }}</p>
@@ -13,85 +25,102 @@
               <span class="icon is-small">
                   <i class="fa fa-edit"></i>
               </span>&nbsp;Edit
+
           </button>
 
-          <button class="button is-danger level-item">
+          <button class="button is-danger level-item"
+                  @click="showDelete(service)">
               <span class="icon is-small">
                   <i class="fa fa-trash-o"></i>
               </span>&nbsp;Delete
-
           </button>
 
           <button class="button is-default level-item">
               <span class="icon is-small">
                   <i class="fa fa-percent"></i>
               </span>&nbsp;Coupons
-
           </button>
 
           <button class="button is-default level-item">
               <span class="icon is-small">
                   <i class="fa fa-money"></i>
               </span>&nbsp;Offerings
-
           </button>
 
           <button class="button is-default level-item">
               <span class="icon is-small">
                   <i class="fa fa-picture-o"></i>
               </span>&nbsp;Gallery
-
           </button>
-
         </nav>
       </div>
+    </div>
 
-      <!-- Edit Service Modal -->
-
-      <!-- Delete Service Modal -->
-      <el-dialog title="Delete Service" v-model="deleteVisible" size="small">
-            <span>This cannot be undone. Delete this service and its associated offerings, gallery, coupons and bookings?</span>
-            <span slot="footer" class="dialog-footer">
+    <!-- No Services to edit -->
+    <div class="no-data hero" v-show="services.length === 0">
+      <div class="hero-body has-text-centered">
+        <el-icon name="circle-close" class="confirmation-icon icon-fail"></el-icon>
+        <p class="title is-2">You have no services.</p>
+        <a class="button is-info" @click.prevent="getServices">Refresh</a>
+      </div>
+    </div>
+    <!-- Delete Service Modal -->
+    <el-dialog title="Delete Service" v-model="deleteVisible" size="small">
+      <span>This cannot be undone. Delete this service and its associated offerings, gallery, coupons and bookings?</span>
+      <span slot="footer" class="dialog-footer">
                   <el-button @click="deleteVisible = false">Cancel</el-button>
                   <el-button type="danger" @click="deleteService">Delete</el-button>
           </span>
-      </el-dialog>
+    </el-dialog>
 
-
-      <el-dialog title="Edit Service" v-model="editVisible" size="large">
-        <el-form ref="editService" :model="serviceToEdit" :rules="serviceRules" label-position="left">
-          <el-alert v-for="error in editErrors" :key="error" type="error" :title="error" show-icon></el-alert>
-          <el-form-item label="Name" required prop="name">
-            <el-input v-model="serviceToEdit.name" placeholder="The name of your service (Max 50 characters)"></el-input>
-          </el-form-item>
-          <el-form-item label="Short Description" required prop="shortDescription">
-            <el-input type="textarea" v-model="serviceToEdit.shortDescription" placeholder="A brief description of your service (Max 140 characters)"></el-input>
-          </el-form-item>
-          <el-form-item label="Description">
-            <el-input type="textarea" v-model="serviceToEdit.description" placeholder="A detailed description of your service"></el-input>
-          </el-form-item>
-          <el-form-item label="Categories">
-            <el-select v-model="serviceToEdit.categories" multiple placeholder="Categories your service falls under">
-              <el-option v-for="item in categories" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="Change Current Cover Image" prop="changeImage">
-            <el-switch v-model="changeImage" on-text="" off-text="" @change="autoClearEditImage"></el-switch>
-          </el-form-item>
-          <el-form-item v-if="changeImage" label="Cover Image" prop="coverImage">
-            <input type="file" ref="editCoverImage" accept="image/*" @change="editFilechanged"></input>
+    <!-- Edit Service Modal -->
+    <el-dialog title="Edit Service" v-model="editVisible" size="large">
+      <el-form ref="editService" :model="serviceToEdit" :rules="serviceRules"
+               label-position="left">
+        <div class="errors">
+          <el-alert v-for="error in editErrors" :key="error" type="error" :title="error"
+                    show-icon @close="editErrors.splice(error, 1)"></el-alert>
+        </div>
+        <el-form-item label="Name" required prop="name">
+          <el-input v-model="serviceToEdit.name"
+                    placeholder="The name of your service (Max 50 characters)"></el-input>
+        </el-form-item>
+        <el-form-item label="Short Description" required prop="shortDescription">
+          <el-input type="textarea" v-model="serviceToEdit.shortDescription"
+                    placeholder="A brief description of your service (Max 140 characters)"></el-input>
+        </el-form-item>
+        <el-form-item label="Description">
+          <el-input type="textarea" v-model="serviceToEdit.description"
+                    placeholder="A detailed description of your service"></el-input>
+        </el-form-item>
+        <el-form-item label="Categories">
+          <el-select v-model="serviceToEdit.categories" multiple
+                     placeholder="Categories your service falls under">
+            <el-option v-for="item in categories" :key="item.value" :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Change Current Cover Image" prop="changeImage">
+          <el-switch v-model="changeImage" on-text="" off-text=""
+                     @change="autoClearEditImage"></el-switch>
+        </el-form-item>
+        <el-form-item v-if="changeImage" label="Cover Image" prop="coverImage">
+          <input type="file" ref="editCoverImage" accept="image/*"
+                 @change="editFilechanged"/>
+          <el-form-item>
             <el-button v-if="serviceToEdit.coverImage" @click="resetEditImage">Remove</el-button>
             <span>Current cover image will be removed if this field is empty</span>
           </el-form-item>
-        </el-form>
-        <span slot="footer" class="dialog-footer">
-    <el-button @click="editVisible = false">Cancel</el-button>
-    <el-button type="primary" @click="editService">Edit</el-button>
-  </span>
-      </el-dialog>
+        </el-form-item>
+      </el-form>
 
-    </div>
+      <span slot="footer" class="dialog-footer">
+          <el-button @click="editVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="editService">Edit</el-button>
+      </span>
+
+    </el-dialog>
   </div>
 </template>
 
@@ -129,11 +158,17 @@
         deleteErrors: [],
       };
     },
+
     mounted() {
       this.getServices();
       this.getCategories();
     },
+
     methods: {
+      /*
+       * Get the possible categories.
+       * */
+
       getCategories() {
         axios.get(Business().listCategories, {
           headers: {
@@ -152,6 +187,10 @@
               });
             });
       },
+
+      /*
+       * Get the business services..
+       * */
 
       getServices() {
         const loader = this.$loading({
@@ -176,6 +215,11 @@
               });
             });
       },
+
+      /*
+       * Edit the current service.
+       * */
+
       editService() {
         this.editSuccess = '';
         this.editErrors = [];
@@ -219,6 +263,10 @@
           }
         });
       },
+
+      /*
+      * Delete the current service.
+      * */
       deleteService() {
         this.deleteSuccess = '';
         this.deleteErrors = [];
@@ -246,42 +294,57 @@
               });
             });
       },
-      resetCreate() {
-        this.$refs.createServiceForm.resetFields();
-        this.resetCreateImage();
-      },
-      resetCreateImage() {
-        this.newService.coverImage = '';
-        this.$refs.createCoverImage.value = null;
-      },
+
       resetEditImage() {
         this.serviceToEdit.coverImage = '';
-        this.$refs.editCoverImage.value = null;
+        if (this.$refs.editCoverImage) {
+          this.$refs.editCoverImage.value = null;
+        }
       },
+
+      /*
+      * Show Service editing Modal.
+      * */
+
       showEdit(service) {
         this.changeImage = false;
         this.serviceToEdit = service;
         this.editVisible = true;
       },
+
+      /*
+      * Show Service deletion confirmation.
+      * */
+
       showDelete(service) {
         this.serviceToDelete = service;
         this.deleteVisible = true;
       },
+
+      /*
+      * Return the url to the edit business offering page.
+      * */
+
       offeringsURL(service) {
-        return `/business/edit/${service._id}/offerings`;
+        return `/business/manage/edit/${service._id}/offerings`;
       },
+
+      /*
+       * Return the url to the edit business gallery page.
+       * */
+
       galleryURL(service) {
         return `/business/edit/${service._id}/gallery`;
       },
+
+      /*
+       * Return the url to the edit business coupons page.
+       * */
+
       couponsURL(service) {
         return `/business/edit/${service._id}/coupons`;
       },
-      createFilechanged(e) {
-        const files = e.target.files || e.dataTransfer.files;
-        if (files.length > 0) {
-          this.newService.coverImage = files[0];
-        }
-      },
+
       editFilechanged(e) {
         const files = e.target.files || e.dataTransfer.files;
         if (files.length > 0) {

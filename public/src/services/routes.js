@@ -37,9 +37,6 @@ const routes = [{
   path: '/',
   component: Home,
 }, {
-  path: '/client/reset/:token',
-  component: Reset,
-}, {
   path: '/business/apply',
   component: UnverifiedBusinessSignup,
 }, {
@@ -60,9 +57,6 @@ const routes = [{
 }, {
   path: '/confirm/signup/:token',
   component: verifiedBusinessSignup,
-}, {
-  path: '/admin/removebusiness',
-  component: removeBusiness,
 }, {
   path: '/client/signup',
   component: clientSignUp,
