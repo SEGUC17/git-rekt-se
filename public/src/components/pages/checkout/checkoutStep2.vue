@@ -93,6 +93,9 @@
 </template>
 
 <script>
+ /**
+  * This component represent the second step in bookin.
+  */
   import moment from 'moment';
   import axios from 'axios';
   import clientAuth from '../../../services/auth/clientAuth';
@@ -100,8 +103,16 @@
   import { Service } from '../../../services/EndPoints';
 
   export default {
+    /**
+     * Props used by this component.
+     * service: The service the client wishes to book.
+     * form: An Object containing the branch, offering, coupon, and a token.
+     */
     props: ['form', 'service'],
 
+    /**
+     * The date used by this component.
+     */
     data() {
       return {
         stripe: '',
@@ -114,7 +125,9 @@
         couponLoading: false,
       };
     },
-
+    /**
+     * Computed attributes.
+     */
     computed: {
       price() {
         const originalPrice = parseFloat(this.form.offering.price);
@@ -122,8 +135,13 @@
         return originalPrice * (coupon ? ((100 - parseInt(coupon.discount, 10)) / 100.0) : 1);
       },
     },
-
+    /**
+     * Declare all the methods used by this component.
+     */
     methods: {
+      /**
+       * Initialize Stripe
+       */
       initStripe() {
         // eslint-disable-next-line no-undef
         this.stripe = Stripe('pk_test_BAf83Axjq8bck9Pbd36seTPS');
@@ -159,7 +177,9 @@
           self.stripeError = event.error ? event.error.message : '';
         });
       },
-
+      /**
+       * Validate a coupon entered by the client.
+       */
       validateCoupon() {
         const url = Service().validateCoupon;
         this.form.coupon = '';
@@ -187,13 +207,17 @@
               this.invalidCoupon = e.response.data.errors[0];
             });
       },
-
+      /**
+       * Parse a service duration.
+       */
       getServiceDuration(startDate, endDate) {
         const momentStartDate = moment(startDate);
         const momentEndDate = moment(endDate);
         return `${momentEndDate.diff(momentStartDate, 'days')} days.`;
       },
-
+      /**
+       * Generate Stripe Token
+       */
       generateToken(e) {
         e.preventDefault();
 
@@ -222,11 +246,16 @@
       },
 
     },
-
+    /**
+     * Ran when component is mounted on the DOM.
+     * Initialize Stripe.
+     */
     mounted() {
       this.initStripe();
     },
-
+    /**
+     * Filters used by this component.
+     */
     filters: {
       moment(date) {
         return moment(date).format('dddd MMMM Do YYYY.');

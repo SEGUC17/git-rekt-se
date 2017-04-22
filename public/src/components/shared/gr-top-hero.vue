@@ -14,7 +14,14 @@
 </template>
 
 <script>
+  /**
+   * This component represents a header, with a title,
+   * and a subtitle.
+   */
   export default{
+    /**
+     * Props for the component.    
+     */
     props: ['title', 'subtitle'],
   };
 </script>

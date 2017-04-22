@@ -13,13 +13,23 @@
 </template>
 
 <script>
+   /**
+    * This component represents the last step in booking.
+    */
     export default {
+      /**
+       * Data used by the component.
+       * successClas: the class of the Success Icon.
+       */
       data() {
         return {
           successClass: '',
         };
       },
-    
+      /**
+       * Ran when the component is mounted on the DOM.
+       * Assign successClass to `success-icon`.
+       */
       mounted() {
         this.successClass = 'success-icon';
       },

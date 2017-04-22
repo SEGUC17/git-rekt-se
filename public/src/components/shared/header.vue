@@ -51,22 +51,34 @@
 </template>
 
 <script>
-
+  /**
+   * This component represents a NavBar, responsible for navigating
+   * through the website.
+   */
   import CommonAuth from '../../services/auth/commonAuth';
   import EventBus from '../../services/EventBus';
   import LogoutBtn from './logout.vue';
 
   export default {
+    /**
+     * Data Used By The Component.
+     */
     data() {
       return {
         active: false,
         isAuthenticated: CommonAuth.isAuthenticated(),
       };
     },
+    /**
+     * Sub-components, Any components used by this component.
+     */
     components: {
       'logout-btn': LogoutBtn,
     },
-
+    /**
+     * This will run when the component is mounted on the DOM.
+     * Update `isAuthenticated` with whether client/business is authenticated.
+     */
     mounted() {
       EventBus.$on('UpdateNavigation', () => {
         this.isAuthenticated = CommonAuth.isAuthenticated();

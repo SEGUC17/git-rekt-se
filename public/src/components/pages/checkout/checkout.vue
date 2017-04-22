@@ -47,6 +47,9 @@
 </template>
 
 <script>
+  /**
+   * This component is represents checkout/booking.
+   */
   import axios from 'axios';
   import { Visitor, Service } from '../../../services/EndPoints';
   import serviceInfoHeader from './serviceInfoHeader.vue';
@@ -56,13 +59,18 @@
   import clientAuth from '../../../services/auth/clientAuth';
 
   export default {
+    /**
+     * Sub-components, Any components used by this component.
+     */
     components: {
       serviceInfoHeader,
       checkoutStep1,
       checkoutStep2,
       checkoutStep3,
     },
-
+    /**
+     * Data Used By The Component.
+     */
     data() {
       return {
         active: 1,
@@ -76,7 +84,9 @@
         loader: '',
       };
     },
-
+    /**
+     * Computed properties.
+     */
     computed: {
       toolTipContent() {
         if (this.active === 1) {
@@ -85,8 +95,13 @@
         return 'Go back to step 1';
       },
     },
-
+     /**
+     * Declare all methods used by the component here.
+     */
     methods: {
+      /**
+       * Get the service info with `ser_id`.
+       */
       getService() {
         this.loader = this.$loading({
           fullscreen: true,
@@ -110,12 +125,17 @@
               this.loader.close();
             });
       },
+      /**
+       * Handle tooltips viewed when hovering over steps.
+       */
       handleTooltip() {
         if (this.active === 2) {
           this.goToStep1();
         }
       },
-
+      /**
+       * Return back to step 1
+       */
       goToStep1() {
         if (this.active === 2) {
           this.form.offering = '';
@@ -123,17 +143,17 @@
           this.active = 1;
         }
       },
-
+      /**
+       * Make the change between steps smoother.
+       */
       goToStep2() {
-          /*
-           *  Make the change between steps smoother.
-           */
-
         setTimeout(() => {
           this.active = 2;
         }, 500);
       },
-
+      /**
+       * Book for the service.
+       */
       makeTransaction() {
         this.loader = this.$loading({
           fullscreen: true,
@@ -159,6 +179,11 @@
             });
       },
     },
+    /**
+     * Ran when component is mounted on the DOM.
+     * If user is not authenticated he should be allowed
+     * to book.
+     */
     mounted() {
       clientAuth.refreshAuth();
       if (!clientAuth.user.authenticated) {
