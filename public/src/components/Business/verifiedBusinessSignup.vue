@@ -76,6 +76,10 @@
 </template>
 
 <script>
+ /**
+  * This component allows a Business to allow a business
+  * to complete his sign up process.
+  */
   import axios from 'axios';
   import Form from '../../services/Form';
   import { verifiedBusinessSignupRules } from '../../services/validation';
@@ -84,6 +88,17 @@
   import commonAuth from '../../services/auth/commonAuth';
 
   export default {
+    /**
+     * Data used by this component.
+     * form: Holds data entered by user and sent to server.
+     * categories: Holds the categories.
+     * locations: Holds the locations.
+     * loading: true if a request is sent and is being proccessed
+     * by the server, false otherwise.
+     * errors: Errors received from server.
+     * success: true if Sign Up was successful, false otherwise.
+     * rules: Validation Rules used to validate the the input. 
+     */
     data() {
       verifiedBusinessSignupRules.confirmPassword[1].validator = verifiedBusinessSignupRules
                 .confirmPassword[1].validator.bind(this);
@@ -110,6 +125,11 @@
         rules: verifiedBusinessSignupRules,
       };
     },
+    /**
+     * Ran when the component is mounted to DOM.
+     * If user is authenticated route back, otherwise
+     * fetch the locations and categories.
+     */
     mounted() {
       if (commonAuth.isAuthenticated()) {
         this.$router.push('/');
@@ -122,7 +142,13 @@
         this.errors = e;
       });
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+      /**
+       * Fetch the locations.
+       */
       getLocations() {
         axios
             .get(Visitor().locations)
@@ -130,6 +156,9 @@
               this.locations = res.data;
             });
       },
+      /**
+       * Validates and Submits a form.
+       */
       submitForm(formName) {
         this.form.branches = this.form.branches.filter(branch => branch.location !== '' && branch.address !== '');
         this.errors = [];
@@ -159,17 +188,26 @@
           }
         });
       },
+      /**
+       * Reset the form.
+       */
       resetForm(formName) {
         this.$refs[formName].resetFields();
         this.form.branches = [];
         this.addBranch();
       },
+      /**
+       * Add a new empty branch field.
+       */
       addBranch() {
         this.form.branches.push({
           location: '',
           address: '',
         });
       },
+      /**
+       * Remove a branch field.
+       */
       removeBranch(idx) {
         this.form.branches = this.form.branches.filter((branch, index) => idx !== index);
         if (this.form.branches.length === 0) {

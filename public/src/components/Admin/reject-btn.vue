@@ -3,6 +3,9 @@
 </template>
 
 <script>
+ /**
+  * This component represents a `Reject` button.
+  */
   import axios from 'axios';
   import { Admin } from '../../services/EndPoints';
   import adminAuth from '../../services/auth/adminAuth';
@@ -10,13 +13,27 @@
   import JWTCheck from '../../services/JWTErrors';
 
   export default {
+    /**
+     * Props used by this component.
+     * data: Data that can be displayed in the row.
+     * row: row Object representing the current row.
+     */
     props: ['data', 'row'],
+    /**
+     * Data used by the component.
+     */
     data() {
       return {
         acceptDialogue: false,
       };
     },
+    /**
+     * Methods used by this component.
+     */
     methods: {
+      /**
+       * Show a confirm dialog
+       */
       showRejectDialog() {
         this.$dialog.confirm({
           title: 'Reject Request',
@@ -28,7 +45,9 @@
           onConfirm: this.reject,
         });
       },
-
+      /**
+       * Reject a Business.
+       */
       reject() {
         const loader = this.$loading({
           fullscreen: true,

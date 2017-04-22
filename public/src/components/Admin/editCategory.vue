@@ -116,6 +116,9 @@
 </template>
 
 <script>
+ /**
+  * This component allows an Admin to Edit a Category.
+  */
   import axios from 'axios';
   import { categoryRules } from '../../services/validation';
   import { Admin } from '../../services/EndPoints';
@@ -124,6 +127,24 @@
   import JWTCheck from '../../services/JWTErrors';
 
   export default {
+    /**
+     * Data used by this component.
+     * categories: All available categories.
+     * newCategory: Data entered by admin to create a category.
+     * generalErrors: Errors that occured.
+     * categoryRules: Validation Rules used to validate the data.
+     * createSuccess: Message displayed on success.
+     * createErrors: Errors occured during creating.
+     * categoryToEdit: Data to edit the old category.
+     * editVisible: true to show edit, false otherwise.
+     * editSuccess: Message on edit success.
+     * editErrors: Errors occured during edit.
+     * categoryToDelete: The Category chosen to be deleted.
+     * deleteVisible: true to show delete, false otherwise.
+     * deleteSuccess: Message to display after delete.
+     * deleteErrors: Errors occured during delete.
+     * addVisible: true if to show add, false otherwise.
+     */
     data() {
       return {
         categories: [],
@@ -154,7 +175,13 @@
         addVisible: false,
       };
     },
+    /**
+     * Methods used by this component.
+     */
     methods: {
+      /**
+       * Validate and create a category.
+       */
       createCategory() {
         this.createSuccess = '';
         this.createErrors = [];
@@ -197,6 +224,9 @@
           }
         });
       },
+      /**
+       * Validate and edit a category.
+       */
       editCategory() {
         this.editSuccess = '';
         this.editErrors = [];
@@ -238,6 +268,9 @@
           }
         });
       },
+      /**
+       * Delete a category.
+       */
       deleteCategory() {
         this.deleteSuccess = '';
         this.deleteErrors = [];
@@ -275,9 +308,15 @@
               }
             });
       },
+      /**
+       * Reset Form
+       */
       resetCreate() {
         this.$refs.createCategory.resetFields();
       },
+       /**
+       * Get a list of all available categories.
+       */
       getCategories() {
         const loader = this.$loading({
           fullscreen: true,
@@ -311,18 +350,31 @@
               }
             });
       },
+      /**
+       * Show Edit.
+       */
       showEdit(category) {
         this.categoryToEdit = Object.assign({}, category);
         this.editVisible = true;
       },
+      /**
+       * Show Add.
+       */
       showAdd() {
         this.addVisible = true;
       },
+      /**
+       * Show Delete.
+       */
       showDelete(category) {
         this.categoryToDelete = Object.assign({}, category);
         this.deleteVisible = true;
       },
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * 
+     */
     mounted() {
       EventBus.$on('showEditDialog', this.showEdit);
       EventBus.$on('showDeleteDialog', this.showDelete);

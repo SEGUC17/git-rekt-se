@@ -47,6 +47,9 @@
 </template>
 
 <script>
+ /**
+  * This component allows a Business to request a password change.
+  */
   import Form from '../../services/Form';
   import {
     Business
@@ -56,6 +59,17 @@
   } from '../../services/validation';
   
   export default {
+      /**
+       * Data used by this component.
+       * form: Holds the data entered by user and sent to server.
+       * errors: Errors received from the server.
+       * rules: Validation Rules used to validate the input.
+       * message: Message to view to the user.
+       * successShow: true to show success message, false otherwise.
+       * errorShow: true to show error message, false otherwise.
+       * loading: true when a request is sent and is being proccessed 
+       * by the server, false otherwise.
+       */
     data() {
       return {
         form: new Form({
@@ -69,7 +83,13 @@
         loading: false,
       };
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+        /**
+         * Validates and Submits a form.
+         */
       submitForm(formName) {
         this.error_show = false;
         this.$refs[formName].validate((valid) => {

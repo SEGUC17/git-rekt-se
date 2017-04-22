@@ -38,11 +38,27 @@
 </template>
 
 <script>
+ /**
+  * This component allows a Business change his password
+  * after he requests to change it.
+  */
   import Form from '../../services/Form';
   import { Business } from '../../services/EndPoints';
   import { BusinessResetFormValidation } from '../../services/validation';
 
   export default {
+    /**
+     * Data used by this component.
+     * form: Holds the data entered by user and sent to server.
+     * rules: Validation Rules used to validate the input.
+     * message: Message to view to the client.
+     * loading: true if a request is sent and is being processed by server,
+     * otherwise false.
+     * errors: Errors received from server.
+     * alert_show: true to show alert, false otherwise.
+     * error_show: true to show error, false otherwise.
+     * btn_disable: true to disable button, false otherwise.
+     */
     data() {
       BusinessResetFormValidation.confirmPassword[1]
           .validator = BusinessResetFormValidation.confirmPassword[1].validator.bind(this);
@@ -63,7 +79,13 @@
         btn_disable: true,
       };
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+         /**
+         * Validates and Submits a form.
+         */
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

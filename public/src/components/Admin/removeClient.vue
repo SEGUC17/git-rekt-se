@@ -35,12 +35,21 @@
 </template>
 
 <script>
+  /**
+   * This component allows an Admin to remove a Client.
+   */
   import axios from 'axios';
   import { Admin } from '../../services/EndPoints';
   import adminAuth from '../../services/auth/adminAuth';
   import EventBus from '../../services/EventBus';
 
   export default {
+    /**
+     * Data used by this component.
+     * errors: Error received from server.
+     * clients: Clients received from server.
+     * email: Chosen Client's Email.
+     */
     data() {
       return {
         errors: [],
@@ -48,6 +57,11 @@
         email: '',
       };
     },
+    /**
+     * Ran when this component is mounted on DOM.
+     * If Admin is not authenticated route him back with a message,
+     * otherwise Fetch and Display clients and attach the relevant listeners.
+     */
     mounted() {
       if (!adminAuth.isAuthenticated()) {
         this.$router.push('/');
@@ -68,7 +82,13 @@
         this.errors = errors;
       });
     },
+    /**
+     * Methods used by this component.
+     */
     methods: {
+      /**
+       * Fetch All Clients.
+       */
       getClients() {
         const loader = this.$loading({
           fullscreen: true,
