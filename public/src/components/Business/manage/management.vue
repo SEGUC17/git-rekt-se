@@ -18,11 +18,11 @@
                         </li>
                     </ul>
                     <p class="menu-label">
-                        Categories
+                        Services
                       </p>
                     <ul class="menu-list">
                         <li>
-                            <router-link to="/admin/dashboard/categories/edit">Edit Categories</router-link>
+                            <router-link to="/business/manage/transactions">Transactions</router-link>
                         </li>
                     </ul>
                     <p class="menu-label">

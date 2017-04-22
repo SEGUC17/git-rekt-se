@@ -90,31 +90,27 @@ const routes = [{
   path: '/client/reset/:token',
   component: Reset,
 }, {
-  path: '/business/transactions',
-  component: businessViewTransactions,
-}, {
   path: '/admin/login',
   component: adminLogin,
 }, {
   path: '/admin/dashboard',
   component: adminDashboard,
-  children: [
-    {
-      path: '/',
-      redirect: 'confirm',
-    }, {
-      path: 'confirm',
-      component: adminBusiness,
-    }, {
-      path: 'client/remove',
-      component: removeClient,
-    }, {
-      path: 'categories/edit',
-      component: categoryCRUD,
-    }, {
-      path: 'business/remove',
-      component: removeBusiness,
-    }],
+  children: [{
+    path: '/',
+    redirect: 'confirm',
+  }, {
+    path: 'confirm',
+    component: adminBusiness,
+  }, {
+    path: 'client/remove',
+    component: removeClient,
+  }, {
+    path: 'categories/edit',
+    component: categoryCRUD,
+  }, {
+    path: 'business/remove',
+    component: removeBusiness,
+  }],
 }, {
   path: '/client/profile/bookings',
   component: clientViewTransactions,
@@ -133,6 +129,9 @@ const routes = [{
   }, {
     path: 'edit/basic',
     component: businessEditInfo,
+  }, {
+    path: 'transactions',
+    component: businessViewTransactions,
   }],
 }, {
   path: '/business/:id',
