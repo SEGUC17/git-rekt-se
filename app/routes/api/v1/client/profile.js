@@ -143,7 +143,8 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
 /**
  * Client View Transactions API Route.
  */
-router.get('/transaction/history', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
+
+router.get('/bookings/history', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
   const projection = {
     _deleted: false,
     coupon: false,

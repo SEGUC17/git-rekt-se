@@ -103,7 +103,7 @@ const routes = [{
     component: removeBusiness,
   }],
 }, {
-  path: '/client/transactions',
+  path: '/client/profile/bookings',
   component: clientViewTransactions,
 }, {
   path: '/business/reset/:token',
