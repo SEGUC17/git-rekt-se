@@ -21,7 +21,41 @@ const router = express.Router();
  */
 
 router.use(bodyParser.json());
-router.use(expressValidator({}));
+router.use(expressValidator({
+  customValidators: {
+    isPassword: validationSchemas.validatePassword,
+    arePhoneNumbers: validationSchemas.validatePhoneNumber,
+  },
+}));
+
+/**
+ * Get Business
+ */
+router.get('/profile', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
+  const searchID = {
+    _id: req.user._id,
+    _deleted: false,
+    _status: 'verified',
+  };
+  const projection = {
+    name: true,
+    email: true,
+    shortDescription: true,
+    phoneNumbers: true,
+  };
+  Business.findOne(searchID, projection)
+    .exec()
+    .then((business) => {
+      if (!business) {
+        next(Strings.businessMessages.businessDoesntExist);
+      } else {
+        res.json({
+          business,
+        });
+      }
+    })
+    .catch(next);
+});
 
 /**
  * Business edit basic information route.
@@ -40,6 +74,12 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
       shortDescription: req.body.shortDescription,
       phoneNumbers: req.body.phoneNumbers,
     };
+
+    const search = {
+      _id: req.params.id,
+      _deleted: false,
+    };
+
     let emailChanged = false;
 
 
@@ -51,10 +91,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
     req.getValidationResult()
       .then((result) => {
         if (result.isEmpty()) {
-          Business.findOne({
-            _id: req.params.id,
-            _deleted: false,
-          })
+          Business.findOne(search)
             .exec()
             .then((business) => {
               if (!business) {
@@ -74,29 +111,30 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
               business.name = userInfo.name;
               business.shortDescription = userInfo.shortDescription;
               business.phoneNumbers = userInfo.phoneNumbers;
-              business.password = userInfo.password;
+              business.password = userInfo.password || business.password;
               business.email = userInfo.email;
 
               if (emailChanged) {
                 business.save()
                   .then(() => {
                     Mailer.sendConfirmationMessage(oldMail)
-                          .then(() => {
-                            res.json({
-                              message: Strings.businessSuccess.emailConfirmation,
-                            });
-                          })
-                          .catch((e) => {
-                            next([e]);
-                          });
+                      .then(() => {
+                        res.json({
+                          message: Strings.businessSuccess.emailConfirmation,
+                        });
+                      })
+                      .catch((e) => {
+                        next([e]);
+                      });
                   })
                   .catch(e => next(e));
               } else {
-                business.save().then(() => {
-                  res.json({
-                    message: Strings.businessInformationChanged.UPDATE_SUCCESSFULL,
+                business.save()
+                  .then(() => {
+                    res.json({
+                      message: Strings.businessInformationChanged.UPDATE_SUCCESSFULL,
+                    });
                   });
-                });
               }
             })
             .catch((e) => {
