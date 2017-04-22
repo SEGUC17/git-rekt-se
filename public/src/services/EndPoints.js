@@ -42,6 +42,7 @@ export const Business = () => {
     logout: `${authBase}/logout`,
     verifiedSignUp: token => `${authBase}/confirm/signup/${token}`,
 
+    getBasicInfo: `${BASE}/business/profile/profile`,
     editBasicInfo: businessID => `${BASE}/business/profile/${businessID}/edit`,
     editInfo: businessID => `${businessBase}/edit/${businessID}`,
     addBranch: businessID => `${businessBase}/${businessID}/add/branches`,
