@@ -6,8 +6,8 @@
             <div class="hero-body">
                 <div class="container">
                     <div class="service-categories is-spaced">
-                            <span class="search-tag tag is-dark is-small" v-for="category in categories"
-                                  :key="category._id">{{ category.title }}</span>
+                        <span class="search-tag tag is-dark is-small" v-for="category in categories"
+                              :key="category._id">{{ category.title }}</span>
                     </div>
                     <div class="title is-2 white"> {{ name }} </div>
 
@@ -20,16 +20,19 @@
                         <el-rate class="is-pulled-left" v-model="rating" disabled :max="5"></el-rate>
                     </div>
 
-                    <router-link :to="`${$route.params.id}/book`"
-                                 class="button white is-warning is-pulled-right"
+                    <router-link :to="`${$route.params.id}/book`" class="button white is-warning is-pulled-right"
                                  style="font-size: 1.2em">
                         Book Now
+
+
+
 
 
                     </router-link>
                 </div>
             </div>
         </div>
+
 
         <!-- Service Description -->
         <div class="columns">
@@ -61,22 +64,19 @@
                                     <h6>
                                         <span><i class=" icon fa fa-location-arrow"></i></span>
                                         {{ getBranchAddress(offering.branch) }}
-                                    </h6>
+                  </h6>
 
                                     <h6>
-                                        <span><i class=" icon fa fa-calendar"></i></span>
-                                        {{ offering.startDate | moment }}
-                                    </h6>
+                                        <span><i class=" icon fa fa-calendar"></i></span> {{ offering.startDate | moment }}
+                  </h6>
 
                                     <h6>
-                                        <span><i class=" icon fa fa-calendar"></i></span>
-                                        {{ offering.endDate | moment }}
-                                    </h6>
+                                        <span><i class=" icon fa fa-calendar"></i></span> {{ offering.endDate | moment }}
+                  </h6>
 
                                     <h6>
-                                        <span><i class=" icon fa fa-money"></i></span>
-                                        {{ offering.price }} EGP
-                                    </h6>
+                                        <span><i class=" icon fa fa-money"></i></span> {{ offering.price }} EGP
+                  </h6>
 
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                     <div class="no-gallery" v-show="active === 2" v-if="gallery.length === 0">
                         <h3 class="title has-text-centered">
                             No Gallery found.
-                        </h3>
+                          </h3>
                     </div>
                     <div class="gallery" v-if="gallery.length > 0" v-show="active === 2">
                         <el-carousel :interval="1000" arrow="always">
@@ -102,17 +102,11 @@
 
                 <!-- Reviews Tab -->
 
-                <div class="columns" v-show="active === 3">
-                    <div class="column">
-                        <a href="#" class="button is-primary is-pulled-right">Add Review</a>
-                    </div>
-                </div>
-
                 <transition name="fade">
                     <div class="no-reviews" v-show="active === 3" v-if="reviews.length === 0">
                         <h3 class="title has-text-centered">
                             No Reviews found.
-                        </h3>
+                          </h3>
                     </div>
 
                     <div class="reviews" v-if="reviews.length > 0" v-show="active === 3">
@@ -120,35 +114,71 @@
                             <div class="content reviews-content">
                                 <div class="review">
                                     <h4> {{ review._client.firstName }} {{ review._client.lastName }} </h4>
-                                    <el-rate class="rating-search" :value="review.rating"
-                                             disabled :max="5"></el-rate>
+                                    <el-button-group class="is-pulled-right"
+                                                     v-if="`${review._client._id}` === `${clientID}`">
+                                        <el-button icon="edit" @click="showEdit(review)"></el-button>
+                                        <el-button type="danger" icon="delete" @click="showDelete(review)"></el-button>
+                                    </el-button-group>
+                                    <el-rate class="rating-search" :value="review.rating" disabled :max="5"></el-rate>
                                     <br>
-                                    <p> {{ review.description }} </p>
+                                    <p class="non-breaking"> {{ review.description }} </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </transition>
+                <br>
+                <div class="columns" v-show="active === 3">
+                    <div class="column">
+                        <el-alert type="success" class="error" show-icon v-if="editReviewSuccess"
+                                  :title="editReviewSuccess"></el-alert>
+                        <el-alert type="success" class="error" show-icon v-if="deleteReviewSuccess"
+                                  :title="deleteReviewSuccess"></el-alert>
+
+                        <create-review v-if="clientID" :serviceID="serviceID" @created="handleCreate"></create-review>
+                        <div class="box" v-else>
+                            <h3 class="title is-4"> Leave a review... </h3>
+                            <hr>
+                            <el-form label-position="top">
+                                <el-form-item label="Rating" required>
+                                    <el-rate disabled></el-rate>
+                                </el-form-item>
+                                <el-form-item label="Review">
+                                    <el-input type="textarea" disabled
+                                              placeholder="Enter your review here (Max 512 characters)"></el-input>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-popover ref="popover" placement="top-start" title="Cannot Leave Review"
+                                                width="200" trigger="hover"
+                                                content="You need to be logged in to leave a review.">
+                                    </el-popover>
+                                    <el-button v-popover:popover type="primary">Create</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                        <edit-review :serviceID="serviceID" :review="reviewToEdit" :visible="editReviewVisible"
+                                     @edited="handleEdit" @cancelEdit="handleEditCancel"></edit-review>
+                        <delete-review :serviceID="serviceID" :reviewID="reviewToDelete._id"
+                                       :visible="deleteReviewVisible" @deleted="handleDelete"
+                                       @cancelDelete="handleDeleteCancel"></delete-review>
+                    </div>
+                </div>
             </div>
 
             <!-- Right Pane -->
             <div class="column is-3">
                 <div class="panel">
                     <p class="panel-heading"> Related Services </p>
-                    <a class="dark-link panel-block"
-                       @click.prevent="getRelatedService(service._id)"
-                       v-for="service in relatedServices"
-                       :key="service._id"
-                       :href="`/service/${service._id}`">
+                    <a class="dark-link panel-block" @click.prevent="getRelatedService(service._id)"
+                       v-for="service in relatedServices" :key="service._id" :href="`/service/${service._id}`">
                         <figure class="related-image image is-64x64" v-if="service.coverImage">
                             <img :src="'uploads/' + service.coverImage" alt="Image">
                         </figure>
-                        <p>
-                            {{ service.name }}
-                        </p>
+                        <p>{{ service.name }}</p>
                     </a>
                 </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -157,10 +187,15 @@
 <script>
   import axios from 'axios';
   import {Service} from '../../services/EndPoints';
+  import ClientAuth from '../../services/auth/clientAuth';
+  import CreateReview from './Review/createReview.vue';
+  import EditReview from './Review/editReview.vue';
+  import DeleteReview from './Review/deleteReview.vue';
 
   export default {
     data() {
       return {
+        serviceID: this.$route.params.id,
         name: '',
         shortDescription: '',
         description: '',
@@ -184,7 +219,23 @@
         errors: [],
         active: 1,
         rating: 0,
+        clientID: ClientAuth.user.userID(),
+        editReviewVisible: false,
+        deleteReviewVisible: false,
+        reviewToEdit: {
+          _id: '',
+          rating: undefined,
+          description: '',
+        },
+        reviewToDelete: {},
+        editReviewSuccess: '',
+        deleteReviewSuccess: '',
       };
+    },
+    components: {
+      CreateReview,
+      EditReview,
+      DeleteReview,
     },
     methods: {
       getBranchAddress(offering) {
@@ -202,7 +253,7 @@
 
       // send get request to obtain service info using service id
 
-      getService(serviceId = this.$route.params.id) {
+      getService(serviceId = this.serviceID) {
         const loader = this.$loading({
           fullscreen: true,
         });
@@ -226,7 +277,7 @@
           this.$router.push('/404');
         });
       },
-      // obtains 3 related services from on of the categories
+      // obtains 3 related services from one of the categories
       getRelatedServices(loader) {
         if (this.categories.length === 0) {
           loader.close();
@@ -248,6 +299,47 @@
         this.$router.push((relatedID));
         this.$router.go((relatedID));
       },
+      showEdit(review) {
+        this.reviewToEdit = {
+          _id: review._id,
+          rating: review.rating,
+          description: review.description,
+        };
+        this.editReviewVisible = true;
+      },
+      showDelete(review) {
+        this.reviewToDelete = review;
+        this.deleteReviewVisible = true;
+      },
+      handleCreate() {
+        this.getService();
+      },
+      handleEdit(successMessage) {
+        this.reviewToEdit = {
+          rating: undefined,
+          description: '',
+        };
+        this.editReviewSuccess = successMessage;
+        this.editReviewVisible = false;
+        this.getService();
+      },
+      handleDelete(successMessage) {
+        this.reviewToDelete = {};
+        this.deleteReviewSuccess = successMessage;
+        this.deleteReviewVisible = false;
+        this.getService();
+      },
+      handleEditCancel() {
+        this.reviewToEdit = {
+          rating: undefined,
+          description: '',
+        };
+        this.editReviewVisible = false;
+      },
+      handleDeleteCancel() {
+        this.reviewToDelete = {};
+        this.deleteReviewVisible = false;
+      },
     },
     mounted() {
       this.getService();
@@ -257,9 +349,12 @@
 
 <style>
     .service-info {
-        background: #c0392b; /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #8e44ad, #c0392b); /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #8e44ad, #c0392b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: #c0392b;
+        /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #8e44ad, #c0392b);
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #8e44ad, #c0392b);
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         margin-bottom: 2em;
     }
 
@@ -272,14 +367,18 @@
     }
 
     /*
-     Transition.
-    */
+                   Transition.
+                  */
 
-    .fade-enter-active, .fade-leave-active {
+    .fade-enter-active,
+    .fade-leave-active {
         transition: opacity .5s
     }
 
-    .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */
+    .fade-enter,
+    .fade-leave-to
+        /* .fade-leave-active in <2.1.8 */
+
     {
         opacity: 0
     }

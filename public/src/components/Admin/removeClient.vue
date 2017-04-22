@@ -50,12 +50,7 @@
     },
     mounted() {
       if (!adminAuth.isAuthenticated()) {
-        this.$router.push('/');
-        this.$toast.open({
-          message: 'Not authorized to do such an operation.',
-          position: 'bottom',
-          type: 'is-danger',
-        });
+        this.$router.push('/404');
         return;
       }
       this.getClients();

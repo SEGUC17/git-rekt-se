@@ -20,7 +20,7 @@ const reviewErrors = Strings.reviewErrors;
  */
 
 const businessValidationErrors = require('../shared/Strings')
-    .bussinessValidationErrors;
+  .bussinessValidationErrors;
 
 const clientSignupValidation = {
   email: {
@@ -387,6 +387,20 @@ const createReviewValidation = {
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
     },
+    isInt: {
+      options: [{
+        min: 1,
+        max: 5,
+      }],
+      errorMessage: reviewErrors.outOfRangeRating,
+    },
+  },
+  description: { in: 'body',
+    optional: true,
+    isLength: {
+      options: [{ min: 0, max: 512 }],
+      errorMessage: reviewErrors.descriptionTooLong,
+    },
   },
 };
 
@@ -404,6 +418,20 @@ const updateReviewValidation = {
   rating: { in: 'body',
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
+    },
+    isInt: {
+      options: [{
+        min: 1,
+        max: 5,
+      }],
+      errorMessage: reviewErrors.outOfRangeRating,
+    },
+  },
+  description: { in: 'body',
+    optional: true,
+    isLength: {
+      options: [{ min: 0, max: 512 }],
+      errorMessage: reviewErrors.descriptionTooLong,
     },
   },
 };
@@ -533,6 +561,11 @@ const businessUpdateValidation = {
       errorMessage: bussinessValidationErrors.emptyName,
     },
   },
+  email: {
+    isEmail: {
+      errorMessage: bussinessValidationErrors.invalidEmail,
+    },
+  },
   shortDescription: {
     notEmpty: {
       errorMessage: bussinessValidationErrors.emptyDescription,
@@ -542,9 +575,38 @@ const businessUpdateValidation = {
     notEmpty: {
       errorMessage: bussinessValidationErrors.emptyMobile,
     },
+    arePhoneNumbers: {
+      errorMessage: bussinessValidationErrors.invalidMobile,
+    },
+  },
+  password: {
+    isPassword: {
+      errorMessage: bussinessValidationErrors.invalidPassword,
+    },
   },
 };
 
+/**
+ * Checks the given password. If Empty or Can be generated
+ * from the regex then it passes.
+ * @param {String} password
+ */
+const validatePassword = (password) => {
+  if (password.length === 0) {
+    return true;
+  }
+  return /^(?=.*\d).{8,15}$/.test(password);
+};
+
+/**
+ * Checks if the given Array of Phone Numbers contain numbers in the
+ * Egyptian phone number format.
+ * @param {Array} phoneNumber
+ */
+const validatePhoneNumber = (phoneNumbers) => {
+  const valid = phoneNumbers.filter(phoneNumber => /^01[0-2]{1}[0-9]{8}/.test(phoneNumber));
+  return valid.length === phoneNumbers.length;
+};
 
 const forgotPasswordValidation = {
   email: {
@@ -606,18 +668,6 @@ const clientUpdateValidation = {
   },
 };
 
-/**
- * Checks the given password. If Empty or Can be generated
- * from the regex then it passes.
- * @param {String} password
- */
-const validatePassword = (password) => {
-  if (password.length === 0) {
-    return true;
-  }
-  return /^(?=.*\d).{8,15}$/.test(password);
-};
-
 const serviceBookingValidation = {
   service: {
     isMongoId: {
@@ -662,10 +712,11 @@ const validation = {
   updateReviewValidation,
   deleteReviewValidation,
   businessUpdateValidation,
+  validatePassword,
+  validatePhoneNumber,
   businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
-  validatePassword,
   clientUpdateValidation,
   adminClientValidation,
   businessdeletionValidation,

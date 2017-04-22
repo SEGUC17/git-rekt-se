@@ -1,29 +1,37 @@
 <template>
     <div class="manage-business">
 
-        <gr-top-hero class="admin-dashbaord-top" title="Dashboard"></gr-top-hero>
+        <gr-top-hero class="admin-dashbaord-top" title="Manage"></gr-top-hero>
         <div class="columns container is-fluid margin-mobile">
             <!-- Side Menu -->
             <div class="column is-3">
                 <aside class="menu">
                     <p class="menu-label">
-                        Business
+                        Information
                       </p>
                     <ul class="menu-list">
-                        <li><router-link to="/admin/dashboard/confirm">Accept/Reject</router-link></li>
-                        <li><router-link to="/admin/dashboard/business/remove">Remove</router-link></li>
+                        <li>
+                            <router-link to="/business/manage/edit/basic">Basic Information</router-link>
+                        </li>
+                        <li>
+                            <router-link to="/business/manage/edit/info">Listing Information</router-link>
+                        </li>
                     </ul>
                     <p class="menu-label">
                         Categories
                       </p>
                     <ul class="menu-list">
-                        <li><router-link to="/admin/dashboard/categories/edit">Edit Categories</router-link></li>
+                        <li>
+                            <router-link to="/admin/dashboard/categories/edit">Edit Categories</router-link>
+                        </li>
                     </ul>
                     <p class="menu-label">
                         Clients
                       </p>
                     <ul class="menu-list">
-                        <li><router-link to="/admin/dashboard/client/remove">Remove</router-link></li>
+                        <li>
+                            <router-link to="/admin/dashboard/client/remove">Remove</router-link>
+                        </li>
                     </ul>
                 </aside>
             </div>
@@ -62,8 +70,8 @@
         margin-bottom: 2em;
     }
 
-    @media screen and (max-width: 999px){
-        .margin-mobile{
+    @media screen and (max-width: 999px) {
+        .margin-mobile {
             margin: 1em;
         }
     }
