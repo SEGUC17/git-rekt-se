@@ -27,6 +27,8 @@ import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 import clientViewTransactions from '../components/Client/viewTransactions.vue';
 import notfound from '../components/pages/404.vue';
 import businessManagement from '../components/Business/manage/management.vue';
+import editBranches from '../components/Business/branchesEditForm.vue';
+import editFullInfo from '../components/Business/infoEditForm.vue';
 
 const routes = [{
   path: '/',
@@ -126,6 +128,12 @@ const routes = [{
   }, {
     path: 'edit/basic',
     component: businessEditInfo,
+  },{
+    path: 'edit/branches',
+    component: editBranches,
+  }, {
+    path: 'edit/info',
+    component: editFullInfo,
   }, {
     path: 'bookings',
     component: businessViewTransactions,
