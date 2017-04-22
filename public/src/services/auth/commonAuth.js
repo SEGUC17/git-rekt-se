@@ -7,4 +7,9 @@ export default {
     clientAuth.refreshAuth();
     return businessAuth.user.authenticated || clientAuth.user.authenticated;
   },
+  isBusiness: () => {
+    businessAuth.refreshAuth();
+    clientAuth.refreshAuth();
+    return businessAuth.user.authenticated && !clientAuth.user.authenticated;
+  },
 };
