@@ -44,8 +44,8 @@ export const Business = () => {
 
     getBasicInfo: `${BASE}/business/profile/profile`,
     editBasicInfo: businessID => `${BASE}/business/profile/${businessID}/edit`,
-    editInfo: businessID => `${businessBase}/edit/${businessID}`,
-    addBranch: businessID => `${businessBase}/${businessID}/add/branches`,
+    editInfo: `${businessBase}/edit`,
+    addBranch: `${businessBase}/add/branches`,
     editBranch: (businessID, branchID) => `${businessBase}/${businessID}/edit/branch/${branchID}`,
     deleteBranch: (businessID, branchID) => `${businessBase}/${businessID}/delete/branch/${branchID}`,
 
@@ -61,6 +61,11 @@ export const Business = () => {
     deleteOffering: (serviceID, offeringID) => `${serviceBase}/${serviceID}/offering/${offeringID}/delete`,
 
     addImage: businessID => `${galleryBase}/${businessID}/gallery/add`,
+    businessInfo: `${businessBase}/general`,
+    businessbranches: `${businessBase}/branches`,
+    getTransactions: `${BASE}/business/profile/transactions`,
+    acceptTransaction: `${BASE}/business/profile/transactions/accept`,
+    refundTransaction: `${BASE}/business/profile/transactions/reject`,
   };
 };
 

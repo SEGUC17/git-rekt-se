@@ -19,6 +19,7 @@ import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
+import businessViewTransactions from '../components/Business/viewTransactions.vue';
 import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
@@ -28,6 +29,8 @@ import notfound from '../components/pages/404.vue';
 import businessManagement from '../components/Business/manage/management.vue';
 import editServices from '../components/Business/Service/editServices.vue';
 import editOfferings from '../components/Business/Service/editOfferings.vue';
+import editBranches from '../components/Business/branchesEditForm.vue';
+import editFullInfo from '../components/Business/infoEditForm.vue';
 
 const routes = [{
   path: '/',
@@ -53,9 +56,6 @@ const routes = [{
 }, {
   path: '/client/login',
   component: clientLogin,
-}, {
-  path: '/business/editinfo',
-  component: businessEditInfo,
 }, {
   path: '/confirm/signup/:token',
   component: verifiedBusinessSignup,
@@ -92,32 +92,25 @@ const routes = [{
 }, {
   path: '/admin/dashboard',
   component: adminDashboard,
-  children: [
-    {
-      path: '/',
-      redirect: 'confirm',
-    }, {
-      path: 'confirm',
-      component: adminBusiness,
-    }, {
-      path: 'client/remove',
-      component: removeClient,
-    }, {
-      path: 'categories/edit',
-      component: categoryCRUD,
-    }, {
-      path: 'business/remove',
-      component: removeBusiness,
-    }],
+  children: [{
+    path: '/',
+    redirect: 'confirm',
+  }, {
+    path: 'confirm',
+    component: adminBusiness,
+  }, {
+    path: 'client/remove',
+    component: removeClient,
+  }, {
+    path: 'categories/edit',
+    component: categoryCRUD,
+  }, {
+    path: 'business/remove',
+    component: removeBusiness,
+  }],
 }, {
   path: '/client/profile/bookings',
   component: clientViewTransactions,
-}, {
-  path: '/business/editServices',
-  component: editServices,
-}, {
-  path: '/business/edit/:id/offerings',
-  component: editOfferings,
 }, {
   path: '/business/reset/:token',
   component: reset,
@@ -133,7 +126,22 @@ const routes = [{
   }, {
     path: 'edit/basic',
     component: businessEditInfo,
+  }, {
+    path: 'edit/branches',
+    component: editBranches,
+  }, {
+    path: 'edit/info',
+    component: editFullInfo,
+  }, {
+    path: 'bookings',
+    component: businessViewTransactions,
   }],
+}, {
+  path: '/business/editServices',
+  component: editServices,
+}, {
+  path: '/business/edit/:id/offerings',
+  component: editOfferings,
 }, {
   path: '/business/:id',
   component: businessPage,

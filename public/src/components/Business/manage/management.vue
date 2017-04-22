@@ -16,13 +16,16 @@
                         <li>
                             <router-link to="/business/manage/edit/info">Listing Information</router-link>
                         </li>
+                        <li>
+                            <router-link to="/business/manage/edit/branches">Branches</router-link>
+                        </li>
                     </ul>
                     <p class="menu-label">
-                        Categories
+                        Services
                       </p>
                     <ul class="menu-list">
                         <li>
-                            <router-link to="/admin/dashboard/categories/edit">Edit Categories</router-link>
+                            <router-link to="/business/manage/bookings">Bookings</router-link>
                         </li>
                     </ul>
                     <p class="menu-label">
@@ -37,7 +40,7 @@
             </div>
 
             <!-- Content Component -->
-            <div class="column is-8">
+            <div class="column is-9">
                 <router-view></router-view>
             </div>
         </div>

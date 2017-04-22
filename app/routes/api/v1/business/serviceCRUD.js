@@ -453,7 +453,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                         let oldexist = false; // old branch before edit exist
 
                         service.offerings.forEach((offering) => {
-                          if (`${offering}` !== offeringID && `${offering.branch}` === `${oldbranch}` && !offering._deleted) {
+                          if (`${offering._id}` !== offeringID && `${offering.branch}` === `${oldbranch}` && !offering._deleted) {
                             oldexist = true;
                           }
                         });
@@ -589,7 +589,7 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                 let branchExist = false; // branch of this offering
                 const oldbranch = offeringDoc.branch;
                 service.offerings.forEach((offer) => {
-                  if (`${offer}` !== offeringID && `${offer.branch}` === `${oldbranch}` && !offer._deleted) {
+                  if (`${offer._id}` !== offeringID && `${offer.branch}` === `${oldbranch}` && !offer._deleted) {
                     branchExist = true;
                   }
                 });

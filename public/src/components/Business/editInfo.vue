@@ -2,11 +2,11 @@
 
     <div class="business-edit-info">
 
-        <div v-show="success">
+        <div class="errors" v-if="success">
             <el-alert @close="success = false" class="error" :title="message" type="success" show-icon></el-alert>
         </div>
 
-        <div class="errors" v-show="!form.errors.isEmpty()">
+        <div class="errors" v-if="!form.errors.isEmpty()">
 
             <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
                 <el-alert @close="form.errors.remove(key)" type="error"
