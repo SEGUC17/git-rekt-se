@@ -12,7 +12,7 @@
                     <el-row>
                         <el-col :span="8" v-for="image in images":key="image._id" v-bind:data="image">
                             <el-card :body-style="{ padding: '0px' }">
-                                <img src="image.path" class="image">
+                                <img :src="'/uploads/' + image.path" class="image">
                                 <div style="padding: 14px;">
                                     <span>{{image.description}}</span>
                                     <div class="bottom clearfix">
@@ -30,7 +30,7 @@
 
 <script>
     import axios from 'axios';
-    import EndPoints from '../../services/EndPoints';
+    import {Business} from '../../services/EndPoints';
     import businessAuth from '../../services/auth/businessAuth';
     import addButton from './galleryAdd.vue';
     import editButton from './galleryEdit.vue';
@@ -54,15 +54,14 @@
             this.getGallery();
         },
         methods: {
-             
             getGallery() {
-                axios.get(EndPoints.Business().viewGallery(this.$route.params.id), {
+                axios.get(Business().viewGallery, {
                         headers: {
                             Authorization: businessAuth.getJWTtoken()
                         }
                     })
                     .then((res) => {
-                        this.images = res.data;
+                        this.images = res.data.results;
                         this.errors = [];
                     })
                     .catch(err => {

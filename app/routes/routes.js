@@ -41,11 +41,11 @@ module.exports = (app) => {
   /**
    * Business Routes.
    */
+  app.use('/api/v1/business/gallery', BusinessGalleryAPI);
   app.use('/api/v1/business/service', businessServiceAPI);
   app.use('/api/v1/business/auth', BusinessAuthAPI);
   app.use('/api/v1/business/profile', businessProfileAPI);
   app.use('/api/v1/business/info', BusinessEditInformationAPI);
-  app.use('/api/v1/business', BusinessGalleryAPI);
 
   /**
    * Admin Routes.

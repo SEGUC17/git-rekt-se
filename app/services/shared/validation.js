@@ -427,14 +427,6 @@ const adminLoginValidation = {
   },
 };
 
-const businessAddImageValidation = {
-  id: {
-    isMongoId: {
-      errorMessage: bussinessValidationErrors.invalidBusinessID,
-    },
-  },
-};
-
 const adminClientValidation = {
   id: {
     isMongoId: {
@@ -444,11 +436,6 @@ const adminClientValidation = {
 };
 
 const businessEditImageValidation = {
-  ser_id: {
-    isMongoId: {
-      errorMessage: bussinessValidationErrors.invalidBusinessID,
-    },
-  },
   im_id: {
     isMongoId: {
       errorMessage: bussinessValidationErrors.invalidBusinessID,
@@ -644,7 +631,6 @@ const validation = {
   updateReviewValidation,
   deleteReviewValidation,
   businessUpdateValidation,
-  businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
   validatePassword,

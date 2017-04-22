@@ -20,7 +20,7 @@
 
 <script>
     import axios from 'axios';
-    import EndPoints from '../../services/EndPoints';
+    import {Business} from '../../services/EndPoints';
     import businessAuth from '../../services/auth/businessAuth'
 
     export default {
@@ -35,7 +35,7 @@
         methods: {
             deleteImage(imageID) {
                 this.deleteDialogue = false;
-                axios.post(EndPoints.Business().deleteImage(this.$route.params.id, imageID),null, {
+                axios.post(Business().deleteImage(imageID),null, {
                         headers: {
                             Authorization: businessAuth.getJWTtoken()
                         }

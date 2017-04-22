@@ -21,7 +21,7 @@
 
 <script>
     import axios from 'axios';
-    import EndPoints from '../../services/EndPoints';
+    import {Business} from '../../services/EndPoints';
     import businessAuth from '../../services/auth/businessAuth'
 
     export default {
@@ -40,7 +40,7 @@
         methods: {
             editImage(imageID) {
                 this.editDialogue = false;
-                axios.post(EndPoints.Business().editImage(this.$route.params.id, imageID), this.editForm, {
+                axios.post(Business().editImage(imageID), this.editForm, {
                         headers: {
                             Authorization: businessAuth.getJWTtoken()
                         }

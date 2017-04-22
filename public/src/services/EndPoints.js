@@ -32,7 +32,7 @@ export const Business = () => {
   const authBase = `${BASE}/business/auth`;
   const serviceBase = `${BASE}/business/service`;
   const businessBase = `${BASE}/business/info`;
-  const galleryBase = `${BASE}/business`;
+  const galleryBase = `${BASE}/business/gallery`;
   return {
     unverfiedSignUp: `${authBase}/unverified/signup`,
     login: `${authBase}/verified/login`,
@@ -54,10 +54,10 @@ export const Business = () => {
     editOffering: (serviceID, offeringID) => `${serviceBase}/${serviceID}/offering/${offeringID}/edit`,
     deleteOffering: (serviceID, offeringID) => `${serviceBase}/${serviceID}/offering/${offeringID}/delete`,
 
-    viewGallery: businessID => `${galleryBase}/${businessID}/gallery`,
-    addImage: businessID => `${galleryBase}/${businessID}/gallery/add`,
-    editImage: (businessID, imageID) => `${galleryBase}/${businessID}/gallery/edit/${imageID}`,
-    deleteImage: (businessID, imageID) => `${galleryBase}/${businessID}/gallery/delete/${imageID}`,
+    viewGallery: `${galleryBase}/list`,
+    addImage: `${galleryBase}/add`,
+    editImage: imageID => `${galleryBase}/edit/${imageID}`,
+    deleteImage: imageID => `${galleryBase}/delete/${imageID}`,
   };
 };
 

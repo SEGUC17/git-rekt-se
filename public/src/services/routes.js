@@ -53,7 +53,7 @@ const routes = [{
   path: '/client/login',
   component: clientLogin,
 }, {
-  path: '/business/:id/gallery',
+  path: '/business/gallery/edit',
   component: businessGallery,
 }, {
   path: '/confirm/signup/:token',

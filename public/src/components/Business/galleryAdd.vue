@@ -30,7 +30,7 @@
 
 <script>
     import axios from 'axios';
-    import EndPoints from '../../services/EndPoints';
+    import {Business} from '../../services/EndPoints';
     import Form from '../../services/Form';
     import businessAuth from '../../services/auth/businessAuth'
     
@@ -88,7 +88,7 @@
             },
             addImage(formName) {
                 this.addDialogue = false;
-                axios.post(EndPoints.Business().addImage(this.$route.params.id), formName, {
+                axios.post(Business().addImage, formName, {
                         headers: {
                             Authorization: businessAuth.getJWTtoken()
                         }
