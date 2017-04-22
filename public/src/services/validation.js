@@ -372,11 +372,15 @@ export const clientEditInfoValidation = {
     trigger: 'change',
   }, {
     validator(rule, value, callBack) {
-      console.log(222);
-      if (this.form.birthdate.getFullYear() >= new Date().getFullYear()) {
-        callBack([new Error('Please enter a valid birthdate')]);
-      } else {
-        callBack();
+      if (this.form.birthdate) {
+        console.log(this.form.birthdate.getFullYear());
+        console.log(new Date().getFullYear());
+        console.log(this.form.birthdate);
+        if (this.form.birthdate.getFullYear() >= new Date().getFullYear()) {
+          callBack([new Error('Please enter a valid birthdate')]);
+        } else {
+          callBack();
+        }
       }
     },
     trigger: ['blur', 'change'],
@@ -394,7 +398,6 @@ export const clientEditInfoValidation = {
   }],
   confirmPassword: [{
     validator(rule, value, callBack) {
-      console.log(11);
       if (this.form.password && this.form.confirmPassword) {
         if (this.form.password !== value) {
           callBack([new Error('Password and password confirmation mismatch.')]);
