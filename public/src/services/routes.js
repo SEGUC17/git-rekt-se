@@ -19,6 +19,7 @@ import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
+import businessViewTransactions from '../components/Business/viewTransactions.vue';
 import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
@@ -53,9 +54,6 @@ const routes = [{
 }, {
   path: '/client/login',
   component: clientLogin,
-}, {
-  path: '/business/editinfo',
-  component: businessEditInfo,
 }, {
   path: '/confirm/signup/:token',
   component: verifiedBusinessSignup,
@@ -94,23 +92,22 @@ const routes = [{
 }, {
   path: '/admin/dashboard',
   component: adminDashboard,
-  children: [
-    {
-      path: '/',
-      redirect: 'confirm',
-    }, {
-      path: 'confirm',
-      component: adminBusiness,
-    }, {
-      path: 'client/remove',
-      component: removeClient,
-    }, {
-      path: 'categories/edit',
-      component: categoryCRUD,
-    }, {
-      path: 'business/remove',
-      component: removeBusiness,
-    }],
+  children: [{
+    path: '/',
+    redirect: 'confirm',
+  }, {
+    path: 'confirm',
+    component: adminBusiness,
+  }, {
+    path: 'client/remove',
+    component: removeClient,
+  }, {
+    path: 'categories/edit',
+    component: categoryCRUD,
+  }, {
+    path: 'business/remove',
+    component: removeBusiness,
+  }],
 }, {
   path: '/client/profile/bookings',
   component: clientViewTransactions,
@@ -129,6 +126,9 @@ const routes = [{
   }, {
     path: 'edit/basic',
     component: businessEditInfo,
+  }, {
+    path: 'bookings',
+    component: businessViewTransactions,
   }],
 }, {
   path: '/business/:id',
