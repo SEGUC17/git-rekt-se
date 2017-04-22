@@ -14,7 +14,6 @@ import clientRemoveBtn from '../../components/Admin/remove-client-btn.vue';
 import businessRemoveBtn from '../../components/Admin/remove-business-btn.vue';
 import CategoryActions from '../../components/Admin/category-actions.vue';
 import router from '../../services/routes.js';
-import businessEditInfo from '../../components/Business/editInfo.vue';
 
 window.axios = axios;
 

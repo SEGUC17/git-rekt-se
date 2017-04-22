@@ -1,112 +1,91 @@
 <template>
 
-  <div class="business-edit-info">
-    <!-- Client Signup Header -->
-    <section class="client-signin-top hero is-bold">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title extra-large white">
-              Business
-          </h1>
-          <p class="subtitle white">
-           Business Business
-          </p>
-         </div>
-       </div>
-    </section>
-    <div class="columns">
-      <div class="column is-half is-offset-one-quarter">
-    
-        <div v-show="success">
-          <el-alert @close="success = false" title="Success" :description="message" type="success" show-icon></el-alert>
-        </div>
-    
-        <div v-show="info">
-          <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
-        </div>
-    
-        <div v-show="!form.errors.isEmpty() || error">
-          <div v-show="error">
-            <el-alert @close="error = false" title="Error" type="error" :description="message" show-icon></el-alert>
-          </div>
-    
-          <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
-            <el-alert @close="form.errors.remove(key)" :title="key.toUpperCase()" type="error" :description="form.errors.getAll(key, ' | ')" show-icon></el-alert>
-          </div>
-    
-          <div class="error" v-show="form.errors.has('serverError')">
-            <el-alert @close="" title="Server Errors" :description="form.errors.getAll('serverError')" type="error" show-icon></el-alert>
-          </div>
-        </div>
-    
-        <h1 class="title has-text-centered">Edit Basic Information</h1>
-    
-        <el-form class="edit-info-form" ref="form" :model="form" :rules="rules" label-position="left" label-width="120px">
-          <el-form-item label="Name" prop="name">
-            <el-input v-model="form.name"></el-input>
-          </el-form-item>
-          
-          <el-form-item label="Email" prop="email">
-            <el-input v-model="form.email"></el-input>
-          </el-form-item>
-    
-          <el-form-item label="Password" prop="password">
-            <el-input v-model="form.password" :type="showPassword">
-              <template slot="append">
-                <el-tooltip content="See Password" placement="right">
-                  <el-button @mousedown.native="showPassword='text'" @mouseup.native="showPassword='password'">
-                    <i class="fa fa-eye"></i>
-                  </el-button>
-                </el-tooltip>
-              </template>
-            </el-input>
-          </el-form-item>
-    
-          <el-form-item label="Confirm Password" prop="confirmPassword">
-            <el-input v-model="form.confirmPassword" :type="showConfirm">
-              <template slot="append">
-                <el-tooltip content="See Confirm Password" placement="right">
-                  <el-button @mousedown.native="showConfirm='text'" @mouseup.native="showConfirm='password'">
-                    <i class="fa fa-eye"></i>
-                  </el-button>
-                </el-tooltip>
-              </template>
-            </el-input>
-          </el-form-item>
-    
-          <el-form-item v-for="el in phoneNumbers" :key="el.index" :label="`Phone Number ${el.index}`">
-            <el-input v-model="el.number"></el-input>
-          </el-form-item>
-    
-          <el-form-item label="Short Description" prop="shortDescription">
-            <el-input v-model="form.shortDescription" type="textarea" :autosize="{ minRows: 1, maxRows: 3}"></el-input>
-          </el-form-item>
+    <div class="business-edit-info">
 
-          <el-form-item class="has-text-centered">
-            <el-button type="primary" icon="edit" @click="onSubmit" :loading="loading">Edit</el-button>
-            <el-button icon="plus" @click="addPhone">Add Phone</el-button>
-            <el-button icon="circle-cross" @click="onReset">Reset</el-button>
-          </el-form-item>
+        <div v-show="success">
+            <el-alert @close="success = false" class="error" :title="message" type="success" show-icon></el-alert>
+        </div>
+
+        <div class="errors" v-show="!form.errors.isEmpty()">
+
+            <div class="error" v-for="key in form.keys" v-show="form.errors.has(key)">
+                <el-alert @close="form.errors.remove(key)" type="error"
+                          :title="form.errors.getAll(key, ' | ')" show-icon></el-alert>
+            </div>
+
+            <div class="error" v-show="form.errors.has('serverError')">
+                <el-alert @close="" :title="form.errors.getAll('serverError')"
+                          type="error" show-icon></el-alert>
+            </div>
+        </div>
+
+        <el-form class="edit-info-form" ref="form" :model="form" :rules="rules" label-position="top">
+            <el-form-item label="Name" prop="name">
+                <el-input v-model="form.name"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Email" prop="email">
+                <el-input v-model="form.email"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Password" prop="password">
+                <el-input v-model="form.password" :type="showPassword">
+                    <template slot="append">
+                        <el-tooltip content="See Password" placement="right">
+                            <el-button @mousedown.native="showPassword='text'"
+                                       @mouseup.native="showPassword='password'">
+                                <i class="fa fa-eye"></i>
+                            </el-button>
+                        </el-tooltip>
+                    </template>
+                </el-input>
+            </el-form-item>
+
+            <el-form-item label="Confirm Password" prop="confirmPassword">
+                <el-input v-model="form.confirmPassword" :type="showConfirm">
+                    <template slot="append">
+                        <el-tooltip content="See Confirm Password" placement="right">
+                            <el-button @mousedown.native="showConfirm='text'"
+                                       @mouseup.native="showConfirm='password'">
+                                <i class="fa fa-eye"></i>
+                            </el-button>
+                        </el-tooltip>
+                    </template>
+                </el-input>
+            </el-form-item>
+
+            <el-form-item v-for="el in phoneNumbers" :key="el.index" :label="`Phone Number ${el.index}`">
+                <el-input v-model="el.number"></el-input>
+            </el-form-item>
+
+            <el-form-item label="Short Description" prop="shortDescription">
+                <el-input v-model="form.shortDescription" type="textarea"
+                          :autosize="{ minRows: 3, maxRows: 5}"></el-input>
+            </el-form-item>
+
+            <el-form-item class="has-text-centered">
+                <el-button type="primary" icon="edit" @click="onSubmit" :loading="loading">Edit</el-button>
+                <el-button icon="plus" @click="addPhone">Add Phone</el-button>
+                <el-button icon="circle-cross" @click="onReset">Reset</el-button>
+            </el-form-item>
         </el-form>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
+  import axios from 'axios';
   import Form from '../../services/Form';
   import businessAuth from '../../services/auth/businessAuth';
   import commonAuth from '../../services/auth/commonAuth';
-  import {
-    Business
-  } from '../../services/EndPoints';
-  import {
-    businessEditInfoValidation
-  } from '../../services/validation';
-  const dummy_password = '***************';
+  import { Business } from '../../services/EndPoints';
+  import { businessEditInfoValidation } from '../../services/validation';
+
+  const dummyPassword = '***************';
   export default {
     data() {
-      businessEditInfoValidation.confirmPassword[0].validator = businessEditInfoValidation.confirmPassword[0].validator.bind(this);
+      businessEditInfoValidation.confirmPassword[0]
+          .validator = businessEditInfoValidation.confirmPassword[0]
+          .validator.bind(this);
       return {
         form: new Form({
           email: '',
@@ -132,60 +111,58 @@
       getBusiness() {
         return new Promise((resolve, reject) => {
           axios.get(Business().getBasicInfo, {
+            headers: {
+              Authorization: businessAuth.getJWTtoken(),
+            },
+          })
+              .then((response) => {
+                this.business = response.data.business;
+                this.onReset();
+                resolve();
+              }).catch((err) => {
+                this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+                reject(err);
+              });
+        });
+      },
+      onSubmit() {
+        this.success = false;
+        this.$refs.form.validate((valid) => {
+          if (valid) {
+            this.form.phoneNumbers = this.phoneNumbers
+                .filter(el => el.number.length > 0).map(el => el.number);
+            this.form.password = this.form.password === dummyPassword ? '' : this.form.password;
+            this.form.confirmPassword = this.form.confirmPassword === dummyPassword ? '' : this.form.confirmPassword;
+            this.loading = true;
+            this.form.post(Business().editBasicInfo(businessAuth.user.userID()), {
               headers: {
                 Authorization: businessAuth.getJWTtoken(),
               },
             })
-            .then((response) => {
-              this.business = response.data.business;
-              this.onReset();
-              resolve();
-            }).catch((err) => {
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
-              reject(err);
-            });
-        });
-      },
-      onSubmit() {
-        this.info = false;
-        this.success = false;
-        this.error = false;
-        this.$refs.form.validate((valid) => {
-          console.log(this.form.data());
-          console.log(valid);
-          if (valid) {
-            this.form.phoneNumbers = this.phoneNumbers.filter(el => el.number.length > 0).map(el => el.number);
-            this.form.password = this.form.password === dummy_password ? '' : this.form.password;
-            this.form.confirmPassword = this.form.confirmPassword === dummy_password ? '' : this.form.confirmPassword;
-            this.loading = true;
-            this.form.post(Business().editBasicInfo(businessAuth.user.userID()), {
-                headers: {
-                  Authorization: businessAuth.getJWTtoken(),
-                },
-              })
-              .then((data) => {
-                this.success = true;
-                this.message = data.message;
-                this.getBusiness()
-                  .then(() => this.loading = false)
-                  .catch(() => this.loading = false);
-              }).catch((err) => {
-                this.loading = false;
-                this.success = false;
-                this.onReset();
-              });
-          } else {
-            this.error = true;
-            this.message = 'Please Input all required fields!'
+                .then((data) => {
+                  this.success = true;
+                  this.message = data.message;
+                  this.getBusiness()
+                      .then(() => {
+                        this.loading = false;
+                      })
+                      .catch(() => {
+                        this.loading = false;
+                      });
+                }).catch(() => {
+                  this.loading = false;
+                  this.success = false;
+                  this.onReset();
+                });
           }
         });
       },
       onReset() {
-        //Reset Fields to their ORIGINAL form
-        this.form.keys.forEach(el => this.form[el] = this.business[el], this);
-        this.form.password = dummy_password;
-        this.form.confirmPassword = dummy_password;
+        this.form.keys.forEach((el) => {
+          this.form[el] = this.business[el];
+        });
+        this.form.password = dummyPassword;
+        this.form.confirmPassword = dummyPassword;
         this.phoneNumbers = this.business.phoneNumbers.map((number, index) => ({
           number,
           index,
@@ -199,46 +176,19 @@
       },
     },
     mounted() {
-      if(!commonAuth.isBusiness()){
-        this.$router.push('/');
-        this.$toast.open({
-          message: 'You are not logged in. Please login first.',
-          position: 'bottom',
-          type: 'is-danger',
-        });
+      if (!commonAuth.isBusiness()) {
+        this.$router.push('/404');
         return;
       }
       const loader = this.$loading({
         fullscreen: true,
-        text: 'Fetching Data',
       });
       this.getBusiness()
-        .then(() => {
-          loader.close();
-          this.info = true;
-          this.message = 'Edit the info you want to change, otherwise leave them as is !';
-        })
-        .catch(() => loader.close());
+          .then(() => {
+            loader.close();
+          })
+          .catch(() => loader.close());
     },
-  }
+  };
 </script>
 
-<style>
-    .edit-info-form {
-        margin-top: 2em;
-    }
-
-    .error + .error {
-        margin-top: 10px;
-    }
-
-    @media screen and (max-width: 999px) {
-        .edit-info-form {
-            margin: 2em;
-        }
-
-        .extra-large {
-            font-size: 3em;
-        }
-    }
-</style>

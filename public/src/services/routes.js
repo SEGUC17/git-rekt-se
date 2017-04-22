@@ -25,6 +25,7 @@ import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 import clientViewTransactions from '../components/Client/viewTransactions.vue';
 import notfound from '../components/pages/404.vue';
+import businessManagement from '../components/Business/manage/management.vue';
 
 const routes = [{
   path: '/',
@@ -93,19 +94,23 @@ const routes = [{
 }, {
   path: '/admin/dashboard',
   component: adminDashboard,
-  children: [{
-    path: 'confirm',
-    component: adminBusiness,
-  }, {
-    path: 'client/remove',
-    component: removeClient,
-  }, {
-    path: 'categories/edit',
-    component: categoryCRUD,
-  }, {
-    path: 'business/remove',
-    component: removeBusiness,
-  }],
+  children: [
+    {
+      path: '/',
+      redirect: 'confirm',
+    }, {
+      path: 'confirm',
+      component: adminBusiness,
+    }, {
+      path: 'client/remove',
+      component: removeClient,
+    }, {
+      path: 'categories/edit',
+      component: categoryCRUD,
+    }, {
+      path: 'business/remove',
+      component: removeBusiness,
+    }],
 }, {
   path: '/client/profile/bookings',
   component: clientViewTransactions,
@@ -115,6 +120,16 @@ const routes = [{
 }, {
   path: '/404',
   component: notfound,
+}, {
+  path: '/business/manage',
+  component: businessManagement,
+  children: [{
+    path: '/',
+    redirect: 'edit/basic',
+  }, {
+    path: 'edit/basic',
+    component: businessEditInfo,
+  }],
 }, {
   path: '/business/:id',
   component: businessPage,
