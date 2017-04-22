@@ -90,7 +90,7 @@ const routes = [{
   path: '/client/reset/:token',
   component: Reset,
 }, {
-  path: '/service/:id/gallery',
+  path: '/service/:id/gallery/edit',
   component: serviceGallery,
 }, {
   path: '/admin/login',

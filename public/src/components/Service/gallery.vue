@@ -32,7 +32,7 @@
                 <el-row>
                     <el-col :span="8" v-for="image in images":key="image._id" v-bind:data="image">
                         <el-card :body-style="{ padding: '0px' }">
-                            <img src="image.path" class="image">
+                            <img :src="'/uploads/'+image.path" class="image">
                             <div style="padding: 14px;">
                                 <span>{{image.description}}</span>
                                 <div class="bottom clearfix">
@@ -127,7 +127,7 @@
                         }
                     })
                     .then((res) => {
-                        this.images = res.data;
+                        this.images = res.data.results;
                         this.errors = [];
                     })
                     .catch(err => {

@@ -127,6 +127,7 @@ const serviceFailure = {
   missingField: 'Missing Field(s)!',
   invalidService: 'This service is invalid.',
   invalidFile: 'This File is invalid.',
+  imageAlreadyDeleted: 'This image is already deleted',
 };
 
 const serviceValidationErrors = {

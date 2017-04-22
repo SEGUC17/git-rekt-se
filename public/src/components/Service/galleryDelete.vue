@@ -10,7 +10,7 @@
             <el-dialog title="Delete Image" v-model="deleteDialog">
                 <span slot="footer" class="dialog-footer">
                                 <el-button @click="deleteDialog = false">Cancel</el-button>
-                                <el-button type="primary" @click="deleteImage(this.imageID)">Confirm</el-button>
+                                <el-button type="primary" @click="deleteImage(imageID)">Confirm</el-button>
                             </span>
             </el-dialog>
         </div>
@@ -20,7 +20,7 @@
 
 <script>
     import axios from 'axios';
-    import EndPoints from '../../services/EndPoints';
+    import {Service} from '../../services/EndPoints';
     import businessAuth from '../../services/auth/businessAuth'
 
     
@@ -37,7 +37,8 @@
         methods: {
             deleteImage(imageID) {
                 this.deleteDialog = false;
-                axios.post(EndPoints.Service().deleteImage(this.$route.params.id, imageID), {
+                console.log(businessAuth.getJWTtoken());
+                axios.post(Service().deleteImage(this.$route.params.id, imageID),null, {
                         headers: {
                             Authorization: businessAuth.getJWTtoken()
                         }
