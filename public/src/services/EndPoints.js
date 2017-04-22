@@ -24,6 +24,7 @@ export const Client = () => {
     logout: `${authBase}/logout`,
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
+    getBookings: `${profileBase}/bookings/history`,
     getInfo: clientID => `${profileBase}/${clientID}`,
   };
 };
@@ -41,6 +42,7 @@ export const Business = () => {
     logout: `${authBase}/logout`,
     verifiedSignUp: token => `${authBase}/confirm/signup/${token}`,
 
+    getBasicInfo: `${BASE}/business/profile/profile`,
     editBasicInfo: businessID => `${BASE}/business/profile/${businessID}/edit`,
     editInfo: `${businessBase}/edit`,
     addBranch: `${businessBase}/add/branches`,
@@ -57,6 +59,9 @@ export const Business = () => {
     addImage: businessID => `${galleryBase}/${businessID}/gallery/add`,
     businessInfo: `${businessBase}/general`,
     businessbranches: `${businessBase}/branches`,
+    getTransactions: `${BASE}/business/profile/transactions`,
+    acceptTransaction: `${BASE}/business/profile/transactions/accept`,
+    refundTransaction: `${BASE}/business/profile/transactions/reject`,
   };
 };
 
@@ -89,7 +94,7 @@ export const Service = () => {
   const bookingBase = `${BASE}/service/book`;
   return {
     createReview: serviceID => `${serviceBase}/${serviceID}/review`,
-    updateReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
+    editReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
     deleteReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/delete`,
 
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,

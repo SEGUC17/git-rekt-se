@@ -3,11 +3,14 @@ const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
 const Mailer = require('../../../../services/shared/Mailer');
+const Offering = require('../../../../models/service/Offering');
+const Booking = require('../../../../models/service/Booking');
 const Client = require('../../../../models/client/Client');
 const ClientAuthenticator = require('../../../../services/client/ClientAuthenticator');
 const Strings = require('../../../../services/shared/Strings');
 const authMiddleWare = require('../../../../services/shared/jwtConfig');
 const errorHandler = require('../../../../services/shared/errorHandler');
+
 
 const router = express.Router();
 
@@ -135,6 +138,36 @@ router.post('/:id/edit', authMiddleWare.clientAuthMiddleware, (req, res, next) =
   } else {
     next(Strings.clientLoginMessages.notLoggedIn);
   }
+});
+
+/**
+ * Client View Transactions API Route.
+ */
+
+router.get('/bookings/history', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
+  const projection = {
+    _deleted: false,
+    coupon: false,
+  };
+  Booking.find({
+    _deleted: false,
+    _client: req.user.id,
+  }, projection)
+    .populate('_service', 'name offerings')
+    .populate('_client', 'firstName lastName')
+    .populate('_transaction', 'amount')
+    .exec()
+    .then((bookings) => {
+      bookings = bookings.map((booking) => {
+        booking._service.offerings = booking._service.offerings
+          .filter(offering => offering._id === booking._offering);
+        return booking;
+      });
+      res.json({
+        bookings,
+      });
+    })
+    .catch(next);
 });
 
 /**
