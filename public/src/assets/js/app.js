@@ -45,5 +45,5 @@ new Vue({
   components: {
     'gr-header': header,
     'gr-footer': footer,
-  }
+  },
 });

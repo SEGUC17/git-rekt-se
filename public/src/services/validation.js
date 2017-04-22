@@ -1,9 +1,69 @@
 
+
 /*
 * Client Side Form Validation Schemas.
 * Async-validator.
 * https://github.com/yiminghe/async-validator
 * */
+
+export const businessEditInfoValidation = {
+  name: [{
+    required: true,
+    message: 'A Business Name is required.',
+    trigger: 'blur',
+  }],
+  email: [{
+    required: true,
+    message: 'An Email is required.',
+    trigger: 'blur',
+  }, {
+    type: 'email',
+    message: 'Must be an email',
+    trigger: 'blur',
+  }],
+  password: [{
+    validator(rule, value, callBack) {
+      if (value === '***************') {
+        callBack();
+      } else if (/^(?=.*\d).{8,15}$/.test(value)) {
+        callBack();
+      } else {
+        callBack([new Error('Password must be between 8 and 15 characters and contains at least one number!')]);
+      }
+    },
+    trigger: 'blur',
+  }],
+  confirmPassword: [{
+    validator(rule, value, callBack) {
+      if (value === '***************') {
+        callBack();
+      } else if (value.length === 0 && this.form.password.length === 0) {
+        callBack();
+      } else if (value === this.form.password) {
+        callBack();
+      } else {
+        callBack([new Error('Password and Confirm Password must match!')]);
+      }
+    },
+    trigger: 'blur',
+  }],
+  shortDescription: [{
+    required: true,
+    message: 'A Short Description is required.',
+    trigger: 'blur',
+  }],
+  phoneNumber: [{
+    validator(rule, value, callBack) {
+      console.log(value);
+      if (/^01[0-2]{1}[0-9]{8}/.test(value)) {
+        callBack();
+      } else {
+        callBack([new Error('Phone Number must be in this format 01xxxxxxxxx')]);
+      }
+    },
+    trigger: 'blur',
+  }],
+};
 
 export const clientSignUpValidation = {
   email: [{
@@ -103,6 +163,7 @@ export const loginRules = {
     trigger: 'blur',
   }],
 };
+
 export const clientForgotPassword = {
   password: [{
     required: true,
@@ -348,3 +409,22 @@ export const BusinessResetFormValidation = {
   }],
 };
 
+export const reviewRules = {
+  rating: [{
+    type: 'number',
+    required: true,
+    message: 'Please enter a rating',
+    trigger: 'blur',
+  }, {
+    type: 'number',
+    min: 1,
+    max: 5,
+    message: 'Rating can only be a value between 1 & 5',
+    trigger: 'change',
+  }],
+  description: {
+    max: 512,
+    message: 'A review can have at maximum 512 characters.',
+    trigger: 'change',
+  },
+};
