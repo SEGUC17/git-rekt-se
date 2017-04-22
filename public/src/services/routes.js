@@ -130,7 +130,7 @@ const routes = [{
     path: 'edit/basic',
     component: businessEditInfo,
   }, {
-    path: 'transactions',
+    path: 'bookings',
     component: businessViewTransactions,
   }],
 }, {

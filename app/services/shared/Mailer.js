@@ -56,11 +56,11 @@ exports.notifyClientOnTransactionAccept = (email) => {
   const emailContent = {
     to: email,
     from: info.from,
-    subject: '[Git-Rekt] Transaction Accepted',
+    subject: '[Git-Rekt] Booking Confirmed',
     html: `Hello,
-          This email is to notify you that one of your transactions have been accepted.`,
+          This email is to notify you that one of your bookings have been confirmed.`,
     text: `Hello,
-      This email is to notify you that one of your transactions have been accepted.`,
+      This email is to notify you that one of your bookings have been confirmed.`,
   };
   return new Promise((resolve, reject) => {
     mailer.sendMail(emailContent, (err, information) => {

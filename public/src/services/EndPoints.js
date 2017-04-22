@@ -58,9 +58,9 @@ export const Business = () => {
 
     addImage: businessID => `${galleryBase}/${businessID}/gallery/add`,
 
-    getTransactions: `${BASE}/business/profile/history`,
-    acceptTransaction: `${BASE}/business/profile/accept`,
-    refundTransaction: `${BASE}/business/profile/reject`,
+    getTransactions: `${BASE}/business/profile/transactions`,
+    acceptTransaction: `${BASE}/business/profile/transactions/accept`,
+    refundTransaction: `${BASE}/business/profile/transactions/reject`,
   };
 };
 

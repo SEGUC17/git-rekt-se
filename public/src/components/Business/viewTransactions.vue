@@ -1,76 +1,56 @@
 <template>
-  <div> 
+    <div class="bus-transactions">
 
-    <div class="column is-half is-offset-one-quarter" v-show="success || error">
-      <div v-show="error">
-        <el-alert @close="error = false" :title="message" type="error" show-icon></el-alert>
-      </div>
+        <!-- Errors -->
+        <div class="errors">
+            <el-alert v-if="error" class="error" @close="error = false" :title="message" type="error"
+                      show-icon></el-alert>
+            <el-alert v-if="success" class="error" @close="success = false" :title="message" type="success"
+                      show-icon></el-alert>
+        </div>
 
-      <div v-show="success">
-        <el-alert @close="success = false" :title="message" type="success" show-icon></el-alert>
-      </div>  
+        <!-- Bookings -->
+        <div class="bookings-table">
+            <b-table
+                    v-if="bookings.length > 0"
+                    :data="bookings"
+                    :striped="true"
+                    :narrowed="true"
+                    :mobile-cards="true"
+                    :paginated="true"
+                    :per-page="10"
+                    :pagination-simple="false"
+                    default-sort="date"
+                    render-html>
+
+                <b-table-column field="date" label="Date" sortable></b-table-column>
+                <b-table-column field="name" label="Service" sortable></b-table-column>
+                <b-table-column field="client" label="Client" sortable></b-table-column>
+                <b-table-column field="amount" label="Amount" sortable></b-table-column>
+                <b-table-column field="status" label="Status" sortable></b-table-column>
+                <b-table-column field="id" label="Booking" component="bus-trans-actions"></b-table-column>
+            </b-table>
+
+            <!-- No data found. -->
+            <div class="no-data hero" v-show="bookings.length === 0">
+                <div class="hero-body has-text-centered">
+                    <el-icon name="circle-close" class="confirmation-icon icon-fail"></el-icon>
+                    <p class="title is-2">No Bookings Found.</p>
+                    <a class="button is-info" @click.prevent="getTransactions">Refresh</a>
+                </div>
+            </div>
+
+        </div>
     </div>
-
-    <el-table :data="bookings" border>
-
-      <el-table-column label="Date" header-align="center">
-        <template scope="scope">
-          <el-icon name="date"></el-icon>
-          <span>{{ new Date(scope.row.date).toLocaleDateString() }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Service Name" prop="_service.name" header-align="center">
-      </el-table-column>
-  
-      <el-table-column label="Client Name" header-align="center">
-        <template scope="scope">
-          {{ scope.row._client.firstName + ' ' + scope.row._client.lastName }}
-        </template>
-      </el-table-column>
-      
-      <el-table-column label="Address" header-align="center">
-        <template scope="scope">
-          {{ scope.row._service.offerings[0].address + ', ' + scope.row._service.offerings[0].location }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Amount" header-align="center">
-        <template scope="scope">
-          {{ `${scope.row._transaction.amount / 100.0} EGP`}}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Status" prop="status" header-align="center">
-      </el-table-column>
-
-      <el-table-column label="Actions" header-align="center">
-      <template scope="scope">
-
-        <el-tooltip content="Accept Transaction" placement="top">
-          <el-button size="small" type="success" icon="circle-check" @click="acceptTransaction(scope)">Accept</el-button>
-        </el-tooltip>
-
-        <el-tooltip content="Refund Transaction" placement="top">
-          <el-button size="small" type="danger" icon="circle-cross" @click="rejectTransaction(scope)">Reject</el-button>
-        </el-tooltip>
-
-      </template>
-      </el-table-column>
-    </el-table>
-  </div>
 </template>
 
 <script>
+  import moment from 'moment';
+  import axios from 'axios';
   import businessAuth from '../../services/auth/businessAuth';
-  import {
-    Business
-  } from '../../services/EndPoints';
-  const headers = {
-    headers: {
-      Authorization: businessAuth.getJWTtoken(),
-    },
-  };
+  import { Business } from '../../services/EndPoints';
+  import EventBus from '../../services/EventBus';
+
   export default {
     data() {
       return {
@@ -84,78 +64,93 @@
       getTransactions() {
         const loader = this.$loading({
           fullscreen: true,
-          text: 'Fetching Transactions..',
         });
-        axios.get(Business().getTransactions, headers)
-          .then((res) => {
-            this.bookings = res.data.bookings;
-            loader.close();
-          })
-          .catch((err) => {
-            this.error = true;
-            this.message = err.response ? err.response.data.errors.join(', ') : err.message;
-            loader.close();
-          });
+        axios.get(Business().getTransactions, {
+          headers: {
+            Authorization: businessAuth.getJWTtoken(),
+          },
+        })
+            .then((res) => {
+              this.bookings = res.data.bookings.map(booking => ({
+                date: moment(booking.date).format('MMMM Do YYYY'),
+                name: booking._service.name,
+                id: booking._id,
+                email: booking._client.email,
+                client: `${booking._client.firstName} ${booking._client.lastName}`,
+                branch: booking._service.offerings[0].location,
+                status: booking.status,
+                amount: `${booking._transaction.amount / 100.0} EGP`,
+                stripe: booking._transaction.stripe_charge,
+              }));
+              loader.close();
+            })
+            .catch((err) => {
+              this.error = true;
+              this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+              loader.close();
+            });
       },
-      acceptTransaction(scope) {
+      acceptTransaction(row) {
         this.success = false;
         this.error = false;
         const data = {
-          bookingId: scope.row._id,
-          email: scope.row._client.email,
+          bookingId: row.id,
+          email: row.email,
         };
         const loader = this.$loading({
           fullscreen: true,
-          text: 'Fetching Transactions..',
         });
-        axios.post(Business().acceptTransaction, data, headers)
-          .then((res) => {
-            this.success = true;
-            this.message =  res.data.message;
-            this.bookings[scope.$index].status = 'confirmed';
-            loader.close();
-          }).catch((err) => {
-            this.error = true;
-            this.message = err.response ? err.response.data.errors.join(', ') : err.message;
-            loader.close();
-          });
+        axios.post(Business().acceptTransaction, data, {
+          headers: {
+            Authorization: businessAuth.getJWTtoken(),
+          },
+        })
+            .then((res) => {
+              this.success = true;
+              this.message = res.data.message;
+              this.getTransactions();
+            }).catch((err) => {
+              this.error = true;
+              this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+              loader.close();
+            });
       },
-      rejectTransaction(scope) {
+      refundTransaction(row) {
         this.success = false;
         this.error = false;
         const data = {
-          bookingId: scope.row._id,
-          stripeId: scope.row._transaction.stripe_charge,
-          email: scope.row._client.email,
+          bookingId: row.id,
+          stripeId: row.stripe,
+          email: row.email,
         };
         const loader = this.$loading({
           fullscreen: true,
-          text: 'Fetching Transactions..',
         });
-        axios.post(Business().refundTransaction, data, headers)
-          .then((res) => {
-            this.success = true;
-            this.message = res.data.message;
-            this.bookings[scope.$index].status = 'rejected';
-            loader.close();
-          }).catch((err) => {
-            this.error = true;
-            this.message = err.response ? err.response.data.errors.join(', ') : err.message;
-            loader.close();
-          });
+        axios.post(Business().refundTransaction, data, {
+          headers: {
+            Authorization: businessAuth.getJWTtoken(),
+          },
+        })
+            .then((res) => {
+              this.success = true;
+              this.message = res.data.message;
+              this.getTransactions();
+            }).catch((err) => {
+              this.error = true;
+              this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+              loader.close();
+            });
       },
     },
     mounted() {
       if (!businessAuth.isAuthenticated()) {
-        this.$router.push('/');
-        this.$toast.open({
-          type: 'is-danger',
-          message: 'You are not logged in!',
-          position: 'bottom',
-        });
+        this.$router.push('/404');
         return;
       }
       this.getTransactions();
-    }
-  }
+
+      EventBus.$on('acceptTrans', this.acceptTransaction);
+      EventBus.$on('refundTrans', this.refundTransaction);
+    },
+  };
 </script>

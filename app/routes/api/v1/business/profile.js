@@ -82,7 +82,6 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
 
     let emailChanged = false;
 
-
     req.checkBody(validationSchemas.businessUpdateValidation);
     req.checkBody('confirmPassword')
       .equals(req.body.password)
@@ -98,11 +97,7 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
                 next(Strings.businessMessages.mismatchID);
                 return;
               }
-              if (business.email === userInfo.email) {
-                emailChanged = false;
-              } else {
-                emailChanged = true;
-              }
+              emailChanged = business.email !== userInfo.email;
 
               /**
                * Editing existing information
@@ -152,11 +147,16 @@ router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next)
 /**
  * View Transaction History API Route.
  */
-router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
-  Booking.find({ _deleted: false }, { offering: false, _deleted: false })
+router.get('/transactions', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
+  Booking.find({
+    _deleted: false,
+  }, {
+    offering: false,
+    _deleted: false,
+  })
     .populate('_service', 'name _business offerings')
     .populate('_client', 'firstName lastName email')
-    .populate('_transaction', 'stripe_charge amount')
+    .populate('_transaction', 'stripe_charge amount status')
     .exec()
     .then((bookings) => {
       bookings = bookings.filter(booking => `${booking._service._business}` === req.user.id);
@@ -165,7 +165,6 @@ router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) =
           .filter(offering => offering._id === booking._offering);
         return booking;
       });
-      console.log(bookings);
       res.json({
         bookings,
       });
@@ -176,95 +175,88 @@ router.get('/history', authMiddleWare.businessAuthMiddleware, (req, res, next) =
 /**
  * Business Accept Transaction API Route.
  */
-router.post('/accept', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
+router.post('/transactions/accept', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
   const bookingId = req.body.bookingId;
   const clientEmail = req.body.email;
+
   Booking.findOne({
     _id: bookingId,
-  }).exec().then((booking) => {
-    if (!booking) {
-      next('Booking does not exist!');
-    } else if (booking.status !== 'pending') {
-      next('Transaction must be in pending state!');
-    } else {
-      booking.status = 'confirmed';
-      booking.save().then(() => {
-        mailer.notifyClientOnTransactionAccept(clientEmail)
+    _deleted: false,
+  })
+    .exec()
+    .then((booking) => {
+      if (!booking) {
+        next('Booking does not exist!');
+      } else if (booking.status !== 'pending') {
+        next('Transaction must be in pending state!');
+      } else {
+        booking.status = 'confirmed';
+        booking.save()
           .then(() => {
-            res.json({ message: 'Successfully Accepted Transaction.' });
-          }).catch(next);
-      }).catch(next);
-    }
-  }).catch(next);
+            mailer.notifyClientOnTransactionAccept(clientEmail)
+              .then(() => {
+                res.json({
+                  message: 'Booking confirmed.',
+                });
+              })
+              .catch(next);
+          })
+          .catch(next);
+      }
+    })
+    .catch(next);
 });
 
 /**
  * Business Refund Transaction API Route.
  */
-router.post('/reject', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
+router.post('/transactions/reject', authMiddleWare.businessAuthMiddleware, (req, res, next) => {
   const bookingId = req.body.bookingId;
   const stripeId = req.body.stripeId;
   const clientEmail = req.body.email;
   Booking.findOne({
     _id: bookingId,
-  }).exec().then((booking) => {
-    if (!booking) {
-      next('Booking does not exist!');
-    } else if (booking.status !== 'pending') {
-      next('Transaction must be in pending state!');
-    } else {
-      stripe.refund(stripeId, {}, (err) => {
-        if (err) {
-          next(err);
-        } else {
-          booking.status = 'rejected';
-          booking.save().then(() => {
-            mailer.notifyClientOnTransactionRefund(clientEmail)
+    _deleted: false,
+  })
+    .populate('_transaction', '_id status')
+    .exec()
+    .then((booking) => {
+      if (!booking) {
+        next('Booking does not exist!');
+      } else if (booking.status !== 'pending') {
+        next('Transaction must be in pending state!');
+      } else {
+        console.log(req.body);
+        stripe.refunds.create({
+          charge: stripeId,
+        }, (err) => {
+          if (err) {
+            next(err);
+          } else {
+            booking._transaction.status = 'refunded';
+            booking.status = 'rejected';
+            booking
+              ._transaction
+              .save()
               .then(() => {
-                res.json({ message: 'Successfully Refunded Transaction.' });
-              }).catch(next);
-          }).catch(next);
-        }
-      });
-    }
-  }).catch(next);
-});
-
-// TODO REMOVE THIS ROUTE
-router.get('/btngan', (req, res) => {
-  new Branch({
-    _business: '58ed2ff231b4244b489982a2',
-    location: 'Nasr City',
-    address: 'Mostafa El Na7as',
-  }).save().then((branch) => {
-    new Offering({
-      branch: branch._id,
-      location: branch.location,
-      address: branch.address,
-      price: 20,
-      startDate: Date.now(),
-      endDate: new Date(2017, 6, 2),
-    }).save().then((offering) => {
-      for (let i = 0; i < 3; i += 1) {
-        const service = new Service({
-          name: `Btngan ${i}`,
-          shortDescription: `More Btngan ${i}`,
-          _business: '58ed2ff231b4244b489982a2',
-          branches: [branch._id],
+                booking.save()
+                  .then(() => {
+                    mailer.notifyClientOnTransactionRefund(clientEmail)
+                      .then(() => {
+                        res.json({
+                          message: 'Booking Cancelled and transaction refunded.',
+                        });
+                      })
+                      .catch(next);
+                  })
+                  .catch(next);
+              })
+              .catch(next);
+          }
         });
-        service.offerings.push(offering);
-        service
-          .save()
-          .then(() => {
-            console.log('Done');
-            res.json({
-              message: 'Done',
-            });
-          })
-          .catch(err => console.log(err.errors));
       }
-    }).catch(err => console.log(err.message));
-  }).catch(err => console.log(err.message));
+    })
+    .catch(next);
 });
 
 /**

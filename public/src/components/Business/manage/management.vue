@@ -22,7 +22,7 @@
                       </p>
                     <ul class="menu-list">
                         <li>
-                            <router-link to="/business/manage/transactions">Transactions</router-link>
+                            <router-link to="/business/manage/bookings">Bookings</router-link>
                         </li>
                     </ul>
                     <p class="menu-label">
@@ -37,7 +37,7 @@
             </div>
 
             <!-- Content Component -->
-            <div class="column is-8">
+            <div class="column is-9">
                 <router-view></router-view>
             </div>
         </div>

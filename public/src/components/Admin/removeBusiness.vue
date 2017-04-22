@@ -1,7 +1,7 @@
 <template>
     <div class="remove-business">
         <div class="errors" v-show="errors.length > 0">
-            <el-alert v-for="error in errors" class="error" :title="error" type="error" :key="error | appendRandom" show-icon></el-alert>
+            <el-alert v-for="error in errors" class="error" :title="error" type="error" :key="error" show-icon></el-alert>
         </div>
     
         <b-table v-if="businesses.length > 0" :data="businesses" :striped="true" :narrowed="false" :mobile-cards="true" :paginated="true" :per-page="10" :pagination-simple="false" default-sort="name" render-html>
