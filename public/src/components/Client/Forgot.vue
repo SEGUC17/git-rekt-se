@@ -35,12 +35,24 @@
 </template>
 
 <script>
+ /**
+  * This component allows the client to request a password change
+  * incase he forgot the old one.
+  */
   import axios from 'axios';
   import Form from '../../services/Form';
   import { Client } from '../../services/EndPoints';
   import { clientForgotPasswordMail } from '../../services/validation';
 
   export default {
+   /**
+    * Data used by the component.
+    * form: Holds the data entered by the client and sent to the server.
+    * rules: Validation rules used to validate user input.
+    * loading: true if a request has been sent and is processed by the server.
+    * false otherwise.
+    * message: A Message recevied from the server.
+    */
     data() {
       return {
         form: new Form({
@@ -54,7 +66,13 @@
         message: '',
       };
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+        /**
+         * Validate and submit the form.
+         */
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

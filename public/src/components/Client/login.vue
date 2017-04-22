@@ -64,6 +64,9 @@
 </template>
 
 <script>
+ /**
+  * This component is responsible for client login.
+  */
   import axios from 'axios';
   import clientAuth from '../../services/auth/clientAuth';
   import Authenticator from '../../services/auth/commonAuth';
@@ -73,6 +76,15 @@
   import EventBus from '../../services/EventBus';
 
   export default {
+    /**
+     * Data used by the component.
+     * form: Data entered by user and sent to the server.
+     * rules: Validation rules used to validate user input.
+     * info: true to display info to the user, false otherwise.
+     * logged_in: true if login success, false otherwise.
+     * loginSuccess: Message received from server when successfully logged in.
+     * errors: Errors received from the server.
+     */
     data() {
       return {
         form: new Form({
@@ -87,10 +99,19 @@
         errors: [],
       };
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+      /**
+       * Redirect to login with facebook route.
+       */
       redirectFacebook() {
         window.location.href = 'http://localhost:3000/api/v1/client/auth/fb/login';
       },
+      /**
+       * Validate and submit form to login the client.
+       */
       submitForm(formName) {
         this.errors = [];
         this.$refs[formName].validate((valid) => {
@@ -115,7 +136,9 @@
           }
         });
       },
-
+      /**
+       * Route to `Home` when client is logged in.
+       */
       afterLoginHandler() {
         this.logged_in = true;
         setTimeout(() => {
@@ -125,7 +148,9 @@
           EventBus.$emit('UpdateNavigation');
         }, 1000);
       },
-
+      /**
+       * Handle facebook Login.
+       */
       facebookLogin() {
         const query = this.$route.query;
         if (query && query.is_facebook === 'true') {
@@ -153,6 +178,12 @@
         }
       },
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * If user is authenticated route him back,
+     * otherwise if an error exist in query display it,
+     * otherwise attempt to login with facebook if possible.
+     */
     mounted() {
       if (Authenticator.isAuthenticated()) {
         this.$router.push('/');
