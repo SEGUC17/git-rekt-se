@@ -22,8 +22,8 @@ import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
+import clientViewTransactions from '../components/Client/viewTransactions.vue';
 import notfound from '../components/pages/404.vue';
-
 
 const routes = [{
   path: '/',
@@ -103,6 +103,9 @@ const routes = [{
     component: removeBusiness,
   }],
 }, {
+  path: '/client/profile/bookings',
+  component: clientViewTransactions,
+}, {
   path: '/business/reset/:token',
   component: reset,
 }, {
@@ -115,7 +118,6 @@ const routes = [{
   path: '/*',
   redirect: '/404',
 }];
-
 
 const router = new VueRouter({
   routes,

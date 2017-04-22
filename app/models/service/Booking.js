@@ -35,6 +35,10 @@ const bookingSchema = Schema({
     enum: ['pending', 'confirmed', 'rejected'],
     default: 'pending',
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
   _deleted: {
     type: Boolean,
     default: false,

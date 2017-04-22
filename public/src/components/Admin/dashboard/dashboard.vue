@@ -47,12 +47,7 @@
 
     mounted() {
       if (!adminAuth.isAuthenticated()) {
-        this.$router.push('/');
-        this.$toast.open({
-          message: 'You can not view this page.',
-          type: 'is-danger',
-          position: 'bottom',
-        });
+        this.$router.push('/404');
       }
     },
 
