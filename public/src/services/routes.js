@@ -2,6 +2,7 @@ import VueRouter from 'vue-router';
 import UnverifiedBusinessSignup from '../components/Business/UnverifiedSignup.vue';
 import Forgot from '../components/Client/Forgot.vue';
 import Reset from '../components/Client/Reset.vue';
+import businessPage from '../components/Business/businessPage/businessInfo.vue';
 import reset from '../components/Business/reset.vue';
 import ForgotPassword from '../components/Business/forgotPassword.vue';
 import Home from '../components/pages/Index/home.vue';
@@ -22,7 +23,8 @@ import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
-
+import clientViewTransactions from '../components/Client/viewTransactions.vue';
+import notfound from '../components/pages/404.vue';
 
 const routes = [{
   path: '/',
@@ -76,7 +78,7 @@ const routes = [{
   component: businessLogin,
 },
 {
-  path: '/client/edit',
+  path: '/client/profile/edit',
   component: clientEditInfo,
 },
 {
@@ -105,11 +107,21 @@ const routes = [{
     component: removeBusiness,
   }],
 }, {
+  path: '/client/profile/bookings',
+  component: clientViewTransactions,
+}, {
   path: '/business/reset/:token',
   component: reset,
-},
-];
-
+}, {
+  path: '/404',
+  component: notfound,
+}, {
+  path: '/business/:id',
+  component: businessPage,
+}, {
+  path: '/*',
+  redirect: '/404',
+}];
 
 const router = new VueRouter({
   routes,

@@ -24,6 +24,7 @@ export const Client = () => {
     logout: `${authBase}/logout`,
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
+    getBookings: `${profileBase}/bookings/history`,
     getInfo: clientID => `${profileBase}/${clientID}`,
   };
 };
@@ -88,7 +89,7 @@ export const Service = () => {
   const bookingBase = `${BASE}/service/book`;
   return {
     createReview: serviceID => `${serviceBase}/${serviceID}/review`,
-    updateReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
+    editReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
     deleteReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/delete`,
 
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,

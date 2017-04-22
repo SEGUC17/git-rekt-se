@@ -20,7 +20,7 @@ const reviewErrors = Strings.reviewErrors;
  */
 
 const businessValidationErrors = require('../shared/Strings')
-    .bussinessValidationErrors;
+  .bussinessValidationErrors;
 
 const clientSignupValidation = {
   email: {
@@ -369,6 +369,20 @@ const createReviewValidation = {
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
     },
+    isInt: {
+      options: [{
+        min: 1,
+        max: 5,
+      }],
+      errorMessage: reviewErrors.outOfRangeRating,
+    },
+  },
+  description: { in: 'body',
+    optional: true,
+    isLength: {
+      options: [{ min: 0, max: 512 }],
+      errorMessage: reviewErrors.descriptionTooLong,
+    },
   },
 };
 
@@ -386,6 +400,20 @@ const updateReviewValidation = {
   rating: { in: 'body',
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
+    },
+    isInt: {
+      options: [{
+        min: 1,
+        max: 5,
+      }],
+      errorMessage: reviewErrors.outOfRangeRating,
+    },
+  },
+  description: { in: 'body',
+    optional: true,
+    isLength: {
+      options: [{ min: 0, max: 512 }],
+      errorMessage: reviewErrors.descriptionTooLong,
     },
   },
 };
