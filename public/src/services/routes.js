@@ -31,6 +31,7 @@ import editServices from '../components/Business/Service/editServices.vue';
 import editOfferings from '../components/Business/Service/editOfferings.vue';
 import editBranches from '../components/Business/branchesEditForm.vue';
 import editFullInfo from '../components/Business/infoEditForm.vue';
+import createServices from '../components/Business/Service/createServices.vue';
 
 const routes = [{
   path: '/',
@@ -132,6 +133,12 @@ const routes = [{
   }, {
     path: 'edit/info',
     component: editFullInfo,
+  }, {
+    path: 'services/create',
+    component: createServices,
+  }, {
+    path: 'services/edit',
+    component: editServices,
   }, {
     path: 'bookings',
     component: businessViewTransactions,
