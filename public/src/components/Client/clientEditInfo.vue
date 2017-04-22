@@ -143,12 +143,7 @@
      */
     mounted() {
       if (!clientAuth.isAuthenticated()) {
-        this.$toast.open({
-          message: 'You must be logged in to access this page.',
-          type: 'is-danger',
-          position: 'bottom',
-        });
-        this.$router.push('/');
+        this.$router.push('/404');
         return;
       }
       this.fillForm();

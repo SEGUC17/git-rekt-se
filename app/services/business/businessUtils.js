@@ -31,6 +31,29 @@ const addBranches = (branches, businessID) => {
   return Promise.all(resultBranches);
 };
 
+const editOfferings = (services, branchID, deleteFlag, callBack) => {
+  const resultServices = services.map((service) => {
+    service.offerings.forEach((offering) => {
+      if (offering.branch.equals(branchID)) {
+        callBack(offering);
+      }
+    });
+    service.markModified('offerings');
+    if (deleteFlag) {
+      service.branches.pull(branchID);
+    }
+    service.save();
+    return new Promise((resolve, reject) => {
+      service
+        .save()
+        .then(resultService => resolve(resultService._id))
+        .catch(reject);
+    });
+  });
+  return Promise.all(resultServices);
+};
+
 module.exports = {
   addBranches,
+  editOfferings,
 };

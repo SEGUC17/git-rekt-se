@@ -184,7 +184,7 @@
      * Fetch locations.
      */
     mounted() {
-      this.locations = this.getLocations();
+      this.getLocations();
     },
     /**
      * Sub-components, used by this component.

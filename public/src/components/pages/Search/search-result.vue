@@ -19,7 +19,7 @@
                         <p class="result-content non-breaking">
                             {{shortDescription}}
                         </p>
-                        <el-rate class="is-pulled-right" v-model="rating" disabled :max="5"></el-rate>
+                        <el-rate class="rating-search is-pulled-right" v-model="rating" disabled :max="5"></el-rate>
                     </div>
                 </div>
             </div>
@@ -137,7 +137,7 @@
         hyphens: auto;
     }
 
-    .el-rate__icon{
+    .rating-search .el-rate__icon{
         font-size: 14px !important;
     }
 </style>

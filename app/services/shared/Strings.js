@@ -207,6 +207,8 @@ const clientVerfication = {
 const reviewErrors = {
   invalidService: 'The service you are trying to review does not exist.',
   emptyRating: 'You must provide a rating in your review.',
+  outOfRangeRating: 'The rating must be between 1 & 5.',
+  descriptionTooLong: 'The review can have a maximum of 512 characters.',
   alreadyReviewedService: 'You have already reviewed this service.',
   invalidReview: 'This review does not exist.',
   userMismatchEdit: 'You did not create the review that you are trying to edit.',
@@ -330,6 +332,7 @@ const adminSuccess = {
   categoryEdited: 'Category edited succesfully!',
   categoryDeleted: 'Category deleted succesfully!',
   clientDeleted: 'Client removed succesfully',
+  businessDeleted: 'Business removed succesfully',
 };
 
 /**
@@ -338,6 +341,7 @@ const adminSuccess = {
 const adminFailures = {
   clientAlreadyDeleted: 'Client is already deleted',
   categoryAlreadyDeleted: 'Category is already deleted',
+  businessAlreadyDeleted: 'Business is Already Deleted',
 };
 
 /**

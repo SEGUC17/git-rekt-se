@@ -1,35 +1,46 @@
 <template>
     <div class="manage-business">
 
-        <gr-top-hero class="admin-dashbaord-top" title="Dashboard"></gr-top-hero>
+        <gr-top-hero class="admin-dashbaord-top" title="Manage"></gr-top-hero>
         <div class="columns container is-fluid margin-mobile">
             <!-- Side Menu -->
             <div class="column is-3">
                 <aside class="menu">
                     <p class="menu-label">
-                        Business
+                        Information
                       </p>
                     <ul class="menu-list">
-                        <li><router-link to="/admin/dashboard/confirm">Accept/Reject</router-link></li>
-                        <li><router-link to="/admin/dashboard/business/remove">Remove</router-link></li>
+                        <li>
+                            <router-link to="/business/manage/edit/basic">Basic Information</router-link>
+                        </li>
+                        <li>
+                            <router-link to="/business/manage/edit/info">Listing Information</router-link>
+                        </li>
+                        <li>
+                            <router-link to="/business/manage/edit/branches">Branches</router-link>
+                        </li>
                     </ul>
                     <p class="menu-label">
-                        Categories
+                        Services
                       </p>
                     <ul class="menu-list">
-                        <li><router-link to="/admin/dashboard/categories/edit">Edit Categories</router-link></li>
+                        <li>
+                            <router-link to="/business/manage/bookings">Bookings</router-link>
+                        </li>
                     </ul>
                     <p class="menu-label">
                         Clients
                       </p>
                     <ul class="menu-list">
-                        <li><router-link to="/admin/dashboard/client/remove">Remove</router-link></li>
+                        <li>
+                            <router-link to="/admin/dashboard/client/remove">Remove</router-link>
+                        </li>
                     </ul>
                 </aside>
             </div>
 
             <!-- Content Component -->
-            <div class="column is-8">
+            <div class="column is-9">
                 <router-view></router-view>
             </div>
         </div>
@@ -37,26 +48,14 @@
 </template>
 
 <script>
-  /**
-   * This component allows the admin to navigate through
-   * Confirming a Business,
-   * Removing a Client,
-   * Editing a Category.
-   */
   import tophero from '../../shared/gr-top-hero.vue';
   import adminAuth from '../../../services/auth/adminAuth';
 
   export default {
-    /**
-     * Sub-components used by this component.
-     */
     components: {
       'gr-top-hero': tophero,
     },
-    /**
-     * Ran when component is mounted on DOM.
-     * if admin is not authenticated redirect him back.
-     */
+
     mounted() {
       if (!adminAuth.isAuthenticated()) {
         this.$router.push('/404');
@@ -74,8 +73,8 @@
         margin-bottom: 2em;
     }
 
-    @media screen and (max-width: 999px){
-        .margin-mobile{
+    @media screen and (max-width: 999px) {
+        .margin-mobile {
             margin: 1em;
         }
     }

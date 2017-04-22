@@ -60,6 +60,49 @@ exports.clientConfirmEmail = (email, host, resetToken) => {
   });
 };
 
+
+exports.notifyClientOnTransactionAccept = (email) => {
+  const emailContent = {
+    to: email,
+    from: info.from,
+    subject: '[Git-Rekt] Booking Confirmed',
+    html: `Hello,
+          This email is to notify you that one of your bookings have been confirmed.`,
+    text: `Hello,
+      This email is to notify you that one of your bookings have been confirmed.`,
+  };
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(emailContent, (err, information) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(information);
+      }
+    });
+  });
+};
+
+exports.notifyClientOnTransactionRefund = (email) => {
+  const emailContent = {
+    to: email,
+    from: info.from,
+    subject: '[Git-Rekt] Transaction Refunded',
+    html: `Hello,
+          This email is to notify you that one of your transactions have been refunded.`,
+    text: `Hello,
+      This email is to notify you that one of your transactions have been refunded.`,
+  };
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(emailContent, (err, information) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(information);
+      }
+    });
+  });
+};
+
 /**
  * Sends an email to the Admin notifying
  * him of a new Business Signing Up.

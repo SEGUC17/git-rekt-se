@@ -7,7 +7,7 @@
             Your transaction has been completed, you will receive an email to confirm your booking.
         </p>
         <div class="viewBookings has-text-centered">
-            <el-button type="warning">Your Bookings</el-button> <!-- Needs Client View Bookings -->
+            <router-link to="/client/profile/bookings" class="button is-warning">Your Bookings</router-link>
         </div>
     </div>
 </template>

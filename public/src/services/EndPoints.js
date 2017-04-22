@@ -30,6 +30,7 @@ export const Visitor = () => ({
 export const Client = () => {
   const authBase = `${BASE}/client/auth`;
   const profileBase = `${BASE}/client/profile`;
+  const reviewBase = `${BASE}/client/review`;
   return {
     finalizeFb: `${authBase}/fb/finalize/login`,
     login: `${authBase}/login`,
@@ -40,6 +41,7 @@ export const Client = () => {
     logout: `${authBase}/logout`,
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
+    getBookings: `${profileBase}/bookings/history`,
     getInfo: clientID => `${profileBase}/${clientID}`,
   };
 };
@@ -61,9 +63,10 @@ export const Business = () => {
     logout: `${authBase}/logout`,
     verifiedSignUp: token => `${authBase}/confirm/signup/${token}`,
 
+    getBasicInfo: `${BASE}/business/profile/profile`,
     editBasicInfo: businessID => `${BASE}/business/profile/${businessID}/edit`,
-    editInfo: businessID => `${businessBase}/edit/${businessID}`,
-    addBranch: businessID => `${businessBase}/${businessID}/add/branches`,
+    editInfo: `${businessBase}/edit`,
+    addBranch: `${businessBase}/add/branches`,
     editBranch: (businessID, branchID) => `${businessBase}/${businessID}/edit/branch/${branchID}`,
     deleteBranch: (businessID, branchID) => `${businessBase}/${businessID}/delete/branch/${branchID}`,
 
@@ -75,6 +78,11 @@ export const Business = () => {
     deleteOffering: (serviceID, offeringID) => `${serviceBase}/${serviceID}/offering/${offeringID}/delete`,
 
     addImage: businessID => `${galleryBase}/${businessID}/gallery/add`,
+    businessInfo: `${businessBase}/general`,
+    businessbranches: `${businessBase}/branches`,
+    getTransactions: `${BASE}/business/profile/transactions`,
+    acceptTransaction: `${BASE}/business/profile/transactions/accept`,
+    refundTransaction: `${BASE}/business/profile/transactions/reject`,
   };
 };
 
@@ -86,6 +94,8 @@ export const Admin = () => {
   const generalBase = `${BASE}/admin/general`;
   const categoryBase = `${BASE}/admin/category`;
   const clientBase = `${BASE}/admin/client`;
+  const businessBase = `${BASE}/admin/business`;
+
   return {
     login: `${BASE}/admin/auth/login`,
 
@@ -99,6 +109,8 @@ export const Admin = () => {
     listCategories: `${categoryBase}/list`,
     listClients: `${clientBase}/list`,
     deleteClient: clientID => `${clientBase}/delete/${clientID}`,
+    deleteBusiness: businessID => `${businessBase}/delete/${businessID}`,
+    listBusiness: `${businessBase}/list`,
   };
 };
 
@@ -111,10 +123,14 @@ export const Service = () => {
   const bookingBase = `${BASE}/service/book`;
   return {
     createReview: serviceID => `${serviceBase}/${serviceID}/review`,
-    updateReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
+    editReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
     deleteReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/delete`,
 
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,
+
+
+    viewService: serviceID => `${serviceBase}/${serviceID}`,
+    viewRelatedServices: (categoryID, offset) => `${serviceBase}/category/${categoryID}/${offset}`,
     validateCoupon: `${bookingBase}/coupon/validate`,
     makeBooking: `${bookingBase}`,
   };

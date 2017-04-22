@@ -20,8 +20,10 @@
 
                     <router-link to="/#" @click.native="active = false" class="nav-item">Home</router-link>
                     <router-link to="/about" @click.native="active = false" class="nav-item">About Us</router-link>
-                    <router-link to="/categories" @click.native="active = false" class="nav-item">Categories</router-link>
-                    <router-link to="/business/apply" @click.native="active = false" class="nav-item">Apply</router-link>
+                    <router-link to="/categories" @click.native="active = false" class="nav-item">Categories
+                    </router-link>
+                    <router-link to="/business/apply" @click.native="active = false" class="nav-item">Apply
+                    </router-link>
 
                     <div class="nav-item">
 
@@ -41,6 +43,17 @@
                             <span>Login</span>
                         </router-link>
 
+                         <el-dropdown v-if="isClient" @command="handleProfile" menu-align="start" trigger="hover">
+                             <el-button type="success">
+                                 My Account<i class="el-icon-caret-bottom el-icon--right"></i>
+                             </el-button>
+
+                             <el-dropdown-menu slot="dropdown">
+                                 <el-dropdown-item command="edit">Edit Profile</el-dropdown-item>
+                                 <el-dropdown-item command="bookings">My Bookings</el-dropdown-item>
+                             </el-dropdown-menu>
+                         </el-dropdown>
+
                         <logout-btn class="is-danger gr-nav-button" v-if="isAuthenticated" title="Logout"></logout-btn>
                     </div>
 
@@ -56,6 +69,7 @@
    * through the website.
    */
   import CommonAuth from '../../services/auth/commonAuth';
+  import ClientAuth from '../../services/auth/clientAuth';
   import EventBus from '../../services/EventBus';
   import LogoutBtn from './logout.vue';
 
@@ -67,6 +81,7 @@
       return {
         active: false,
         isAuthenticated: CommonAuth.isAuthenticated(),
+        isClient: ClientAuth.isAuthenticated(),
       };
     },
     /**
@@ -82,7 +97,16 @@
     mounted() {
       EventBus.$on('UpdateNavigation', () => {
         this.isAuthenticated = CommonAuth.isAuthenticated();
+        this.isClient = ClientAuth.isAuthenticated();
+        this.active = false;
       });
+    },
+
+    methods: {
+      handleProfile(navigate) {
+        this.active = false;
+        this.$router.push(`/client/profile/${navigate}`);
+      },
     },
   };
 </script>
