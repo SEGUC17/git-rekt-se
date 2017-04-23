@@ -83,6 +83,7 @@ export const Admin = () => {
 
   return {
     login: `${BASE}/admin/auth/login`,
+    logout: `${BASE}/admin/auth/logout`,
 
     viewBusiness: `${generalBase}/business`,
     acceptBusiness: businessID => `${generalBase}/confirm/${businessID}`,
