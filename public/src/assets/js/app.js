@@ -26,6 +26,7 @@ Vue.component('reject-btn', rejectbtn);
 Vue.component('client-remove-btn', clientRemoveBtn);
 Vue.component('business-remove-btn', businessRemoveBtn);
 Vue.component('category-actions-btns', CategoryActions);
+Vue.component('gr-top-hero', TopHero);
 Vue.component('bus-trans-actions', TransactionsAction);
 Vue.component('coupon-delete-btn', couponDeleteBtn);
 Vue.component('gr-top-hero', TopHero);

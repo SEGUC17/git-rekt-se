@@ -3,7 +3,7 @@
  */
 
 const locations = require('../../seed/service/locations')
-  .join(', ');
+    .join(', ');
 
 /**
  *  General Strings
@@ -108,6 +108,7 @@ const clientSuccess = {
   editInformation: 'Your information has been updated successfully.',
   editInformationWithEmail: 'Your information has been updated successfully. An email has been sent to your new email for the email confirmation.',
   logout: 'You have been logged out.',
+  reviewReported: 'Review reported successfully!',
 };
 
 const serviceSuccess = {
@@ -130,6 +131,8 @@ const serviceFailure = {
   notYourService: 'Can not modify a service that is not owned by your business!',
   missingField: 'Missing Field(s)!',
   invalidService: 'This service is invalid.',
+  invalidFile: 'This File is invalid.',
+  imageAlreadyDeleted: 'This image is already deleted',
 };
 
 const serviceValidationErrors = {
@@ -178,6 +181,8 @@ const reviewErrors = {
   invalidReview: 'This review does not exist.',
   userMismatchEdit: 'You did not create the review that you are trying to edit.',
   userMismatchDelete: 'You did not create the review that you are trying to delete.',
+  reviewFaliure: 'The report on the specified review has failed!',
+  reviewIsDeleted: 'The review is already deleted',
 };
 
 const reviewSuccess = {
@@ -276,14 +281,15 @@ const adminValidationErrors = {
   categoryTypeRequired: 'Category Type is required.',
   categoryTitleRequired: 'Category Title is required.',
   invalidClientID: 'Invalid Client ID',
+  invalidReviewID: 'Invalid Review ID',
 };
 
 const adminSuccess = {
   categoryAdded: 'Category added succesfully!',
   categoryEdited: 'Category edited succesfully!',
   categoryDeleted: 'Category deleted succesfully!',
-  clientDeleted: 'Client removed succesfully',
-  businessDeleted: 'Business removed succesfully',
+  clientDeleted: 'Client removed successfully!',
+  businessDeleted: 'Business removed successfully!',
 };
 
 const adminFailures = {
