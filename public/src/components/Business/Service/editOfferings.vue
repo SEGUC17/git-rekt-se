@@ -1,110 +1,164 @@
 <template>
-  <div class="main">
-    <div class="container">
-      <el-alert v-if="editSuccess" type="success" :title="editSuccess" show-icon></el-alert>
-        <el-alert v-if="deleteSuccess" type="success" :title="deleteSuccess" show-icon></el-alert>
-      <el-card class="create-offering">
-        <el-alert v-for="error in generalErrors" :key="error" type="error" :title="error" show-icon></el-alert>
-        <div slot="header" class="clearfix">
-          <span>Create Offering</span>
-        </div>
-        <el-alert v-if="createSuccess" type="success" :title="createSuccess" show-icon></el-alert>
-        <el-alert v-for="error in createErrors" :key="error" type="error" :title="error" show-icon></el-alert>
-        <el-form :model="newOffering" ref="createOffering" :rules="offeringRules" label-position="left">
-          <el-form-item label="Branch" required prop="branch">
-            <el-select v-model="newOffering.branch" placeholder="Select a branch">
-              <el-option v-for="item in branches" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="Price" required prop="price">
-            <el-input v-model.number="newOffering.price" placeholder="Set a price"></el-input>
-          </el-form-item>
-          <el-form-item label="Start Date - End Date" required prop="dates">
-            <el-date-picker v-model="newOffering.dates" type="daterange" placeholder="Set a duration">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="Capacity" required prop="capacity">
-            <el-input v-model.number="newOffering.capacity" placeholder="Set a capacity"></el-input>
-          </el-form-item>
-          </el-form-item>
-          <el-form-item class="is-pulled-right">
-            <el-button type="primary" @click="createOffering">Create</el-button>
-            <el-button @click="resetCreate">Clear</el-button>
-          </el-form-item>
-        </el-form>
-      </el-card>
-      <div class="offerings-list">
-        <el-table :data="offerings" :show-header="false" style="width: 100%">
-          <el-table-column>
-            <template scope="scope">
-              <el-icon name="time"></el-icon>
-              <span style="margin-left: 10px">{{ new Date(scope.row.startDate).toLocaleDateString() + " - " + new Date(scope.row.endDate).toLocaleDateString() }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column>
-            <template scope="scope">
-              <i class="fa fa-map-marker"></i>
-              <span style="margin-left: 10px">{{ scope.row.address + " - " + scope.row.location }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column>
-            <template scope="scope">
-              <i class="fa fa-money"></i>
-              <span style="margin-left: 10px">{{ scope.row.price }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column>
-            <template scope="scope">
-              <i class="fa fa-users"></i>
-              <span style="margin-left: 10px">{{ scope.row.capacity }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column align="right">
-            <template scope="scope">
-              <el-button icon="edit" @click="showEdit(scope.row)">
-              Edit offering
-            </el-button>
-            <el-button icon="delete" @click="showDelete(scope.row)" type="danger">
-               Delete offering
-            </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+  <div class="edit-offerings">
+    <div class="offering-tabs">
+      <!-- General Errors -->
+      <div class="errors">
+        <el-alert v-for="error in generalErrors" :key="error" type="error" :title="error"
+                  class="error" show-icon @close="generalErrors.splice(error, 1)">
+        </el-alert>
       </div>
+
+      <!-- Navigation tabs -->
+      <div class="tabs is-centered">
+        <ul>
+          <li @click="active = 1" :class="{ 'is-active': (active === 1) }"><a>Create Offering</a>
+          </li>
+          <li @click="active = 2" :class="{ 'is-active': (active === 2) }"><a>Edit Offerings</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Create Offering Tab -->
+      <transition name="fade">
+        <div class="box create-offering" v-show="active === 1">
+          <!-- Offering Created-->
+          <div class="errors">
+            <el-alert v-if="createSuccess" type="success" class="error"
+                      :title="createSuccess" show-icon>
+
+            </el-alert>
+            <el-alert v-for="error in createErrors" :key="error" class="error"  type="error"
+                      :title="error" show-icon></el-alert>
+          </div>
+          <el-form :model="newOffering" ref="createOffering" :rules="offeringRules">
+            <el-form-item label="Branch" required prop="branch">
+              <el-select v-model="newOffering.branch" placeholder="Select a branch">
+                <el-option v-for="item in branches" :key="item.value" :label="item.label"
+                           :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Price" required prop="price">
+              <el-input v-model.number="newOffering.price" placeholder="Set a price"></el-input>
+            </el-form-item>
+            <el-form-item label="Start Date - End Date" required prop="dates">
+              <el-date-picker v-model="newOffering.dates" type="daterange"
+                              placeholder="Set a duration">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item label="Capacity" required prop="capacity">
+              <el-input v-model.number="newOffering.capacity"
+                        placeholder="Set a capacity"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="createOffering">Create</el-button>
+              <el-button @click="resetCreate">Clear</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </transition>
+
+      <!-- Offerings List Tab -->
+      <transition name="fade">
+        <div class="box offerings-list" v-show="active === 2">
+          <el-alert v-if="editSuccess" class="error" type="success" :title="editSuccess" show-icon></el-alert>
+          <el-alert v-if="deleteSuccess" class="error" type="success" :title="deleteSuccess" show-icon></el-alert>
+          <div class="box" v-for="offering in offerings">
+
+            <h4 class="subtitle is-4">
+              <span><i class=" icon fa fa-map-marker"></i></span> {{ offering.location }}
+              </h4>
+
+            <h6 class="subtitle is-6">
+              <span><i class=" icon fa fa-location-arrow"></i></span> {{ offering.address }}
+              </h6>
+
+            <h6 class="subtitle is-6">
+              <span><i class=" icon fa fa-calendar"></i></span> From {{ offering.startDate | moment }}
+              </h6>
+
+            <h6 class="subtitle is-6">
+              <span><i class=" icon fa fa-calendar"></i></span> To {{ offering.endDate | moment }}
+              </h6>
+
+            <h6 class="subtitle is-6">
+              <span><i class=" icon fa fa-money"></i></span> {{ offering.price }} EGP
+              </h6>
+
+            <h6 class="subtitle is-6">
+              <span><i class=" icon fa fa-users"></i></span> {{ offering.capacity }} clients
+              </h6>
+
+            <nav class="level actions">
+              <button class="button is-info level-item" @click="showEdit(offering)">
+                    <span class="icon is-small">
+                        <i class="fa fa-edit"></i>
+                    </span>&nbsp;Edit
+
+              </button>
+
+              <button class="button is-danger level-item" @click="showDelete(offering)">
+                    <span class="icon is-small">
+                        <i class="fa fa-trash-o"></i>
+                    </span>&nbsp;Delete
+
+              </button>
+            </nav>
+          </div>
+        </div>
+      </transition>
+
+      <!-- No Offerings to edit -->
+      <div class="no-data hero" v-show="offerings.length === 0">
+        <div class="hero-body has-text-centered">
+          <el-icon name="circle-close" class="confirmation-icon icon-fail"></el-icon>
+          <p class="title is-2">This service has no offerings.</p>
+          <a class="button is-info" @click.prevent="getOfferings">Refresh</a>
+        </div>
+      </div>
+
     </div>
+
+    <!-- Edit Offering Modal -->
     <el-dialog title="Edit offering" v-model="editVisible" size="large">
-      <el-form ref="editOffering" :model="editFormOffering" :rules="offeringRules" label-position="left">
-        <el-alert v-for="error in editErrors" :key="error" type="error" :title="error" show-icon></el-alert>
-         <el-form-item label="Branch" required prop="branch">
-            <el-select v-model="editFormOffering.branch" placeholder="Select a branch">
-              <el-option v-for="item in branches" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="Price" required prop="price">
-            <el-input type="price" v-model.number="editFormOffering.price" placeholder="Set a price"></el-input>
-          </el-form-item>
-          <el-form-item label="Start Date - End Date" required prop="dates">
-            <el-date-picker v-model="editFormOffering.dates" type="daterange" placeholder="Set a duration">
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="Capacity" required prop="capacity">
-            <el-input type="capacity" v-model.number="editFormOffering.capacity" placeholder="Set a capacity"></el-input>
-          </el-form-item>
-        <!--TODO Upload Cover Image-->
+      <el-form ref="editOffering" :model="editFormOffering" :rules="offeringRules"
+               label-position="left">
+        <el-alert v-for="error in editErrors" :key="error" type="error" :title="error"
+                  show-icon></el-alert>
+        <el-form-item label="Branch" required prop="branch">
+          <el-select v-model="editFormOffering.branch" placeholder="Select a branch">
+            <el-option v-for="item in branches" :key="item.value" :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Price" required prop="price">
+          <el-input type="price" v-model.number="editFormOffering.price"
+                    placeholder="Set a price"></el-input>
+        </el-form-item>
+        <el-form-item label="Start Date - End Date" required prop="dates">
+          <el-date-picker v-model="editFormOffering.dates" type="daterange"
+                          placeholder="Set a duration">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="Capacity" required prop="capacity">
+          <el-input type="capacity" v-model.number="editFormOffering.capacity"
+                    placeholder="Set a capacity"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-      <el-button @click="editVisible = false">Cancel</el-button>
-      <el-button type="primary" @click="editOffering">Edit</el-button>
-    </span>
+                    <el-button @click="editVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="editOffering">Edit</el-button>
+                  </span>
     </el-dialog>
+
+    <!-- Delete Offering Modal -->
     <el-dialog title="Delete Offering" v-model="deleteVisible" size="small">
       <span>This cannot be undone. Delete this offering and its associated bookings?</span>
       <span slot="footer" class="dialog-footer">
-      <el-button @click="deleteVisible = false">Cancel</el-button>
-      <el-button type="danger" @click="deleteOffering">Delete</el-button>
-    </span>
+                    <el-button @click="deleteVisible = false">Cancel</el-button>
+                    <el-button type="danger" @click="deleteOffering">Delete</el-button>
+                  </span>
     </el-dialog>
   </div>
 </template>
@@ -115,10 +169,11 @@
   import { Business } from '../../../services/EndPoints';
   import { offeringRules } from '../../../services/validation';
   import BusinessAuth from '../../../services/auth/businessAuth';
-  
+
   export default {
     data() {
       return {
+        active: 1,
         serviceID: this.$route.params.id,
         offerings: [],
         branches: [],
@@ -166,12 +221,12 @@
             Authorization: BusinessAuth.getJWTtoken(),
           },
         })
-          .then((response) => {
-            this.branches = response.data.branches;
-          })
-          .catch((err) => {
-            this.generalErrors = err.response.data.errors;
-          });
+            .then((response) => {
+              this.branches = response.data.branches;
+            })
+            .catch((err) => {
+              this.generalErrors = err.response.data.errors;
+            });
       }
     },
     methods: {
@@ -184,19 +239,19 @@
             Authorization: BusinessAuth.getJWTtoken(),
           },
         })
-          .then((response) => {
-            loader.close();
-            this.offerings = response.data.offerings;
-          })
-          .catch((error) => {
-            loader.close();
-            this.generalErrors = error.response.data.errors.map((err) => {
-              if (typeof err === 'string') {
-                return err;
-              }
-              return err.msg;
+            .then((response) => {
+              loader.close();
+              this.offerings = response.data.offerings;
+            })
+            .catch((error) => {
+              loader.close();
+              this.generalErrors = error.response.data.errors.map((err) => {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
             });
-          });
       },
       createOffering() {
         this.createSuccess = '';
@@ -211,21 +266,21 @@
                 Authorization: BusinessAuth.getJWTtoken(),
               },
             })
-              .then((response) => {
-                loader.close();
-                this.createSuccess = response.data.message;
-                this.resetCreate();
-                this.getOfferings();
-              })
-              .catch((error) => {
-                loader.close();
-                this.createErrors = error.response.data.errors.map((err) => {
-                  if (typeof err === 'string') {
-                    return err;
-                  }
-                  return err.msg;
+                .then((response) => {
+                  loader.close();
+                  this.createSuccess = response.data.message;
+                  this.resetCreate();
+                  this.getOfferings();
+                })
+                .catch((error) => {
+                  loader.close();
+                  this.createErrors = error.response.data.errors.map((err) => {
+                    if (typeof err === 'string') {
+                      return err;
+                    }
+                    return err.msg;
+                  });
                 });
-              });
           }
         });
       },
@@ -238,26 +293,26 @@
               fullscreen: true,
             });
             Axios.post(Business().editOffering(this.serviceID, this.offeringToEdit._id),
-             this.offeringToEdit, {
-               headers: {
-                 Authorization: BusinessAuth.getJWTtoken(),
-               },
-             })
-              .then((response) => {
-                this.editSuccess = response.data.message;
-                this.editVisible = false;
-                loader.close();
-                this.getOfferings();
-              })
-              .catch((error) => {
-                loader.close();
-                this.editErrors = error.response.data.errors.map((err) => {
-                  if (typeof err === 'string') {
-                    return err;
-                  }
-                  return err.msg;
+                this.offeringToEdit, {
+                  headers: {
+                    Authorization: BusinessAuth.getJWTtoken(),
+                  },
+                })
+                .then((response) => {
+                  this.editSuccess = response.data.message;
+                  this.editVisible = false;
+                  loader.close();
+                  this.getOfferings();
+                })
+                .catch((error) => {
+                  loader.close();
+                  this.editErrors = error.response.data.errors.map((err) => {
+                    if (typeof err === 'string') {
+                      return err;
+                    }
+                    return err.msg;
+                  });
                 });
-              });
           }
         });
       },
@@ -272,21 +327,21 @@
             Authorization: BusinessAuth.getJWTtoken(),
           },
         })
-          .then((response) => {
-            this.deleteSuccess = response.data.message;
-            this.deleteVisible = false;
-            loader.close();
-            this.getOfferings();
-          })
-          .catch((error) => {
-            loader.close();
-            this.deleteErrors = error.response.data.errors.map((err) => {
-              if (typeof err === 'string') {
-                return err;
-              }
-              return err.msg;
+            .then((response) => {
+              this.deleteSuccess = response.data.message;
+              this.deleteVisible = false;
+              loader.close();
+              this.getOfferings();
+            })
+            .catch((error) => {
+              loader.close();
+              this.deleteErrors = error.response.data.errors.map((err) => {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
             });
-          });
       },
       resetCreate() {
         this.$refs.createOffering.resetFields();
@@ -332,3 +387,15 @@
     },
   };
 </script>
+
+<style>
+  .edit-offerings-top {
+    background: #395e90;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #3fa5a2, #395e90);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #3fa5a2, #395e90);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    margin-bottom: 2em;
+  }
+</style>
