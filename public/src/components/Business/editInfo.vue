@@ -82,6 +82,7 @@
   import commonAuth from '../../services/auth/commonAuth';
   import { Business } from '../../services/EndPoints';
   import { businessEditInfoValidation } from '../../services/validation';
+  import JWTCheck from '../../services/JWTErrors';
 
   const dummyPassword = '***************';
   export default {
@@ -172,13 +173,32 @@
                       .then(() => {
                         this.loading = false;
                       })
-                      .catch(() => {
+                      .catch((err) => {
                         this.loading = false;
+                        if(err.response && JWTCheck(err.response.data.errors)) {
+                          businessAuth.removeData();
+                          this.$router.push('/');
+                          this.$toast.open({
+                            text: 'Your sessions has expired. Please login.',
+                            position: 'bottom',
+                            type: 'danger'
+                          });
+                        }
                       });
-                }).catch(() => {
+                }).catch((err) => {
                   this.loading = false;
                   this.success = false;
-                  this.onReset();
+                  if(err.response && JWTCheck(err.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.onReset();
+                  }
                 });
           }
         });
@@ -224,7 +244,18 @@
           .then(() => {
             loader.close();
           })
-          .catch(() => loader.close());
+          .catch((err) => {
+            loader.close();
+            if(err.response && JWTCheck(err.response.data.errors)) {
+              businessAuth.removeData();
+              this.$router.push('/');
+              this.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            }
+          });
     },
   };
 </script>

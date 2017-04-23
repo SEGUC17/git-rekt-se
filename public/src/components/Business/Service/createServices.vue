@@ -66,6 +66,7 @@
   import BusinessAuth from '../../../services/auth/businessAuth';
   import { Business } from '../../../services/EndPoints';
   import { serviceRules } from '../../../services/validation';
+  import JWTCheck from '../../../services/JWTErrors';
 
   export default {
     /**
@@ -113,13 +114,23 @@
               loader.close();
             })
             .catch((error) => {
-              this.generalErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                loader.close();
-                return err.msg;
-              });
+              loader.close();
+              if(error.response && JWTCheck(error.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.generalErrors = error.response.data.errors.map((err) => {
+                  if (typeof err === 'string') {
+                    return err;
+                  }
+                  return err.msg;
+                });
+              }
             });
       },
       /**
@@ -153,12 +164,22 @@
             })
                 .catch((error) => {
                   loader.close();
-                  this.createErrors = error.response.data.errors.map((err) => {
-                    if (typeof err === 'string') {
-                      return err;
-                    }
-                    return err.msg;
-                  });
+                 if(error.response && JWTCheck(error.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.generalErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
                 });
           }
         });

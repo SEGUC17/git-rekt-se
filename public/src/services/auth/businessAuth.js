@@ -56,9 +56,7 @@ export default {
     this.user.authenticated = false;
     const currentToken = this.getJWTtoken();
 
-    localStorage.removeItem('business_token');
-    localStorage.removeItem('business_email');
-    localStorage.removeItem('business_id');
+    this.removeData();
 
     axios.post(Business()
         .logout, null, {
@@ -111,6 +109,17 @@ export default {
    */
   refreshAuth() {
     this.user.authenticated = !!localStorage.getItem('business_token');
+  },
+
+  /**
+   * Stores the data using the Browser's localStorage.
+   * @param {ResponseSchema} response - Axios Response Object.
+   * @see {@link https://github.com/mzabriskie/axios#response-schema}
+   */
+  removeData(response) {
+    localStorage.removeItem('business_token');
+    localStorage.removeItem('business_email');
+    localStorage.removeItem('business_id');
   },
 
   /**

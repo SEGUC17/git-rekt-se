@@ -53,6 +53,7 @@
   import businessAuth from '../../services/auth/businessAuth';
   import { Business } from '../../services/EndPoints';
   import EventBus from '../../services/EventBus';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
     /**
@@ -101,9 +102,19 @@
               loader.close();
             })
             .catch((err) => {
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(', ') : err.message;
               loader.close();
+              if(err.response && JWT.checkErrors(err.reponse.data.errors)){
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.error = true;
+                this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+              }
             });
       },
       /**
@@ -129,9 +140,19 @@
               this.message = res.data.message;
               this.getTransactions();
             }).catch((err) => {
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(', ') : err.message;
               loader.close();
+              if(err.reponse && JWTCheck(err.response.data.errors)){
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.error = true;
+                this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+              }
             });
       },
       /**
@@ -158,15 +179,25 @@
               this.message = res.data.message;
               this.getTransactions();
             }).catch((err) => {
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(', ') : err.message;
               loader.close();
+              if(err.response && JWTCheck(err.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.error = true;
+                this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+              }
             });
       },
     },
     /**
      * Ran when component is mounted on DOM.
-     * Route back if user is not authenticated, otherqise Get All Transactions.
+     * Route back if user is not authenticated, otherwise Get All Transactions.
      */
     mounted() {
       if (!businessAuth.isAuthenticated()) {

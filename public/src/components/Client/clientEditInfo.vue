@@ -172,7 +172,7 @@
             })
             .catch((err) => {
               loader.close();
-              if (JWTCheck(err)){
+              if (err.response && JWTCheck(err.response.data.errors)){
                 clientAuth.removeData();
                 this.$router.push('/');
                 this.$toast.open({
@@ -220,7 +220,7 @@
                 this.client = response.data;
                 resolve();
               }).catch((err) => {
-                if (JWTCheck(err)) {
+                if (err.response && JWTCheck(err.response.data.errors)) {
                   clientAuth.removeData();
                   this.$router.push('/');
                   this.$toast.open({
@@ -258,7 +258,7 @@
                   this.fillForm();
                 }).catch((err) => {
                   this.loading = false;
-                  if(JWTCheck(err)) {
+                  if(err.response && JWTCheck(err.response.data.errors)) {
                     clientAuth.removeData();
                     this.$router.push('/');
                     this.$toast.open({

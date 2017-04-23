@@ -58,6 +58,7 @@
   import { infoFormRules } from '../../services/validation';
   import { Visitor, Business } from '../../services/EndPoints';
   import businessAuth from '../../services/auth/businessAuth';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
     /**
@@ -126,11 +127,31 @@
                 .categories.map(cat => cat._id);
           }).catch((e) => {
             this.loader.close();
-            this.errors = e.response.data.errors;
+            if(e.response && JWTCheck(e.response.data.errors)) {
+              businessAuth.removeData();
+              this.$router.push('/');
+              this.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              this.errors = e.response.data.errors;
+            }
           });
         }).catch((e) => {
           this.loader.close();
-          this.errors = e.response.data.errors;
+          if(e.response && JWTCheck(e.response.data.errors)) {
+              businessAuth.removeData();
+              this.$router.push('/');
+              this.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              this.errors = e.response.data.errors;
+            }
         });
       },
       /**
@@ -153,7 +174,17 @@
               this.editSuccess = response.data.message;
             }).catch((e) => {
               this.loader.close();
-              this.errors = e.response.data.errors;
+              if(e.response && JWTCheck(e.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.errors = e.response.data.errors;
+              }
             });
           }
         });

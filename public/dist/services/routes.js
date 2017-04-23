@@ -6061,9 +6061,7 @@ var Form = function () {
     this.user.authenticated = false;
     var currentToken = this.getJWTtoken();
 
-    localStorage.removeItem('business_token');
-    localStorage.removeItem('business_email');
-    localStorage.removeItem('business_id');
+    this.removeData();
 
     __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["b" /* Business */])().logout, null, {
       headers: {
@@ -6114,6 +6112,18 @@ var Form = function () {
    */
   refreshAuth: function refreshAuth() {
     this.user.authenticated = !!localStorage.getItem('business_token');
+  },
+
+
+  /**
+   * Stores the data using the Browser's localStorage.
+   * @param {ResponseSchema} response - Axios Response Object.
+   * @see {@link https://github.com/mzabriskie/axios#response-schema}
+   */
+  removeData: function removeData(response) {
+    localStorage.removeItem('business_token');
+    localStorage.removeItem('business_email');
+    localStorage.removeItem('business_id');
   },
 
 
@@ -32661,6 +32671,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_validation__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -32762,6 +32773,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
@@ -32807,10 +32819,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.errors = [];
         _this.loader.close();
       }).catch(function (err) {
-        _this.errors = err.response.data.errors;
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
         _this.loader.close();
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__["a" /* default */].removeData();
+          _this.$router.push('/');
+          _this.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this.errors = err.response.data.errors;
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }
       });
     },
 
@@ -32835,9 +32857,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
               message: 'Coupon Added!',
               type: 'is-success'
             });
-          }).catch(function (err) {
-            _this2.addErrors = err.response.data.errors;
             _this2.loader.close();
+          }).catch(function (err) {
+            _this2.loader.close();
+            if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+              __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__["a" /* default */].removeData();
+              _this2.$router.push('/');
+              _this2.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              _this2.addErrors = err.response.data.errors;
+            }
           });
         }
       });
@@ -32865,9 +32898,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         _this3.fetchCoupons();
       }).catch(function (err) {
-        _this3.errors = err.response.data.errors;
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__["a" /* default */].removeData();
+          _this3.$router.push('/');
+          _this3.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this3.errors = err.response.data.errors;
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }
       });
     },
 
@@ -32910,6 +32953,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_businessAuth__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_validation__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -32979,6 +33023,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
@@ -33027,13 +33072,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.categories = response.data.categories;
         loader.close();
       }).catch(function (error) {
-        _this.generalErrors = error.response.data.errors.map(function (err) {
-          if (typeof err === 'string') {
-            return err;
-          }
-          loader.close();
-          return err.msg;
-        });
+        loader.close();
+        if (error.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(error.response.data.errors)) {
+          businessAuth.removeData();
+          _this.$router.push('/');
+          _this.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this.generalErrors = error.response.data.errors.map(function (err) {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
+        }
       });
     },
 
@@ -33069,12 +33124,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this2.getServices();
           }).catch(function (error) {
             loader.close();
-            _this2.createErrors = error.response.data.errors.map(function (err) {
-              if (typeof err === 'string') {
-                return err;
-              }
-              return err.msg;
-            });
+            if (error.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(error.response.data.errors)) {
+              businessAuth.removeData();
+              _this2.$router.push('/');
+              _this2.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              _this2.generalErrors = error.response.data.errors.map(function (err) {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
+            }
           });
         }
       });
@@ -33119,6 +33184,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_businessAuth__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -33294,6 +33360,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
@@ -33358,7 +33425,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).then(function (response) {
         _this.branches = response.data.branches;
       }).catch(function (err) {
-        _this.generalErrors = err.response.data.errors;
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          businessAuth.removeData();
+          _this.$router.push('/');
+          _this.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this.generalErrors = err.response.data.errors;
+        }
       });
     }
   },
@@ -33385,12 +33462,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this2.offerings = response.data.offerings;
       }).catch(function (error) {
         loader.close();
-        _this2.generalErrors = error.response.data.errors.map(function (err) {
-          if (typeof err === 'string') {
-            return err;
-          }
-          return err.msg;
-        });
+        if (error.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(error.response.data.errors)) {
+          businessAuth.removeData();
+          _this2.$router.push('/');
+          _this2.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this2.generalErrors = error.response.data.errors.map(function (err) {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
+        }
       });
     },
 
@@ -33418,12 +33505,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this3.getOfferings();
           }).catch(function (error) {
             loader.close();
-            _this3.createErrors = error.response.data.errors.map(function (err) {
-              if (typeof err === 'string') {
-                return err;
-              }
-              return err.msg;
-            });
+            if (error.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(error.response.data.errors)) {
+              businessAuth.removeData();
+              _this3.$router.push('/');
+              _this3.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              _this3.createErrors = error.response.data.errors.map(function (err) {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
+            }
           });
         }
       });
@@ -33453,12 +33550,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this4.getOfferings();
           }).catch(function (error) {
             loader.close();
-            _this4.editErrors = error.response.data.errors.map(function (err) {
-              if (typeof err === 'string') {
-                return err;
-              }
-              return err.msg;
-            });
+            if (error.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(error.response.data.errors)) {
+              businessAuth.removeData();
+              _this4.$router.push('/');
+              _this4.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              _this4.editErrors = error.response.data.errors.map(function (err) {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
+            }
           });
         }
       });
@@ -33486,12 +33593,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this5.getOfferings();
       }).catch(function (error) {
         loader.close();
-        _this5.deleteErrors = error.response.data.errors.map(function (err) {
-          if (typeof err === 'string') {
-            return err;
-          }
-          return err.msg;
-        });
+        if (error.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(error.response.data.errors)) {
+          businessAuth.removeData();
+          _this5.$router.push('/');
+          _this5.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this5.deleteErrors = error.response.data.errors.map(function (err) {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
+        }
       });
     },
 
@@ -33575,6 +33692,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_businessAuth__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -33714,6 +33832,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
@@ -33769,12 +33888,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       }).then(function (response) {
         _this.categories = response.data.categories;
       }).catch(function (error) {
-        _this.generalErrors = error.response.data.errors.map(function (err) {
-          if (typeof err === 'string') {
-            return err;
-          }
-          return err.msg;
-        });
+        if (error.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(error.response.data.errors)) {
+          businessAuth.removeData();
+          _this.$router.push('/');
+          _this.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this.generalErrors = error.response.data.errors.map(function (err) {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
+        }
       });
     },
 
@@ -33796,12 +33925,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this2.services = response.data.services;
       }).catch(function (error) {
         loader.close();
-        _this2.generalErrors = error.response.data.errors.map(function (err) {
-          if (typeof err === 'string') {
-            return err;
-          }
-          return err.msg;
-        });
+        if (error.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(error.response.data.errors)) {
+          businessAuth.removeData();
+          _this2.$router.push('/');
+          _this2.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this2.generalErrors = error.response.data.errors.map(function (err) {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
+        }
       });
     },
 
@@ -33841,12 +33980,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this3.resetEditImage();
           }).catch(function (error) {
             loader.close();
-            _this3.editErrors = error.response.data.errors.map(function (err) {
-              if (typeof err === 'string') {
-                return err;
-              }
-              return err.msg;
-            });
+            if (error.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(error.response.data.errors)) {
+              businessAuth.removeData();
+              _this3.$router.push('/');
+              _this3.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              _this3.editErrors = error.response.data.errors.map(function (err) {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
+            }
           });
         }
       });
@@ -33874,12 +34023,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this4.getServices();
       }).catch(function (error) {
         loader.close();
-        _this4.deleteErrors = error.response.data.errors.map(function (err) {
-          if (typeof err === 'string') {
-            return err;
-          }
-          return err.msg;
-        });
+        if (error.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(error.response.data.errors)) {
+          businessAuth.removeData();
+          _this4.$router.push('/');
+          _this4.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this4.deleteErrors = error.response.data.errors.map(function (err) {
+            if (typeof err === 'string') {
+              return err;
+            }
+            return err.msg;
+          });
+        }
       });
     },
 
@@ -34124,6 +34283,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_pages_Index_mainLocations__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_auth_businessAuth__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -34182,6 +34342,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 
@@ -34267,8 +34428,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           });
           _this2.loader.close();
         }).catch(function (e) {
-          _this2.errors = e.response.data.errors;
           _this2.loader.close();
+          if (e.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(e.response.data.errors)) {
+            __WEBPACK_IMPORTED_MODULE_5__services_auth_businessAuth__["a" /* default */].removeData();
+            _this2.$router.push('/');
+            _this2.$toast.open({
+              text: 'Your sessions has expired. Please login.',
+              position: 'bottom',
+              type: 'danger'
+            });
+          } else {
+            _this2.errors = e.response.data.errors;
+          }
         });
       });
     },
@@ -34298,8 +34469,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           _this3.branchesForm.branches[idx]._id = response.data.results[0];
           _this3.loader.close();
         }).catch(function (e) {
-          _this3.errors = e.response.data.errors;
           _this3.loader.close();
+          if (e.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(e.response.data.errors)) {
+            __WEBPACK_IMPORTED_MODULE_5__services_auth_businessAuth__["a" /* default */].removeData();
+            _this3.$router.push('/');
+            _this3.$toast.open({
+              text: 'Your sessions has expired. Please login.',
+              position: 'bottom',
+              type: 'danger'
+            });
+          } else {
+            _this3.errors = e.response.data.errors;
+          }
         });
 
         this.branchesForm.branches.push({
@@ -34335,8 +34516,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           _this4.branchesForm.branches.splice(idx, 1);
           _this4.loader.close();
         }).catch(function (e) {
-          _this4.errors = e.response.data.errors;
-          _this4.loader.close();
+          if (e.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(e.response.data.errors)) {
+            __WEBPACK_IMPORTED_MODULE_5__services_auth_businessAuth__["a" /* default */].removeData();
+            _this4.$router.push('/');
+            _this4.$toast.open({
+              text: 'Your sessions has expired. Please login.',
+              position: 'bottom',
+              type: 'danger'
+            });
+          } else {
+            _this4.errors = e.response.data.errors;
+          }
         });
       }
     },
@@ -34363,8 +34553,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this5.editSuccess = response.data.message;
         _this5.loader.close();
       }).catch(function (e) {
-        _this5.loader.close();
-        _this5.errors = e.response.data.errors;
+        if (e.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(e.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_5__services_auth_businessAuth__["a" /* default */].removeData();
+          _this5.$router.push('/');
+          _this5.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this5.errors = e.response.data.errors;
+        }
       });
     }
   }
@@ -34650,6 +34849,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_commonAuth__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_validation__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -34728,6 +34928,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /**
  * This component is responsible for Editing the Business Info.
  */
+
 
 
 
@@ -34827,13 +35028,32 @@ var dummyPassword = '***************';
             _this2.message = data.message;
             _this2.getBusiness().then(function () {
               _this2.loading = false;
-            }).catch(function () {
+            }).catch(function (err) {
               _this2.loading = false;
+              if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+                __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+                _this2.$router.push('/');
+                _this2.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              }
             });
-          }).catch(function () {
+          }).catch(function (err) {
             _this2.loading = false;
             _this2.success = false;
-            _this2.onReset();
+            if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+              __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+              _this2.$router.push('/');
+              _this2.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              _this2.onReset();
+            }
           });
         }
       });
@@ -34874,6 +35094,8 @@ var dummyPassword = '***************';
    * get business Info.
    */
   mounted: function mounted() {
+    var _this4 = this;
+
     if (!__WEBPACK_IMPORTED_MODULE_3__services_auth_commonAuth__["a" /* default */].isBusiness()) {
       this.$router.push('/404');
       return;
@@ -34883,8 +35105,17 @@ var dummyPassword = '***************';
     });
     this.getBusiness().then(function () {
       loader.close();
-    }).catch(function () {
-      return loader.close();
+    }).catch(function (err) {
+      loader.close();
+      if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+        __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+        _this4.$router.push('/');
+        _this4.$toast.open({
+          text: 'Your sessions has expired. Please login.',
+          position: 'bottom',
+          type: 'danger'
+        });
+      }
     });
   }
 });
@@ -34898,9 +35129,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(6);
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_JWTErrors__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__ = __webpack_require__(8);
 //
 //
 //
@@ -34954,6 +35184,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
@@ -34999,9 +35231,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.loading = false;
             _this.successShow = true;
           }).catch(function (err) {
-            _this.errorShow = true;
-            _this.loading = false;
-            _this.errors = err;
+            if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+              __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__["a" /* default */].removeData();
+              _this.$router.push('/');
+              _this.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              _this.errorShow = true;
+              _this.loading = false;
+              _this.errors = err;
+            }
           });
         }
       });
@@ -35021,6 +35263,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -35076,6 +35319,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /**
  * This component is responsible for Editing the Business Info.
  */
+
 
 
 
@@ -35155,11 +35399,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           });
         }).catch(function (e) {
           _this.loader.close();
-          _this.errors = e.response.data.errors;
+          if (e.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__["a" /* default */])(e.response.data.errors)) {
+            __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__["a" /* default */].removeData();
+            _this.$router.push('/');
+            _this.$toast.open({
+              text: 'Your sessions has expired. Please login.',
+              position: 'bottom',
+              type: 'danger'
+            });
+          } else {
+            _this.errors = e.response.data.errors;
+          }
         });
       }).catch(function (e) {
         _this.loader.close();
-        _this.errors = e.response.data.errors;
+        if (e.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__["a" /* default */])(e.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__["a" /* default */].removeData();
+          _this.$router.push('/');
+          _this.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this.errors = e.response.data.errors;
+        }
       });
     },
 
@@ -35185,7 +35449,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this2.editSuccess = response.data.message;
           }).catch(function (e) {
             _this2.loader.close();
-            _this2.errors = e.response.data.errors;
+            if (e.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__["a" /* default */])(e.response.data.errors)) {
+              __WEBPACK_IMPORTED_MODULE_4__services_auth_businessAuth__["a" /* default */].removeData();
+              _this2.$router.push('/');
+              _this2.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              _this2.errors = e.response.data.errors;
+            }
           });
         }
       });
@@ -35354,6 +35628,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Form__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -35471,6 +35746,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
@@ -35544,10 +35820,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.errors = [];
         _this.loader.close();
       }).catch(function (err) {
-        _this.errors = err.response.data.errors;
         _this.loader.close();
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this.$router.push('/');
+          _this.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this.errors = err.response.data.errors;
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }
       });
     },
 
@@ -35593,8 +35879,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         _this2.loader.close();
       }).catch(function (err) {
-        _this2.addErrors = err.response.data.errors;
         _this2.loader.close();
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this2.$router.push('/');
+          _this2.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this2.addErrors = err.response.data.errors;
+        }
       });
     },
 
@@ -35627,6 +35923,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           Authorization: __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].getJWTtoken()
         }
       }).then(function () {
+        _this3.loader.close();
         _this3.editForm.description = '';
         _this3.$toast.open({
           message: 'Image Edited.',
@@ -35636,8 +35933,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this3.getGallery();
         _this3.editDialogue = false;
       }).catch(function (err) {
-        _this3.editDialogue = false;
-        _this3.errors = err.response.data.errors;
+        _this3.loader.close();
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this3.$router.push('/');
+          _this3.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this3.editDialogue = false;
+          _this3.errors = err.response.data.errors;
+        }
       });
     },
 
@@ -35661,8 +35969,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         _this4.getGallery();
       }).catch(function (err) {
-        _this4.errors = err.response.data.errors;
         _this4.loader.close();
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this4.$router.push('/');
+          _this4.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this4.errors = err.response.data.errors;
+        }
       });
     },
 
@@ -35683,7 +36001,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     /**
-     * Returns If the type of the file is image.
+     * Returns true If the type of the file is image, false otherwise.
      */
     isImage: function isImage(file) {
       return file.type.split('/')[0] === 'image';
@@ -35783,6 +36101,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_Form__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -35900,6 +36219,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
@@ -35971,10 +36291,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.errors = [];
         _this.loader.close();
       }).catch(function (err) {
-        _this.errors = err.response.data.errors;
         _this.loader.close();
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this.$router.push('/');
+          _this.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this.errors = err.response.data.errors;
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }
       });
     },
 
@@ -36020,8 +36350,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         _this2.loader.close();
       }).catch(function (err) {
-        _this2.addErrors = err.response.data.errors;
         _this2.loader.close();
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this2.$router.push('/');
+          _this2.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this2.addErrors = err.response.data.errors;
+        }
       });
     },
 
@@ -36054,6 +36394,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           Authorization: __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].getJWTtoken()
         }
       }).then(function () {
+        _this3.loader.close();
         _this3.editForm.description = '';
         _this3.$toast.open({
           message: 'Image Edited.',
@@ -36063,8 +36404,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this3.getGallery();
         _this3.editDialogue = false;
       }).catch(function (err) {
-        _this3.editDialogue = false;
-        _this3.errors = err.response.data.errors;
+        _this3.loader.close();
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this3.$router.push('/');
+          _this3.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this3.editDialogue = false;
+          _this3.errors = err.response.data.errors;
+        }
       });
     },
 
@@ -36080,6 +36432,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           Authorization: __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].getJWTtoken()
         }
       }).then(function () {
+        _this4.loader.close();
         _this4.deleteDialogue = false;
         _this4.$toast.open({
           message: 'Image Deleted.',
@@ -36088,8 +36441,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         _this4.getGallery();
       }).catch(function (err) {
-        _this4.errors = err.response.data.errors;
         _this4.loader.close();
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this4.$router.push('/');
+          _this4.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this4.errors = err.response.data.errors;
+        }
       });
     },
 
@@ -36127,9 +36490,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_Form__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(6);
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_auth_businessAuth__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -36175,6 +36537,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
@@ -36212,8 +36576,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
    */
   methods: {
     /**
-    * Validates and Submits a form.
-    */
+     * Validates and Submits a form.
+     */
     submitForm: function submitForm(formName) {
       var _this = this;
 
@@ -36224,9 +36588,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.alert_show = true;
             _this.error_show = false;
           }).catch(function (e) {
-            _this.alert_show = false;
-            _this.error_show = false;
-            _this.errors = e;
+            if (e.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(e.response.data.errors)) {
+              __WEBPACK_IMPORTED_MODULE_3__services_auth_businessAuth__["a" /* default */].removeData();
+              _this.$router.push('/');
+              _this.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              _this.alert_show = false;
+              _this.error_show = false;
+              _this.errors = e;
+            }
           });
         }
       });
@@ -36490,6 +36864,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EndPoints__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_EventBus__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -36546,6 +36921,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
@@ -36596,9 +36972,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         loader.close();
       }).catch(function (err) {
-        _this.error = true;
-        _this.message = err.response ? err.response.data.errors.join(', ') : err.message;
         loader.close();
+        if (err.response && JWT.checkErrors(err.reponse.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this.$router.push('/');
+          _this.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this.error = true;
+          _this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+        }
       });
     },
 
@@ -36626,9 +37012,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this2.message = res.data.message;
         _this2.getTransactions();
       }).catch(function (err) {
-        _this2.error = true;
-        _this2.message = err.response ? err.response.data.errors.join(', ') : err.message;
         loader.close();
+        if (err.reponse && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this2.$router.push('/');
+          _this2.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this2.error = true;
+          _this2.message = err.response ? err.response.data.errors.join(', ') : err.message;
+        }
       });
     },
 
@@ -36657,15 +37053,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this3.message = res.data.message;
         _this3.getTransactions();
       }).catch(function (err) {
-        _this3.error = true;
-        _this3.message = err.response ? err.response.data.errors.join(', ') : err.message;
         loader.close();
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].removeData();
+          _this3.$router.push('/');
+          _this3.$toast.open({
+            text: 'Your sessions has expired. Please login.',
+            position: 'bottom',
+            type: 'danger'
+          });
+        } else {
+          _this3.error = true;
+          _this3.message = err.response ? err.response.data.errors.join(', ') : err.message;
+        }
       });
     }
   },
   /**
    * Ran when component is mounted on DOM.
-   * Route back if user is not authenticated, otherqise Get All Transactions.
+   * Route back if user is not authenticated, otherwise Get All Transactions.
    */
   mounted: function mounted() {
     if (!__WEBPACK_IMPORTED_MODULE_2__services_auth_businessAuth__["a" /* default */].isAuthenticated()) {
@@ -37136,7 +37542,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.form.birthdate = _this.client.birthdate;
       }).catch(function (err) {
         loader.close();
-        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err)) {
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
           __WEBPACK_IMPORTED_MODULE_4__services_auth_clientAuth__["a" /* default */].removeData();
           _this.$router.push('/');
           _this.$toast.open({
@@ -37188,7 +37594,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           _this2.client = response.data;
           resolve();
         }).catch(function (err) {
-          if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err)) {
+          if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
             __WEBPACK_IMPORTED_MODULE_4__services_auth_clientAuth__["a" /* default */].removeData();
             _this2.$router.push('/');
             _this2.$toast.open({
@@ -37228,7 +37634,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this3.fillForm();
           }).catch(function (err) {
             _this3.loading = false;
-            if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err)) {
+            if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
               __WEBPACK_IMPORTED_MODULE_4__services_auth_clientAuth__["a" /* default */].removeData();
               _this3.$router.push('/');
               _this3.$toast.open({
@@ -42539,7 +42945,7 @@ exports.push([module.i, "\n.bus-signin-top {\n    background: #41295a; /* fallba
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n.business-forgot-top {\n    background: #41295a; /* fallback for old browsers */\n    background: -webkit-linear-gradient(to right, #2F0743, #41295a); /* Chrome 10-25, Safari 5.1-6 */\n    background: -webkit-linear-gradient(left, #2F0743, #41295a);\n    background: linear-gradient(to right, #2F0743, #41295a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n    margin-bottom: 2em;\n}\n", ""]);
+exports.push([module.i, "\n.business-forgot-top {\n  background: #41295a;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to right, #2F0743, #41295a);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: -webkit-linear-gradient(left, #2F0743, #41295a);\n  background: linear-gradient(to right, #2F0743, #41295a);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n  margin-bottom: 2em;\n}\n", ""]);
 
 /***/ }),
 /* 235 */
@@ -45188,7 +45594,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" "), _c('div', {
     staticClass: "columns is-mobile"
   }, [_c('div', {
-    staticClass: "column is-half-desktop is-10-mobile is-10-tablet\n                           is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop"
+    staticClass: "column is-half-desktop is-10-mobile is-10-tablet\n                               is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop"
   }, [(_vm.errors.length > 0) ? _c('div', {
     staticClass: "errors"
   }, _vm._l((_vm.errors), function(error) {
@@ -46724,7 +47130,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "columns is-mobile"
   }, [_c('div', {
-    staticClass: "column is-half-desktop is-10-mobile is-10-tablet\n                           is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop"
+    staticClass: "column is-half-desktop is-10-mobile is-10-tablet\n                               is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop"
   }, [(_vm.errors.length > 0) ? _c('div', {
     staticClass: "errors"
   }, _vm._l((_vm.errors), function(error) {
@@ -46786,7 +47192,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.submitForm('form')
       }
     }
-  }, [_vm._v("\n                            Forgot Password\n                        ")])], 1)], 1)], 1)])])])
+  }, [_vm._v("\n              Forgot Password\n            ")])], 1)], 1)], 1)])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('section', {
     staticClass: "business-forgot-top hero is-bold"
@@ -46796,7 +47202,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container"
   }, [_c('h1', {
     staticClass: "title extra-large white"
-  }, [_vm._v("\n                    Forgot Password\n                ")])])])])
+  }, [_vm._v("\n          Forgot Password\n        ")])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
