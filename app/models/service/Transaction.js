@@ -31,6 +31,10 @@ const transactionSchema = Schema({
     enum: ['cleared', 'refunded'],
     default: 'cleared',
   },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
   _deleted: {
     type: Boolean,
     default: false,

@@ -116,10 +116,12 @@ const serviceSuccess = {
   imageDelete: 'Image deleted succesfully!',
   serviceAdded: 'Service has been added successfully to your business',
   serviceEdited: 'Service has been edited successfully to your business',
-  serviceDeleted: 'Service has been deleted successfully',
-  offeringAdded: 'Offering has been added successfully to your business',
-  offeringEdited: 'Offering has been edited successfully to your business',
-  offeringDeleted: 'Offering has been deleted successfully',
+  serviceDeleted: 'Service has been deleted successfully.',
+  offeringAdded: 'Offering has been added successfully to your business.',
+  offeringEdited: 'Offering has been edited.',
+  offeringDeleted: 'Offering has been deleted successfully.',
+  couponAdd: 'Coupon added successfully.',
+  couponDelete: 'Coupon deleted successfully.',
 };
 
 const serviceFailure = {
@@ -170,6 +172,8 @@ const clientVerfication = {
 const reviewErrors = {
   invalidService: 'The service you are trying to review does not exist.',
   emptyRating: 'You must provide a rating in your review.',
+  outOfRangeRating: 'The rating must be between 1 & 5.',
+  descriptionTooLong: 'The review can have a maximum of 512 characters.',
   alreadyReviewedService: 'You have already reviewed this service.',
   invalidReview: 'This review does not exist.',
   userMismatchEdit: 'You did not create the review that you are trying to edit.',
@@ -212,7 +216,9 @@ const businessForgotPassword = {
 
 const serviceValidationCRUDErrors = {
   emptyName: 'Service Name is a required field',
+  nameTooLong: 'Service Name can be a maximum of 50 characters',
   emptyShortDescription: 'Service short description is a required field',
+  shortDescriptionTooLong: 'Service short description can be a maximum of 140 characters',
   invalidCategory: 'No such a category',
 };
 
@@ -223,13 +229,27 @@ const offeringValidationError = {
   emptyEndDate: 'Offering End Date is a required field',
   invalidEndDate: 'Invalid End Date',
   emptyLocation: 'Location is a required field',
+  emptyCapacity: 'Offering Capacity is a required field',
   invalidBranchID: 'Branch is invalid',
   invalidServiceID: 'Service is invalid',
   invalidService: 'No such a service',
   invalidOperation: 'Not authorized for doing such an operation',
-  invalidBranch: 'Your business doesnot have this branch',
+  invalidBranch: 'Your business does not have this branch',
   invalidOfferingID: 'Offering is invalid',
   invalidOffering: 'No such offering',
+};
+
+const couponValidationError = {
+  emptyCode: 'Coupon Code is a required field',
+  emptyValue: 'Coupon Discount is a required field',
+  emptyStartDate: 'Coupon Start date is a required field',
+  emptyEndDate: 'Coupon End date is a required field',
+  invalidValue: 'Coupon Discount must be between 1-100 %',
+  invalidDateFormat: 'Date must be in the format mm/dd/yyyy,mm-dd-yyyy or mm.dd.yyyy',
+  invalidEndDate: 'Invalid End Date',
+  invalidCoupon: 'No such coupon',
+  invalidCouponID: 'Coupon is invalid',
+  couponAlreadyExists: 'A coupon with the same code exists for this service',
 };
 
 
@@ -317,5 +337,6 @@ module.exports = {
   reviewSuccess,
   adminSuccess,
   searchErrors,
+  couponValidationError,
   adminFailures,
 };

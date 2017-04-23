@@ -46,25 +46,25 @@ describe('Search Test Suite', () => {
   const properOfferings = [];
 
 
-  after((done) => {
-    Service.collection.drop(() => {
-      Service.ensureIndexes(() => {
-        Branch.collection.drop(() => {
-          Branch.ensureIndexes(() => {
-            Category.collection.drop(() => {
-              Category.ensureIndexes(() => {
-                Business.collection.drop(() => {
-                  Business.ensureIndexes(() => {
-                    done();
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
+  // after((done) => {
+  //   Service.collection.drop(() => {
+  //     Service.ensureIndexes(() => {
+  //       Branch.collection.drop(() => {
+  //         Branch.ensureIndexes(() => {
+  //           Category.collection.drop(() => {
+  //             Category.ensureIndexes(() => {
+  //               Business.collection.drop(() => {
+  //                 Business.ensureIndexes(() => {
+  //                   done();
+  //                 });
+  //               });
+  //             });
+  //           });
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
 
   before((done) => {
     Service.collection.drop(() => {
