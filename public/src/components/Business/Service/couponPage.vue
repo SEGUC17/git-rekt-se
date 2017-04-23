@@ -103,6 +103,14 @@
   export default {
     /**
      * Data used by this component.
+     * coupons: Available coupons.
+     * errors: Errors received from server.
+     * rules: Validation Rules used to validate input.
+     * dialog: true to show dialog, false otherwise.
+     * deleteDialog: true to show delete dialog, false otherwise.
+     * loader: Loader Object to display loading screen.
+     * couponToDelete: The Coupon chosen to delete.
+     * couponForm: Data to create a new coupon with.
      */
     data() {
       return {
