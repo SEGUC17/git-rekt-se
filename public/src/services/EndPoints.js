@@ -103,11 +103,14 @@ export const Service = () => {
 
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,
 
-
     viewService: serviceID => `${serviceBase}/${serviceID}`,
     viewRelatedServices: (categoryID, offset) => `${serviceBase}/category/${categoryID}/${offset}`,
     validateCoupon: `${bookingBase}/coupon/validate`,
     makeBooking: `${bookingBase}`,
+
+    viewCoupons: serviceID => `${serviceBase}/${serviceID}/coupons`,
+    addCoupon: serviceID => `${serviceBase}/${serviceID}/coupons/add`,
+    deleteCoupon: (serviceID, couponID) => `${serviceBase}/${serviceID}/coupons/delete/${couponID}`,
   };
 };
 

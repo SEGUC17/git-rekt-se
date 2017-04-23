@@ -118,6 +118,8 @@ const serviceSuccess = {
   offeringAdded: 'Offering has been added successfully to your business',
   offeringEdited: 'Offering has been edited successfully to your business',
   offeringDeleted: 'Offering has been deleted successfully',
+  couponAdd: 'Coupon added successfully!',
+  couponDelete: 'Coupon deleted succesfully!',
 };
 
 const serviceFailure = {
@@ -235,6 +237,19 @@ const offeringValidationError = {
   invalidOffering: 'No such offering',
 };
 
+const couponValidationError = {
+  emptyCode: 'Coupon Code is a required field',
+  emptyValue: 'Coupon Discount is a required field',
+  emptyStartDate: 'Coupon Start date is a required field',
+  emptyEndDate: 'Coupon End date is a required field',
+  invalidValue: 'Coupon Discount must be between 1-100 %',
+  invalidDateFormat: 'Date must be in the format mm/dd/yyyy,mm-dd-yyyy or mm.dd.yyyy',
+  invalidEndDate: 'Invalid End Date',
+  invalidCoupon: 'No such coupon',
+  invalidCouponID: 'Coupon is invalid',
+  couponAlreadyExists: 'A coupon with the same code exists for this service',
+};
+
 
 /**
  * Admin Strings
@@ -320,5 +335,6 @@ module.exports = {
   reviewSuccess,
   adminSuccess,
   searchErrors,
+  couponValidationError,
   adminFailures,
 };

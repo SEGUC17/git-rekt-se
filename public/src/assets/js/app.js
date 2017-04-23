@@ -9,6 +9,7 @@ import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
 import acceptbtn from '../../components/Admin/accept-btn.vue';
 import rejectbtn from '../../components/Admin/reject-btn.vue';
+import couponDeleteBtn from '../../components/Business/Service/coupon-delete.vue'
 import TopHero from '../../components/shared/gr-top-hero.vue';
 import clientRemoveBtn from '../../components/Admin/remove-client-btn.vue';
 import businessRemoveBtn from '../../components/Admin/remove-business-btn.vue';
@@ -26,6 +27,7 @@ Vue.component('client-remove-btn', clientRemoveBtn);
 Vue.component('business-remove-btn', businessRemoveBtn);
 Vue.component('category-actions-btns', CategoryActions);
 Vue.component('bus-trans-actions', TransactionsAction);
+Vue.component('coupon-delete-btn', couponDeleteBtn);
 Vue.component('gr-top-hero', TopHero);
 
 Vue.filter('moment', date => moment(date).format('dddd MMMM Do YYYY.'));

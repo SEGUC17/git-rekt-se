@@ -35,7 +35,8 @@
               </span>&nbsp;Delete
           </button>
 
-          <button class="button is-default level-item">
+          <button class="button is-default level-item"
+                  @click="showCoupons(service)">
               <span class="icon is-small">
                   <i class="fa fa-percent"></i>
               </span>&nbsp;Coupons
@@ -313,6 +314,14 @@
       },
 
       /*
+      * Get coupon page.
+      */
+
+      showCoupons(service) {
+        this.$router.push(this.couponsURL(service));
+      },
+
+      /*
       * Show Service deletion confirmation.
       * */
 
@@ -342,7 +351,7 @@
        * */
 
       couponsURL(service) {
-        return `/business/edit/${service._id}/coupons`;
+        return `/business/manage/services/${service._id}/coupons`;
       },
 
       editFilechanged(e) {
