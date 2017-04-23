@@ -49,7 +49,8 @@
               </span>&nbsp;Offerings
           </button>
 
-          <button class="button is-default level-item">
+          <button class="button is-default level-item"
+                  @click="showGallery(service)">
               <span class="icon is-small">
                   <i class="fa fa-picture-o"></i>
               </span>&nbsp;Gallery
@@ -331,6 +332,14 @@
       },
 
       /*
+      * Get Gallery page.
+      * */
+
+      showGallery(service) {
+        this.$router.push(this.galleryURL(service));
+      },
+
+      /*
       * Show Service deletion confirmation.
       * */
 
@@ -352,7 +361,7 @@
        * */
 
       galleryURL(service) {
-        return `/business/edit/${service._id}/gallery`;
+        return `/business/manage/services/${service._id}/gallery`;
       },
 
       /*

@@ -1,5 +1,5 @@
 <template>
-  <div class="bus-gallery-edit">
+  <div class="service-gallery-edit">
 
     <!-- Errors -->
     <div class="errors" v-if="errors.length>0">
@@ -22,8 +22,8 @@
             </figure>
           </div>
           <div class="card-content" v-if="image.description">
-           <p>
-             {{ image.description }}
+            <p>
+              {{ image.description }}
            </p>
           </div>
           <div class="card-footer">
@@ -108,7 +108,7 @@
 </template>
 <script>
   import axios from 'axios';
-  import { Business } from '../../../services/EndPoints';
+  import { Service } from '../../../services/EndPoints';
   import businessAuth from '../../../services/auth/businessAuth';
   import Form from '../../../services/Form';
 
@@ -141,8 +141,8 @@
     methods: {
 
       /*
-      * Creates a new loader.
-      * */
+       * Creates a new loader.
+       * */
 
       setupLoader() {
         this.loader = this.$loading({
@@ -151,12 +151,12 @@
       },
 
       /*
-      * Get Images in current business gallery.
-      * */
+       * Get Images in current business gallery.
+       * */
 
       getGallery() {
         this.setupLoader();
-        axios.get(Business().viewGallery, {
+        axios.get(Service().viewGallery(this.$route.params.id), {
           headers: {
             Authorization: businessAuth.getJWTtoken(),
           },
@@ -167,6 +167,7 @@
               this.loader.close();
             })
             .catch((err) => {
+              console.log(err);
               this.errors = err.response.data.errors;
               this.loader.close();
               document.body.scrollTop = 0;
@@ -175,8 +176,8 @@
       },
 
       /*
-      * Add new Image form submit.
-      * */
+       * Add new Image form submit.
+       * */
 
       submitAddForm() {
         if (this.addForm.path) {
@@ -196,12 +197,12 @@
       },
 
       /*
-      * Add Image to business gallery.
-      * */
+       * Add Image to business gallery.
+       * */
 
       addImage(data) {
         this.setupLoader();
-        axios.post(Business().addImage, data, {
+        axios.post(Service().addImage(this.$route.params.id), data, {
           headers: {
             Authorization: businessAuth.getJWTtoken(),
           },
@@ -224,8 +225,8 @@
       },
 
       /*
-      * Show the edit image dialog.
-      * */
+       * Show the edit image dialog.
+       * */
 
       showDeleteDialog(imageID) {
         this.deleteDialogue = true;
@@ -233,8 +234,8 @@
       },
 
       /*
-      * Show the delete image dialog.
-      * */
+       * Show the delete image dialog.
+       * */
       showEditDialog(image) {
         this.editDialogue = true;
         this.imageToEdit = image._id;
@@ -242,11 +243,11 @@
       },
 
       /*
-      * Edit image with {imageID}.
-      * */
+       * Edit image with {imageID}.
+       * */
       editImage() {
         this.setupLoader();
-        axios.post(Business().editImage(this.imageToEdit), this.editForm, {
+        axios.post(Service().editImage(this.$route.params.id, this.imageToEdit), this.editForm, {
           headers: {
             Authorization: businessAuth.getJWTtoken(),
           },
@@ -268,12 +269,12 @@
       },
 
       /*
-      * Delete image with {imageID}.
-      * */
+       * Delete image with {imageID}.
+       * */
 
       deleteImage() {
         this.setupLoader();
-        axios.post(Business().deleteImage(this.imageToDelete), {}, {
+        axios.post(Service().deleteImage(this.$route.params.id, this.imageToDelete), {}, {
           headers: {
             Authorization: businessAuth.getJWTtoken(),
           },
@@ -294,8 +295,8 @@
       },
 
       /*
-      * File upload handler.
-      * */
+       * File upload handler.
+       * */
 
       fileChanged(e) {
         const files = e.target.files || e.dataTransfer.files;
@@ -311,8 +312,8 @@
       },
 
       /*
-      * Returns If the type of the file is image.
-      * */
+       * Returns If the type of the file is image.
+       * */
 
       isImage(file) {
         return file.type.split('/')[0] === 'image';
@@ -320,3 +321,9 @@
     },
   };
 </script>
+
+<style>
+  .image-buttons {
+    margin-left: 1em;
+  }
+</style>

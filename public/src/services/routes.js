@@ -20,18 +20,15 @@ import confirmEmail from '../components/Client/confirmEmail.vue';
 import clientSignUp from '../components/Client/signup.vue';
 import loginSelect from '../components/pages/SharedLogin/loginSelect.vue';
 import businessLogin from '../components/Business/login.vue';
-<<<<<<< HEAD
-import serviceGallery from '../components/Service/gallery.vue';
-=======
+import serviceGallery from '../components/Business/manage/service-gallery.vue';
 import businessViewTransactions from '../components/Business/viewTransactions.vue';
->>>>>>> 8a46ab73a16b09ecb0f8123b684b47a73b493a72
 import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
 import Coupon from '../components/Business/Service/couponPage.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 import clientViewTransactions from '../components/Client/viewTransactions.vue';
-import notfound from '../components/pages/404.vue';
+import notFound from '../components/pages/404.vue';
 import businessManagement from '../components/Business/manage/management.vue';
 import editServices from '../components/Business/Service/editServices.vue';
 import editOfferings from '../components/Business/Service/editOfferings.vue';
@@ -88,9 +85,6 @@ const routes = [{
   path: '/client/reset/:token',
   component: Reset,
 }, {
-  path: '/service/:id/gallery/edit',
-  component: serviceGallery,
-}, {
   path: '/admin/login',
   component: adminLogin,
 }, {
@@ -120,7 +114,7 @@ const routes = [{
   component: reset,
 }, {
   path: '/404',
-  component: notfound,
+  component: notFound,
 }, {
   path: '/business/manage',
   component: businessManagement,
@@ -151,6 +145,9 @@ const routes = [{
   }, {
     path: 'services/:id/offerings',
     component: editOfferings,
+  }, {
+    path: 'services/:id/gallery',
+    component: serviceGallery,
   }, {
     path: 'bookings',
     component: businessViewTransactions,
