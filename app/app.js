@@ -3,6 +3,7 @@ const logger = require('morgan');
 const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const helmet = require('helmet');
 
 const jwtConfig = require('./services/shared/jwtConfig');
 const fbConfig = require('./services/shared/fbConfig');
@@ -15,6 +16,11 @@ const app = express();
 
 require('dotenv')
   .config();
+
+/**
+ * Helmet Security.
+ */
+app.use(helmet);
 
 /**
  * DEBUG MODE MIDDLEWARES.
