@@ -1,3 +1,9 @@
+/**
+ * A Wrapper Class for holding error occured while submiting form
+ * to the server.
+ * @export
+ * @class Errors
+ */
 export default class Errors {
   /**
    * Creates an instance of Errors.

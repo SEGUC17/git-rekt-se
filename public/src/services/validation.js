@@ -1,3 +1,7 @@
+/**
+ * This contains the Front-End Validation Rules.
+ */
+
 /*
  * Client Side Form Validation Schemas.
  * Async-validator.
@@ -148,6 +152,10 @@ export const clientSignUpValidation = {
     trigger: 'change',
   }],
 };
+
+/**
+ * Login Rules.
+ */
 export const loginRules = {
   email: [{
     required: true,
@@ -161,6 +169,9 @@ export const loginRules = {
   }],
 };
 
+/**
+ * Client Forgot Password Rules.
+ */
 export const clientForgotPassword = {
   password: [{
     required: true,
@@ -196,6 +207,10 @@ export const clientForgotPassword = {
     trigger: ['blur', 'change'],
   }],
 };
+
+/**
+ * Verified Business Sign Up Rules.
+ */
 export const verifiedBusinessSignupRules = {
   password: [{
     required: true,
@@ -262,6 +277,9 @@ export const verifiedBusinessSignupRules = {
   }],
 };
 
+/**
+ * Category Rules.
+ */
 export const categoryRules = {
   type: [{
     required: true,
@@ -273,6 +291,10 @@ export const categoryRules = {
     message: 'title is required.',
   }],
 };
+
+/**
+ * Client Forgot Password Mail Rules.
+ */
 export const clientForgotPasswordMail = {
   email: [{
     required: true,
@@ -287,6 +309,9 @@ export const clientForgotPasswordMail = {
   ],
 };
 
+/**
+ * Unverified Business SignUp Rules.
+ */
 export const businessAddCoupon = {
   code: [{
     required: true,
@@ -344,6 +369,9 @@ export const unverfiedBusinessSignupValidation = {
   }],
 };
 
+/**
+ * Client Edit Information Rules.
+ */
 export const clientEditInfoValidation = {
   email: [{
     message: 'Please Enter a valid email.',
@@ -390,6 +418,9 @@ export const clientEditInfoValidation = {
   }],
 };
 
+/**
+ * Forgot Password Validation Rules.
+ */
 export const forgotPasswordValidation = {
   email: [{
     required: true,
@@ -402,6 +433,9 @@ export const forgotPasswordValidation = {
   }],
 };
 
+/**
+ * Business Reset Password Rules.
+ */
 export const serviceRules = {
   name: [{
     required: true,

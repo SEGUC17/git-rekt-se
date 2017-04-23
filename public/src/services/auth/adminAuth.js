@@ -15,11 +15,16 @@ export default {
   },
 
   /**
-   * Login User.
-   * @param data The data to send in the request body.
-   * @param callBack The callback to axios.
+   * An Error first callback for handling login.
+   * @callback handler
+   * @param {Error} error
+   * @param {*} data
    */
-
+  /**
+   * Login User.
+   * @param {Object} data - The data to send in the request body.
+   * @param {handler} callBack - Handles/Updates the view after login fails or succeeds.
+   */
   login(data, callBack) {
     axios
       .post(Admin()
@@ -38,7 +43,7 @@ export default {
 
   /**
    * Logout User.
-   * @param {any} callBack The callback to axios.
+   * @param {handler} callBack - Handles/Updates the view after logout fails or succeeds.
    */
 
   logout(callBack) {
@@ -62,19 +67,17 @@ export default {
         callBack(err.response.data, null);
       });
   },
-
-  /*
-   * Get the JWT for Header.
-   * */
-
+  /**
+   * Returns the JWT Token in format `JWT TOKEN_HERE`.
+   * @returns {string}
+   */
   getJWTtoken() {
     return `JWT ${localStorage.getItem('admin_token')}`;
   },
 
-  /*
-   * Refresh the status of the user.
-   * */
-
+  /**
+   * Refreshes the status of the user.
+   */
   refreshAuth() {
     if (localStorage.getItem('admin_token')) {
       this.user.authenticated = true;
@@ -82,11 +85,18 @@ export default {
       this.user.authenticated = false;
     }
   },
-
+  /**
+   * Removes the data from localStorage.
+   */
+  removeData() {
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_email');
+    localStorage.removeItem('admin_id');
+  },
   /**
    * Return the status of the user.
+   * @returns {boolean} - true if the user is authenticated, false otherwise.
    */
-
   isAuthenticated() {
     this.refreshAuth();
     return this.user.authenticated;

@@ -89,14 +89,29 @@
 </template>
 
 <script>
+ /**
+  * This component allows a business to add and delete coupons
+  */
   import axios from 'axios';
   import moment from 'moment';
   import EventBus from '../../../services/EventBus';
   import { Service } from '../../../services/EndPoints';
   import businessAuth from '../../../services/auth/businessAuth';
   import { businessAddCoupon } from '../../../services/validation';
-
+  import JWTCheck from '../../../services/JWTErrors';
+  
   export default {
+    /**
+     * Data used by this component.
+     * coupons: Available coupons.
+     * errors: Errors received from server.
+     * rules: Validation Rules used to validate input.
+     * dialog: true to show dialog, false otherwise.
+     * deleteDialog: true to show delete dialog, false otherwise.
+     * loader: Loader Object to display loading screen.
+     * couponToDelete: The Coupon chosen to delete.
+     * couponForm: Data to create a new coupon with.
+     */
     data() {
       return {
         coupons: [],
@@ -119,8 +134,13 @@
         },
       };
     },
-
+    /**
+     * All Methods used by this component.
+     */
     methods: {
+      /**
+       * Fetch all coupons
+       */
       fetchCoupons() {
         this.loader = this.$loading({
           fullscreen: true,
@@ -133,12 +153,25 @@
               this.loader.close();
             })
             .catch((err) => {
-              this.errors = err.response.data.errors;
-              document.body.scrollTop = 0;
-              document.documentElement.scrollTop = 0;
               this.loader.close();
+              if(err.response && JWTCheck(err.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.errors = err.response.data.errors;
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+              }
             });
       },
+      /**
+       * Validate and submit form.
+       */
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -157,18 +190,34 @@
                     message: 'Coupon Added!',
                     type: 'is-success',
                   });
+                  this.loader.close();
                 })
                 .catch((err) => {
-                  this.addErrors = err.response.data.errors;
                   this.loader.close();
+                  if(err.response && JWTCheck(err.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.addErrors = err.response.data.errors;
+                  }
                 });
           }
         });
       },
+      /**
+       * Reset form.
+       */
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-
+      /**
+       * Delete a coupon
+       */
       deleteCoupon() {
         this.deleteDialog = false;
         axios.post(Service().deleteCoupon(this.couponToDelete._service,
@@ -183,16 +232,33 @@
               this.fetchCoupons();
             })
             .catch((err) => {
-              this.errors = err.response.data.errors;
-              document.body.scrollTop = 0;
-              document.documentElement.scrollTop = 0;
+              if(err.response && JWTCheck(err.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.errors = err.response.data.errors;
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                  }
             });
       },
-
+      /**
+       * Format Date.
+       */
       formatDate(value, row) {
         return moment(value).format('MMMM Do YYYY');
       },
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * Route user back if he/she is not authenticated,
+     * otherwise emit and event and fetch coupons.
+     */
     mounted() {
       if (!businessAuth.isAuthenticated()) {
         this.$router.push('/404');

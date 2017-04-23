@@ -16,23 +16,32 @@ require('dotenv')
  * JWT Configuration.
  */
 
+/**
+ * JWT Client Options.
+ */
 const JWTOptionsClient = {
   jwtFromRequest: ExtractJWT.fromAuthHeader(),
   secretOrKey: process.env.JWT_KEY_CLIENT,
   passReqToCallback: true,
 };
 
+/**
+ * JWT Business Options.
+ */
 const JWTOptionsBusiness = Object.assign({}, JWTOptionsClient);
 JWTOptionsBusiness.secretOrKey = process.env.JWT_KEY_BUSSINES;
 
+/**
+ * JWT Admin Options.
+ */
 const JWTOptionsAdmins = Object.assign({}, JWTOptionsClient);
 JWTOptionsAdmins.secretOrKey = process.env.JWT_KEY_ADMINISTRATOR;
 
 /**
  * Extract JWT Token from the header.
  * https://github.com/themikenicholson/passport-jwt/blob/master/lib/auth_header.js
+ * @param {string} hdrValue.
  */
-
 const parseAuthHeader = (hdrValue) => {
   if (typeof hdrValue !== 'string') {
     return null;
@@ -48,7 +57,6 @@ const parseAuthHeader = (hdrValue) => {
 /**
  * Client Authentication Strategy.
  */
-
 const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) => {
   Client.findOne({
     _id: payload.id,
@@ -87,7 +95,6 @@ const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) =>
 /**
  * Client Authentication Middleware.
  */
-
 const clientAuthMiddleware = (req, res, next) => {
   passport.authenticate('jwt_client', {
     session: false,
@@ -107,7 +114,6 @@ const clientAuthMiddleware = (req, res, next) => {
 /**
  * Business Authentication Strategy.
  */
-
 const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done) => {
   Business.findOne({
     _id: payload.id,
@@ -142,6 +148,9 @@ const businessStrategy = new JWTStrategy(JWTOptionsBusiness, (req, payload, done
     .catch(done);
 });
 
+/**
+ * Business Authentication Middleware.
+ */
 const businessAuthMiddleware = (req, res, next) => {
   passport.authenticate('jwt_bussiness', {
     session: false,
@@ -160,7 +169,6 @@ const businessAuthMiddleware = (req, res, next) => {
 /**
  * Administrator Authentication Strategy.
  */
-
 const adminStrategy = new JWTStrategy(JWTOptionsAdmins, (req, payload, done) => {
   Admin.findOne({
     _id: payload.id,
@@ -195,6 +203,9 @@ const adminStrategy = new JWTStrategy(JWTOptionsAdmins, (req, payload, done) => 
     .catch(done);
 });
 
+/**
+ * Admin Authentication Middleware.
+ */
 const adminAuthMiddleware = (req, res, next) => {
   passport.authenticate('jwt_administrator', {
     session: false,

@@ -113,6 +113,9 @@
 </template>
 
 <script>
+ /**
+  * This components allows the client to sign up.
+  */
   import Form from '../../services/Form';
   import resend from './resend.vue';
   import commonAuth from '../../services/auth/commonAuth';
@@ -121,6 +124,19 @@
   import {clientSignUpValidation} from '../../services/validation';
 
   export default {
+      /**
+       * Data used by the component.
+       * form: Data entered by the user and sent to the server.
+       * rules: Validation rules used to validate the data.
+       * showPassword: true to show user the password he entered, false otherwise.
+       * showConfirm: true to show user the password he entered, false otherwise.
+       * success: true if a successfull operation was executed, false otherwise.
+       * error: true if an error occured, false otherwise.
+       * info: true if an info needs to be visible to user, false otherwise.
+       * message: Messaged received from server or a message that needs to be displayed to user
+       * clientEmail: The current client's Email.
+       * loading: true if a request is sent and is being proccessed by server, false
+       */
     data() {
       clientSignUpValidation.confirmPassword[1].validator = clientSignUpValidation.confirmPassword[1]
           .validator.bind(this);
@@ -149,10 +165,19 @@
         loading: false,
       };
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+        /**
+         * Redirect to facebook sign up.
+         */
       redirectFacebook() {
         window.location.href = Client().facebookRedirect;
       },
+      /**
+       * Validates and submits the form.
+       */
       onClick() {
         this.info = false;
         this.success = false;
@@ -174,9 +199,15 @@
           }
         });
       },
+      /**
+       * Resets all fields of the form.
+       */
       onReset() {
         this.$refs.form.resetFields();
       },
+      /**
+       * Resends email.
+       */
       resendMail() {
         this.loading = true;
         this.success = false;
@@ -193,6 +224,12 @@
         });
       },
     },
+    /**
+     * Ran when component is mounted.
+     * If user is authenticated route him back with a message,
+     * otherwise we check query parameters, whether there was an error,
+     * or a sign up with facebook was requested.
+     */
     mounted() {
       if (commonAuth.isAuthenticated()) {
         this.$router.push('/');
@@ -222,6 +259,9 @@
         this.message = 'These information where fetched from facebook, please fill the remaining fields.';
       }
     },
+    /**
+     * Sub-components used by this component.
+     */
     components: {
       resend,
     },

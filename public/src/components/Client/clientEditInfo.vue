@@ -91,14 +91,29 @@
 </template>
 
 <script>
+  /**
+   * This component allows the client to Edit his Info.
+   */
   import axios from 'axios';
   import Form from '../../services/Form';
   import Errors from '../../services/Errors';
-  import {Client} from '../../services/EndPoints';
+  import { Client } from '../../services/EndPoints';
   import clientAuth from '../../services/auth/clientAuth';
-  import {clientEditInfoValidation} from '../../services/validation';
+  import { clientEditInfoValidation } from '../../services/validation';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
+    /**
+     * The data used by the component.
+     * form: The data that the user enters and is sent to the server.
+     * rules: The validation rules for validating user input.
+     * client: The client data fetched from server.
+     * showPassword: Used to show the user the password he/she entered.
+     * showConfirm: Used to show the user the password he/she entered.
+     * error: true if an error occured, false otherwise.
+     * success: true if a successfull operation was excuted, false otherwise.
+     * successMessage: Message received from the server.
+     */
     data() {
       return {
         form: new Form({
@@ -121,6 +136,11 @@
         successMessage: '',
       };
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * Client is only allowed to edit info, if he is logged in.
+     * If client is not authenticated route him back with a message.
+     */
     mounted() {
       if (!clientAuth.isAuthenticated()) {
         this.$router.push('/404');
@@ -128,7 +148,13 @@
       }
       this.fillForm();
     },
+    /**
+     * Methods Used by the component.
+     */
     methods: {
+      /**
+       * Fetches data from the server and displays it.
+       */
       fillForm() {
         const loader = this.$loading({
           fullscreen: true,
@@ -146,10 +172,23 @@
             })
             .catch((err) => {
               loader.close();
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+              if (err.response && JWTCheck(err.response.data.errors)){
+                clientAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  message: 'Session Expired, please login',
+                  type: 'is-danger',
+                  position: 'bottom',
+                });
+              } else {
+                this.error = true;
+                this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+              }
             });
       },
+      /**
+       * Shows or Hides the password.
+       */
       onShowPassword() {
         if (this.showPassword === 'text') {
           this.showPassword = 'password';
@@ -157,6 +196,9 @@
           this.showPassword = 'text';
         }
       },
+      /**
+       * Shows or Hides the password.
+       */
       onShowConfirmPassword() {
         if (this.showConfirm === 'text') {
           this.showConfirm = 'password';
@@ -164,6 +206,9 @@
           this.showConfirm = 'text';
         }
       },
+      /**
+       * Fetch the client info.
+       */
       getClient() {
         return new Promise((resolve, reject) => {
           axios.get(Client().getInfo(clientAuth.user.userID()), {
@@ -175,12 +220,25 @@
                 this.client = response.data;
                 resolve();
               }).catch((err) => {
-            this.error = true;
-            this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
-            reject(err);
+                if (err.response && JWTCheck(err.response.data.errors)) {
+                  clientAuth.removeData();
+                  this.$router.push('/');
+                  this.$toast.open({
+                    message: 'Session Expired, please login',
+                    type: 'is-danger',
+                    position: 'bottom',
+                  });
+                } else {
+                  this.error = true;
+                  this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+                  reject(err);
+                }
           });
         });
       },
+      /**
+       * Submit the form when the user clicks it.
+       */
       submitForm(formName) {
         this.success = false;
         this.successMessage = '';
@@ -199,13 +257,26 @@
                   this.successMessage = data.message;
                   this.fillForm();
                 }).catch((err) => {
-              this.loading = false;
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+                  this.loading = false;
+                  if(err.response && JWTCheck(err.response.data.errors)) {
+                    clientAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      message: 'Session Expired, please login',
+                      type: 'is-danger',
+                      position: 'bottom',
+                    });
+                  } else {
+                      this.error = true;
+                      this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
+                  }
             });
           }
         });
       },
+      /**
+       * Checkes if form has errors.
+       */
       hasErrors() {
         const errors = this.$refs.form.$children.filter(el => el.validateMessage.length > 0);
         return errors.length > 0;

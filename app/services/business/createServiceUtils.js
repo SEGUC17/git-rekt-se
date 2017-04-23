@@ -2,6 +2,9 @@ const Category = require('../../models/service/Category');
 
 /**
  * Utitlies for creating services.
+ * @param {[mongoose.ObjectId]} categories - Array of Category IDs.
+ * @returns {Promise} - Resolves if finding all categories was successfull,
+ * otherwise rejects.
  */
 
 const checkCategories = (categories) => {

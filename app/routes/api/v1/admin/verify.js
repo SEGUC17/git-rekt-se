@@ -13,15 +13,25 @@ const Mailer = require('../../../../services/shared/Mailer');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
 const router = express.Router();
+
+/**
+ * Change Mongoose Promise Library with the default one.
+ */
 mongoose.Promise = Promise;
 
+/**
+ * Bodyparser Middleware.
+ */
 router.use(bodyParser.json());
+
+/**
+ * Express Validator Middleware.
+ */
 router.use(expressValidator({}));
 
 /**
- * View all business application.
+ * Admin View all business application.
  */
-
 router.post('/business', AdminAuth, (req, res, next) => {
   Business.find({
     _deleted: false,
@@ -35,11 +45,12 @@ router.post('/business', AdminAuth, (req, res, next) => {
     })
     .catch(err => next(err));
 });
-/**
- * Accept the application of the business.
- * Send an email with token to continue signup.
- */
 
+/**
+ * Admin Accepts the application of the business.
+ * Send an email with token to continue signup.
+ * `id` is the Business' ID.
+ */
 router.post('/confirm/:id', AdminAuth, (req, res, next) => {
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
   req.getValidationResult()
@@ -91,10 +102,10 @@ router.post('/confirm/:id', AdminAuth, (req, res, next) => {
 });
 
 /**
- * Deny the application of the business.
+ * Admin Denies the application of the business.
  * Send an email to inform of denial.
+ * `id` is the Business' ID.
  */
-
 router.post('/deny/:id', AdminAuth, (req, res, next) => {
   req.checkParams(AdminValidator.adminConfirmBusinessValidation);
   req.getValidationResult()

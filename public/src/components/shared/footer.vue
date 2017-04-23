@@ -20,6 +20,9 @@
 </template>
 
 <script>
+  /**
+   * This component is represent the footer.
+   */
   export default {};
 </script>
 

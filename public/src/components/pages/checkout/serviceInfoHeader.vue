@@ -14,7 +14,14 @@
 </template>
 
 <script>
-  export default{
+  /**
+   * Represents the Service Info.
+   */
+  export default {
+    /** 
+     * Props used by the component.
+     * service: The Service.
+     */
     props: ['service'],
   };
 </script>

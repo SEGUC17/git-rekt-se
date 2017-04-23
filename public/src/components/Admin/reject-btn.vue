@@ -3,19 +3,37 @@
 </template>
 
 <script>
+ /**
+  * This component represents a `Reject` button.
+  */
   import axios from 'axios';
   import { Admin } from '../../services/EndPoints';
   import adminAuth from '../../services/auth/adminAuth';
   import EventBus from '../../services/EventBus';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
+    /**
+     * Props used by this component.
+     * data: Data that can be displayed in the row.
+     * row: row Object representing the current row.
+     */
     props: ['data', 'row'],
+    /**
+     * Data used by the component.
+     */
     data() {
       return {
         acceptDialogue: false,
       };
     },
+    /**
+     * Methods used by this component.
+     */
     methods: {
+      /**
+       * Show a confirm dialog
+       */
       showRejectDialog() {
         this.$dialog.confirm({
           title: 'Reject Request',
@@ -27,7 +45,9 @@
           onConfirm: this.reject,
         });
       },
-
+      /**
+       * Reject a Business.
+       */
       reject() {
         const loader = this.$loading({
           fullscreen: true,
@@ -48,10 +68,21 @@
               loader.close();
             })
             .catch((err) => {
-              this.errors = err.response.data.errors;
-              document.body.scrollTop = 0;
-              document.documentElement.scrollTop = 0;
               loader.close();
+              if (JWTCheck(err)){
+                AdminAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  message: 'Session Expired, please login',
+                  type: 'is-danger',
+                  position: 'bottom',
+                });
+              } else {
+                this.errors = err.response.data.errors;
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+              }
+              
             });
       },
     },

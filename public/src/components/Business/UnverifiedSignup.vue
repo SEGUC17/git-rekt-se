@@ -56,6 +56,9 @@
 </template>
 
 <script>
+ /**
+  * This component allows a Business to sign up to the platform.
+  */
   import Form from '../../services/Form';
   import {Business} from '../../services/EndPoints';
   import {
@@ -63,6 +66,14 @@
   } from '../../services/validation';
 
   export default {
+      /**
+       * Data used by this component.
+       * form: Holds the data entered by user and sent to server.
+       * rules2: Validation Rules used to validate the input.
+       * errors: Errors received from the server.
+       * success: true if Sign Up is successful, false otherwise.
+       * signupSuccess: Message to display when sign up is successful.
+       */
     data() {
       return {
         form: new Form({
@@ -77,7 +88,13 @@
         signupSuccess: '',
       };
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+        /**
+         * Validates and Submits a form.
+         */
       submitForm(formName) {
         this.errors = [];
         this.$refs[formName].validate((valid) => {
@@ -96,7 +113,9 @@
           }
         });
       },
-
+      /**
+       * Resets the form.
+       */
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },

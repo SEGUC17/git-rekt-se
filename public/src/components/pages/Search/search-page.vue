@@ -112,6 +112,9 @@
 </template>
 
 <script>
+ /**
+  * This component represents a set of search results.
+  */
   import Axios from 'axios';
 
   import SearchResult from './search-result.vue';
@@ -119,6 +122,17 @@
   import Locations from '../Index/mainLocations';
 
   export default {
+    /**
+     * Data used by this component.
+     * noResults: true if no results were found, false otherwise.
+     * locationsDB: Pre-defined locations.
+     * count: Result count for pagination.
+     * sortOptions: Sorting Options to sort the data.
+     * currentQuery: Current query param.
+     * priceRange: Price Range fo filtering.
+     * newQuery: New Search Query.
+     * errors: Errors received from the server.
+     */
     data() {
       return {
         noResults: false,
@@ -151,15 +165,28 @@
         errors: [],
       };
     },
+    /**
+     * Sub-components user by this component.
+     */
     components: {
       SearchResult,
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * Get Locations and execute the required query.
+     */
     mounted() {
       this.getLocations();
       this.newQuery.offset = 1;
       this.execQuery();
     },
+    /**
+     * Methods used by this component.
+     */
     methods: {
+        /**
+         * Update the URL when query changes.
+         */
       updateURL() {
         const params = {};
         Object.keys(this.currentQuery).forEach((key) => {
@@ -173,6 +200,9 @@
           query: params,
         });
       },
+      /**
+       * Gets the location from server.
+       */
       getLocations() {
         Axios
             .get(Visitor().locations)
@@ -183,6 +213,9 @@
               this.locationsDB = Locations;
             });
       },
+      /**
+       * Stringify the query. Changes the query to a URI Enconded string.
+       */
       stringifyQuery(query) {
         let queryString = '?';
         if (!query.offset === undefined) {
@@ -209,6 +242,9 @@
         }
         return queryString;
       },
+      /**
+       * Change the page number.
+       */
       changePage(newPage) {
         this.currentQuery.offset = newPage;
         this.updateURL();
@@ -220,6 +256,9 @@
       createFilter(queryString) {
         return location => ((location.value).toLowerCase().indexOf(queryString.toLowerCase()) === 0);
       },
+      /**
+       * Search with the given data.
+       */
       performSearch() {
         this.newQuery.offset = 1;
         this.newQuery.min = Math.min(...this.priceRange);
@@ -230,6 +269,9 @@
         this.updateURL();
         this.execQuery();
       },
+      /**
+       * Sends a request.
+       */
       execQuery() {
         this.errors = [];
         const loader = this.$loading({
