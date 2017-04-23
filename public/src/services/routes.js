@@ -11,7 +11,7 @@ import clientEditInfo from '../components/Client/clientEditInfo.vue';
 import SearchPage from '../components/pages/Search/search-page.vue';
 import Checkout from '../components/pages/checkout/checkout.vue';
 import clientLogin from '../components/Client/login.vue';
-import businessGallery from '../components/Business/businessGallery.vue';
+import businessGallery from '../components/Business/manage/bus-gallery.vue';
 import businessEditInfo from '../components/Business/editInfo.vue';
 import verifiedBusinessSignup from '../components/Business/verifiedBusinessSignup.vue';
 import adminBusiness from '../components/Admin/unverifiedBusinessPage.vue';
@@ -147,14 +147,13 @@ const routes = [{
   }, {
     path: 'bookings',
     component: businessViewTransactions,
-  }],
-}, {
-  path: '/business/:id',
-  component: businessPage,
-}, {
-  path: '/*',
-  redirect: '/404',
-}];
+  }] }, {
+    path: '/business/:id',
+    component: businessPage,
+  }, {
+    path: '/*',
+    redirect: '/404',
+  }];
 
 const router = new VueRouter({
   routes,
