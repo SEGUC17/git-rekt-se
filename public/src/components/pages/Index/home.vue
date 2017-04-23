@@ -215,6 +215,7 @@
 
     .gr-content {
         background-image: url('/assets/imgs/idx_bg.jpg');
+        background-size:cover;
         margin-bottom: 2em;
     }
 
