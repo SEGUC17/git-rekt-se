@@ -105,7 +105,10 @@ export const Service = () => {
     editReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/edit`,
     deleteReview: (serviceID, reviewID) => `${serviceBase}/${serviceID}/review/${reviewID}/delete`,
 
+    viewGallery: serviceID => `${serviceBase}/${serviceID}/gallery`,
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,
+    editImage: (serviceID, imageID) => `${serviceBase}/${serviceID}/gallery/edit/${imageID}`,
+    deleteImage: (serviceID, imageID) => `${serviceBase}/${serviceID}/gallery/delete/${imageID}`,
 
     viewService: serviceID => `${serviceBase}/${serviceID}`,
     viewRelatedServices: (categoryID, offset) => `${serviceBase}/category/${categoryID}/${offset}`,

@@ -557,6 +557,14 @@ const businessdeletionValidation = {
  * Client validation.
  */
 
+const serviceViewGalleryValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+};
+
 const serviceAddImageValidation = {
   id: {
     isMongoId: {
@@ -765,6 +773,7 @@ const validation = {
   businessdeletionValidation,
   forgotPasswordValidation,
   serviceBookingValidation,
+  serviceViewGalleryValidation,
   couponAddValidation,
   couponDeleteValidation,
   couponGetValidation,
