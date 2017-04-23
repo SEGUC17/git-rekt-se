@@ -23,7 +23,7 @@ import businessViewTransactions from '../components/Business/viewTransactions.vu
 import categoryCRUD from '../components/Admin/editCategory.vue';
 import removeClient from '../components/Admin/removeClient.vue';
 import adminLogin from '../components/Admin/login.vue';
-import Coupon from '../components/Service/couponPage.vue';
+import Coupon from '../components/Business/Service/couponPage.vue';
 import adminDashboard from '../components/Admin/dashboard/dashboard.vue';
 import clientViewTransactions from '../components/Client/viewTransactions.vue';
 import notfound from '../components/pages/404.vue';
@@ -135,6 +135,9 @@ const routes = [{
     path: 'services/edit',
     component: editServices,
   }, {
+    path: 'services/:ser_id/coupons',
+    component: Coupon,
+  }, {
     path: 'bookings',
     component: businessViewTransactions,
   }],
@@ -144,9 +147,6 @@ const routes = [{
 }, {
   path: '/business/edit/:id/offerings',
   component: editOfferings,
-}, {
-  path: '/business/services/:ser_id/coupons',
-  component: Coupon,
 }, {
   path: '/business/:id',
   component: businessPage,

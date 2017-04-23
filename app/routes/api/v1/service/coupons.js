@@ -62,6 +62,7 @@ router.get('/:id/coupons', BusinessAuth, (req, res, next) => {
     })
     .catch(err => next([err]));
 });
+
 /**
  * Add Coupon to a service.
  */
