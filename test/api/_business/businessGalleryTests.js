@@ -19,50 +19,48 @@ describe('Business Gallery CRUD Tests', () => {
       Business.ensureIndexes(() => {
         sampleBusiness = BusinessesSeed[4];
         new Business(sampleBusiness)
-                    .save()
-                    .then((data) => {
-                      dbBusiness = data;
-                      req = supertest(app)
-                            .post('/api/v1/business/auth/verified/login')
-                            .send(sampleBusiness)
-                            .end((err, res) => {
-                              token = res.body.token;
-                              done();
-                            });
-                    })
-                    .catch(done);
+          .save()
+          .then((data) => {
+            dbBusiness = data;
+            req = supertest(app)
+              .post('/api/v1/business/auth/verified/login')
+              .send(sampleBusiness)
+              .end((err, res) => {
+                token = res.body.token;
+                done();
+              });
+          })
+          .catch(e => done(e));
       });
     });
   });
 
   it('should create an image, and return a confirmation message: Image added succesfully!', (done) => {
     req = supertest(app)
-            .post(`/api/v1/business/${dbBusiness._id}/gallery/add`)
-            .field('description', 'sample Image Description')
-            .attach('path', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
-            .set('Authorization', `JWT ${token}`)
-            .expect('Content-Type', /json/)
-            .expect(200)
-            .end((err, result) => {
-              if (err) {
-                done(err);
-              } else {
-                Business.findOne({
-                  _id: dbBusiness._id,
-                })
-                        .exec()
-                        .then((data) => {
-                          chai.expect(data.gallery.length)
-                                .to.equal(1);
-                          chai.expect(result.body.message)
-                                .to.equal('Image added successfully!');
-                          done();
-                        })
-                        .catch(() => {
-                          done(err);
-                        });
-              }
-            });
+      .post(`/api/v1/business/${dbBusiness._id}/gallery/add`)
+      .field('description', 'sample Image Description')
+      .attach('path', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
+      .set('Authorization', `JWT ${token}`)
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .end((err, result) => {
+        if (err) {
+          done(err);
+        } else {
+          Business.findOne({
+            _id: dbBusiness._id,
+          })
+            .exec()
+            .then((data) => {
+              chai.expect(data.gallery.length)
+                .to.equal(1);
+              chai.expect(result.body.message)
+                .to.equal(Strings.serviceSuccess.imageAdd);
+              done();
+            })
+            .catch(e => done(e));
+        }
+      });
   });
 
   it('should not create an image if an invalid id is given, and return error message: Business not found!', (done) => {
@@ -100,37 +98,37 @@ describe('Business Gallery CRUD Tests', () => {
     });
     dbBusiness.gallery.push(newImage);
     dbBusiness.save()
-            .then((newbus) => {
-              const newim = newbus.gallery.find(element => `${element.path}` === 'sampleImagePath');
-              req = supertest(app)
-                    .post(`/api/v1/business/${dbBusiness._id}/gallery/edit/${newim._id}`)
-                    .set('Authorization', `JWT ${token}`)
-                    .send({
-                      description: 'API Description is working',
-                    })
-                    .expect(200)
-                    .end((err, res) => {
-                      if (err) {
-                        done(err);
-                      } else {
-                        Business.findOne({
-                          _id: dbBusiness._id,
-                        })
-                                .exec()
-                                .then((data) => {
-                                  chai.expect(res.body.message)
-                                        .to.equal(Strings.serviceSuccess.imageEdit);
-                                  const chaiImage =
-                                        data.gallery.find(element => `${element._id}` === `${newim._id}`);
-                                  chai.expect(chaiImage.description)
-                                        .to.equal('API Description is working');
-                                  done();
-                                })
-                                .catch(() => done(err));
-                      }
-                    });
-            })
-            .catch(err => done(err));
+      .then((newbus) => {
+        const newim = newbus.gallery.find(element => `${element.path}` === 'sampleImagePath');
+        req = supertest(app)
+          .post(`/api/v1/business/${dbBusiness._id}/gallery/edit/${newim._id}`)
+          .set('Authorization', `JWT ${token}`)
+          .send({
+            description: 'API Description is working',
+          })
+          .expect(200)
+          .end((err, res) => {
+            if (err) {
+              done(err);
+            } else {
+              Business.findOne({
+                _id: dbBusiness._id,
+              })
+                .exec()
+                .then((data) => {
+                  chai.expect(res.body.message)
+                    .to.equal(Strings.serviceSuccess.imageEdit);
+                  const chaiImage =
+                    data.gallery.find(element => `${element._id}` === `${newim._id}`);
+                  chai.expect(chaiImage.description)
+                    .to.equal('API Description is working');
+                  done();
+                })
+                .catch(e => done(e));
+            }
+          });
+      })
+      .catch(err => done(err));
   });
 
   it('should delete an image description, and return success message: Image deleted succesfully!', (done) => {

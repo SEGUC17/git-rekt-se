@@ -1,66 +1,83 @@
 <template>
-    <header>
-        <nav class="nav">
-            <div class="container">
-                <!-- Navigation bar Left -->
-                <div class="nav-left">
-                    <router-link to="/#" class="logo nav-item" @click.native="active = false">
-                        <img src="assets/imgs/logo.svg" alt="logo">
-                    </router-link>
-                </div>
+  <header>
+    <nav class="nav">
+      <div class="container">
+        <!-- Navigation bar Left -->
+        <div class="nav-left">
+          <router-link to="/#" class="logo nav-item" @click.native="active = false">
+            <img src="assets/imgs/logo.svg" alt="logo">
+          </router-link>
+        </div>
 
-                <span class="nav-toggle" @click="active = !active">
+        <span class="nav-toggle" @click="active = !active">
                     <span></span>
                     <span></span>
                     <span></span>
                 </span>
 
-                <!-- Navigation bar Right -->
-                <div class="nav-right nav-menu" :class="active? 'is-active' : ''">
+        <!-- Navigation bar Right -->
+        <div class="nav-right nav-menu" :class="active? 'is-active' : ''">
 
-                    <router-link to="/#" @click.native="active = false" class="nav-item">Home</router-link>
-                    <router-link to="/about" @click.native="active = false" class="nav-item">About Us</router-link>
-                    <router-link to="/categories" @click.native="active = false" class="nav-item">Categories
-                    </router-link>
-                    <router-link to="/business/apply" @click.native="active = false" class="nav-item">Apply
-                    </router-link>
+          <router-link to="/#" @click.native="active = false" class="nav-item">Home</router-link>
+          <router-link to="/about" @click.native="active = false" class="nav-item">About Us
+          </router-link>
+          <router-link to="/categories" @click.native="active = false" class="nav-item">Categories
 
-                    <div class="nav-item">
+          </router-link>
+          <router-link to="/business/apply" @click.native="active = false" class="nav-item">Apply
 
-                        <router-link class="button is-default gr-nav-button" to="/client/signup"
-                                     v-if="!isAuthenticated" @click.native="active = false">
+          </router-link>
+
+          <div class="nav-item">
+
+            <router-link class="button is-default gr-nav-button" to="/client/signup"
+                         v-if="!isAuthenticated" @click.native="active = false">
                             <span class="icon">
                                 <i class="fa fa-user"></i>
                             </span>
-                            <span>Signup</span>
-                        </router-link>
+              <span>Signup</span>
+            </router-link>
 
-                        <router-link class="button is-danger gr-nav-button" to="/login"
-                                     v-if="!isAuthenticated" @click.native="active = false">
+            <router-link class="button is-danger gr-nav-button" to="/login"
+                         v-if="!isAuthenticated" @click.native="active = false">
                             <span class="icon">
                                 <i class="fa fa-sign-in"></i>
                             </span>
-                            <span>Login</span>
-                        </router-link>
+              <span>Login</span>
+            </router-link>
 
-                         <el-dropdown v-if="isClient" @command="handleProfile" menu-align="start" trigger="hover">
-                             <el-button type="success">
-                                 My Account<i class="el-icon-caret-bottom el-icon--right"></i>
-                             </el-button>
 
-                             <el-dropdown-menu slot="dropdown">
-                                 <el-dropdown-item command="edit">Edit Profile</el-dropdown-item>
-                                 <el-dropdown-item command="bookings">My Bookings</el-dropdown-item>
-                             </el-dropdown-menu>
-                         </el-dropdown>
+            <!-- Business Account Management-->
+            <router-link v-if="isBusiness" to="/business/manage" class="button is-success">
+              Manage
+            </router-link>
 
-                        <logout-btn class="is-danger gr-nav-button" v-if="isAuthenticated" title="Logout"></logout-btn>
-                    </div>
+            <!-- Admin Dashboard-->
+            <router-link v-if="isAdmin" to="/admin/dashboard" class="button is-info">
+              Dashboard
+            </router-link>
 
-                </div>
-            </div>
-        </nav>
-    </header>
+            <!-- Client Account -->
+            <el-dropdown v-if="isClient" @command="handleProfile" menu-align="start"
+                         trigger="hover">
+              <el-button type="success">
+                My Account<i class="el-icon-caret-bottom el-icon--right"></i>
+              </el-button>
+
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="edit">Edit Profile</el-dropdown-item>
+                <el-dropdown-item command="bookings">My Bookings</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+
+            <logout-btn class="is-danger gr-nav-button" v-if="isAuthenticated"
+                        title="Logout"></logout-btn>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+  </header>
 </template>
 
 <script>
@@ -70,6 +87,8 @@
    */
   import CommonAuth from '../../services/auth/commonAuth';
   import ClientAuth from '../../services/auth/clientAuth';
+  import BusinessAuth from '../../services/auth/businessAuth';
+  import AdminAuth from '../../services/auth/adminAuth';
   import EventBus from '../../services/EventBus';
   import LogoutBtn from './logout.vue';
 
@@ -82,6 +101,8 @@
         active: false,
         isAuthenticated: CommonAuth.isAuthenticated(),
         isClient: ClientAuth.isAuthenticated(),
+        isBusiness: BusinessAuth.isAuthenticated(),
+        isAdmin: AdminAuth.isAuthenticated(),
       };
     },
     /**
@@ -98,6 +119,8 @@
       EventBus.$on('UpdateNavigation', () => {
         this.isAuthenticated = CommonAuth.isAuthenticated();
         this.isClient = ClientAuth.isAuthenticated();
+        this.isBusiness = BusinessAuth.isAuthenticated();
+        this.isAdmin = AdminAuth.isAuthenticated();
         this.active = false;
       });
     },
@@ -112,20 +135,20 @@
 </script>
 
 <style>
-    .logo {
-        overflow: hidden;
-    }
+  .logo {
+    overflow: hidden;
+  }
 
-    .gr-nav-button {
-        margin: 10px;
-    }
+  .gr-nav-button {
+    margin: 10px;
+  }
 
-    .nav {
-        border-bottom: 1px solid #eee;
-    }
+  .nav {
+    border-bottom: 1px solid #eee;
+  }
 
-    .no-link {
-        color: white !important;
-    }
+  .no-link {
+    color: white !important;
+  }
 
 </style>

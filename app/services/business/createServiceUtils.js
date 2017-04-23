@@ -1,5 +1,4 @@
 const Category = require('../../models/service/Category');
-const Offering = require('../../models/service/Offering');
 
 /**
  * Utitlies for creating services.
@@ -21,24 +20,6 @@ const checkCategories = (categories) => {
   return Promise.all(results);
 };
 
-/**
- * Finds All Offerings.
- * @param {[mongoose.ObjectId]} offerings - Array of Offering IDs.
- * @returns {Promise} - Resolved if finding all Offerings was successfull,
- * otherwise rejects.
- */
-const returnBranches = (offerings) => {
-  const results = offerings.map(offering => new Promise((resolve, reject) => {
-    Offering.findOne({
-      _id: offering,
-    }).then((offeringDoc) => {
-      resolve(offeringDoc);
-    }).catch(reject);
-  }));
-  return Promise.all(results);
-};
-
 module.exports = {
   checkCategories,
-  returnBranches,
 };

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="business-edit-info">
+    <div class="business-edit-info box">
 
         <div class="errors" v-if="success">
             <el-alert @close="success = false" class="error" :title="message" type="success" show-icon></el-alert>

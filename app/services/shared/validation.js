@@ -14,6 +14,7 @@ const offeringValidationErrors = Strings.offeringValidationError;
 const adminValidationErrors = Strings.adminValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
 const reviewErrors = Strings.reviewErrors;
+const couponValidationErrors = Strings.couponValidationError;
 const businessValidationErrors = Strings.bussinessValidationErrors;
 
 /**
@@ -82,21 +83,7 @@ const clientSignupValidation = {
 };
 
 /**
- * Client Forgot Password Validation Schema.
- */
-const forgotPasswordValidation = {
-  email: {
-    notEmpty: {
-      errorMessage: clientValidationErrors.emailEmpty,
-    },
-    isEmail: {
-      errorMessage: clientValidationErrors.invalidEmail,
-    },
-  },
-};
-
-/**
- * Client Edit Info Validation Schema.
+ * Client Update Info Validation Schema.
  */
 const clientUpdateValidation = {
   email: {
@@ -148,7 +135,21 @@ const clientUpdateValidation = {
 };
 
 /**
- * Client Confirm Email Validation Schema.
+ * Client forgot password Validation Schema.
+ */
+const forgotPasswordValidation = {
+  email: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emailEmpty,
+    },
+    isEmail: {
+      errorMessage: clientValidationErrors.invalidEmail,
+    },
+  },
+};
+
+/**
+ * Client confirm email Validation Schema.
  */
 const clientConfirmEmailValidation = {
   email: {
@@ -162,27 +163,7 @@ const clientConfirmEmailValidation = {
 };
 
 /**
- * Client Reset Password Validation Schema.
- */
-const clientResetPasswordValidation = {
-  password: {
-    notEmpty: {
-      errorMessage: clientValidationErrors.emptyPassword,
-    },
-    matches: {
-      options: [/^(?=.*\d).{8,15}$/],
-      errorMessage: clientValidationErrors.emptyPassword,
-    },
-  },
-  confirmPassword: {
-    notEmpty: {
-      errorMessage: clientValidationErrors.emptyConfirmation,
-    },
-  },
-};
-
-/**
- * Client Login Validation Schema.
+ * Client login Validation Schema.
  */
 const clientLoginValidation = {
   email: {
@@ -205,12 +186,29 @@ const clientLoginValidation = {
 };
 
 /**
+ * Client reset password Validation Schema.
+ */
+const clientResetPasswordValidation = {
+  password: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+    matches: {
+      options: [/^(?=.*\d).{8,15}$/],
+      errorMessage: clientValidationErrors.emptyPassword,
+    },
+  },
+  confirmPassword: {
+    notEmpty: {
+      errorMessage: clientValidationErrors.emptyConfirmation,
+    },
+  },
+};
+
+/**
  * Business validation.
  */
 
-/**
- * Business Sign Up Validation Schema.
- */
 const businessSignupValidation = {
   email: {
     notEmpty: {
@@ -272,6 +270,51 @@ const verifiedBusinessValidator = {
   branches: {
     notEmpty: {
       errorMessage: businessValidationErrors.branchesRequired,
+    },
+  },
+};
+
+/**
+ * Business Edit Info Validation.
+ */
+const businessUpdateValidation = {
+  name: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyName,
+    },
+  },
+  email: {
+    isEmail: {
+      errorMessage: bussinessValidationErrors.invalidEmail,
+    },
+  },
+  shortDescription: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyDescription,
+    },
+  },
+  phoneNumbers: {
+    notEmpty: {
+      errorMessage: bussinessValidationErrors.emptyMobile,
+    },
+    arePhoneNumbers: {
+      errorMessage: bussinessValidationErrors.invalidMobile,
+    },
+  },
+  password: {
+    isPassword: {
+      errorMessage: bussinessValidationErrors.invalidPassword,
+    },
+  },
+};
+
+/**
+ * Business Edit Image Validation Schema.
+ */
+const businessEditImageValidation = {
+  im_id: {
+    isMongoId: {
+      errorMessage: bussinessValidationErrors.invalidBusinessID,
     },
   },
 };
@@ -341,7 +384,7 @@ const businessEditInfoValidation = {
 };
 
 /**
- * Business Add Branches Validation Schema.
+ * Business Add Branch Validation Schema.
  */
 const businessAddValidation = {
   branches: {
@@ -352,7 +395,7 @@ const businessAddValidation = {
 };
 
 /**
- * Business Edit Branches Validation Schema.
+ * Business Edit Branch Validation Schema.
  */
 const businessEditValidation = {
   'branch.location': {
@@ -372,98 +415,32 @@ const businessEditValidation = {
 };
 
 /**
- * Business Edit Image Validation Schema.
- */
-const businessEditImageValidation = {
-  ser_id: {
-    isMongoId: {
-      errorMessage: bussinessValidationErrors.invalidBusinessID,
-    },
-  },
-  im_id: {
-    isMongoId: {
-      errorMessage: bussinessValidationErrors.invalidBusinessID,
-    },
-    isInt: {
-      options: [{
-        min: 1,
-        max: 5,
-      }],
-      errorMessage: reviewErrors.outOfRangeRating,
-    },
-  },
-  description: { in: 'body',
-    optional: true,
-    isLength: {
-      options: [{ min: 0, max: 512 }],
-      errorMessage: reviewErrors.descriptionTooLong,
-    },
-  },
-};
-
-/**
- * Business Add Image Validation Schema.
- */
-const businessAddImageValidation = {
-  id: {
-    isMongoId: {
-      errorMessage: bussinessValidationErrors.invalidBusinessID,
-    },
-  },
-};
-
-/**
- * Business Edit Info Validation Schema.
- */
-const businessUpdateValidation = {
-  name: {
-    notEmpty: {
-      errorMessage: bussinessValidationErrors.emptyName,
-    },
-  },
-  shortDescription: {
-    notEmpty: {
-      errorMessage: bussinessValidationErrors.emptyDescription,
-    },
-  },
-  phoneNumbers: {
-    notEmpty: {
-      errorMessage: bussinessValidationErrors.emptyMobile,
-    },
-    isInt: {
-      options: [{
-        min: 1,
-        max: 5,
-      }],
-      errorMessage: reviewErrors.outOfRangeRating,
-    },
-  },
-  description: { in: 'body',
-    optional: true,
-    isLength: {
-      options: [{ min: 0, max: 512 }],
-      errorMessage: reviewErrors.descriptionTooLong,
-    },
-  },
-};
-
-/**
- * Service CRUD Validation.
- */
-
-/**
  * Create Service Validation Schema.
  */
+
 const serviceCreateValidation = {
   name: {
     notEmpty: {
       errorMessage: serviceValidationCRUDErrors.emptyName,
+    },
+    isLength: {
+      options: {
+        max: 50,
+      },
+      errorMessage: serviceValidationCRUDErrors.nameTooLong,
     },
   },
   shortDescription: {
     notEmpty: {
       errorMessage: serviceValidationCRUDErrors.emptyShortDescription,
     },
+    isLength: {
+      options: {
+        max: 140,
+      },
+      errorMessage: serviceValidationCRUDErrors.shortDescriptionTooLong,
+    },
+
   },
 };
 
@@ -484,6 +461,11 @@ const offeringCreateValidationBody = {
   endDate: {
     notEmpty: {
       errorMessage: offeringValidationErrors.emptyEndDate,
+    },
+  },
+  capacity: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyCapacity,
     },
   },
   branch: {
@@ -519,19 +501,13 @@ const offeringEditValidationParmas = {
     },
   },
 };
-const businessdeletionValidation = {
-  id: {
-    isMongoId: {
-      errorMessage: adminValidationErrors.invalidBusinessID,
-    },
-  },
-};
 
 /**
- * Add Image to Service Validation Schema.
+ * Coupon Validation Schema.
  */
-const serviceAddImageValidation = {
+const couponGetValidation = {
   id: {
+    in: 'params',
     isMongoId: {
       errorMessage: serviceValidationErrors.invalidServiceID,
     },
@@ -539,24 +515,73 @@ const serviceAddImageValidation = {
 };
 
 /**
- * Edit Service's Image Validation Schema.
+ * Add Coupon Validation Schema.
  */
-const serviceEditImageValidation = {
+const couponAddValidation = {
+  id: {
+    in: 'params',
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  code: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyCode,
+    },
+  },
+  discount: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyValue,
+    },
+    matches: {
+      options: [/^0*(100|[1-9][0-9]|[1-9])$/],
+      errorMessage: couponValidationErrors.invalidValue,
+    },
+  },
+  startDate: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyStartDate,
+    },
+    isDate: {
+      errorMessage: couponValidationErrors.invalidDateFormat,
+    },
+  },
+  endDate: {
+    in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyEndDate,
+    },
+    isDate: {
+      errorMessage: couponValidationErrors.invalidDateFormat,
+    },
+  },
+};
+
+/**
+ * Delete Coupon Validation Schema.
+ */
+const couponDeleteValidation = {
   ser_id: {
+    in: 'params',
     isMongoId: {
       errorMessage: serviceValidationErrors.invalidServiceID,
     },
   },
-  im_id: {
+  coup_id: {
+    in: 'params',
     isMongoId: {
-      errorMessage: serviceValidationErrors.invalidImageID,
+      errorMessage: couponValidationErrors.invalidCouponID,
     },
   },
 };
 
 /**
- * Visitor Validation Schema.
+ * Visitor validation.
  */
+
 const visitorValidation = {
   id: {
     isMongoId: {
@@ -581,20 +606,37 @@ const visitorValidation = {
  * Create Review Validation Schema.
  */
 const createReviewValidation = {
-  id: { in: 'params',
+  id: {
+    in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidService,
     },
   },
-  rating: { in: 'body',
+  rating: {
+    in: 'body',
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
+    },
+    isInt: {
+      options: [{
+        min: 1,
+        max: 5,
+      }],
+      errorMessage: reviewErrors.outOfRangeRating,
+    },
+  },
+  description: {
+    in: 'body',
+    optional: true,
+    isLength: {
+      options: [{ min: 0, max: 512 }],
+      errorMessage: reviewErrors.descriptionTooLong,
     },
   },
 };
 
 /**
- * Update Review Validation Schema.
+ * Update Review Vaidation Schema.
  */
 const updateReviewValidation = {
   id: { in: 'params',
@@ -602,33 +644,28 @@ const updateReviewValidation = {
       errorMessage: reviewErrors.invalidService,
     },
   },
-  review_id: {
-    in: 'params',
+  review_id: { in: 'params',
     isMongoId: {
       errorMessage: reviewErrors.invalidReview,
-    },
-  },
-  email: {
-    isEmail: {
-      errorMessage: bussinessValidationErrors.invalidEmail,
-    },
-  },
-  shortDescription: {
-    notEmpty: {
-      errorMessage: bussinessValidationErrors.emptyDescription,
     },
   },
   rating: { in: 'body',
     notEmpty: {
       errorMessage: reviewErrors.emptyRating,
     },
-    arePhoneNumbers: {
-      errorMessage: bussinessValidationErrors.invalidMobile,
+    isInt: {
+      options: [{
+        min: 1,
+        max: 5,
+      }],
+      errorMessage: reviewErrors.outOfRangeRating,
     },
   },
-  password: {
-    isPassword: {
-      errorMessage: bussinessValidationErrors.invalidPassword,
+  description: { in: 'body',
+    optional: true,
+    isLength: {
+      options: [{ min: 0, max: 512 }],
+      errorMessage: reviewErrors.descriptionTooLong,
     },
   },
 };
@@ -647,28 +684,6 @@ const deleteReviewValidation = {
       errorMessage: reviewErrors.invalidReview,
     },
   },
-};
-
-/**
- * Checks the given password. If Empty or Can be generated
- * from the regex then it passes.
- * @param {String} password
- */
-const validatePassword = (password) => {
-  if (password.length === 0) {
-    return true;
-  }
-  return /^(?=.*\d).{8,15}$/.test(password);
-};
-
-/**
- * Checks if the given Array of Phone Numbers contain numbers in the
- * Egyptian phone number format.
- * @param {Array} phoneNumber
- */
-const validatePhoneNumber = (phoneNumbers) => {
-  const valid = phoneNumbers.filter(phoneNumber => /^01[0-2]{1}[0-9]{8}/.test(phoneNumber));
-  return valid.length === phoneNumbers.length;
 };
 
 /**
@@ -699,7 +714,18 @@ const adminLoginValidation = {
 };
 
 /**
- * Admin Accept Business Validation Schema.
+ * Admin Delete client Validation Schema.
+ */
+const adminClientValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidClientID,
+    },
+  },
+};
+
+/**
+ * Admin Confirm Business Validation Schema.
  */
 const adminConfirmBusinessValidation = {
   id: {
@@ -710,7 +736,7 @@ const adminConfirmBusinessValidation = {
 };
 
 /**
- * Admin Accept Business Validation Schema.
+ * Admin Category Validation Schema.
  */
 const adminCategoryValidation = {
   type: {
@@ -726,18 +752,83 @@ const adminCategoryValidation = {
 };
 
 /**
- * Admin Client Validation Schema.
+ * Delete Client Review Validation Schema.
  */
-const adminClientValidation = {
+const clientReviewValidation = {
   id: {
     isMongoId: {
-      errorMessage: adminValidationErrors.invalidClientID,
+      errorMessage: adminValidationErrors.invalidReviewID,
     },
   },
 };
 
 /**
- * Service Booking Validation Schema.
+ * Delete Business Validation Schema.
+ */
+const businessdeletionValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidBusinessID,
+    },
+  },
+};
+
+const serviceViewGalleryValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+};
+
+const serviceAddImageValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+};
+
+/**
+ * Edit Service Image Validation Schema.
+ */
+const serviceEditImageValidation = {
+  ser_id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  im_id: {
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidImageID,
+    },
+  },
+};
+
+/**
+ * Checks the given password. If Empty or Can be generated
+ * from the regex then it passes.
+ * @param {String} password
+ */
+const validatePassword = (password) => {
+  if (password.length === 0) {
+    return true;
+  }
+  return /^(?=.*\d).{8,15}$/.test(password);
+};
+
+/**
+ * Checks if the given Array of Phone Numbers contain numbers in the
+ * Egyptian phone number format.
+ * @param {Array} phoneNumber
+ */
+const validatePhoneNumber = (phoneNumbers) => {
+  const valid = phoneNumbers.filter(phoneNumber => /^01[0-2]{1}[0-9]{8}/.test(phoneNumber));
+  return valid.length === phoneNumbers.length;
+};
+
+/**
+ * Client Book Service Validation Schema.
  */
 const serviceBookingValidation = {
   service: {
@@ -785,7 +876,6 @@ const validation = {
   businessUpdateValidation,
   validatePassword,
   validatePhoneNumber,
-  businessAddImageValidation,
   businessEditImageValidation,
   adminCategoryValidation,
   clientUpdateValidation,
@@ -793,6 +883,11 @@ const validation = {
   businessdeletionValidation,
   forgotPasswordValidation,
   serviceBookingValidation,
+  clientReviewValidation,
+  serviceViewGalleryValidation,
+  couponAddValidation,
+  couponDeleteValidation,
+  couponGetValidation,
 };
 
 module.exports = validation;
