@@ -47,7 +47,7 @@
 
 <script>
   import tophero from '../../shared/gr-top-hero.vue';
-  import adminAuth from '../../../services/auth/adminAuth';
+  import businessAuth from '../../../services/auth/businessAuth';
 
   export default {
     components: {
@@ -55,7 +55,7 @@
     },
 
     mounted() {
-      if (!adminAuth.isAuthenticated()) {
+      if (!businessAuth.isAuthenticated()) {
         this.$router.push('/404');
       }
     },

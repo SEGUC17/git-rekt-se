@@ -23,6 +23,7 @@ export const Client = () => {
     forgot: `${authBase}/forgot`,
     logout: `${authBase}/logout`,
     confirmEmail: token => `${authBase}/confirmation/${token}/confirm`,
+    reportReview: reviewID => `${reviewBase}/report/${reviewID}`,
     editInfo: clientID => `${profileBase}/${clientID}/edit`,
     getBookings: `${profileBase}/bookings/history`,
     getInfo: clientID => `${profileBase}/${clientID}`,

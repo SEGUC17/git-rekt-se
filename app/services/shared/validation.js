@@ -538,6 +538,14 @@ const adminClientValidation = {
   },
 };
 
+const clientReviewValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: adminValidationErrors.invalidReviewID,
+    },
+  },
+};
+
 const businessEditImageValidation = {
   im_id: {
     isMongoId: {
@@ -773,6 +781,7 @@ const validation = {
   businessdeletionValidation,
   forgotPasswordValidation,
   serviceBookingValidation,
+  clientReviewValidation,
   serviceViewGalleryValidation,
   couponAddValidation,
   couponDeleteValidation,

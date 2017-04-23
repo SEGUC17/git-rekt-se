@@ -143,6 +143,7 @@
         const url = '/search';
         const params = {
           offset: 1,
+          sort: 1,
         };
 
         if (this.name) {

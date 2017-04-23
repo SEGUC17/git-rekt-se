@@ -262,6 +262,7 @@ export const verifiedBusinessSignupRules = {
     trigger: 'blur',
   }],
 };
+
 export const categoryRules = {
   type: [{
     required: true,
