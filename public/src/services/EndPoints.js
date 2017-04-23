@@ -44,11 +44,15 @@ export const Business = () => {
 
     getBasicInfo: `${BASE}/business/profile/profile`,
     editBasicInfo: businessID => `${BASE}/business/profile/${businessID}/edit`,
-    editInfo: businessID => `${businessBase}/edit/${businessID}`,
-    addBranch: businessID => `${businessBase}/${businessID}/add/branches`,
+    editInfo: `${businessBase}/edit`,
+    addBranch: `${businessBase}/add/branches`,
     editBranch: (businessID, branchID) => `${businessBase}/${businessID}/edit/branch/${branchID}`,
     deleteBranch: (businessID, branchID) => `${businessBase}/${businessID}/delete/branch/${branchID}`,
 
+    listServices: `${serviceBase}/list`,
+    listCategories: `${serviceBase}/category/list`,
+    listOfferings: serviceID => `${serviceBase}/${serviceID}/offering/list`,
+    listBranches: `${serviceBase}/branch/list`,
     createService: `${serviceBase}/create`,
     editService: serviceID => `${serviceBase}/${serviceID}/edit`,
     deleteService: serviceID => `${serviceBase}/${serviceID}/delete`,
@@ -57,6 +61,11 @@ export const Business = () => {
     deleteOffering: (serviceID, offeringID) => `${serviceBase}/${serviceID}/offering/${offeringID}/delete`,
 
     addImage: businessID => `${galleryBase}/${businessID}/gallery/add`,
+    businessInfo: `${businessBase}/general`,
+    businessbranches: `${businessBase}/branches`,
+    getTransactions: `${BASE}/business/profile/transactions`,
+    acceptTransaction: `${BASE}/business/profile/transactions/accept`,
+    refundTransaction: `${BASE}/business/profile/transactions/reject`,
   };
 };
 
@@ -94,11 +103,14 @@ export const Service = () => {
 
     addImage: serviceID => `${serviceBase}/${serviceID}/gallery/add`,
 
-
     viewService: serviceID => `${serviceBase}/${serviceID}`,
     viewRelatedServices: (categoryID, offset) => `${serviceBase}/category/${categoryID}/${offset}`,
     validateCoupon: `${bookingBase}/coupon/validate`,
     makeBooking: `${bookingBase}`,
+
+    viewCoupons: serviceID => `${serviceBase}/${serviceID}/coupons`,
+    addCoupon: serviceID => `${serviceBase}/${serviceID}/coupons/add`,
+    deleteCoupon: (serviceID, couponID) => `${serviceBase}/${serviceID}/coupons/delete/${couponID}`,
   };
 };
 

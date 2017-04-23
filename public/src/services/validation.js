@@ -1,10 +1,72 @@
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> be614d06bc7784593266e8a42187bb90c19f4ea7
 /*
-* Client Side Form Validation Schemas.
-* Async-validator.
-* https://github.com/yiminghe/async-validator
-* */
+ * Client Side Form Validation Schemas.
+ * Async-validator.
+ * https://github.com/yiminghe/async-validator
+ * */
+
+export const businessEditInfoValidation = {
+  name: [{
+    required: true,
+    message: 'A Business Name is required.',
+    trigger: 'blur',
+  }],
+  email: [{
+    required: true,
+    message: 'An Email is required.',
+    trigger: 'blur',
+  }, {
+    type: 'email',
+    message: 'Must be an email',
+    trigger: 'blur',
+  }],
+  password: [{
+    validator(rule, value, callBack) {
+      if (value === '***************') {
+        callBack();
+      } else if (/^(?=.*\d).{8,15}$/.test(value)) {
+        callBack();
+      } else {
+        callBack([new Error('Password must be between 8 and 15 characters and contains at least one number!')]);
+      }
+    },
+    trigger: 'blur',
+  }],
+  confirmPassword: [{
+    validator(rule, value, callBack) {
+      if (value === '***************') {
+        callBack();
+      } else if (value.length === 0 && this.form.password.length === 0) {
+        callBack();
+      } else if (value === this.form.password) {
+        callBack();
+      } else {
+        callBack([new Error('Password and Confirm Password must match!')]);
+      }
+    },
+    trigger: 'blur',
+  }],
+  shortDescription: [{
+    required: true,
+    message: 'A Short Description is required.',
+    trigger: 'blur',
+  }],
+  phoneNumber: [{
+    validator(rule, value, callBack) {
+      console.log(value);
+      if (/^01[0-2]{1}[0-9]{8}/.test(value)) {
+        callBack();
+      } else {
+        callBack([new Error('Phone Number must be in this format 01xxxxxxxxx')]);
+      }
+    },
+    trigger: 'blur',
+  }],
+};
 
 export const businessEditInfoValidation = {
   name: [{
@@ -297,6 +359,33 @@ export const clientForgotPasswordMail = {
   },
   ],
 };
+
+export const businessAddCoupon = {
+  code: [{
+    required: true,
+    message: 'Please input Coupon Code',
+    trigger: 'blur',
+  }],
+  discount: [{
+    type: 'number',
+    required: true,
+    message: 'Please input Discount Value',
+    trigger: 'change',
+  }],
+  startDate: [{
+    type: 'date',
+    required: true,
+    message: 'Please pick a Start date',
+    trigger: 'change',
+  }],
+  endDate: [{
+    type: 'date',
+    required: true,
+    message: 'Please pick an End date',
+    trigger: 'change',
+  }],
+};
+
 export const unverfiedBusinessSignupValidation = {
 
   name: {
@@ -327,6 +416,7 @@ export const unverfiedBusinessSignupValidation = {
     message: 'Mobile number must be 11 digits in the following format 01xxxxxxxxx.',
   }],
 };
+
 export const clientEditInfoValidation = {
   email: [{
     message: 'Please Enter a valid email.',
@@ -411,6 +501,7 @@ export const clientEditInfoValidation = {
     trigger: ['blur', 'change'],
   }],
 };
+
 export const forgotPasswordValidation = {
   email: [{
     required: true,
@@ -422,6 +513,78 @@ export const forgotPasswordValidation = {
     trigger: 'blur',
   }],
 };
+
+export const serviceRules = {
+  name: [{
+    required: true,
+    message: 'Please enter a name for your service',
+    trigger: 'blur',
+  }, {
+    max: 50,
+    message: 'The service name can have a maximum 50 characters',
+    trigger: 'change',
+  }],
+  shortDescription: [{
+    required: true,
+    message: 'Please enter a short description of your service',
+    trigger: 'blur',
+  }, {
+    max: 140,
+    message: 'The short description can have a maximum 140 characters',
+    trigger: 'change',
+  }],
+};
+
+export const offeringRules = {
+  branch: [{
+    required: true,
+    message: 'Please select a branch for your offering',
+    trigger: 'blur',
+  }],
+  price: [{
+    type: 'number',
+    message: 'Price must be a number',
+    trigger: 'change',
+  }, {
+    type: 'number',
+    required: true,
+    message: 'Please enter a price for your offering',
+    trigger: 'blur',
+  }, {
+    type: 'number',
+    min: 0,
+    message: 'The price cannot be lower than 0',
+    trigger: 'change',
+  }],
+  dates: [{
+    type: 'array',
+    required: true,
+    message: 'Please enter a duration for your offering',
+    trigger: 'blur',
+  }, {
+    type: 'array',
+    len: 2,
+    defaultField: {
+      type: 'date',
+      required: true,
+      message: 'Please enter a duration for your offering',
+    },
+    message: 'Please enter a valid duration for your offering',
+    trigger: 'blur',
+  }],
+  capacity: [{
+    type: 'number',
+    required: true,
+    message: 'Please enter a capacity for your offering',
+    trigger: 'blur',
+  }, {
+    type: 'number',
+    min: 0,
+    message: 'The capacity cannot be lower than 0',
+    trigger: 'change',
+  }],
+};
+
 export const BusinessResetFormValidation = {
   password: [{
     required: true,
@@ -456,6 +619,43 @@ export const BusinessResetFormValidation = {
     },
   }],
 };
+
+export const infoFormRules = {
+  description: [{
+    required: true,
+    message: 'Please enter a description for your business activity',
+    trigger: 'blur',
+  }],
+  workingHours: [{
+    required: true,
+    messsage: 'Please enter your business working hours',
+    trigger: 'blur',
+  }],
+  categories: [{
+    validator(rule, value, callBack) {
+      if (value.length === 0) {
+        callBack([new Error('Please choose at least one category for your business')]);
+      } else {
+        callBack();
+      }
+    },
+    trigger: 'blur',
+  }],
+};
+
+export const branchesFormRules = {
+  branches: [{
+    validator(rule, value, callBack) {
+      if (value.length === 0) {
+        callBack([new Error('Please add at least one branch for your business')]);
+      } else {
+        callBack();
+      }
+    },
+    trigger: 'blur',
+  }],
+};
+
 
 export const reviewRules = {
   rating: [{

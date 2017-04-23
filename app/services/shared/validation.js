@@ -14,6 +14,7 @@ const offeringValidationErrors = Strings.offeringValidationError;
 const adminValidationErrors = Strings.adminValidationErrors;
 const visitorValidationErrors = Strings.visitorValidationErrors;
 const reviewErrors = Strings.reviewErrors;
+const couponValidationErrors = Strings.couponValidationError;
 
 /**
  * Client validation.
@@ -223,11 +224,24 @@ const serviceCreateValidation = {
     notEmpty: {
       errorMessage: serviceValidationCRUDErrors.emptyName,
     },
+    isLength: {
+      options: {
+        max: 50,
+      },
+      errorMessage: serviceValidationCRUDErrors.nameTooLong,
+    },
   },
   shortDescription: {
     notEmpty: {
       errorMessage: serviceValidationCRUDErrors.emptyShortDescription,
     },
+    isLength: {
+      options: {
+        max: 140,
+      },
+      errorMessage: serviceValidationCRUDErrors.shortDescriptionTooLong,
+    },
+
   },
 };
 
@@ -245,6 +259,11 @@ const offeringCreateValidationBody = {
   endDate: {
     notEmpty: {
       errorMessage: offeringValidationErrors.emptyEndDate,
+    },
+  },
+  capacity: {
+    notEmpty: {
+      errorMessage: offeringValidationErrors.emptyCapacity,
     },
   },
   branch: {
@@ -288,6 +307,62 @@ const businessResetPasswordValidation = {
   confirmPassword: {
     notEmpty: {
       errorMessage: clientValidationErrors.emptyConfirmation,
+    },
+  },
+};
+const couponGetValidation = {
+  id: { in: 'params',
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+};
+const couponAddValidation = {
+  id: { in: 'params',
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  code: { in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyCode,
+    },
+  },
+  discount: { in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyValue,
+    },
+    matches: {
+      options: [/^0*(100|[1-9][0-9]|[1-9])$/],
+      errorMessage: couponValidationErrors.invalidValue,
+    },
+  },
+  startDate: { in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyStartDate,
+    },
+    isDate: {
+      errorMessage: couponValidationErrors.invalidDateFormat,
+    },
+  },
+  endDate: { in: 'body',
+    notEmpty: {
+      errorMessage: couponValidationErrors.emptyEndDate,
+    },
+    isDate: {
+      errorMessage: couponValidationErrors.invalidDateFormat,
+    },
+  },
+};
+const couponDeleteValidation = {
+  ser_id: { in: 'params',
+    isMongoId: {
+      errorMessage: serviceValidationErrors.invalidServiceID,
+    },
+  },
+  coup_id: { in: 'params',
+    isMongoId: {
+      errorMessage: couponValidationErrors.invalidCouponID,
     },
   },
 };
@@ -704,6 +779,9 @@ const validation = {
   businessdeletionValidation,
   forgotPasswordValidation,
   serviceBookingValidation,
+  couponAddValidation,
+  couponDeleteValidation,
+  couponGetValidation,
 };
 
 module.exports = validation;
