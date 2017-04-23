@@ -38,41 +38,62 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
 });
-
 /**
- * Add Image to service gallery.
+ * view Business gallery Images.
  */
 
-router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, next) => {
-  req.checkParams(validationSchemas.businessAddImageValidation);
-  req.getValidationResult()
-    .then((result) => {
-      if (result.isEmpty()) {
-        Business.findOne({
-          _id: req.params.id,
-        })
-          .exec()
-          .then((business) => {
-            if (business) {
-              const image = ({
-                path: req.file.filename,
-                description: req.body.description,
-              });
-              business.gallery.push(image);
-              business.save()
-                .then(() => {
-                  res.json({
-                    message: 'Image added successfully!',
-                  });
-                })
-                .catch(saveErr => next(saveErr));
-            } else {
-              next(['The required id is invalid.']);
-            }
-          })
-          .catch(err => next(err));
+router.get('/list', BusinessAuth, (req, res, next) => {
+  Business.findOne({
+    _id: req.user._id,
+    _deleted: false,
+  })
+    .exec()
+    .then((business) => {
+      if (business) {
+        res.json({
+          results: business.gallery,
+        });
       } else {
-        next('The required id is invalid.');
+        next(Strings.businessMessages.businessDoesntExist);
+      }
+    })
+    .catch(err => next(err));
+});
+
+/**
+ * Add Image to business gallery.
+ */
+
+router.post('/add', BusinessAuth, upload.single('path'), (req, res, next) => {
+  Business.findOne({
+    _id: req.user._id,
+    _deleted: false,
+  })
+    .exec()
+    .then((business) => {
+      if (business) {
+        if (req.file) {
+          if (req.file.mimetype.split('/')[0] === 'image') {
+            const image = ({
+              path: req.file.filename,
+              description: req.body.description,
+            });
+            business.gallery.push(image);
+            business.save()
+              .then(() => {
+                res.json({
+                  message: Strings.serviceSuccess.imageAdd,
+                });
+              })
+              .catch(saveErr => next(saveErr));
+          } else {
+            next(Strings.businessMessages.invalidFile);
+          }
+        } else {
+          next(Strings.businessMessages.imageNotFound);
+        }
+      } else {
+        next(['The required id is invalid.']);
       }
     })
     .catch(err => next(err));
@@ -83,16 +104,19 @@ router.post('/:id/gallery/add', BusinessAuth, upload.single('path'), (req, res, 
  * Edit Image in Business gallery.
  */
 
-router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
+router.post('/edit/:im_id', BusinessAuth, (req, res, next) => {
+  console.log(11);
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
         Business.findOne({
-          _id: req.params.ser_id,
+          _id: req.user._id,
+          _deleted: false,
         })
           .exec()
           .then((business) => {
+            console.log(22);
             if (business) {
               const image = business.gallery
                 .find(element => `${element._id}` === `${req.params.im_id}`);
@@ -104,18 +128,18 @@ router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
                 business.save()
                   .then(() => {
                     res.json({
-                      message: 'Image edited successfully',
+                      message: Strings.serviceSuccess.imageEdit,
                     });
                   })
                   .catch(saveErr => next(saveErr));
               }
             } else {
-              next('The required id is invalid.');
+              next(['The required id is invalid.']);
             }
           })
           .catch(err => next(err));
       } else {
-        next('The required id is invalid.');
+        next(['The required id is invalid.']);
       }
     })
     .catch(err => next(err));
@@ -125,13 +149,14 @@ router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
  * Delete Image in Business gallery.
  */
 
-router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => {
+router.post('/delete/:im_id', BusinessAuth, (req, res, next) => {
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
         Business.findOne({
-          _id: req.params.ser_id,
+          _id: req.user._id,
+          _deleted: false,
         })
           .exec()
           .then((business) => {
@@ -139,7 +164,7 @@ router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => 
               const image = business.gallery
                 .find(element => `${element._id}` === `${req.params.im_id}`);
               if (!image) {
-                next(Strings.businessMessages.invalidIamge);
+                next(Strings.businessMessages.invalidImage);
               } else {
                 const newGallery = business.gallery
                   .filter(element => `${element._id}` !== `${req.params.im_id}`);
@@ -153,12 +178,12 @@ router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => 
                   .catch(saveErr => next(saveErr));
               }
             } else {
-              next(Strings.businessMessages.invalidID);
+              next([Strings.businessMessages.invalidID]);
             }
           })
           .catch(err => next(err));
       } else {
-        next(Strings.businessMessages.invalidID);
+        next(result.array());
       }
     })
     .catch(err => next(err));

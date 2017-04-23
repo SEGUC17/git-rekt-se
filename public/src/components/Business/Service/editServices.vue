@@ -42,7 +42,8 @@
               </span>&nbsp;Coupons
           </button>
 
-          <button class="button is-default level-item">
+          <button class="button is-default level-item"
+                  @click="showOfferings(service)">
               <span class="icon is-small">
                   <i class="fa fa-money"></i>
               </span>&nbsp;Offerings
@@ -322,6 +323,14 @@
       },
 
       /*
+      * Get offerings page.
+      * */
+
+      showOfferings(service) {
+        this.$router.push(this.offeringsURL(service));
+      },
+
+      /*
       * Show Service deletion confirmation.
       * */
 
@@ -335,7 +344,7 @@
       * */
 
       offeringsURL(service) {
-        return `/business/manage/edit/${service._id}/offerings`;
+        return `/business/manage/services/${service._id}/offerings`;
       },
 
       /*

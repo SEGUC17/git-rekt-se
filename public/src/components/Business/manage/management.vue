@@ -19,6 +19,9 @@
             <li>
               <router-link to="/business/manage/edit/branches">Branches</router-link>
             </li>
+            <li>
+              <router-link to="/business/manage/gallery">Gallery</router-link>
+            </li>
           </ul>
           <p class="menu-label">
             Services

@@ -75,8 +75,10 @@ const businessMessages = {
   alreadyVerified: 'You have already completed your sign up process',
   alreadyRejected: 'An Admin has rejected your sign up',
   alreadyUnverified: 'Awaiting for an Admin\'s approval',
-  invalidIamge: 'Not a valid image',
+  invalidImage: 'Not a valid image',
   invalidID: 'The id is invalid',
+  invalidFile: 'This File is invalid.',
+  imageNotFound: 'Image not found!',
 };
 
 /**
@@ -114,12 +116,12 @@ const serviceSuccess = {
   imageDelete: 'Image deleted succesfully!',
   serviceAdded: 'Service has been added successfully to your business',
   serviceEdited: 'Service has been edited successfully to your business',
-  serviceDeleted: 'Service has been deleted successfully',
-  offeringAdded: 'Offering has been added successfully to your business',
-  offeringEdited: 'Offering has been edited successfully to your business',
-  offeringDeleted: 'Offering has been deleted successfully',
-  couponAdd: 'Coupon added successfully!',
-  couponDelete: 'Coupon deleted succesfully!',
+  serviceDeleted: 'Service has been deleted successfully.',
+  offeringAdded: 'Offering has been added successfully to your business.',
+  offeringEdited: 'Offering has been edited.',
+  offeringDeleted: 'Offering has been deleted successfully.',
+  couponAdd: 'Coupon added successfully.',
+  couponDelete: 'Coupon deleted successfully.',
 };
 
 const serviceFailure = {
