@@ -359,6 +359,7 @@ const adminSuccess = {
   categoryDeleted: 'Category deleted succesfully!',
   clientDeleted: 'Client removed successfully!',
   businessDeleted: 'Business removed successfully!',
+  logout: 'You have been logged out.',
 };
 
 /**

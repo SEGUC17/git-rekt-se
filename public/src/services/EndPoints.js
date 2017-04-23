@@ -34,6 +34,7 @@ export const Client = () => {
   return {
     finalizeFb: `${authBase}/fb/finalize/login`,
     login: `${authBase}/login`,
+    facebookRedirect: `${BASE}/client/auth/fb/login`,
     signup: `${authBase}/signup`,
     resend: `${authBase}/confirmation/send`,
     reset: `${authBase}/reset`,
@@ -107,6 +108,7 @@ export const Admin = () => {
 
   return {
     login: `${BASE}/admin/auth/login`,
+    logout: `${BASE}/admin/auth/logout`,
 
     viewBusiness: `${generalBase}/business`,
     acceptBusiness: businessID => `${generalBase}/confirm/${businessID}`,

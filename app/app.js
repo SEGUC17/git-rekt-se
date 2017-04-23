@@ -3,6 +3,7 @@ const logger = require('morgan');
 const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const helmet = require('helmet');
 
 const jwtConfig = require('./services/shared/jwtConfig');
 const fbConfig = require('./services/shared/fbConfig');
@@ -17,6 +18,11 @@ require('dotenv')
   .config();
 
 /**
+ * Helmet Security.
+ */
+app.use(helmet);
+
+/**
  * DEBUG MODE MIDDLEWARES.
  */
 
@@ -27,10 +33,12 @@ if (process.env.DEBUG_MODE) {
    * Add Delay to test frontend.
    */
 
-  app.use((req, res, next) => {
-    const delay = Math.floor(((Math.random() * 500) + 300));
-    setTimeout(next, delay);
-  });
+  if (process.env.ADD_DELAY) {
+    app.use((req, res, next) => {
+      const delay = Math.floor(((Math.random() * 500) + 300));
+      setTimeout(next, delay);
+    });
+  }
 }
 
 /**

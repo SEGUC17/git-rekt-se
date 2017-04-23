@@ -37,9 +37,9 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
           _id: businessID,
         }).then((business) => {
           if (!business || business._status !== 'verified') {
-            next([Strings.adminValidationErrors.invalidBusinessID]);
+            next(Strings.adminValidationErrors.invalidBusinessID);
           } else if (business._deleted) {
-            next([Strings.adminFailures.businessAlreadyDeleted]);
+            next(Strings.adminFailures.businessAlreadyDeleted);
           } else {
             Service.find({
               _business: businessID,
@@ -54,15 +54,15 @@ router.post('/delete/:id', AdminAuth, (req, res, next) => {
                     business._deleted = true;
                     business.save().then(() => res.json({
                       message: Strings.adminSuccess.businessDeleted,
-                    })).catch(e => next([e]));
-                  }).catch(e => next([e]));
-                }).catch(e => next([e]));
+                    })).catch(e => next(e));
+                  }).catch(e => next(e));
+                }).catch(e => next(e));
               })
-              .catch(e => next([e]));
+              .catch(e => next(e));
           })
-          .catch(e => next([e]));
+          .catch(e => next(e));
           }
-        }).catch(e => next([e]));
+        }).catch(e => next(e));
       } else {
         next(result.array());
       }
@@ -81,7 +81,7 @@ router.get('/list', AdminAuth, (req, res, next) => {
     .then(businesses => res.json({
       results: businesses,
     }))
-    .catch(e => next([e]));
+    .catch(e => next(e));
 });
 
 /**

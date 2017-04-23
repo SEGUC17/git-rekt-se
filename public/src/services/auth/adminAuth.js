@@ -42,8 +42,34 @@ export default {
   },
 
   /**
-   * Returns the associated JWT token appended after `JWT`.
-   * @returns {string} - Formated as `JWT TOKEN_HERE`.
+   * Logout User.
+   * @param {handler} callBack - Handles/Updates the view after logout fails or succeeds.
+   */
+
+  logout(callBack) {
+    this.user.authenticated = false;
+    const currentToken = this.getJWTtoken();
+
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_email');
+    localStorage.removeItem('admin_id');
+
+    axios.post(Admin()
+        .logout, null, {
+          headers: {
+            Authorization: currentToken,
+          },
+        })
+      .then((response) => {
+        callBack(null, response.data);
+      })
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
+  },
+  /**
+   * Returns the JWT Token in format `JWT TOKEN_HERE`.
+   * @returns {string}
    */
   getJWTtoken() {
     return `JWT ${localStorage.getItem('admin_token')}`;

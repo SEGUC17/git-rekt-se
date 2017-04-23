@@ -173,7 +173,7 @@
          * Redirect to facebook sign up.
          */
       redirectFacebook() {
-        window.location.href = 'http://localhost:3000/api/v1/client/auth/fb/login';
+        window.location.href = Client().facebookRedirect;
       },
       /**
        * Validates and submits the form.

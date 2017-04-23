@@ -56,7 +56,6 @@ export const businessEditInfoValidation = {
   }],
   phoneNumber: [{
     validator(rule, value, callBack) {
-      console.log(value);
       if (/^01[0-2]{1}[0-9]{8}/.test(value)) {
         callBack();
       } else {

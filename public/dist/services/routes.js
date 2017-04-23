@@ -4649,6 +4649,7 @@ var Client = function Client() {
   return {
     finalizeFb: authBase + '/fb/finalize/login',
     login: authBase + '/login',
+    facebookRedirect: BASE + '/client/auth/fb/login',
     signup: authBase + '/signup',
     resend: authBase + '/confirmation/send',
     reset: authBase + '/reset',
@@ -4754,6 +4755,7 @@ var Admin = function Admin() {
 
   return {
     login: BASE + '/admin/auth/login',
+    logout: BASE + '/admin/auth/logout',
 
     viewBusiness: generalBase + '/business',
     acceptBusiness: function acceptBusiness(businessID) {
@@ -5210,7 +5212,6 @@ var businessEditInfoValidation = {
   }],
   phoneNumber: [{
     validator: function validator(rule, value, callBack) {
-      console.log(value);
       if (/^01[0-2]{1}[0-9]{8}/.test(value)) {
         callBack();
       } else {
@@ -6685,8 +6686,32 @@ module.exports = {
 
 
   /**
-   * Returns the associated JWT token appended after `JWT`.
-   * @returns {string} - Formated as `JWT TOKEN_HERE`.
+   * Logout User.
+   * @param {handler} callBack - Handles/Updates the view after logout fails or succeeds.
+   */
+
+  logout: function logout(callBack) {
+    this.user.authenticated = false;
+    var currentToken = this.getJWTtoken();
+
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_email');
+    localStorage.removeItem('admin_id');
+
+    __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__services_EndPoints__["e" /* Admin */])().logout, null, {
+      headers: {
+        Authorization: currentToken
+      }
+    }).then(function (response) {
+      callBack(null, response.data);
+    }).catch(function (err) {
+      callBack(err.response.data, null);
+    });
+  },
+
+  /**
+   * Returns the JWT Token in format `JWT TOKEN_HERE`.
+   * @returns {string}
    */
   getJWTtoken: function getJWTtoken() {
     return 'JWT ' + localStorage.getItem('admin_token');
@@ -31574,6 +31599,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_gr_top_hero_vue__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_gr_top_hero_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__shared_gr_top_hero_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_auth_adminAuth__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_EventBus__ = __webpack_require__(9);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -31622,6 +31662,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Sub-components used by this component.
@@ -31637,7 +31678,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     if (!__WEBPACK_IMPORTED_MODULE_1__services_auth_adminAuth__["a" /* default */].isAuthenticated()) {
       this.$router.push('/404');
     }
+  },
+
+
+  methods: {
+    adminLogout: function adminLogout() {
+      var _this = this;
+
+      var loader = this.$loading({
+        fullscreen: true
+      });
+
+      __WEBPACK_IMPORTED_MODULE_1__services_auth_adminAuth__["a" /* default */].logout(function (responseErrs, response) {
+        var message = void 0;
+
+        __WEBPACK_IMPORTED_MODULE_2__services_EventBus__["a" /* default */].$emit('UpdateNavigation');
+        loader.close();
+        if (responseErrs) {
+          message = responseErrs.errors[0];
+        } else {
+          message = response.message;
+        }
+
+        _this.$toast.open({
+          message: message,
+          type: 'is-primary',
+          position: 'bottom'
+        });
+
+        _this.$router.push({
+          path: '/'
+        });
+      });
+    }
   }
+
 });
 
 /***/ }),
@@ -32081,6 +32156,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__services_auth_adminAuth__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_Form__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_validation__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EventBus__ = __webpack_require__(9);
+//
+//
 //
 //
 //
@@ -32134,6 +32212,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /**
  * This component allows the admin to login.
  */
+
 
 
 
@@ -32198,6 +32277,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else {
               _this.logged_in = true;
               _this.loginSuccess = response.message;
+              __WEBPACK_IMPORTED_MODULE_3__services_EventBus__["a" /* default */].$emit('UpdateNavigation');
               setTimeout(function () {
                 _this.$router.push('/admin/dashboard');
               }, 1000);
@@ -35891,7 +35971,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.errors = [];
         _this.loader.close();
       }).catch(function (err) {
-        console.log(err);
         _this.errors = err.response.data.errors;
         _this.loader.close();
         document.body.scrollTop = 0;
@@ -37410,6 +37489,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /**
  * This component is responsible for client login.
@@ -37455,7 +37536,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
      * Redirect to login with facebook route.
      */
     redirectFacebook: function redirectFacebook() {
-      window.location.href = 'http://localhost:3000/api/v1/client/auth/fb/login';
+      window.location.href = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__services_EndPoints__["d" /* Client */])().facebookRedirect;
     },
 
     /**
@@ -37856,7 +37937,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
      * Redirect to facebook sign up.
      */
     redirectFacebook: function redirectFacebook() {
-      window.location.href = 'http://localhost:3000/api/v1/client/auth/fb/login';
+      window.location.href = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__services_EndPoints__["d" /* Client */])().facebookRedirect;
     },
 
     /**
@@ -42465,7 +42546,7 @@ exports.push([module.i, "\n.business-forgot-top {\n    background: #41295a; /* f
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n.admin-dashbaord-top {\n    background: #485563; /* fallback for old browsers */\n    background: -webkit-linear-gradient(to right, #29323c, #485563); /* Chrome 10-25, Safari 5.1-6 */\n    background: -webkit-linear-gradient(left, #29323c, #485563);\n    background: linear-gradient(to right, #29323c, #485563); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n    margin-bottom: 2em;\n}\n@media screen and (max-width: 999px){\n.margin-mobile{\n        margin: 1em;\n}\n}\n", ""]);
+exports.push([module.i, "\n.admin-dashbaord-top {\n  background: #485563; /* fallback for old browsers */\n  background: -webkit-linear-gradient(to right, #29323c, #485563); /* Chrome 10-25, Safari 5.1-6 */\n  background: -webkit-linear-gradient(left, #29323c, #485563);\n  background: linear-gradient(to right, #29323c, #485563); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n  margin-bottom: 2em;\n}\n@media screen and (max-width: 999px) {\n.margin-mobile {\n    margin: 1em;\n}\n}\n", ""]);
 
 /***/ }),
 /* 236 */
@@ -42500,7 +42581,7 @@ exports.push([module.i, "\n.image-buttons {\n  margin-left: 1em;\n}\n", ""]);
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n.extra-large {\n    font-size: 4em;\n    line-height: 1.2em;\n}\n.intro-container {\n    padding: 5em;\n}\n.index-search {\n    margin: auto !important;\n    text-align: center;\n    display: block;\n}\n.gr-content {\n    background-image: url('http://localhost:3000/assets/imgs/idx_bg.jpg');\n    margin-bottom: 2em;\n}\n.how-it-works {\n    padding: 0 3em;\n    margin-top: 2em;\n    margin-bottom: 2em;\n}\n.full-width {\n    width: 100%;\n}\n\n", ""]);
+exports.push([module.i, "\n.extra-large {\n    font-size: 4em;\n    line-height: 1.2em;\n}\n.intro-container {\n    padding: 5em;\n}\n.index-search {\n    margin: auto !important;\n    text-align: center;\n    display: block;\n}\n.gr-content {\n    background-image: url('/assets/imgs/idx_bg.jpg');\n    margin-bottom: 2em;\n}\n.how-it-works {\n    padding: 0 3em;\n    margin-top: 2em;\n    margin-bottom: 2em;\n}\n.full-width {\n    width: 100%;\n}\n\n", ""]);
 
 /***/ }),
 /* 241 */
@@ -42556,14 +42637,14 @@ exports.push([module.i, "\n.add-margin-top {\n  margin-top: 0.4em;\n}\n", ""]);
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n.error {\n  margin-top: 20px;\n}\n.error:first-child {\n  margin-top: 0;\n}\n.client-signin-top {\n  background: #67B26F;\n  /* fallback for old browsers */\n  background: -webkit-linear-gradient(to right, #4ca2cd, #67B26F);\n  /* Chrome 10-25, Safari 5.1-6 */\n  background: -webkit-linear-gradient(left, #4ca2cd, #67B26F);\n  background: linear-gradient(to right, #4ca2cd, #67B26F);\n  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n  margin-bottom: 2em;\n}\n", ""]);
+exports.push([module.i, "\n.error {\n  margin-top: 20px;\n}\n.error:first-child {\n  margin-top: 0;\n}\n.client-signin-top {\n  background: #67B26F; /* fallback for old browsers */\n  background: -webkit-linear-gradient(to right, #4ca2cd, #67B26F); /* Chrome 10-25, Safari 5.1-6 */\n  background: -webkit-linear-gradient(left, #4ca2cd, #67B26F);\n  background: linear-gradient(to right, #4ca2cd, #67B26F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n  margin-bottom: 2em;\n}\n", ""]);
 
 /***/ }),
 /* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)();
-exports.push([module.i, "\n.centered-fb img {\n    display: block;\n    width: 250px;\n    margin: auto;\n}\n.error {\n    margin-top: 20px;\n}\n.error:first-child {\n    margin-top: 0;\n}\n.client-signin-top {\n    background: #67B26F; /* fallback for old browsers */\n    background: -webkit-linear-gradient(to right, #4ca2cd, #67B26F); /* Chrome 10-25, Safari 5.1-6 */\n    background: -webkit-linear-gradient(left, #4ca2cd, #67B26F);\n    background: linear-gradient(to right, #4ca2cd, #67B26F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n    margin-bottom: 2em;\n}\n.is-semi-dark {\n    color: #717171;\n}\n.forgot-help{\n    margin-bottom: 1em;\n}\n\n", ""]);
+exports.push([module.i, "\n.centered-fb img {\n  display: block;\n  width: 250px;\n  margin: auto;\n}\n.error {\n  margin-top: 20px;\n}\n.error:first-child {\n  margin-top: 0;\n}\n.client-signin-top {\n  background: #67B26F; /* fallback for old browsers */\n  background: -webkit-linear-gradient(to right, #4ca2cd, #67B26F); /* Chrome 10-25, Safari 5.1-6 */\n  background: -webkit-linear-gradient(left, #4ca2cd, #67B26F);\n  background: linear-gradient(to right, #4ca2cd, #67B26F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\n  margin-bottom: 2em;\n}\n.is-semi-dark {\n  color: #717171;\n}\n.forgot-help {\n  margin-bottom: 1em;\n}\n\n", ""]);
 
 /***/ }),
 /* 250 */
@@ -46745,7 +46826,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "menu"
   }, [_c('p', {
     staticClass: "menu-label"
-  }, [_vm._v("\n                    Business\n                  ")]), _vm._v(" "), _c('ul', {
+  }, [_vm._v("\n          General\n        ")]), _vm._v(" "), _c('ul', {
+    staticClass: "menu-list"
+  }, [_c('li', [_c('a', {
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.adminLogout($event)
+      }
+    }
+  }, [_vm._v("Logout")])])]), _vm._v(" "), _c('p', {
+    staticClass: "menu-label"
+  }, [_vm._v("\n          Business\n        ")]), _vm._v(" "), _c('ul', {
     staticClass: "menu-list"
   }, [_c('li', [_c('router-link', {
     attrs: {
@@ -46757,7 +46849,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Remove")])], 1)]), _vm._v(" "), _c('p', {
     staticClass: "menu-label"
-  }, [_vm._v("\n                    Categories\n                  ")]), _vm._v(" "), _c('ul', {
+  }, [_vm._v("\n          Categories\n        ")]), _vm._v(" "), _c('ul', {
     staticClass: "menu-list"
   }, [_c('li', [_c('router-link', {
     attrs: {
@@ -46765,7 +46857,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v("Edit Categories")])], 1)]), _vm._v(" "), _c('p', {
     staticClass: "menu-label"
-  }, [_vm._v("\n                    Clients\n                  ")]), _vm._v(" "), _c('ul', {
+  }, [_vm._v("\n          Clients\n        ")]), _vm._v(" "), _c('ul', {
     staticClass: "menu-list"
   }, [_c('li', [_c('router-link', {
     attrs: {
@@ -48062,7 +48154,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('card', {
     staticClass: "column is-3 is-offset-1",
     attrs: {
-      "image": "http://localhost:3000/assets/imgs/home/search-online.svg"
+      "image": "assets/imgs/home/search-online.svg"
     }
   }, [_c('div', {
     staticClass: "has-text-centered",
@@ -48070,7 +48162,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('h3', [_vm._v("\n                        Find Businesses\n                    ")]), _vm._v(" "), _c('p', [_vm._v("\n                        Discover & connect with great local businesses in your local neighborhood like dentists, hair stylists and more.\n                    ")])])]), _vm._v(" "), _c('card', {
     staticClass: "column is-3",
     attrs: {
-      "image": "http://localhost:3000/assets/imgs/home/find-listing.svg"
+      "image": "assets/imgs/home/find-listing.svg"
     }
   }, [_c('div', {
     staticClass: "has-text-centered",
@@ -48078,7 +48170,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('h3', [_vm._v("\n                        Find Service\n                    ")]), _vm._v(" "), _c('p', [_vm._v("\n                        Get valuable insights about the services and tell other readers about your experiences by leaving reviews for services.\n                    ")])])]), _vm._v(" "), _c('card', {
     staticClass: "column is-3",
     attrs: {
-      "image": "http://localhost:3000/assets/imgs/home/make-online-booking.svg"
+      "image": "assets/imgs/home/make-online-booking.svg"
     }
   }, [_c('div', {
     staticClass: "has-text-centered",
@@ -51350,9 +51442,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container"
   }, [_c('h1', {
     staticClass: "title extra-large white"
-  }, [_vm._v("\n          Admin Sign In\n        ")]), _vm._v(" "), _c('p', {
+  }, [_vm._v("\n          Admin Sign In\n      ")]), _vm._v(" "), _c('p', {
     staticClass: "subtitle white"
-  }, [_vm._v("\n          Welcome, Boss.\n        ")])])])])
+  }, [_vm._v("\n          Welcome, Boss.\n      ")])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -51454,7 +51546,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._m(0), _vm._v(" "), _c('div', {
     staticClass: "client-login-form columns is-mobile"
   }, [_c('div', {
-    staticClass: "column is-half-desktop is-10-mobile is-10-tablet\n                           is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop"
+    staticClass: "column is-half-desktop is-10-mobile is-10-tablet\n                             is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop"
   }, [_c('div', {
     staticClass: "centered-fb"
   }, [_c('a', {
@@ -51594,9 +51686,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container"
   }, [_c('h1', {
     staticClass: "title extra-large white"
-  }, [_vm._v("\n                    Client Sign In\n                ")]), _vm._v(" "), _c('p', {
+  }, [_vm._v("\n          Client Sign In\n      ")]), _vm._v(" "), _c('p', {
     staticClass: "subtitle white"
-  }, [_vm._v("\n                    Book services, view your bookings and unlock achievements.\n                ")])])])])
+  }, [_vm._v("\n          Book services, view your bookings and unlock achievements.\n      ")])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

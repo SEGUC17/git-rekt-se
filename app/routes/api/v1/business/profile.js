@@ -226,7 +226,6 @@ router.post('/transactions/reject', authMiddleWare.businessAuthMiddleware, (req,
       } else if (booking.status !== 'pending') {
         next('Transaction must be in pending state!');
       } else {
-        console.log(req.body);
         stripe.refunds.create({
           charge: stripeId,
         }, (err) => {

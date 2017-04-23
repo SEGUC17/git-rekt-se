@@ -77,17 +77,17 @@ router.get('/category/list', businessAuthMiddleware, (req, res, next) => {
     type: 'Service',
     _deleted: false,
   })
-  .exec()
-  .then((categories) => {
-    const categoryDropDown = categories.map(category => ({
-      label: category.title,
-      value: category._id,
-    }));
-    res.json({
-      categories: categoryDropDown,
-    });
-  })
-  .catch(e => next(e));
+    .exec()
+    .then((categories) => {
+      const categoryDropDown = categories.map(category => ({
+        label: category.title,
+        value: category._id,
+      }));
+      res.json({
+        categories: categoryDropDown,
+      });
+    })
+    .catch(e => next(e));
 });
 
 
@@ -100,13 +100,13 @@ router.get('/list', businessAuthMiddleware, (req, res, next) => {
     _business: req.user.id,
     _deleted: false,
   })
-  .exec()
-  .then((services) => {
-    res.json({
-      services,
-    });
-  })
-  .catch(e => next(e));
+    .exec()
+    .then((services) => {
+      res.json({
+        services,
+      });
+    })
+    .catch(e => next(e));
 });
 
 /**
@@ -118,17 +118,17 @@ router.get('/branch/list', businessAuthMiddleware, (req, res, next) => {
     _business: req.user.id,
     _deleted: false,
   })
-  .exec()
-  .then((branches) => {
-    const branchDropDown = branches.map(branch => ({
-      label: `${branch.address} - ${branch.location}`,
-      value: branch._id,
-    }));
-    res.json({
-      branches: branchDropDown,
-    });
-  })
-  .catch(e => next(e));
+    .exec()
+    .then((branches) => {
+      const branchDropDown = branches.map(branch => ({
+        label: `${branch.address} - ${branch.location}`,
+        value: branch._id,
+      }));
+      res.json({
+        branches: branchDropDown,
+      });
+    })
+    .catch(e => next(e));
 });
 
 /**
@@ -140,22 +140,22 @@ router.get('/:id/offering/list', businessAuthMiddleware, (req, res, next) => {
     _id: req.params.id,
     _deleted: false,
   })
-  .exec()
-  .then((service) => {
-    if (!service) {
-      next(Strings.offeringValidationError.invalidService);
-      return;
-    }
-    if (`${service._business}` !== `${req.user.id}`) {
-      next(Strings.offeringValidationError.invalidOperation);
-      return;
-    }
-    const validOfferings = service.offerings.filter(offering => !offering._deleted);
-    res.json({
-      offerings: validOfferings,
-    });
-  })
-  .catch(e => next(e));
+    .exec()
+    .then((service) => {
+      if (!service) {
+        next(Strings.offeringValidationError.invalidService);
+        return;
+      }
+      if (`${service._business}` !== `${req.user.id}`) {
+        next(Strings.offeringValidationError.invalidOperation);
+        return;
+      }
+      const validOfferings = service.offerings.filter(offering => !offering._deleted);
+      res.json({
+        offerings: validOfferings,
+      });
+    })
+    .catch(e => next(e));
 });
 
 /**
@@ -470,9 +470,11 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                         service.branches.addToSet(offeringDoc.branch);
                         service.markModified('offerings');
                         service.save()
-                          .then(() => res.json({
-                            message: Strings.serviceSuccess.offeringEdited,
-                          }))
+                          .then((s) => {
+                            res.json({
+                              message: Strings.serviceSuccess.offeringEdited,
+                            });
+                          })
                           .catch((e) => {
                             next(e);
                           });
@@ -527,12 +529,12 @@ router.post('/:id/delete', businessAuthMiddleware, (req, res, next) => {
                  * Delete here
                  */
                 serviceDeleteUtils.deleteServices([service])
-                .then((resultService) => {
-                  res.json({
-                    message: Strings.serviceSuccess.serviceDeleted,
-                  });
-                })
-                .catch(e => next(e));
+                  .then((resultService) => {
+                    res.json({
+                      message: Strings.serviceSuccess.serviceDeleted,
+                    });
+                  })
+                  .catch(e => next(e));
               } else {
                 next([Strings.offeringValidationError.invalidOperation]);
               }
@@ -605,21 +607,21 @@ router.post('/:id1/offering/:id2/delete', businessAuthMiddleware, (req, res, nex
                 Booking.find({
                   _offering: offeringID,
                 })
-                .then((bookings) => {
-                  serviceDeleteUtils.deleteBookings(bookings)
-                  .then(() => {
-                    service.markModified('offerings');
-                    service.save()
+                  .then((bookings) => {
+                    serviceDeleteUtils.deleteBookings(bookings)
                       .then(() => {
-                        res.json({
-                          message: Strings.serviceSuccess.offeringDeleted,
-                        });
+                        service.markModified('offerings');
+                        service.save()
+                          .then(() => {
+                            res.json({
+                              message: Strings.serviceSuccess.offeringDeleted,
+                            });
+                          })
+                          .catch(e => next(e));
                       })
                       .catch(e => next(e));
                   })
                   .catch(e => next(e));
-                })
-                .catch(e => next(e));
               } else {
                 next([Strings.offeringValidationError.invalidOperation]);
               }

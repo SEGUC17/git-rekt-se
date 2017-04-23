@@ -91,7 +91,7 @@ describe('Should Edit Info Correctly', () => {
 
   beforeEach(() => {
     req = supertest(app)
-      .put(`/api/v1/business/info/edit/${businessID}`);
+      .put('/api/v1/business/info/edit');
   });
 
   it('should edit info correctly', (done) => {
@@ -222,20 +222,6 @@ describe('Should Edit Info Correctly', () => {
       .expect('Content-Type', /json/)
       .expect(400, done);
   });
-
-  it('should not allow a logged in business from editing another business', (done) => {
-    const editInfo = {
-      description: 'This is a new description',
-    };
-    req = supertest(app)
-      .put('/api/v1/business/info/edit/222');
-    req.send(editInfo)
-      .set('Authorization', `JWT ${token}`)
-      .expect('Content-Type', /json/)
-      .expect(400, {
-        errors: [businessMessages.mismatchID],
-      }, done);
-  });
 });
 
 /**
@@ -298,7 +284,7 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
       _id: businessID,
     };
     req = supertest(app)
-      .post(`/api/v1/business/info/${businessID}/add/branches`);
+      .post('/api/v1/business/info/add/branches');
     req.send(branchInfo)
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
@@ -336,7 +322,7 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
 
   it('should return an error when request is empty', (done) => {
     req = supertest(app)
-      .post(`/api/v1/business/info/${businessID}/add/branches`);
+      .post('/api/v1/business/info/add/branches');
     req.send({})
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
@@ -441,24 +427,5 @@ describe('Should ADD/EDIT/DELETE Branches', () => {
             .catch(done);
         }
       });
-  });
-
-  it('should not allow un-authenticated business from adding branches', (done) => {
-    req = supertest(app)
-      .post(`/api/v1/business/info/${businessID}/add/branches`);
-    req.send(branchInfo)
-      .expect('Content-Type', /json/)
-      .expect(400, done);
-  });
-
-  it('should not allow a logged in business from adding branches to another business', (done) => {
-    req = supertest(app)
-      .post('/api/v1/business/info/222/add/branches');
-    req.send(branchInfo)
-      .set('Authorization', `JWT ${token}`)
-      .expect('Content-Type', /json/)
-      .expect(400, {
-        errors: [businessMessages.mismatchID],
-      }, done);
   });
 });

@@ -105,7 +105,6 @@ router.post('/add', BusinessAuth, upload.single('path'), (req, res, next) => {
  */
 
 router.post('/edit/:im_id', BusinessAuth, (req, res, next) => {
-  console.log(11);
   req.checkParams(validationSchemas.businessEditImageValidation);
   req.getValidationResult()
     .then((result) => {
@@ -116,7 +115,6 @@ router.post('/edit/:im_id', BusinessAuth, (req, res, next) => {
         })
           .exec()
           .then((business) => {
-            console.log(22);
             if (business) {
               const image = business.gallery
                 .find(element => `${element._id}` === `${req.params.im_id}`);
