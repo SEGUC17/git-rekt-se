@@ -71,6 +71,11 @@
   export default {
     /**
      * Data used by this component.
+     * generalErrors: Array of errors received from server.
+     * categories: Array of categories.
+     * createSuccess: Success Message when creating service is successful.
+     * newService: Data entered by user to create new service.
+     * serviceRules: Validation Rules used to validate the data.
      */
     data() {
       return {

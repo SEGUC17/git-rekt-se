@@ -177,6 +177,22 @@
   export default {
     /**
      * Data used by this component.
+     * active: Determines which tab/component is active.
+     * serviceID: The ID of the corresponding Service.
+     * offerings: Array of Offerings.
+     * branches: Array of Branches.
+     * newOffering: Data entered by user to create an offering.
+     * generalErrors: Errors received from the server.
+     * offeringRules: Validation Rules used to validate the input.
+     * createSuccess: Message received from server when creation was successful.
+     * createErrors: Errors received from server when creating offering.
+     * editFormOffering: Data to edit an offering.
+     * editVisible: true to show the Edit component/tab, false otherwise.
+     * editSuccess: Message when Editing is successful.
+     * offeringToDelete: The Chosen offering to delete.
+     * deleteVisible: true to show Delete component/tab, false otherwise.
+     * deleteSuccess: Message to show when deletion is successful.
+     * deleteErrors: Errors received from the server when deleting.
      */
     data() {
       return {

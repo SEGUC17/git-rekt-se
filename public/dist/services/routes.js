@@ -33035,6 +33035,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
+   * generalErrors: Array of errors received from server.
+   * categories: Array of categories.
+   * createSuccess: Success Message when creating service is successful.
+   * newService: Data entered by user to create new service.
+   * serviceRules: Validation Rules used to validate the data.
    */
   data: function data() {
     return {
@@ -33372,6 +33377,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
+   * active: Determines which tab/component is active.
+   * serviceID: The ID of the corresponding Service.
+   * offerings: Array of Offerings.
+   * branches: Array of Branches.
+   * newOffering: Data entered by user to create an offering.
+   * generalErrors: Errors received from the server.
+   * offeringRules: Validation Rules used to validate the input.
+   * createSuccess: Message received from server when creation was successful.
+   * createErrors: Errors received from server when creating offering.
+   * editFormOffering: Data to edit an offering.
+   * editVisible: true to show the Edit component/tab, false otherwise.
+   * editSuccess: Message when Editing is successful.
+   * offeringToDelete: The Chosen offering to delete.
+   * deleteVisible: true to show Delete component/tab, false otherwise.
+   * deleteSuccess: Message to show when deletion is successful.
+   * deleteErrors: Errors received from the server when deleting.
    */
   data: function data() {
     return {
@@ -33844,6 +33865,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
+   * services: Array of services.
+   * categories: Array of Categories.
+   * generalErrors: Errors received from server.
+   * serviceRules: Validation Rules to validate the data.
+   * serviceToEdit: Chosen Service to Edit.
+   * editVisible: true if Editing component is visible, false otherwise.
+   * editSuccess: true if editing was successful, false otherwise.
+   * editErrors: Array of Errors received from server when editing.
+   * serviceToDelete: chosen service to delete.
+   * deleteVisible: true if Delete component is visible, false otherwise.
+   * deleteErrors: Errors received from server when deleting.
    */
   data: function data() {
     return {

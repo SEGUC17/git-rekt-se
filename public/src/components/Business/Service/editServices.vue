@@ -141,6 +141,17 @@
   export default {
     /**
      * Data used by this component.
+     * services: Array of services.
+     * categories: Array of Categories.
+     * generalErrors: Errors received from server.
+     * serviceRules: Validation Rules to validate the data.
+     * serviceToEdit: Chosen Service to Edit.
+     * editVisible: true if Editing component is visible, false otherwise.
+     * editSuccess: true if editing was successful, false otherwise.
+     * editErrors: Array of Errors received from server when editing.
+     * serviceToDelete: chosen service to delete.
+     * deleteVisible: true if Delete component is visible, false otherwise.
+     * deleteErrors: Errors received from server when deleting.
      */
     data() {
       return {
