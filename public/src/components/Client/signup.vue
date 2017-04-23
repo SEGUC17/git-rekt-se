@@ -92,7 +92,7 @@
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item label="Birth Date" prop="birthdate">
+                    <el-form-item label="Birth Date">
                         <el-date-picker v-model="form.birthdate" type="date" :format="'dd-MM-yyyy'"
                                         placeholder="1-1-1990"></el-date-picker>
                     </el-form-item>
