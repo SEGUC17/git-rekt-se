@@ -167,7 +167,6 @@
               this.loader.close();
             })
             .catch((err) => {
-              console.log(err);
               this.errors = err.response.data.errors;
               this.loader.close();
               document.body.scrollTop = 0;
