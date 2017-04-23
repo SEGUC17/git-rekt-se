@@ -138,15 +138,12 @@ const routes = [{
     path: 'services/:ser_id/coupons',
     component: Coupon,
   }, {
+    path: 'services/:id/offerings',
+    component: editOfferings,
+  }, {
     path: 'bookings',
     component: businessViewTransactions,
   }],
-}, {
-  path: '/business/editServices',
-  component: editServices,
-}, {
-  path: '/business/edit/:id/offerings',
-  component: editOfferings,
 }, {
   path: '/business/:id',
   component: businessPage,

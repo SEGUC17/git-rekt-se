@@ -114,12 +114,12 @@ const serviceSuccess = {
   imageDelete: 'Image deleted succesfully!',
   serviceAdded: 'Service has been added successfully to your business',
   serviceEdited: 'Service has been edited successfully to your business',
-  serviceDeleted: 'Service has been deleted successfully',
-  offeringAdded: 'Offering has been added successfully to your business',
-  offeringEdited: 'Offering has been edited successfully to your business',
-  offeringDeleted: 'Offering has been deleted successfully',
-  couponAdd: 'Coupon added successfully!',
-  couponDelete: 'Coupon deleted succesfully!',
+  serviceDeleted: 'Service has been deleted successfully.',
+  offeringAdded: 'Offering has been added successfully to your business.',
+  offeringEdited: 'Offering has been edited.',
+  offeringDeleted: 'Offering has been deleted successfully.',
+  couponAdd: 'Coupon added successfully.',
+  couponDelete: 'Coupon deleted successfully.',
 };
 
 const serviceFailure = {
