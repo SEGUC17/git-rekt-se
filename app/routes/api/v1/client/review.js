@@ -16,13 +16,10 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(expressValidator({}));
 
-router.get('/test', (req, res, next) => {
-  new Review({
-    rating: 5,
-  }).save().then(() => res.json({
-    message: 'sucess',
-  })).catch(e => next([e]));
-});
+/**
+ * Client Report Review Route.
+ * @param {id} Review Id.
+ */
 
 router.post('/report/:id', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
   req.checkParams(validator.clientReviewValidation);
