@@ -20,7 +20,7 @@ require('dotenv')
 /**
  * Helmet Security.
  */
-app.use(helmet);
+app.use(helmet());
 
 /**
  * DEBUG MODE MIDDLEWARES.
