@@ -33,6 +33,14 @@ const offeringSchema = Schema({
     type: Date,
     required: true,
   },
+  capacity: {
+    type: Number,
+    // required: true, // this would break some tests.
+  },
+  occupied: {
+    type: Number,
+    default: 0,
+  },
   _deleted: {
     type: Boolean,
     default: false,

@@ -1,7 +1,9 @@
 const express = require('express');
 const logger = require('morgan');
+const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const helmet = require('helmet');
 
 const jwtConfig = require('./services/shared/jwtConfig');
 const fbConfig = require('./services/shared/fbConfig');
@@ -16,11 +18,27 @@ require('dotenv')
   .config();
 
 /**
+ * Helmet Security.
+ */
+app.use(helmet);
+
+/**
  * DEBUG MODE MIDDLEWARES.
  */
 
 if (process.env.DEBUG_MODE) {
   app.use(logger('dev'));
+
+  /**
+   * Add Delay to test frontend.
+   */
+
+  if (process.env.ADD_DELAY) {
+    app.use((req, res, next) => {
+      const delay = Math.floor(((Math.random() * 500) + 300));
+      setTimeout(next, delay);
+    });
+  }
 }
 
 /**
@@ -40,11 +58,20 @@ passport.use('facebook_strategy', fbConfig.facebookStrategy);
 
 app.use(passport.initialize());
 
+
 /**
  * API ROUTES.
  */
 
 require('./routes/routes')(app);
+
+/**
+ * Frontend Routes.
+ */
+
+app.use(express.static(path.join(__dirname, '../public/dist/')));
+
+app.get('/*', (req, res) => res.redirect(`/#${req.originalUrl}`));
 
 /**
  * Generic Error Handling Middlewares.

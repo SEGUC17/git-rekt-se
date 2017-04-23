@@ -46,25 +46,25 @@ describe('Search Test Suite', () => {
   const properOfferings = [];
 
 
-  after((done) => {
-    Service.collection.drop(() => {
-      Service.ensureIndexes(() => {
-        Branch.collection.drop(() => {
-          Branch.ensureIndexes(() => {
-            Category.collection.drop(() => {
-              Category.ensureIndexes(() => {
-                Business.collection.drop(() => {
-                  Business.ensureIndexes(() => {
-                    done();
-                  });
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
+  // after((done) => {
+  //   Service.collection.drop(() => {
+  //     Service.ensureIndexes(() => {
+  //       Branch.collection.drop(() => {
+  //         Branch.ensureIndexes(() => {
+  //           Category.collection.drop(() => {
+  //             Category.ensureIndexes(() => {
+  //               Business.collection.drop(() => {
+  //                 Business.ensureIndexes(() => {
+  //                   done();
+  //                 });
+  //               });
+  //             });
+  //           });
+  //         });
+  //       });
+  //     });
+  //   });
+  // });
 
   before((done) => {
     Service.collection.drop(() => {
@@ -316,7 +316,7 @@ describe('Search Test Suite', () => {
     req
       .query({
         location: 'Tagamo3',
-        offset: 1,
+        offset: 2,
       })
       .expect(200)
       .end((err, res) => {
@@ -338,7 +338,7 @@ describe('Search Test Suite', () => {
     req
       .query({
         location: 'Tagamo3',
-        rating: 8,
+        rating: 4,
       })
       .expect(200)
       .end((err, res) => {
@@ -346,7 +346,7 @@ describe('Search Test Suite', () => {
           return done(err);
         }
         chai.expect(res.body.count)
-          .to.equal(2);
+          .to.equal(1);
 
         return done();
       });

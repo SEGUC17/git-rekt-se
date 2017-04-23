@@ -269,69 +269,6 @@ describe('Business Add Categories/Offerings Suite', () => {
       });
   });
 
-  /**
-   * Passing Test3: Business can add an offering with its startData, endDate, branch and price
-   */
-
-  it('should add an offering with all of its info', (done) => {
-    req = supertest(app)
-      .post(`/api/v1/business/service/${srevicesAdded[1]._id}/offering/create`);
-    const offeringInfo = {
-      startDate: Date.now(),
-      endDate: Date.now(),
-      branch: businesses[0].branches[0],
-      price: 1000,
-    };
-    req
-      .send(offeringInfo)
-      .set('Authorization', `JWT ${token}`)
-      .expect('Content-Type', /json/)
-      .expect(200)
-      .end((err, res) => {
-        /**
-         * Error happend with request, fail the test
-         * with the error message.
-         */
-
-        if (err) {
-          done(err);
-          return;
-        }
-
-        /**
-         * Checking the content of the response
-         */
-        Service.find({
-          name: 'Self Developpment 101',
-        })
-          .then((services) => {
-            chai.expect(services)
-              .to.have.lengthOf(1);
-            chai.expect(services[0].offerings)
-              .to.have.lengthOf(1);
-            Offering.find({
-              _id: services[0].offerings[0],
-            })
-              .then((offering) => {
-                chai.expect(offering[0].startDate)
-                  .not.to.equal('');
-                chai.expect(offering[0].endDate)
-                  .not.to.equal('');
-                chai.expect(offering[0].price)
-                  .to.equal(1000);
-                chai.expect(offering[0].location)
-                  .to.equal('Nasr City');
-                chai.expect(offering[0].address)
-                  .to.equal('abbas elakkad');
-                chai.expect(res.body.message)
-                  .to.equal(Strings.serviceSuccess.offeringAdded);
-                done();
-              })
-              .catch(e => done([e]));
-          })
-          .catch(e => done([e]));
-      });
-  });
 
   /**
    * Failing Test 1: missing field when adding a serivce without name
@@ -413,34 +350,6 @@ describe('Business Add Categories/Offerings Suite', () => {
       });
   });
 
-  /**
-   * Failing Test 4:entering a branch that doesn't belong to you
-   */
-
-  it('should return an invalid branch error', (done) => {
-    req = supertest(app)
-      .post(`/api/v1/business/service/${srevicesAdded[0]._id}/offering/create`);
-    const offeringInfo = {
-      startDate: Date.now(),
-      endDate: Date.now(),
-      branch: businesses[1].branches[0],
-      price: 1000,
-    };
-    req
-      .send(offeringInfo)
-      .set('Authorization', `JWT ${token}`);
-
-    req.expect('Content-Type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        }
-        chai.expect(res.body.errors[0])
-          .to.equal(Strings.offeringValidationError.invalidBranch);
-        done();
-      });
-  });
 
   /**
    * Failing Test 5:entering an offering to a service that doesn't belong to this business
@@ -461,6 +370,7 @@ describe('Business Add Categories/Offerings Suite', () => {
           endDate: Date.now(),
           branch: businesses[1].branches[0],
           price: 1000,
+          capacity: 10,
         };
         req
           .send(offeringInfo)

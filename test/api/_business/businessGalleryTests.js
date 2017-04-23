@@ -30,16 +30,16 @@ describe('Business Gallery CRUD Tests', () => {
                 done();
               });
           })
-          .catch(done);
+          .catch(e => done(e));
       });
     });
   });
 
   it('should create an image, and return a confirmation message: Image added succesfully!', (done) => {
     req = supertest(app)
-      .post(`/api/v1/business/${dbBusiness._id}/gallery/add`)
+      .post('/api/v1/business/gallery/add')
       .field('description', 'sample Image Description')
-      .attach('path', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
+      .attach('path', path.join(__dirname, '../../../public/dist/uploads/dummy/c1.jpg'))
       .set('Authorization', `JWT ${token}`)
       .expect('Content-Type', /json/)
       .expect(200)
@@ -55,40 +55,10 @@ describe('Business Gallery CRUD Tests', () => {
               chai.expect(data.gallery.length)
                 .to.equal(1);
               chai.expect(result.body.message)
-                .to.equal('Image added successfully!');
+                .to.equal(Strings.serviceSuccess.imageAdd);
               done();
             })
-            .catch(() => {
-              done(err);
-            });
-        }
-      });
-  });
-
-  it('should not create an image if an invalid id is given, and return error message: Business not found!', (done) => {
-    req = supertest(app)
-      .post('/api/v1/business/abc/gallery/add')
-      .field('description', 'sample Image Description')
-      .attach('path', path.join(__dirname, '../../../app/public/dummy/c1.jpg'))
-      .set('Authorization', `JWT ${token}`)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else {
-          chai.expect(res.body.errors[0])
-            .to.equal('The required id is invalid.');
-          Business.findOne({
-            _id: dbBusiness._id,
-          }, (finderr, data) => {
-            if (finderr) {
-              done(finderr);
-            } else {
-              chai.expect(data.gallery.length)
-                .to.equal(0);
-              done();
-            }
-          });
+            .catch(e => done(e));
         }
       });
   });
@@ -103,7 +73,7 @@ describe('Business Gallery CRUD Tests', () => {
       .then((newbus) => {
         const newim = newbus.gallery.find(element => `${element.path}` === 'sampleImagePath');
         req = supertest(app)
-          .post(`/api/v1/business/${dbBusiness._id}/gallery/edit/${newim._id}`)
+          .post(`/api/v1/business/gallery/edit/${newim._id}`)
           .set('Authorization', `JWT ${token}`)
           .send({
             description: 'API Description is working',
@@ -126,7 +96,7 @@ describe('Business Gallery CRUD Tests', () => {
                     .to.equal('API Description is working');
                   done();
                 })
-                .catch(() => done(err));
+                .catch(e => done(e));
             }
           });
       })
@@ -143,7 +113,7 @@ describe('Business Gallery CRUD Tests', () => {
       .then((newbus) => {
         const newim = newbus.gallery.find(element => `${element.path}` === 'sampleImagePath');
         req = supertest(app)
-          .post(`/api/v1/business/${dbBusiness._id}/gallery/delete/${newim._id}`)
+          .post(`/api/v1/business/gallery/delete/${newim._id}`)
           .set('Authorization', `JWT ${token}`)
           .expect(200)
           .end((err, res) => {

@@ -229,85 +229,6 @@ describe('Business Edit Categories/Offerings Suite', () => {
       .catch(e => done([e]));
   });
 
-  /**
-   * Passing Test2: Business can edit an offering with its attributes
-   */
-
-  it('should edit an existing offering with its attributes', (done) => {
-    const offering = new Offering({
-      startDate: Date.now(),
-      endDate: Date.now(),
-      branch: businesses[0].branches[0],
-      location: 'Nasr City',
-      address: 'abbas elakkad',
-      price: 1000,
-    });
-    offering.save()
-      .then((savedOffering) => {
-        Service.findOne({
-          _id: servicesAdded[0]._id,
-        })
-          .then((serviceDoc) => {
-            serviceDoc.offerings.push(savedOffering);
-            serviceDoc.save()
-              .then((serviceDoc2) => {
-                const offering2 = {
-                  startDate: Date.now(),
-                  endDate: Date.now(),
-                  branch: businesses[0].branches[1],
-                  price: 5000,
-                };
-                req = supertest(app)
-                  .post(`/api/v1/business/service/${serviceDoc2._id}/offering/${savedOffering._id}/edit`);
-
-                req
-                  .send(offering2)
-                  .set('Authorization', `JWT ${token}`)
-                  .expect('Content-Type', /json/)
-                  .expect(200)
-                  .end((err, res) => {
-                    /**
-                     * Error happend with request, fail the test
-                     * with the error message.
-                     */
-                    if (err) {
-                      done(err);
-                      return;
-                    }
-
-                    /**
-                     * Checking the content of the response
-                     */
-                    Offering.find({
-                      _id: savedOffering._id,
-                    })
-                      .then((offerings) => {
-                        chai.expect(offerings)
-                          .to.have.lengthOf(1);
-                        chai.expect(offerings[0].startDate)
-                          .not.to.equal('');
-                        chai.expect(offerings[0].endDate)
-                          .not.to.equal('');
-                        chai.expect(offerings[0].price)
-                          .to.equal(5000);
-                        chai.expect(offerings[0].location)
-                          .to.equal('Zamalek');
-                        chai.expect(offerings[0].address)
-                          .to.equal('some address1');
-                        chai.expect(res.body.message)
-                          .to.equal(Strings.serviceSuccess.offeringEdited);
-                        offeringsAdded.push(offerings[0]);
-                        done();
-                      })
-                      .catch(e => done([e]));
-                  });
-              })
-              .catch(e => done([e]));
-          })
-          .catch(e => done([e]));
-      })
-      .catch(e => done([e]));
-  });
 
   /**
    * Failing Test 1: missing field when editing a serivce without specifying name
@@ -359,35 +280,6 @@ describe('Business Edit Categories/Offerings Suite', () => {
         }
         chai.expect(res.body.errors[0])
           .to.equal(Strings.serviceValidationCRUDErrors.invalidCategory);
-        done();
-      });
-  });
-
-  /**
-   * Failing Test 3:editing to a branch that doesn't belong to you
-   */
-
-  it('should return an invalid branch error', (done) => {
-    req = supertest(app)
-      .post(`/api/v1/business/service/${servicesAdded[0]._id}/offering/${offeringsAdded[0]._id}/edit/`);
-    const offeringInfo = {
-      startDate: Date.now(),
-      endDate: Date.now(),
-      branch: businesses[1].branches[0],
-      price: 1000,
-    };
-    req
-      .send(offeringInfo)
-      .set('Authorization', `JWT ${token}`);
-
-    req.expect('Content-Type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        }
-        chai.expect(res.body.errors[0])
-          .to.equal(Strings.offeringValidationError.invalidBranch);
         done();
       });
   });
