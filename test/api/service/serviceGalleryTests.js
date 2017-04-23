@@ -76,7 +76,7 @@ describe('Service Gallery CRUD Tests', () => {
                   done();
                 })
 
-          .catch(e => done(e));
+                .catch(e => done(e));
             }
           });
       })
@@ -160,7 +160,7 @@ describe('Service Gallery CRUD Tests', () => {
                   done();
                 })
 
-          .catch(e => done(e));
+                .catch(e => done(e));
             }
           });
       })
@@ -205,7 +205,7 @@ describe('Service Gallery CRUD Tests', () => {
                   done();
                 })
 
-          .catch(e => done(e));
+                .catch(e => done(e));
             }
           });
       })

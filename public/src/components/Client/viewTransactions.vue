@@ -40,7 +40,7 @@
                 <div class="no-data hero" v-show="bookings.length === 0">
                     <div class="hero-body has-text-centered">
                         <el-icon name="circle-close" class="confirmation-icon icon-fail"></el-icon>
-                        <p class="title is-2">No Transactions Found.</p>
+                        <p class="title is-2">No Bookings Found.</p>
                         <a class="button is-info" @click.prevent="getBookings">Refresh</a>
                     </div>
                 </div>
@@ -56,11 +56,6 @@
   import clientAuth from '../../services/auth/clientAuth';
   import { Client } from '../../services/EndPoints';
 
-  const headers = {
-    headers: {
-      Authorization: clientAuth.getJWTtoken(),
-    },
-  };
   export default {
     data() {
       return {
@@ -76,7 +71,11 @@
           fullscreen: true,
           text: 'Loading Bookings..',
         });
-        axios.get(Client().getBookings, headers)
+        axios.get(Client().getBookings, {
+          headers: {
+              Authorization: clientAuth.getJWTtoken(),
+          },
+        })
             .then((res) => {
               this.bookings = res.data.bookings.map((booking) => {
                 return {

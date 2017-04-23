@@ -1,10 +1,8 @@
-
-
 /*
-* Client Side Form Validation Schemas.
-* Async-validator.
-* https://github.com/yiminghe/async-validator
-* */
+ * Client Side Form Validation Schemas.
+ * Async-validator.
+ * https://github.com/yiminghe/async-validator
+ * */
 
 export const businessEditInfoValidation = {
   name: [{
@@ -288,6 +286,33 @@ export const clientForgotPasswordMail = {
   },
   ],
 };
+
+export const businessAddCoupon = {
+  code: [{
+    required: true,
+    message: 'Please input Coupon Code',
+    trigger: 'blur',
+  }],
+  discount: [{
+    type: 'number',
+    required: true,
+    message: 'Please input Discount Value',
+    trigger: 'change',
+  }],
+  startDate: [{
+    type: 'date',
+    required: true,
+    message: 'Please pick a Start date',
+    trigger: 'change',
+  }],
+  endDate: [{
+    type: 'date',
+    required: true,
+    message: 'Please pick an End date',
+    trigger: 'change',
+  }],
+};
+
 export const unverfiedBusinessSignupValidation = {
 
   name: {
@@ -318,6 +343,7 @@ export const unverfiedBusinessSignupValidation = {
     message: 'Mobile number must be 11 digits in the following format 01xxxxxxxxx.',
   }],
 };
+
 export const clientEditInfoValidation = {
   email: [{
     message: 'Please Enter a valid email.',
@@ -363,6 +389,7 @@ export const clientEditInfoValidation = {
     trigger: 'change',
   }],
 };
+
 export const forgotPasswordValidation = {
   email: [{
     required: true,
@@ -374,6 +401,78 @@ export const forgotPasswordValidation = {
     trigger: 'blur',
   }],
 };
+
+export const serviceRules = {
+  name: [{
+    required: true,
+    message: 'Please enter a name for your service',
+    trigger: 'blur',
+  }, {
+    max: 50,
+    message: 'The service name can have a maximum 50 characters',
+    trigger: 'change',
+  }],
+  shortDescription: [{
+    required: true,
+    message: 'Please enter a short description of your service',
+    trigger: 'blur',
+  }, {
+    max: 140,
+    message: 'The short description can have a maximum 140 characters',
+    trigger: 'change',
+  }],
+};
+
+export const offeringRules = {
+  branch: [{
+    required: true,
+    message: 'Please select a branch for your offering',
+    trigger: 'blur',
+  }],
+  price: [{
+    type: 'number',
+    message: 'Price must be a number',
+    trigger: 'change',
+  }, {
+    type: 'number',
+    required: true,
+    message: 'Please enter a price for your offering',
+    trigger: 'blur',
+  }, {
+    type: 'number',
+    min: 0,
+    message: 'The price cannot be lower than 0',
+    trigger: 'change',
+  }],
+  dates: [{
+    type: 'array',
+    required: true,
+    message: 'Please enter a duration for your offering',
+    trigger: 'blur',
+  }, {
+    type: 'array',
+    len: 2,
+    defaultField: {
+      type: 'date',
+      required: true,
+      message: 'Please enter a duration for your offering',
+    },
+    message: 'Please enter a valid duration for your offering',
+    trigger: 'blur',
+  }],
+  capacity: [{
+    type: 'number',
+    required: true,
+    message: 'Please enter a capacity for your offering',
+    trigger: 'blur',
+  }, {
+    type: 'number',
+    min: 0,
+    message: 'The capacity cannot be lower than 0',
+    trigger: 'change',
+  }],
+};
+
 export const BusinessResetFormValidation = {
   password: [{
     required: true,
@@ -408,6 +507,43 @@ export const BusinessResetFormValidation = {
     },
   }],
 };
+
+export const infoFormRules = {
+  description: [{
+    required: true,
+    message: 'Please enter a description for your business activity',
+    trigger: 'blur',
+  }],
+  workingHours: [{
+    required: true,
+    messsage: 'Please enter your business working hours',
+    trigger: 'blur',
+  }],
+  categories: [{
+    validator(rule, value, callBack) {
+      if (value.length === 0) {
+        callBack([new Error('Please choose at least one category for your business')]);
+      } else {
+        callBack();
+      }
+    },
+    trigger: 'blur',
+  }],
+};
+
+export const branchesFormRules = {
+  branches: [{
+    validator(rule, value, callBack) {
+      if (value.length === 0) {
+        callBack([new Error('Please add at least one branch for your business')]);
+      } else {
+        callBack();
+      }
+    },
+    trigger: 'blur',
+  }],
+};
+
 
 export const reviewRules = {
   rating: [{
