@@ -197,7 +197,6 @@ export const clientForgotPassword = {
     trigger: ['blur', 'change'],
   }],
 };
-
 export const verifiedBusinessSignupRules = {
   password: [{
     required: true,
@@ -365,7 +364,6 @@ export const clientEditInfoValidation = {
     message: 'Last name is required.',
     trigger: 'blur',
     required: true,
->>>>>>> 70bbda7c8ed15bb0c90610c76bb54aff213db4f9
   }],
   mobile: [{
     message: 'Mobile number is required.',
