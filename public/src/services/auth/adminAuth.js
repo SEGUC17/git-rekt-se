@@ -36,6 +36,33 @@ export default {
       });
   },
 
+  /**
+   * Logout User.
+   * @param {any} callBack The callback to axios.
+   */
+
+  logout(callBack) {
+    this.user.authenticated = false;
+    const currentToken = this.getJWTtoken();
+
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_email');
+    localStorage.removeItem('admin_id');
+
+    axios.post(Admin()
+        .logout, null, {
+          headers: {
+            Authorization: currentToken,
+          },
+        })
+      .then((response) => {
+        callBack(null, response.data);
+      })
+      .catch((err) => {
+        callBack(err.response.data, null);
+      });
+  },
+
   /*
    * Get the JWT for Header.
    * */
