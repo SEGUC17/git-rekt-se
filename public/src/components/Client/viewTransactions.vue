@@ -58,7 +58,8 @@
   import moment from 'moment';
   import clientAuth from '../../services/auth/clientAuth';
   import { Client } from '../../services/EndPoints';
-
+  import JWTCheck from '../../services/JWTErrors';
+  
   export default {
     /**
      * Data used by this component.
@@ -105,9 +106,19 @@
               loader.close();
             })
             .catch((err) => {
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(', ') : err.message;
               loader.close();
+              if (err.response && JWTCheck(err.response.data.errors)){
+                clientAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  message: 'Session Expired, please login',
+                  type: 'is-danger',
+                  position: 'bottom',
+                });
+              } else {
+                this.error = true;
+                this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+              }
             });
       },
     },

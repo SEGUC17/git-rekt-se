@@ -38995,6 +38995,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_auth_clientAuth__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_EndPoints__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__ = __webpack_require__(21);
 //
 //
 //
@@ -39056,6 +39057,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   /**
    * Data used by this component.
@@ -39103,9 +39105,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         loader.close();
       }).catch(function (err) {
-        _this.error = true;
-        _this.message = err.response ? err.response.data.errors.join(', ') : err.message;
         loader.close();
+        if (err.response && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__services_JWTErrors__["a" /* default */])(err.response.data.errors)) {
+          __WEBPACK_IMPORTED_MODULE_2__services_auth_clientAuth__["a" /* default */].removeData();
+          _this.$router.push('/');
+          _this.$toast.open({
+            message: 'Session Expired, please login',
+            type: 'is-danger',
+            position: 'bottom'
+          });
+        } else {
+          _this.error = true;
+          _this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+        }
       });
     }
   },
