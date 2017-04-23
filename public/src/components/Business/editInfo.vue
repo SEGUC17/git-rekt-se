@@ -73,6 +73,9 @@
 </template>
 
 <script>
+ /**
+  * This component is responsible for Editing the Business Info.
+  */
   import axios from 'axios';
   import Form from '../../services/Form';
   import businessAuth from '../../services/auth/businessAuth';
@@ -86,6 +89,20 @@
       businessEditInfoValidation.confirmPassword[0]
           .validator = businessEditInfoValidation.confirmPassword[0]
           .validator.bind(this);
+          /**
+           * Data used by this component.
+           * form: Holds data entered by user and sent to server.
+           * rules: Validation rules used to validate input.
+           * phoneNumbers: Business' Phone Numbers.
+           * business: Holds Business Info.
+           * success: true if an operation completed successfully, false otherwise.
+           * error: true if an error occured, false otherwise.
+           * info: true if an info is displayed to user, false otherwise.
+           * message: Message to display to the user.
+           * loading: false if no loading true otherwise.
+           * showPassword: text to show password, password to not show it.
+           * showConfirm: text to show password, password to not show it.
+           */
       return {
         form: new Form({
           email: '',
@@ -107,7 +124,13 @@
         showConfirm: 'password',
       };
     },
+    /**
+     * All Methods used by the component.
+     */
     methods: {
+      /**
+       * Get Business Info.
+       */
       getBusiness() {
         return new Promise((resolve, reject) => {
           axios.get(Business().getBasicInfo, {
@@ -125,6 +148,9 @@
               });
         });
       },
+      /**
+       * Validate and submit the data to edit info.
+       */
       onSubmit() {
         this.success = false;
         this.$refs.form.validate((valid) => {
@@ -157,6 +183,9 @@
           }
         });
       },
+      /**
+       * Reset form fields.
+       */
       onReset() {
         this.form.keys.forEach((el) => {
           this.form[el] = this.business[el];
@@ -168,6 +197,9 @@
           index,
         }));
       },
+      /**
+       * Add a new phone number field.
+       */
       addPhone() {
         this.phoneNumbers.push({
           number: '',
@@ -175,6 +207,11 @@
         });
       },
     },
+    /**
+     * Ran when component is mounted.
+     * Route user back if he/she is not authenticated, otherwise
+     * get business Info.
+     */
     mounted() {
       if (!commonAuth.isBusiness()) {
         this.$router.push('/404');

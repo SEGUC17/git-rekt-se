@@ -107,12 +107,29 @@
   </div>
 </template>
 <script>
+ /**
+  * This component displays the business gallery.
+  */
   import axios from 'axios';
   import { Business } from '../../../services/EndPoints';
   import businessAuth from '../../../services/auth/businessAuth';
   import Form from '../../../services/Form';
 
   export default {
+    /**
+     * Data used by this component.
+     * images: Array of Business Images.
+     * errors: Errors received from server.
+     * addErrors: Errors received when adding an image.
+     * loader: Loading Object to load.
+     * addDialogue: true to display dialog, false otherwise.
+     * deleteDialogue: true to display dialog, false otherwise.
+     * editDialogue: true to display dialog, false otherwise.
+     * imageToDelete: Image ID to delete.
+     * imageToEdit: Image ID to Edit.
+     * editForm: Data to edit image with.
+     * addForm: Data to add image with.
+     */
     data() {
       return {
         images: [],
@@ -133,27 +150,28 @@
         }),
       };
     },
-
+    /**
+     * Ran when component is mounted on DOM.
+     * Gets the Business Gallery.
+     */
     mounted() {
       this.getGallery();
     },
-
+    /**
+     * All Methods used by this component.
+     */
     methods: {
-
-      /*
-      * Creates a new loader.
-      * */
-
+      /**
+       * Creates a new loader.
+       */
       setupLoader() {
         this.loader = this.$loading({
           fullscreen: true,
         });
       },
-
-      /*
-      * Get Images in current business gallery.
-      * */
-
+      /**
+       * Get Images in current business gallery.
+       */
       getGallery() {
         this.setupLoader();
         axios.get(Business().viewGallery, {
@@ -173,11 +191,9 @@
               document.documentElement.scrollTop = 0;
             });
       },
-
-      /*
-      * Add new Image form submit.
-      * */
-
+      /**
+       * Add new Image form submit.
+       */
       submitAddForm() {
         if (this.addForm.path) {
           if (this.isImage(this.addForm.path)) {
@@ -194,11 +210,9 @@
           this.addErrors = ['Image is required.'];
         }
       },
-
-      /*
-      * Add Image to business gallery.
-      * */
-
+      /**
+       * Add Image to business gallery.
+       */
       addImage(data) {
         this.setupLoader();
         axios.post(Business().addImage, data, {
@@ -222,28 +236,24 @@
               this.loader.close();
             });
       },
-
-      /*
-      * Show the edit image dialog.
-      * */
-
+      /**
+       * Show the edit image dialog.
+       */
       showDeleteDialog(imageID) {
         this.deleteDialogue = true;
         this.imageToDelete = imageID;
       },
-
-      /*
-      * Show the delete image dialog.
-      * */
+      /**
+       * Show the delete image dialog.
+       */
       showEditDialog(image) {
         this.editDialogue = true;
         this.imageToEdit = image._id;
         this.editForm.description = image.description;
       },
-
-      /*
-      * Edit image with {imageID}.
-      * */
+      /**
+       * Edit image with {imageID}.
+       */
       editImage() {
         this.setupLoader();
         axios.post(Business().editImage(this.imageToEdit), this.editForm, {
@@ -266,11 +276,9 @@
               this.errors = err.response.data.errors;
             });
       },
-
-      /*
-      * Delete image with {imageID}.
-      * */
-
+      /**
+       * Delete image with {imageID}.
+       */
       deleteImage() {
         this.setupLoader();
         axios.post(Business().deleteImage(this.imageToDelete), {}, {
@@ -292,11 +300,9 @@
               this.loader.close();
             });
       },
-
-      /*
-      * File upload handler.
-      * */
-
+      /**
+       * File upload handler.
+       */
       fileChanged(e) {
         const files = e.target.files || e.dataTransfer.files;
         if (files.length > 0) {
@@ -309,11 +315,9 @@
           }
         }
       },
-
-      /*
-      * Returns If the type of the file is image.
-      * */
-
+      /**
+       * Returns If the type of the file is image.
+       */
       isImage(file) {
         return file.type.split('/')[0] === 'image';
       },

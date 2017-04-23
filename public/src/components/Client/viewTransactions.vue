@@ -51,12 +51,22 @@
 </template>
 
 <script>
+ /**
+  * This component is reponsible for viewing the client's transactions.
+  */
   import axios from 'axios';
   import moment from 'moment';
   import clientAuth from '../../services/auth/clientAuth';
   import { Client } from '../../services/EndPoints';
 
   export default {
+    /**
+     * Data used by this component.
+     * bookings: Array of client bookings.
+     * error: true if an error occured, false otherwise.
+     * success: true if a successful operation occured, false otherwise.
+     * message: Message to display to the user.
+     */
     data() {
       return {
         bookings: [],
@@ -65,7 +75,13 @@
         message: '',
       };
     },
+    /**
+     * All Methods used by this component.
+     */
     methods: {
+      /**
+       * Get the Client bookings.
+       */
       getBookings() {
         const loader = this.$loading({
           fullscreen: true,
@@ -95,6 +111,10 @@
             });
       },
     },
+    /**
+     * Ran when the component is mounted.
+     * Route back if user isnot authenticated, otherwise get All Bookings.
+     */
     mounted() {
       if (!clientAuth.isAuthenticated()) {
         this.$router.push('/404');

@@ -22,12 +22,23 @@
 
 
 <script>
+ /**
+  * This component allows the user to review a service.
+  */
   import Axios from 'axios';
   import {Service} from '../../../services/EndPoints';
   import {reviewRules} from '../../../services/validation';
   import ClientAuth from '../../../services/auth/clientAuth';
 
   export default {
+    /**
+     * Data used by this component.
+     * review: An Object holding the user's rating and the review.
+     * rules: Validation Rules for validating the user's input.
+     * success: Success Message displayed to the user.
+     * errors: Errors received from the server.
+     * loggedin: true if client logged in, false otherwise.
+     */
     data() {
       return {
         review: {
@@ -40,8 +51,18 @@
         loggedin: ClientAuth.user.authenticated,
       };
     },
+    /**
+     * Props used by this component.
+     * serviceID: The ID of the corresponding Service.
+     */
     props: ['serviceID'],
+    /**
+     * All Methods used by the component.
+     */
     methods: {
+      /**
+       * Create a review.
+       */
       createReview() {
         this.errors = [];
         this.success = '';

@@ -59,12 +59,18 @@
   </div>
 </template>
 <script>
+ /**
+  * This component allows a business to create a service.
+  */
   import axios from 'axios';
   import BusinessAuth from '../../../services/auth/businessAuth';
   import { Business } from '../../../services/EndPoints';
   import { serviceRules } from '../../../services/validation';
 
-  export default{
+  export default {
+    /**
+     * Data used by this component.
+     */
     data() {
       return {
         generalErrors: [],
@@ -81,16 +87,18 @@
         serviceRules,
       };
     },
-
+    /**
+     * Ran when component is mounted on DOM.
+     * List all categories.
+     */
     mounted() {
       this.getCategories();
     },
 
     methods: {
-      /*
+      /**
        * Get the possible categories.
-       * */
-
+       */
       getCategories() {
         const loader = this.$loading({
           fullscreen: true,
@@ -114,11 +122,9 @@
               });
             });
       },
-
-      /*
+      /**
        * Create a new service.
-       * */
-
+       */
       createService() {
         this.createSuccess = '';
         this.createErrors = [];
@@ -157,29 +163,23 @@
           }
         });
       },
-
-      /*
+      /**
        * Reset create form.
-       * */
-
+       */
       resetCreate() {
         this.$refs.createServiceForm.resetFields();
         this.resetCreateImage();
       },
-
-      /*
+      /**
        * Reset Service Icon Image upload.
-       * */
-
+       */
       resetCreateImage() {
         this.newService.coverImage = '';
         this.$refs.createCoverImage.value = null;
       },
-
-      /*
-       *  Handle file upload.
-       * */
-
+      /**
+       * Handle file upload.
+       */
       createFilechanged(e) {
         const files = e.target.files || e.dataTransfer.files;
         if (files.length > 0) {

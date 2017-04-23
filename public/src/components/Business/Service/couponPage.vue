@@ -89,6 +89,9 @@
 </template>
 
 <script>
+ /**
+  * This component allows a business to add and delete coupons
+  */
   import axios from 'axios';
   import moment from 'moment';
   import EventBus from '../../../services/EventBus';
@@ -97,6 +100,9 @@
   import { businessAddCoupon } from '../../../services/validation';
 
   export default {
+    /**
+     * Data used by this component.
+     */
     data() {
       return {
         coupons: [],
@@ -119,8 +125,13 @@
         },
       };
     },
-
+    /**
+     * All Methods used by this component.
+     */
     methods: {
+      /**
+       * Fetch all coupons
+       */
       fetchCoupons() {
         this.loader = this.$loading({
           fullscreen: true,
@@ -139,6 +150,9 @@
               this.loader.close();
             });
       },
+      /**
+       * Validate and submit form.
+       */
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -165,10 +179,15 @@
           }
         });
       },
+      /**
+       * Reset form.
+       */
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-
+      /**
+       * Delete a coupon
+       */
       deleteCoupon() {
         this.deleteDialog = false;
         axios.post(Service().deleteCoupon(this.couponToDelete._service,
@@ -188,11 +207,18 @@
               document.documentElement.scrollTop = 0;
             });
       },
-
+      /**
+       * Format Date.
+       */
       formatDate(value, row) {
         return moment(value).format('MMMM Do YYYY');
       },
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * Route user back if he/she is not authenticated,
+     * otherwise emit and event and fetch coupons.
+     */
     mounted() {
       if (!businessAuth.isAuthenticated()) {
         this.$router.push('/404');

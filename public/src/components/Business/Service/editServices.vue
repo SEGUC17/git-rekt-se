@@ -129,12 +129,18 @@
 
 
 <script>
+ /**
+  * This component allows to Edit Services.
+  */
   import axios from 'axios';
   import { Business } from '../../../services/EndPoints';
   import { serviceRules } from '../../../services/validation';
   import BusinessAuth from '../../../services/auth/businessAuth';
 
   export default {
+    /**
+     * Data used by this component.
+     */
     data() {
       return {
         services: [],
@@ -161,17 +167,19 @@
         deleteErrors: [],
       };
     },
-
+    /**
+     * Ran when component is mounted on DOM.
+     * Fetch the services and categories.
+     */
     mounted() {
       this.getServices();
       this.getCategories();
     },
 
     methods: {
-      /*
+      /**
        * Get the possible categories.
-       * */
-
+       */
       getCategories() {
         axios.get(Business().listCategories, {
           headers: {
@@ -189,12 +197,10 @@
                 return err.msg;
               });
             });
-      },
-
-      /*
-       * Get the business services..
-       * */
-
+      }, 
+      /**
+       * Get the business services.
+       */
       getServices() {
         const loader = this.$loading({
           fullscreen: true,
@@ -218,11 +224,9 @@
               });
             });
       },
-
-      /*
+      /**
        * Edit the current service.
-       * */
-
+       */
       editService() {
         this.editSuccess = '';
         this.editErrors = [];
@@ -266,10 +270,9 @@
           }
         });
       },
-
-      /*
-      * Delete the current service.
-      * */
+      /**
+       * Delete the current service.
+       */
       deleteService() {
         this.deleteSuccess = '';
         this.deleteErrors = [];
@@ -297,18 +300,18 @@
               });
             });
       },
-
+      /**
+       * Reset Image field.
+       */
       resetEditImage() {
         this.serviceToEdit.coverImage = '';
         if (this.$refs.editCoverImage) {
           this.$refs.editCoverImage.value = null;
         }
       },
-
-      /*
-      * Show Service editing Modal.
-      * */
-
+      /**
+       * Show Service editing Modal.
+       */
       showEdit(service) {
         this.changeImage = false;
         this.serviceToEdit = service;
@@ -322,56 +325,46 @@
       showCoupons(service) {
         this.$router.push(this.couponsURL(service));
       },
-
-      /*
-      * Get offerings page.
-      * */
-
+      /**
+       * Get offerings page.
+       */
       showOfferings(service) {
         this.$router.push(this.offeringsURL(service));
       },
-
-      /*
-      * Get Gallery page.
-      * */
-
+      /**
+       * Get Gallery page.
+       */
       showGallery(service) {
         this.$router.push(this.galleryURL(service));
       },
-
-      /*
-      * Show Service deletion confirmation.
-      * */
-
+      /**
+       * Show Service deletion confirmation.
+       */
       showDelete(service) {
         this.serviceToDelete = service;
         this.deleteVisible = true;
       },
-
-      /*
-      * Return the url to the edit business offering page.
-      * */
-
+      /**
+       * Return the url to the edit business offering page.
+       */
       offeringsURL(service) {
         return `/business/manage/services/${service._id}/offerings`;
       },
-
-      /*
+      /**
        * Return the url to the edit business gallery page.
-       * */
-
+       */
       galleryURL(service) {
         return `/business/manage/services/${service._id}/gallery`;
       },
-
-      /*
+      /**
        * Return the url to the edit business coupons page.
-       * */
-
+       */
       couponsURL(service) {
         return `/business/manage/services/${service._id}/coupons`;
       },
-
+      /**
+       * Edit a file on Change.
+       */
       editFilechanged(e) {
         const files = e.target.files || e.dataTransfer.files;
         if (files.length > 0) {
@@ -379,6 +372,9 @@
         }
         this.$nextTick();
       },
+      /**
+       * Clear the image.
+       */
       autoClearEditImage() {
         if (!this.changeImage) {
           this.resetEditImage();

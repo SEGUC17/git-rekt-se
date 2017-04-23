@@ -165,12 +165,18 @@
 
 
 <script>
+ /**
+  * This component allows business to Edit Offerings.
+  */
   import Axios from 'axios';
   import { Business } from '../../../services/EndPoints';
   import { offeringRules } from '../../../services/validation';
   import BusinessAuth from '../../../services/auth/businessAuth';
 
   export default {
+    /**
+     * Data used by this component.
+     */
     data() {
       return {
         active: 1,
@@ -205,6 +211,11 @@
         deleteErrors: [],
       };
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * If user is not authenticated route him back,
+     * otherwise List Offerings and Branches.
+     */
     mounted() {
       BusinessAuth.refreshAuth();
       if (!BusinessAuth.user.authenticated) {
@@ -229,7 +240,13 @@
             });
       }
     },
+    /**
+     * All Methods used by this component.
+     */
     methods: {
+      /**
+       * List all offerings.
+       */
       getOfferings() {
         const loader = this.$loading({
           fullscreen: true,
@@ -253,6 +270,9 @@
               });
             });
       },
+      /**
+       * Create an offering.
+       */
       createOffering() {
         this.createSuccess = '';
         this.createErrors = [];
@@ -284,6 +304,9 @@
           }
         });
       },
+      /**
+       * Edit an offering.
+       */
       editOffering() {
         this.editSuccess = '';
         this.editErrors = [];
@@ -316,6 +339,9 @@
           }
         });
       },
+      /**
+       * Delete an offering.
+       */
       deleteOffering() {
         this.deleteSuccess = '';
         this.deleteErrors = [];
@@ -343,17 +369,29 @@
               });
             });
       },
+      /**
+       * Reset form fields.
+       */
       resetCreate() {
         this.$refs.createOffering.resetFields();
       },
+      /**
+       * Show Edit Offering.
+       */
       showEdit(offering) {
         this.editFormOffering = this.populateFormOffering(offering);
         this.editVisible = true;
       },
+      /**
+       * Show Delete Offering.
+       */
       showDelete(offering) {
         this.offeringToDelete = offering;
         this.deleteVisible = true;
       },
+      /**
+       * Fill Form with offering data.
+       */
       populateFormOffering(offering) {
         const offeringToReturn = {};
         offeringToReturn._id = offering._id;
@@ -364,7 +402,13 @@
         return offeringToReturn;
       },
     },
+    /**
+     * Computed properties for this component.
+     */
     computed: {
+      /**
+       * The object to create an offering with.
+       */
       offeringToCreate() {
         return {
           branch: this.newOffering.branch,
@@ -374,6 +418,9 @@
           endDate: this.newOffering.dates[1],
         };
       },
+      /**
+       * The object to edit an offering with.
+       */
       offeringToEdit() {
         return {
           _id: this.editFormOffering._id,

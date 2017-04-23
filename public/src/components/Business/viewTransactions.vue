@@ -45,6 +45,9 @@
 </template>
 
 <script>
+ /**
+  * This component allows a Business To View, Accept/Reject a transaction.
+  */
   import moment from 'moment';
   import axios from 'axios';
   import businessAuth from '../../services/auth/businessAuth';
@@ -52,6 +55,13 @@
   import EventBus from '../../services/EventBus';
 
   export default {
+    /**
+     * Data used by this component.
+     * bookings: Array of business bookings.
+     * error: true if an error occured, false otherwise.
+     * success: true if a successful operation occured, false otherwise.
+     * message: A Message to display to the user.
+     */
     data() {
       return {
         bookings: [],
@@ -60,7 +70,13 @@
         message: '',
       };
     },
+    /**
+     * All Methods used by the component.
+     */
     methods: {
+      /**
+       * Get Transactions.
+       */
       getTransactions() {
         const loader = this.$loading({
           fullscreen: true,
@@ -90,6 +106,9 @@
               loader.close();
             });
       },
+      /**
+       * Accept a transaction.
+       */
       acceptTransaction(row) {
         this.success = false;
         this.error = false;
@@ -115,6 +134,9 @@
               loader.close();
             });
       },
+      /**
+       * Refund a transaction.
+       */
       refundTransaction(row) {
         this.success = false;
         this.error = false;
@@ -142,6 +164,10 @@
             });
       },
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * Route back if user is not authenticated, otherqise Get All Transactions.
+     */
     mounted() {
       if (!businessAuth.isAuthenticated()) {
         this.$router.push('/404');

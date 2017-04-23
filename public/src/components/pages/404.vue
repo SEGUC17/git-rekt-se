@@ -17,6 +17,10 @@
 </template>
 
 <script>
+ /**
+  * This component represents a "404 Not Found" Page
+  * incase the client tries accessing an invalid route or a "weird" error occur.
+  */
   export default {};
 </script>
 <style>
