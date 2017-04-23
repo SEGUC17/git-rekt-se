@@ -62,20 +62,18 @@
                     </el-form-item>
 
                     <el-form-item label="Password" prop="password">
-                        <el-input v-model="form.password" :type="showPassword">
+                        <el-input v-model="form.password" :type="showPassword? 'text': 'password'">
                             <div slot="append">
-                                <el-button @mousedown.native="showPassword = 'text'"
-                                           @mouseup.native="showPassword = 'password'"><i class="fa fa-eye"></i>
+                                <el-button @click="showPassword = !showPassword"><i class="fa fa-eye"></i>
                                 </el-button>
                             </div>
                         </el-input>
                     </el-form-item>
 
                     <el-form-item label="Confirm Password" prop="confirmPassword">
-                        <el-input v-model="form.confirmPassword" :type="showConfirm">
+                        <el-input v-model="form.confirmPassword" :type="showConfirm? 'text':'password'">
                             <div slot="append">
-                                <el-button @mousedown.native="showConfirm = 'text'"
-                                           @mouseup.native="showConfirm = 'password'"><i class="fa fa-eye"></i>
+                                <el-button @click="showConfirm = !showConfirm"><i class="fa fa-eye"></i>
                                 </el-button>
                             </div>
                         </el-input>
@@ -141,8 +139,8 @@
           birthdate: '',
         }),
         rules: clientSignUpValidation,
-        showPassword: 'password',
-        showConfirm: 'password',
+        showPassword: false,
+        showConfirm: false,
         success: false,
         error: false,
         info: false,
@@ -178,6 +176,8 @@
       },
       onReset() {
         this.$refs.form.resetFields();
+        this.showPassword = false;
+        this.showConfirm = false;
       },
       resendMail() {
         this.loading = true;

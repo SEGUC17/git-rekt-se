@@ -37,17 +37,17 @@
           </el-form-item>
   
           <el-form-item label="Password" prop="password">
-            <el-input v-model="form.password" :type="showPassword" placeholder="***************">
+            <el-input v-model="form.password" :type="showPassword? 'text':'password'" placeholder="***************">
               <div slot="append">
-                <el-button @click="onShowPassword"><i class="fa fa-eye"></i></el-button>
+                <el-button @click="showPassword = !showPassword"><i class="fa fa-eye"></i></el-button>
               </div>
             </el-input>
           </el-form-item>
   
           <el-form-item label="Confirm Password" prop="confirmPassword">
-            <el-input v-model="form.confirmPassword" :type="showConfirm" placeholder="***************">
+            <el-input v-model="form.confirmPassword" :type="showConfirm? 'text':'password' " placeholder="***************">
               <div slot="append">
-                <el-button @click="onShowConfirmPassword"><i class="fa fa-eye"></i></el-button>
+                <el-button @click="showConfirm = !showConfirm"><i class="fa fa-eye"></i></el-button>
               </div>
             </el-input>
           </el-form-item>
@@ -116,8 +116,8 @@
         rules: clientEditInfoValidation,
         client: {},
         loading: false,
-        showPassword: 'password',
-        showConfirm: 'password',
+        showPassword: false,
+        showConfirm: false,
         success: false,
         error: false,
         successMessage: '',
@@ -153,20 +153,6 @@
             this.error = true;
             this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
           });
-      },
-      onShowPassword() {
-        if (this.showPassword === 'text') {
-          this.showPassword = 'password';
-        } else {
-          this.showPassword = 'text';
-        }
-      },
-      onShowConfirmPassword() {
-        if (this.showConfirm === 'text') {
-          this.showConfirm = 'password';
-        } else {
-          this.showConfirm = 'text';
-        }
       },
       getClient() {
         return new Promise((resolve, reject) => {

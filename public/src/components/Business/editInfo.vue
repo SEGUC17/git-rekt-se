@@ -26,11 +26,10 @@
       </el-form-item>
   
       <el-form-item label="Password" prop="password">
-        <el-input v-model="form.password" :type="showPassword">
+        <el-input v-model="form.password" :type="showPassword? 'text':'password'">
           <template slot="append">
                           <el-tooltip content="See Password" placement="right">
-                              <el-button @mousedown.native="showPassword='text'"
-                                         @mouseup.native="showPassword='password'">
+                              <el-button @click="showPassword = !showPassword">
                                   <i class="fa fa-eye"></i>
                               </el-button>
                           </el-tooltip>
@@ -39,10 +38,10 @@
             </el-form-item>
 
             <el-form-item label="Confirm Password" prop="confirmPassword">
-                <el-input v-model="form.confirmPassword" :type="showConfirm">
+                <el-input v-model="form.confirmPassword" :type="showConfirm? 'text':'password'">
 <template slot="append">
   <el-tooltip content="See Confirm Password" placement="right">
-    <el-button @mousedown.native="showConfirm='text'" @mouseup.native="showConfirm='password'">
+    <el-button @click="showConfirm = !showConfirm">
       <i class="fa fa-eye"></i>
     </el-button>
   </el-tooltip>
@@ -107,8 +106,8 @@
         info: false,
         message: '',
         loading: false,
-        showPassword: 'password',
-        showConfirm: 'password',
+        showPassword: false,
+        showConfirm: false,
         passwordChanged: false,
         emailChanged: false,
       };
@@ -204,6 +203,8 @@
           number,
           index,
         }));
+        this.showPassword = false;
+        this.showConfirm = false;
       },
       addPhone() {
         this.phoneNumbers.push({
