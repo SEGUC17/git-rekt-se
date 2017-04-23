@@ -28,7 +28,13 @@
 </template>
 
 <script>
+ /**
+  * This component represents a search result.
+  */
   export default {
+   /**
+    * Data used by this component.
+    */
     data() {
       return {
         serviceName: this.service.name,
@@ -41,14 +47,30 @@
         coverImage: this.service.coverImage,
       };
     },
+   /**
+    * Props used by this component.
+    * service: The Service.
+    */
     props: ['service'],
+   /**
+    * Computed properties for this component.
+    */
     computed: {
+      /**
+       * Service's URL.
+       */
       serviceURL() {
         return `/service/${this.serviceID}`;
       },
+      /**
+       * Business' URL.
+       */
       businessURL() {
         return `/business/${this.businessID}`;
       },
+      /**
+       * Image's URL.
+       */
       imagePath() {
         return (this.coverImage) ? `/uploads/${this.coverImage}` : 'assets/imgs/service.svg';
       },

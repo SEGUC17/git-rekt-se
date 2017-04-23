@@ -1,5 +1,11 @@
 import Vue from 'vue';
 
+/**
+ * A Vue Instance for handling events between different component.
+ */
 const EventBus = new Vue();
-export default EventBus;
 
+/**
+ * Export the instance.
+ */
+export default EventBus;

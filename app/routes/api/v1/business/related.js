@@ -19,7 +19,7 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * View Related Business route.
+ * View Related Business API Route.
  */
 
 router.get('/:id/:offset', (req, res, next) => {

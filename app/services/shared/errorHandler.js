@@ -5,6 +5,10 @@
 const generalErrors = require('./Strings')
   .generalErrors;
 
+/**
+ * An Error Handling Middlware that formats
+ * the error before sending it back to the user.
+ */
 module.exports = (err, req, res, next) => {
   let errors;
 

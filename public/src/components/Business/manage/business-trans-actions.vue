@@ -5,19 +5,38 @@
     </div>
 </template>
 <script>
+ /**
+  * This component is for accepting and rejecting business transctions.
+  */
   import EventBus from '../../../services/EventBus';
 
   export default {
+    /**
+     * Props used by this component.
+     * data: Data in the current row.
+     * row: The Current row.
+     */
     props: ['data', 'row'],
+    /**
+     * All Methods used by this component.
+     */
     methods: {
+      /**
+       * Emit an event.
+       */
       showAcceptDialog() {
         EventBus.$emit('acceptTrans', this.row);
       },
+      /**
+       * Emit an event
+       */
       showRejectDialog() {
         EventBus.$emit('refundTrans', this.row);
       },
     },
-  };</script>
+  };
+</script>
+
 <style>
 .margin-btn {
     margin-bottom: 0.1em;

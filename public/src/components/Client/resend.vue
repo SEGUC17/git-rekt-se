@@ -20,17 +20,35 @@
 </template>
 
 <script>
+ /**
+  * This component allows the client to resend the confirmation email.
+  */
   import axios from 'axios';
   import {Client} from '../../services/EndPoints';
 
   export default {
+    /**
+     * Props used by this component.
+     * email: Client's email.
+     * send: true to send a confirmation, false otherwise.
+     */
     props: ['email', 'send'],
+    /**
+     * Data used by the component.
+     * lastEmailReset: The last time a confirmation email was re-sent.
+     */
     data() {
       return {
         lastEmailReset: Date.now(),
       };
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+      /**
+       * Resend the email if 2 mins passed since the last one.
+       */
       resendEmail() {
         const currentTime = Date.now();
         const diff = currentTime - this.lastEmailReset;
@@ -74,7 +92,10 @@
             });
       },
     },
-
+    /**
+     * Ran when component is mounted.
+     * Resend the email if flag is true.
+     */
     mounted() {
       if (this.send) {
         this.lastEmailReset = 0;

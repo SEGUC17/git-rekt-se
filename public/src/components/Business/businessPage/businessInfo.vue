@@ -135,10 +135,29 @@
 </template>
 
 <script>
+ /** 
+  * This component is responsible for Editing the Business Info.
+  */
   import axios from 'axios';
   import { Visitor } from '../../../services/EndPoints';
 
   export default {
+      /**
+       * Data used by this component.
+       * id: Business ID.
+       * name: Business Name.
+       * active: which component is active.
+       * email: Business Email.
+       * loader: Loader Object for loading view.
+       * shortDescription: Business' Short Description.
+       * gallery: Business' Gallery.
+       * phoneNumbers: Business' Phone Numbers.
+       * description: Business' Description.
+       * categories: Business' Categories.
+       * branches: Business's branches.
+       * services: Business's Services.
+       * related: Related Businesses.
+       */
     data() {
       return {
         id: '',
@@ -157,26 +176,44 @@
         related: [],
       };
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * Fetches the Business with a specific ID.
+     */
     mounted() {
       this.load(this.$route.params.id);
     },
-
+    /**
+     * All Methods used by this component.
+     */
     methods: {
+        /**
+         * Go to a service.
+         */
       viewService(service) {
         const serviceID = service._id;
         const url = `/service/${serviceID}`;
         this.$router.push(url);
       },
+      /**
+       * Book a service.
+       */
       bookService(service) {
         const serviceID = service._id;
         const url = `/service/${serviceID}/book`;
         this.$router.push(url);
       },
+      /**
+       * Go to a related Business.
+       */
       relatedView(id) {
         const url = `/business/${id}`;
         this.$router.push(url);
         this.load(id);
       },
+      /**
+       * Load a business with a specific ID.
+       */
       load(id) {
         this.loader = this.$loading({
           fullscreen: true,

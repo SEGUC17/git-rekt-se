@@ -48,13 +48,25 @@
   </div>
 </template>
 
+
 <script>
+  /**
+   * This component allows the admin to login.
+   */
   import adminAuth from '../../services/auth/adminAuth';
   import Form from '../../services/Form';
   import { loginRules } from '../../services/validation';
   import EventBus from '../../services/EventBus';
 
   export default {
+    /**
+     * Data used by the component.
+     * form: Data entered by user and sent to server.
+     * rules: Validation Rules used to validate user input.
+     * logged_in: true if successfully logged in, false otherwise.
+     * loginSuccess: Message on login success.
+     * errors: Errors received from the server.
+     */
     data() {
       return {
         form: new Form({
@@ -67,12 +79,22 @@
         errors: [],
       };
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * If Admin is already authenticated route him back.
+     */
     mounted() {
       if (adminAuth.isAuthenticated()) {
         this.$router.push('/admin/dashboard');
       }
     },
+    /**
+     * Methods used by this component.
+     */
     methods: {
+      /**
+       * Validate and submit the form to login.
+       */
       submitForm(formName) {
         this.errors = [];
         this.$refs[formName].validate((valid) => {
@@ -111,11 +133,9 @@
   .error {
     margin-top: 20px;
   }
-
   .error:first-child {
     margin-top: 0;
   }
-
   .client-signin-top {
     background: #67B26F; /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #4ca2cd, #67B26F); /* Chrome 10-25, Safari 5.1-6 */

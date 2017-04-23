@@ -129,12 +129,30 @@
 
 
 <script>
+ /**
+  * This component allows to Edit Services.
+  */
   import axios from 'axios';
   import { Business } from '../../../services/EndPoints';
   import { serviceRules } from '../../../services/validation';
   import BusinessAuth from '../../../services/auth/businessAuth';
+  import JWTCheck from '../../../services/JWTErrors';
 
   export default {
+    /**
+     * Data used by this component.
+     * services: Array of services.
+     * categories: Array of Categories.
+     * generalErrors: Errors received from server.
+     * serviceRules: Validation Rules to validate the data.
+     * serviceToEdit: Chosen Service to Edit.
+     * editVisible: true if Editing component is visible, false otherwise.
+     * editSuccess: true if editing was successful, false otherwise.
+     * editErrors: Array of Errors received from server when editing.
+     * serviceToDelete: chosen service to delete.
+     * deleteVisible: true if Delete component is visible, false otherwise.
+     * deleteErrors: Errors received from server when deleting.
+     */
     data() {
       return {
         services: [],
@@ -161,17 +179,19 @@
         deleteErrors: [],
       };
     },
-
+    /**
+     * Ran when component is mounted on DOM.
+     * Fetch the services and categories.
+     */
     mounted() {
       this.getServices();
       this.getCategories();
     },
 
     methods: {
-      /*
+      /**
        * Get the possible categories.
-       * */
-
+       */
       getCategories() {
         axios.get(Business().listCategories, {
           headers: {
@@ -182,19 +202,27 @@
               this.categories = response.data.categories;
             })
             .catch((error) => {
-              this.generalErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                return err.msg;
-              });
+              if(error.response && JWTCheck(error.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.generalErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
             });
-      },
-
-      /*
-       * Get the business services..
-       * */
-
+      }, 
+      /**
+       * Get the business services.
+       */
       getServices() {
         const loader = this.$loading({
           fullscreen: true,
@@ -210,19 +238,27 @@
             })
             .catch((error) => {
               loader.close();
-              this.generalErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                return err.msg;
-              });
+              if(error.response && JWTCheck(error.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.generalErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
             });
       },
-
-      /*
+      /**
        * Edit the current service.
-       * */
-
+       */
       editService() {
         this.editSuccess = '';
         this.editErrors = [];
@@ -256,20 +292,29 @@
                 })
                 .catch((error) => {
                   loader.close();
-                  this.editErrors = error.response.data.errors.map((err) => {
-                    if (typeof err === 'string') {
-                      return err;
-                    }
-                    return err.msg;
-                  });
+                  if(error.response && JWTCheck(error.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.editErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
                 });
           }
         });
       },
-
-      /*
-      * Delete the current service.
-      * */
+      /**
+       * Delete the current service.
+       */
       deleteService() {
         this.deleteSuccess = '';
         this.deleteErrors = [];
@@ -289,26 +334,36 @@
             })
             .catch((error) => {
               loader.close();
-              this.deleteErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                return err.msg;
-              });
+              if(error.response && JWTCheck(error.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.deleteErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
             });
       },
-
+      /**
+       * Reset Image field.
+       */
       resetEditImage() {
         this.serviceToEdit.coverImage = '';
         if (this.$refs.editCoverImage) {
           this.$refs.editCoverImage.value = null;
         }
       },
-
-      /*
-      * Show Service editing Modal.
-      * */
-
+      /**
+       * Show Service editing Modal.
+       */
       showEdit(service) {
         this.changeImage = false;
         this.serviceToEdit = service;
@@ -322,57 +377,46 @@
       showCoupons(service) {
         this.$router.push(this.couponsURL(service));
       },
-
-      /*
-      * Get offerings page.
-      * */
-
+      /**
+       * Get offerings page.
+       */
       showOfferings(service) {
         this.$router.push(this.offeringsURL(service));
       },
-
-      /*
-
-      * Get Gallery page.
-      * */
-
+      /**
+       * Get Gallery page.
+       */
       showGallery(service) {
         this.$router.push(this.galleryURL(service));
       },
-
-      /*
-      * Show Service deletion confirmation.
-      * */
-
+      /**
+       * Show Service deletion confirmation.
+       */
       showDelete(service) {
         this.serviceToDelete = service;
         this.deleteVisible = true;
       },
-
-      /*
-      * Return the url to the edit business offering page.
-      * */
-
+      /**
+       * Return the url to the edit business offering page.
+       */
       offeringsURL(service) {
         return `/business/manage/services/${service._id}/offerings`;
       },
-
-      /*
+      /**
        * Return the url to the edit business gallery page.
-       * */
-
+       */
       galleryURL(service) {
         return `/business/manage/services/${service._id}/gallery`;
       },
-
-      /*
+      /**
        * Return the url to the edit business coupons page.
-       * */
-
+       */
       couponsURL(service) {
         return `/business/manage/services/${service._id}/coupons`;
       },
-
+      /**
+       * Edit a file on Change.
+       */
       editFilechanged(e) {
         const files = e.target.files || e.dataTransfer.files;
         if (files.length > 0) {
@@ -380,6 +424,9 @@
         }
         this.$nextTick();
       },
+      /**
+       * Clear the image.
+       */
       autoClearEditImage() {
         if (!this.changeImage) {
           this.resetEditImage();

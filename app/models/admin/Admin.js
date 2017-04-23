@@ -48,6 +48,8 @@ adminSchema.pre('save', function isDone(done) {
 
 /**
  * Check the password.
+ * @param {string} guess - The guessed password.
+ * @returns {Promise} - Resolves if no error occurs, rejects otherwise.
  */
 
 adminSchema.methods.checkPassword = function checkPassword(guess) {

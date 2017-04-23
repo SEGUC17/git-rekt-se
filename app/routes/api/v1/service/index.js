@@ -13,7 +13,8 @@ const errorHandler = require('../../../../services/shared/errorHandler');
 const router = express.Router();
 
 /**
- * View a service route
+ * View a service API Route.
+ * `id`is the Service ID.
  */
 
 

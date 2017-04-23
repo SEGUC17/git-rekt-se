@@ -36,9 +36,15 @@ import editBranches from '../components/Business/branchesEditForm.vue';
 import editFullInfo from '../components/Business/infoEditForm.vue';
 import createServices from '../components/Business/Service/createServices.vue';
 
+/**
+ * Front-End Routes.
+ */
 const routes = [{
   path: '/',
   component: Home,
+}, {
+  path: '/client/reset/:token',
+  component: Reset,
 }, {
   path: '/business/apply',
   component: UnverifiedBusinessSignup,
@@ -159,9 +165,15 @@ const routes = [{
     redirect: '/404',
   }];
 
+/**
+ * Instantiate A Vue Router.
+ */
 const router = new VueRouter({
   routes,
   linkActiveClass: 'is-active',
 });
 
+/**
+ * Export the router.
+ */
 export default router;

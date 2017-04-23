@@ -61,7 +61,7 @@ router.get('/list', BusinessAuth, (req, res, next) => {
 });
 
 /**
- * Add Image to business gallery.
+ * Add Image To Service Gallery API Route.
  */
 
 router.post('/add', BusinessAuth, upload.single('path'), (req, res, next) => {
@@ -101,7 +101,7 @@ router.post('/add', BusinessAuth, upload.single('path'), (req, res, next) => {
 
 
 /**
- * Edit Image in Business gallery.
+ * Edit Image In Business Gallery API Route.
  */
 
 router.post('/edit/:im_id', BusinessAuth, (req, res, next) => {
@@ -144,7 +144,7 @@ router.post('/edit/:im_id', BusinessAuth, (req, res, next) => {
 });
 
 /**
- * Delete Image in Business gallery.
+ * Delete Image In Business Gallery API Route.
  */
 
 router.post('/delete/:im_id', BusinessAuth, (req, res, next) => {

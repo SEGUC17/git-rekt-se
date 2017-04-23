@@ -59,12 +59,24 @@
   </div>
 </template>
 <script>
+ /**
+  * This component allows a business to create a service.
+  */
   import axios from 'axios';
   import BusinessAuth from '../../../services/auth/businessAuth';
   import { Business } from '../../../services/EndPoints';
   import { serviceRules } from '../../../services/validation';
+  import JWTCheck from '../../../services/JWTErrors';
 
-  export default{
+  export default {
+    /**
+     * Data used by this component.
+     * generalErrors: Array of errors received from server.
+     * categories: Array of categories.
+     * createSuccess: Success Message when creating service is successful.
+     * newService: Data entered by user to create new service.
+     * serviceRules: Validation Rules used to validate the data.
+     */
     data() {
       return {
         generalErrors: [],
@@ -81,16 +93,18 @@
         serviceRules,
       };
     },
-
+    /**
+     * Ran when component is mounted on DOM.
+     * List all categories.
+     */
     mounted() {
       this.getCategories();
     },
 
     methods: {
-      /*
+      /**
        * Get the possible categories.
-       * */
-
+       */
       getCategories() {
         const loader = this.$loading({
           fullscreen: true,
@@ -105,20 +119,28 @@
               loader.close();
             })
             .catch((error) => {
-              this.generalErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                loader.close();
-                return err.msg;
-              });
+              loader.close();
+              if(error.response && JWTCheck(error.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.generalErrors = error.response.data.errors.map((err) => {
+                  if (typeof err === 'string') {
+                    return err;
+                  }
+                  return err.msg;
+                });
+              }
             });
       },
-
-      /*
+      /**
        * Create a new service.
-       * */
-
+       */
       createService() {
         this.createSuccess = '';
         this.createErrors = [];
@@ -147,39 +169,43 @@
             })
                 .catch((error) => {
                   loader.close();
-                  this.createErrors = error.response.data.errors.map((err) => {
-                    if (typeof err === 'string') {
-                      return err;
-                    }
-                    return err.msg;
-                  });
+                 if(error.response && JWTCheck(error.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.generalErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
                 });
           }
         });
       },
-
-      /*
+      /**
        * Reset create form.
-       * */
-
+       */
       resetCreate() {
         this.$refs.createServiceForm.resetFields();
         this.resetCreateImage();
       },
-
-      /*
+      /**
        * Reset Service Icon Image upload.
-       * */
-
+       */
       resetCreateImage() {
         this.newService.coverImage = '';
         this.$refs.createCoverImage.value = null;
       },
-
-      /*
-       *  Handle file upload.
-       * */
-
+      /**
+       * Handle file upload.
+       */
       createFilechanged(e) {
         const files = e.target.files || e.dataTransfer.files;
         if (files.length > 0) {

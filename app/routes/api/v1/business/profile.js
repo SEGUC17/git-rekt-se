@@ -58,7 +58,7 @@ router.get('/profile', authMiddleWare.businessAuthMiddleware, (req, res, next) =
 });
 
 /**
- * Business edit basic information route.
+ * Business Edit Basic Information API Route.
  */
 
 router.post('/:id/edit', authMiddleWare.businessAuthMiddleware, (req, res, next) => {

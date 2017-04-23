@@ -39,30 +39,49 @@
 </template>
 
 <script>
+  /**
+   * This component is used to allow an Admin to Accept or Rejecta Business.
+   */
   import axios from 'axios';
   import {Admin} from '../../services/EndPoints';
   import adminAuth from '../../services/auth/adminAuth';
   import EventBus from '../../services/EventBus';
 
   export default {
+    /**
+     * Data used by this component.
+     * errors: Errors received from the server.
+     * businessData: Businesses fetched from the server.
+     */
     data() {
       return {
         errors: [],
         businessData: [],
       };
     },
+    /**
+     * Ran when mounted.
+     * Fetch all business and attach relevant listeners.
+     */
     mounted() {
       this.fetchBusiness();
       EventBus.$on('BusinessConfirmed', () => {
         this.fetchBusiness();
       });
     },
-
+    /**
+     * Methods used by this component.
+     */
     methods: {
+      /**
+       * Close an error.
+       */
       closeError(idx) {
         this.errors.splice(idx, 1);
       },
-
+      /**
+       * Formate phone numbers of a business.
+       */
       getPhones(value, row) {
         let res = '';
         value.forEach((number) => {
@@ -70,6 +89,9 @@
         });
         return res;
       },
+      /**
+       * Fetch all Unverified Businesses from the server.
+       */
       fetchBusiness() {
         const loader = this.$loading({
           fullscreen: true,

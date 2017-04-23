@@ -23,7 +23,7 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Book a service Route.
+ * Book A Service API Route.
  */
 
 router.post('/', jwtConfig.clientAuthMiddleware, (req, res, next) => {
@@ -124,7 +124,7 @@ router.post('/', jwtConfig.clientAuthMiddleware, (req, res, next) => {
 });
 
 /**
- * Validate Coupon Route.
+ * Validate Coupon API Route.
  */
 
 router.post('/coupon/validate', jwtConfig.clientAuthMiddleware, (req, res, next) => {

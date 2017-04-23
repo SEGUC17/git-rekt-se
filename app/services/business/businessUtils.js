@@ -1,10 +1,17 @@
 const Branch = require('../../models/service/Branch');
 
 /**
+ * @typedef {Object} branch
+ * @property {string} location - Branch's Location.
+ * @property {string} address - Branch's Address.
+ */
+
+/**
  * Utility Function for parsing and creating an array of branches and returning a Promise
- * @param {Object} branches
+ * @param {[branch]} branches
  * @param {ObjectId} businessID
- * @returns {Promise}
+ * @returns {Promise<[branch]>} - Resolves if saving all branches was successfull, otherwise
+ * reject.
  */
 
 const addBranches = (branches, businessID) => {

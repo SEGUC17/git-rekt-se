@@ -27,7 +27,8 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Create Review route
+ * Create Review API Route.
+ * `id` is the Service ID.
  */
 
 router.post('/:id/review', clientAuthMiddleware, (req, res, next) => {
@@ -88,7 +89,9 @@ router.post('/:id/review', clientAuthMiddleware, (req, res, next) => {
 });
 
 /**
- * Update Review route
+ * Update Review API Route.
+ * `id` is the Service ID.
+ * `review_id` is the Review ID.
  */
 
 router.post('/:id/review/:review_id/edit', clientAuthMiddleware, (req, res, next) => {
@@ -149,7 +152,10 @@ router.post('/:id/review/:review_id/edit', clientAuthMiddleware, (req, res, next
 });
 
 /**
- * Delete Review route
+ * Delete Review API Route.
+ * `id` is the Service ID.
+ * `review_id` is the Review ID.
+ * A Soft Delete is performed.
  */
 
 router.post('/:id/review/:review_id/delete', clientAuthMiddleware, (req, res, next) => {

@@ -1,6 +1,12 @@
 import axios from 'axios';
 import Errors from './Errors';
 
+/**
+ * A Wrapper class for holding Form data,
+ * submiting them to the server and catching errors
+ * @export
+ * @class Form
+ */
 export default class Form {
   /**
    * Creates an instance of Form.
@@ -61,6 +67,9 @@ export default class Form {
    * updating the forms state and return a Promise.
    * @param {String} method
    * @param {String} url
+   * @param {Object} headers
+   * @param {Object} headers.headers
+   * @param {string} headers.headers.Authorization
    * @returns {Promise}
    * @memberOf Form
    */
@@ -82,17 +91,21 @@ export default class Form {
   /**
    * Submits the form to the given url using a GET Request.
    * @param {String} url
-   *
+   * @param {Object} headers
+   * @param {Object} headers.headers
+   * @param {string} headers.headers.Authorization
    * @memberOf Form
    */
-  get(url, headers = {}) {
-    return this.submit('get', url, headers);
+  get(url) {
+    return this.submit('get', url);
   }
 
   /**
    * Submits the form to the given url using a POST Request.
    * @param {String} url
-   *
+   * @param {Object} headers
+   * @param {Object} headers.headers
+   * @param {string} headers.headers.Authorization
    * @memberOf Form
    */
   post(url, headers = {}) {
@@ -102,7 +115,9 @@ export default class Form {
   /**
    * Submits the form to the given url using a PUT Request.
    * @param {String} url
-   *
+   * @param {Object} headers
+   * @param {Object} headers.headers
+   * @param {string} headers.headers.Authorization
    * @memberOf Form
    */
   put(url, headers = {}) {
@@ -112,7 +127,9 @@ export default class Form {
   /**
    * Submits the form to the given url using a DELETE Request.
    * @param {String} url
-   *
+   * @param {Object} headers
+   * @param {Object} headers.headers
+   * @param {string} headers.headers.Authorization
    * @memberOf Form
    */
   delete(url, headers = {}) {

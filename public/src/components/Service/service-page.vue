@@ -200,6 +200,9 @@
 
 
 <script>
+ /**
+  * This component is responsible for viewing the service's info.
+  */
   import axios from 'axios';
   import { Service, Client } from '../../services/EndPoints';
   import ClientAuth from '../../services/auth/clientAuth';
@@ -208,6 +211,37 @@
   import DeleteReview from './Review/deleteReview.vue';
 
   export default {
+    /**
+     * Data used by this component.
+     * serviceID: The ID of the desired Service.
+     * name: Sevice Name.
+     * shortDescription: Service's Short Description.
+     * description: Service's Description.
+     * coverImage: Service's Cover Image.
+     * businessName: Business Offering this Service.
+     * businessId: Business' ID.
+     * businessShortDescription: Business' Short Description.
+     * businessPhoneNumbers: Business' Phone Numbers.
+     * businessGallery: Business' Gallery.
+     * businessWorkingHours: Business' Working Hours.
+     * Branches: Branches in which this service is offered at.
+     * reviews: Reviews about this service.
+     * Gallery: Service Gallery.
+     * categories: Service's Categories.
+     * Offerings: Service's Offerings.
+     * relatedServices: Services Related to this services.
+     * errors: Errors received from the server.
+     * active: Which tab is active.
+     * rating: Service Rating.
+     * reportReview: true to show a dialog, false otherwise.
+     * reportReview: Review to report.
+     * clientID: Current Client's ID.
+     * editReviewVisible: true if Edit Review is visible, false otherwise.
+     * reviewToEdit: Object holding information for editing a review.
+     * reviewToDelete: Which review to delete.
+     * editReviewSuccess: Message shown when Editing a review is successful.
+     * deleteReviewSuccess: Message shown when Deleting a review is successful.
+     */
     data() {
       return {
         serviceID: this.$route.params.id,
@@ -249,12 +283,23 @@
         deleteReviewSuccess: '',
       };
     },
+    /**
+     * Sub-components used by this component.
+     */
     components: {
       CreateReview,
       EditReview,
       DeleteReview,
     },
+    /**
+     * Methods used by this component.
+     */
     methods: {
+      /**
+      * Takes the services offering anf gets the corresponding branch.
+       * @param {Offering} offering
+       * @returns {string}
+       */
       getBranchAddress(offering) {
         const result = this.branches.find(branch => branch._id === offering);
         if (result) {
@@ -262,14 +307,19 @@
         }
         return 'No Address.';
       },
-
+      /**
+       * Gets a related service.
+       * @param {mongoose.ObjectId} serviceId
+       */
       getRelatedService(serviceId) {
         this.$router.push(`/service/${serviceId}`);
         this.getService(serviceId);
       },
 
-      // send get request to obtain service info using service id
-
+      /**
+       * Gets all the service's info.
+       * @param {mongoose.ObjectId} serviceId
+       */
       getService(serviceId = this.serviceID) {
         const loader = this.$loading({
           fullscreen: true,
@@ -297,7 +347,9 @@
           this.$router.push('/404');
         });
       },
-      // obtains 3 related services from one of the categories
+      /**
+       * Get related services
+       */
       getRelatedServices(loader) {
         if (this.categories.length === 0) {
           loader.close();
@@ -315,10 +367,16 @@
           this.relatedServices = [];
         });
       },
+      /**
+       * Go to a service.
+       */
       goTo(relatedID) {
         this.$router.push((relatedID));
         this.$router.go((relatedID));
       },
+      /**
+       * Show the Edit Review Component.
+       */
       showEdit(review) {
         this.reviewToEdit = {
           _id: review._id,
@@ -327,14 +385,23 @@
         };
         this.editReviewVisible = true;
       },
+      /**
+       * Show the Delete Review Component.
+       */
       showDelete(review) {
         this.reviewToDelete = review;
         this.deleteReviewVisible = true;
       },
+      /**
+       * Show the Report Review Dialog.
+       */
       showReport(review) {
         this.reviewToReport = review;
         this.reportReview = true;
       },
+      /**
+       * Reports a review.
+       */
       sendReport() {
         const loader = this.$loading({
           fullscreen: true,
@@ -368,9 +435,15 @@
               loader.close();
             });
       },
+      /**
+       * Gets the service Info when creating a review.
+       */
       handleCreate() {
         this.getService();
       },
+      /**
+       * Gets the service Info when editing a review.
+       */
       handleEdit(successMessage) {
         this.reviewToEdit = {
           rating: undefined,
@@ -380,12 +453,18 @@
         this.editReviewVisible = false;
         this.getService();
       },
+      /**
+       * Gets the service Info when deleting a review.
+       */
       handleDelete(successMessage) {
         this.reviewToDelete = {};
         this.deleteReviewSuccess = successMessage;
         this.deleteReviewVisible = false;
         this.getService();
       },
+      /**
+       * Handles canceling editing a review.
+       */
       handleEditCancel() {
         this.reviewToEdit = {
           rating: undefined,
@@ -393,11 +472,18 @@
         };
         this.editReviewVisible = false;
       },
+      /**
+       * Handles canceling editing a review.
+       */
       handleDeleteCancel() {
         this.reviewToDelete = {};
         this.deleteReviewVisible = false;
       },
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * Get's the Service's Info.
+     */
     mounted() {
       this.getService();
     },

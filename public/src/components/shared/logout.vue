@@ -6,17 +6,27 @@
 </template>
 
 <script>
+  /**
+   * This component represents a logout button, responsible for signing out
+   * a client/business.
+   */
   import CommonAuth from '../../services/auth/commonAuth';
   import ClientAuth from '../../services/auth/clientAuth';
   import BusinessAuth from '../../services/auth/businessAuth';
   import EventBus from '../../services/EventBus';
 
   export default{
+    /**
+     * Props for the component.
+     */
     props: ['title'],
+    /**
+     * Declare all methods used by the component here.
+     */
     methods: {
-        /*
+        /** 
          * Handle Logout.
-         * */
+         */
 
       logoutHandler() {
         if (!CommonAuth.isAuthenticated()) {
@@ -37,9 +47,9 @@
         }
       },
 
-        /*
+        /** 
          * Handle client logout.
-         * */
+         */
 
       clientLogout(loader) {
         ClientAuth.logout((responseErrs, response) => {
