@@ -23,6 +23,10 @@ router.get('/business', (req, res, next) => {
     type: 'Business',
   })
     .select('_id title')
+<<<<<<< HEAD
+=======
+    .exec()
+>>>>>>> 70bbda7c8ed15bb0c90610c76bb54aff213db4f9
     .then(categories => res.json({
       results: categories,
     }))

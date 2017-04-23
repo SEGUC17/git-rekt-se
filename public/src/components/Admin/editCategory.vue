@@ -49,7 +49,8 @@
 
         <el-dialog title="Edit Category" v-model="editVisible" size="large">
             <div class="errors">
-                <el-alert v-for="error in editErrors" type="error" :key="error" :title="error" show-icon></el-alert>
+                <el-alert v-for="error in editErrors" type="error" 
+                          :key="error" :title="error" show-icon></el-alert>
             </div>
             <el-form ref="editCategory" :model="categoryToEdit" :rules="categoryRules" label-position="top">
 

@@ -172,7 +172,7 @@
     },
 
     mounted() {
-      this.locations = this.getLocations();
+      this.getLocations();
     },
 
     components: {

@@ -52,6 +52,48 @@ exports.clientConfirmEmail = (email, host, resetToken) => {
   });
 };
 
+exports.notifyClientOnTransactionAccept = (email) => {
+  const emailContent = {
+    to: email,
+    from: info.from,
+    subject: '[Git-Rekt] Booking Confirmed',
+    html: `Hello,
+          This email is to notify you that one of your bookings have been confirmed.`,
+    text: `Hello,
+      This email is to notify you that one of your bookings have been confirmed.`,
+  };
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(emailContent, (err, information) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(information);
+      }
+    });
+  });
+};
+
+exports.notifyClientOnTransactionRefund = (email) => {
+  const emailContent = {
+    to: email,
+    from: info.from,
+    subject: '[Git-Rekt] Transaction Refunded',
+    html: `Hello,
+          This email is to notify you that one of your transactions have been refunded.`,
+    text: `Hello,
+      This email is to notify you that one of your transactions have been refunded.`,
+  };
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(emailContent, (err, information) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(information);
+      }
+    });
+  });
+};
+
 exports.notifyAdminOfNewBusinessSignup = () => {
   const emailContent = {
     from: info.from,
@@ -91,6 +133,27 @@ exports.forgotPasswordEmail = (email, host, resetToken) => {
     text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
       'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
       'http://'}${host}/client/reset/${resetToken}\n\n` +
+      'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+  };
+
+  return new Promise((resolve, reject) => {
+    mailer.sendMail(mailOptions, (err, information) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(information);
+    });
+  });
+};
+
+exports.forgotPasswordBusinessEmail = (email, host, resetToken) => {
+  const mailOptions = {
+    to: email,
+    from: 'mohamedelzarei@gmail.com',
+    subject: '[Git-Rekt] Reset Password',
+    text: `${'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+      'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+      'http://'}${host}/business/reset/${resetToken}\n\n` +
       'If you did not request this, please ignore this email and your password will remain unchanged.\n',
   };
 

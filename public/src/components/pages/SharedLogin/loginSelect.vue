@@ -44,7 +44,7 @@
 <script>
   import Authenticator from '../../../services/auth/commonAuth';
 
-  export default{
+  export default {
     mounted() {
       if (Authenticator.isAuthenticated()) {
         this.$router.push('/');

@@ -80,7 +80,12 @@
   import Form from '../../services/Form';
   import { verifiedBusinessSignupRules } from '../../services/validation';
   import { Visitor } from '../../services/EndPoints';
+<<<<<<< HEAD
   import businessAuth from '../../services/businessAuth';
+=======
+  import businessAuth from '../../services/auth/businessAuth';
+  import commonAuth from '../../services/auth/commonAuth';
+>>>>>>> 70bbda7c8ed15bb0c90610c76bb54aff213db4f9
 
   export default {
     data() {
@@ -110,6 +115,13 @@
       };
     },
     mounted() {
+<<<<<<< HEAD
+=======
+      if (commonAuth.isAuthenticated()) {
+        this.$router.push('/');
+        return;
+      }
+>>>>>>> 70bbda7c8ed15bb0c90610c76bb54aff213db4f9
       this.getLocations();
       axios.get(Visitor().businessCategories).then((response) => {
         this.categories = response.data.results;
