@@ -25,23 +25,28 @@ export const businessEditInfoValidation = {
       if (value === '***************') {
         callBack();
       } else if (/^(?=.*\d).{8,15}$/.test(value)) {
-        callBack();
+        this.$refs.form.validateField('confirmPassword');
       } else {
         callBack([new Error('Password must be between 8 and 15 characters and contains at least one number!')]);
       }
+      callBack();
     },
     trigger: 'blur',
   }],
   confirmPassword: [{
     validator(rule, value, callBack) {
-      if (value === '***************') {
+      if (!this.form.password) {
         callBack();
-      } else if (value.length === 0 && this.form.password.length === 0) {
-        callBack();
-      } else if (value === this.form.password) {
-        callBack();
+        return;
+      }
+      if (this.form.password.length > 0) {
+        if (this.form.password !== value) {
+          callBack([new Error('Password and password confirmation mismatch.')]);
+        } else {
+          callBack();
+        }
       } else {
-        callBack([new Error('Password and Confirm Password must match!')]);
+        callBack();
       }
     },
     trigger: 'blur',
