@@ -1,4 +1,4 @@
-const BASE = 'http://54.71.121.252//api/v1';
+const BASE = 'http://54.71.121.252/api/v1';
 
 export const Visitor = () => ({
   search: `${BASE}/visitor/search/`,
