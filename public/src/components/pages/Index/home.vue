@@ -58,7 +58,7 @@
             </p>
 
             <div class="columns">
-                <card class="column is-3 is-offset-1" image="http://localhost:3000/assets/imgs/home/search-online.svg">
+                <card class="column is-3 is-offset-1" image="assets/imgs/home/search-online.svg">
                     <div slot="content" class="has-text-centered">
                         <h3>
                             Find Businesses
@@ -69,7 +69,7 @@
                     </div>
                 </card>
 
-                <card class="column is-3" image="http://localhost:3000/assets/imgs/home/find-listing.svg">
+                <card class="column is-3" image="assets/imgs/home/find-listing.svg">
                     <div slot="content" class="has-text-centered">
                         <h3>
                             Find Service
@@ -80,7 +80,7 @@
                     </div>
                 </card>
 
-                <card class="column is-3" image="http://localhost:3000/assets/imgs/home/make-online-booking.svg">
+                <card class="column is-3" image="assets/imgs/home/make-online-booking.svg">
                     <div slot="content" class="has-text-centered">
                         <h3>
                             Book Online
@@ -200,7 +200,7 @@
     }
 
     .gr-content {
-        background-image: url('http://localhost:3000/assets/imgs/idx_bg.jpg');
+        background-image: url('/assets/imgs/idx_bg.jpg');
         margin-bottom: 2em;
     }
 

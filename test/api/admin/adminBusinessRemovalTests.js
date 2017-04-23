@@ -56,6 +56,7 @@ describe('Category CRUD Test Suite', () => {
 
   it('should delete a business and return a confirmation message', (done) => {
     const business = BusinessesSeed[4];
+    business._status = 'verified';
     new Business(business)
       .save((err, res) => {
         if (err) {
@@ -78,44 +79,45 @@ describe('Category CRUD Test Suite', () => {
                   .then((branch2) => {
                     bus.branches.push(branch2);
                     bus.save()
-                      .then((bus3) => {})
+                      .then(() => {
+                        req = supertest(app)
+                          .post(`/api/v1/admin/business/delete/${bus._id}`)
+                          .set('Authorization', `JWT ${token}`)
+                          .send()
+                          .expect('Content-Type', /json/)
+                          .expect(200)
+                          .end((Err3, result2) => {
+                            if (Err3) {
+                              done(Err3);
+                            } else {
+                              Business.findOne({
+                                email: business.email,
+                              })
+                                .exec((Err4, bus2) => {
+                                  if (Err4) {
+                                    done(Err4);
+                                  } else {
+                                    Branch.findOne({
+                                      location: locations[0],
+                                    })
+                                      .exec((err9, bran3) => {
+                                        if (err9) {
+                                          done(err9);
+                                        }
+                                        chai.expect(bran3._deleted);
+                                      });
+                                    chai.expect(bus2._deleted);
+                                    chai.expect(result2.body.message)
+                                      .to.equal(Strings.adminSuccess.businessDeleted);
+                                    done();
+                                  }
+                                });
+                            }
+                          });
+                      })
                       .catch(done);
                   })
                   .catch(done);
-                req = supertest(app)
-                  .post(`/api/v1/admin/business/delete/${bus._id}`)
-                  .set('Authorization', `JWT ${token}`)
-                  .send()
-                  .expect('Content-Type', /json/)
-                  .expect(200)
-                  .end((Err3, result2) => {
-                    if (Err3) {
-                      done(Err3);
-                    } else {
-                      Business.findOne({
-                        email: business.email,
-                      })
-                        .exec((Err4, bus2) => {
-                          if (Err4) {
-                            done(Err4);
-                          } else {
-                            Branch.findOne({
-                              location: locations[0],
-                            })
-                              .exec((err9, bran3) => {
-                                if (err9) {
-                                  done(err9);
-                                }
-                                chai.expect(bran3._deleted);
-                              });
-                            chai.expect(bus2._deleted);
-                            chai.expect(result2.body.message)
-                              .to.equal(Strings.adminSuccess.businessDeleted);
-                            done();
-                          }
-                        });
-                    }
-                  });
               }
             });
         }

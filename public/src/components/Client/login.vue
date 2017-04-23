@@ -89,7 +89,7 @@
     },
     methods: {
       redirectFacebook() {
-        window.location.href = 'http://localhost:3000/api/v1/client/auth/fb/login';
+        window.location.href = Client().facebookRedirect;
       },
       submitForm(formName) {
         this.errors = [];

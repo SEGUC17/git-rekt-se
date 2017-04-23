@@ -93,8 +93,6 @@ describe('View Services Tests', () => {
             chai.expect(res.body)
               .to.have.property('branches');
             chai.expect(res.body)
-              .to.have.property('businessWorkingHours');
-            chai.expect(res.body)
               .to.have.property('reviews');
             done();
           });

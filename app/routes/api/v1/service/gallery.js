@@ -178,22 +178,17 @@ router.post('/:ser_id/gallery/edit/:im_id', BusinessAuth, (req, res, next) => {
  */
 
 router.post('/:ser_id/gallery/delete/:im_id', BusinessAuth, (req, res, next) => {
-  console.log(11);
   req.checkParams(validationSchemas.serviceEditImageValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        console.log(2);
         Service.findOne({
           _id: req.params.ser_id,
           _deleted: false,
         })
           .exec()
           .then((service) => {
-            console.log(3);
-            console.log(service);
             if (service) {
-              console.log(4);
               if (`${service._business}` === `${req.user._id}`) {
                 const image = service.gallery
                   .find(element => `${element._id}` === `${req.params.im_id}`);
