@@ -60,7 +60,12 @@ exports.clientConfirmEmail = (email, host, resetToken) => {
   });
 };
 
-
+/**
+ * Sends an email to the client notifying him
+ * that his booking has been accepted.
+ * @param {string} email - Client's Email.
+ * @returns {Promise<string>} - Resolves if no error occurs, otherwise rejects.
+ */
 exports.notifyClientOnTransactionAccept = (email) => {
   const emailContent = {
     to: email,
@@ -82,6 +87,12 @@ exports.notifyClientOnTransactionAccept = (email) => {
   });
 };
 
+/**
+ * Sends an email to the client notifying him
+ * that his booking has been rejected.
+ * @param {string} email - Client's Email.
+ * @returns {Promise<string>} - Resolves if no error occurs, otherwise rejects.
+ */
 exports.notifyClientOnTransactionRefund = (email) => {
   const emailContent = {
     to: email,
@@ -260,6 +271,12 @@ exports.notifyBusinessOfDenial = (mail) => {
   });
 };
 
+/**
+ * Sends an email to user notifying him that
+ * the email associated with his account has been changed.
+ * @param {string} email - User's Email.
+ * @returns {Promise<string>} - Resolves if no error occurs, else rejects.
+ */
 exports.sendConfirmationMessage = (email) => {
   const mailOptions = {
     to: email,
