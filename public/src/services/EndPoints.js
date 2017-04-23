@@ -17,6 +17,7 @@ export const Client = () => {
   return {
     finalizeFb: `${authBase}/fb/finalize/login`,
     login: `${authBase}/login`,
+    facebookRedirect: `${BASE}/client/auth/fb/login`,
     signup: `${authBase}/signup`,
     resend: `${authBase}/confirmation/send`,
     reset: `${authBase}/reset`,

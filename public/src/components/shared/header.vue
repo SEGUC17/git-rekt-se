@@ -20,11 +20,15 @@
 
           <router-link to="/#" @click.native="active = false" class="nav-item">Home</router-link>
           <router-link to="/about" @click.native="active = false" class="nav-item">About Us
+
           </router-link>
           <router-link to="/categories" @click.native="active = false" class="nav-item">Categories
 
+
           </router-link>
-          <router-link to="/business/apply" @click.native="active = false" class="nav-item">Apply
+          <router-link v-if="!isBusiness" to="/business/apply"
+                       @click.native="active = false" class="nav-item">
+            Apply
 
           </router-link>
 
@@ -50,11 +54,13 @@
             <!-- Business Account Management-->
             <router-link v-if="isBusiness" to="/business/manage" class="button is-success">
               Manage
+
             </router-link>
 
             <!-- Admin Dashboard-->
             <router-link v-if="isAdmin" to="/admin/dashboard" class="button is-info">
               Dashboard
+
             </router-link>
 
             <!-- Client Account -->
