@@ -17,8 +17,6 @@
 
         <!-- Navigation bar Right -->
         <div class="nav-right nav-menu" :class="active? 'is-active' : ''">
-
-          <router-link to="/#" @click.native="active = false" class="nav-item">Home</router-link>
           <router-link to="/about" @click.native="active = false" class="nav-item">About Us
 
           </router-link>
