@@ -204,7 +204,7 @@
                 })
                 .catch((error) => {
                   loader.close();
-                  if (JWTCheck(error)){
+                  if (JWTCheck(error)) {
                     AdminAuth.removeData();
                     this.$router.push('/');
                     this.$toast.open({
@@ -248,7 +248,7 @@
                 })
                 .catch((error) => {
                   loader.close();
-                  if(JWTCheck(error)) {
+                  if (JWTCheck(error)) {
                     AdminAuth.removeData();
                     this.$router.push('/');
                     this.$toast.open({
@@ -290,7 +290,7 @@
             })
             .catch((error) => {
               loader.close();
-              if(JWTCheck(error)) {
+              if (JWTCheck(error)) {
                 AdminAuth.removeData();
                 this.$router.push('/');
                 this.$toast.open({
@@ -339,7 +339,7 @@
                   message: 'Session Expired, please login',
                   type: 'is-danger',
                   position: 'bottom',
-                });             
+                });
               } else {
                 this.generalErrors = error.response.data.errors.map((err) => {
                   if (typeof err === 'string') {
@@ -373,7 +373,6 @@
     },
     /**
      * Ran when component is mounted on DOM.
-     * 
      */
     mounted() {
       EventBus.$on('showEditDialog', this.showEdit);
@@ -389,7 +388,7 @@
             this.categories = response.data.category;
           })
           .catch((error) => {
-            if(JWTCheck(error)) {
+            if (JWTCheck(error)) {
               AdminAuth.removeData();
               this.$router.push('/');
               this.$toast.open({

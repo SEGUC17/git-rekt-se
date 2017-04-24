@@ -135,7 +135,7 @@
 </template>
 
 <script>
- /** 
+ /**
   * This component is responsible for Editing the Business Info.
   */
   import axios from 'axios';

@@ -26,8 +26,8 @@
   * This component allows the user to review a service.
   */
   import Axios from 'axios';
-  import {Service} from '../../../services/EndPoints';
-  import {reviewRules} from '../../../services/validation';
+  import { Service } from '../../../services/EndPoints';
+  import { reviewRules } from '../../../services/validation';
   import ClientAuth from '../../../services/auth/clientAuth';
 
   export default {

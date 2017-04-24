@@ -363,9 +363,9 @@
               this.relatedServices = this.relatedServices
                   .filter(service => service._id !== this.$route.params.id);
             }).catch(() => {
-          loader.close();
-          this.relatedServices = [];
-        });
+              loader.close();
+              this.relatedServices = [];
+            });
       },
       /**
        * Go to a service.

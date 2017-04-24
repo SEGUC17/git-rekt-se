@@ -127,13 +127,13 @@
                 .categories.map(cat => cat._id);
           }).catch((e) => {
             this.loader.close();
-            if(e.response && JWTCheck(e.response.data.errors)) {
+            if (e.response && JWTCheck(e.response.data.errors)) {
               businessAuth.removeData();
               this.$router.push('/');
               this.$toast.open({
                 text: 'Your sessions has expired. Please login.',
                 position: 'bottom',
-                type: 'danger'
+                type: 'danger',
               });
             } else {
               this.errors = e.response.data.errors;
@@ -141,17 +141,17 @@
           });
         }).catch((e) => {
           this.loader.close();
-          if(e.response && JWTCheck(e.response.data.errors)) {
-              businessAuth.removeData();
-              this.$router.push('/');
-              this.$toast.open({
-                text: 'Your sessions has expired. Please login.',
-                position: 'bottom',
-                type: 'danger'
-              });
-            } else {
-              this.errors = e.response.data.errors;
-            }
+          if (e.response && JWTCheck(e.response.data.errors)) {
+            businessAuth.removeData();
+            this.$router.push('/');
+            this.$toast.open({
+              text: 'Your sessions has expired. Please login.',
+              position: 'bottom',
+              type: 'danger',
+            });
+          } else {
+            this.errors = e.response.data.errors;
+          }
         });
       },
       /**
@@ -174,13 +174,13 @@
               this.editSuccess = response.data.message;
             }).catch((e) => {
               this.loader.close();
-              if(e.response && JWTCheck(e.response.data.errors)) {
+              if (e.response && JWTCheck(e.response.data.errors)) {
                 businessAuth.removeData();
                 this.$router.push('/');
                 this.$toast.open({
                   text: 'Your sessions has expired. Please login.',
                   position: 'bottom',
-                  type: 'danger'
+                  type: 'danger',
                 });
               } else {
                 this.errors = e.response.data.errors;

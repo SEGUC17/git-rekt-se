@@ -51,7 +51,7 @@
   import { Business } from '../../services/EndPoints';
   import { forgotPasswordValidation } from '../../services/validation';
   import JWTCheck from '../../services/JWTErrors';
-  import businessAuth from  '../../services/auth/businessAuth';
+  import businessAuth from '../../services/auth/businessAuth';
   
   export default {
     /**
@@ -62,7 +62,7 @@
      * message: Message to view to the user.
      * successShow: true to show success message, false otherwise.
      * errorShow: true to show error message, false otherwise.
-     * loading: true when a request is sent and is being proccessed 
+     * loading: true when a request is sent and is being proccessed
      * by the server, false otherwise.
      */
     data() {
@@ -97,13 +97,13 @@
                 this.successShow = true;
               })
               .catch((err) => {
-                if(err.response && JWTCheck(err.response.data.errors)) {
+                if (err.response && JWTCheck(err.response.data.errors)) {
                   businessAuth.removeData();
                   this.$router.push('/');
                   this.$toast.open({
                     text: 'Your sessions has expired. Please login.',
                     position: 'bottom',
-                    type: 'danger'
+                    type: 'danger',
                   });
                 } else {
                   this.errorShow = true;

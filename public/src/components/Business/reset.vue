@@ -95,13 +95,13 @@
                 this.error_show = false;
               })
               .catch((e) => {
-                if(e.response && JWTCheck(e.response.data.errors)){
+                if (e.response && JWTCheck(e.response.data.errors)) {
                   businessAuth.removeData();
                   this.$router.push('/');
                   this.$toast.open({
                     text: 'Your sessions has expired. Please login.',
                     position: 'bottom',
-                    type: 'danger'
+                    type: 'danger',
                   });
                 } else {
                   this.alert_show = false;

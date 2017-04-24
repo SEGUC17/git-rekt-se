@@ -20,7 +20,7 @@
    */
   export default{
     /**
-     * Props for the component.    
+     * Props for the component.
      */
     props: ['title', 'subtitle'],
   };

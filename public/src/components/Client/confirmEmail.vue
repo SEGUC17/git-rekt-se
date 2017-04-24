@@ -94,12 +94,10 @@
      * appropriatly.
      */
     mounted() {
-      
-      if(commonAuth.isAuthenticated()){
+      if (commonAuth.isAuthenticated()) {
         this.$router.push('/');
         return;
       }
-      
       const loader = this.$loading({
         fullscreen: true,
       });
@@ -134,7 +132,7 @@
         });
       },
     },
-  }
+  };
 </script>
 
 <style>

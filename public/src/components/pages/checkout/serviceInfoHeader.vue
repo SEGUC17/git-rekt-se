@@ -18,7 +18,7 @@
    * Represents the Service Info.
    */
   export default {
-    /** 
+    /**
      * Props used by the component.
      * service: The Service.
      */
