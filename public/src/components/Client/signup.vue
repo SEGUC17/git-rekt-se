@@ -32,14 +32,14 @@
                 </div>
 
                 <!-- Backend Form Errors-->
-                <div class="errors" v-show="!form.errors.isEmpty()">
+                <div class="errors" v-if="!form.errors.isEmpty()">
                     <el-alert v-for="key in form.keys" v-show="form.errors.has(key)"
                               @close="form.errors.remove(key)" class="error"
                               type="error" :key="error"
                               :title="form.errors.getAll(key, ' | ') || '' " show-icon>
                     </el-alert>
 
-                    <el-alert v-show="form.errors.has('serverError')"
+                    <el-alert v-if="form.errors.has('serverError')"
                               @close="form.errors.remove('serverError')"
                               class="error"
                               :title="form.errors.getAll('serverError', ' | ') || ''" type="error"
@@ -62,20 +62,18 @@
                     </el-form-item>
 
                     <el-form-item label="Password" prop="password">
-                        <el-input v-model="form.password" :type="showPassword">
+                        <el-input v-model="form.password" :type="showPassword? 'text': 'password'">
                             <div slot="append">
-                                <el-button @mousedown.native="showPassword = 'text'"
-                                           @mouseup.native="showPassword = 'password'"><i class="fa fa-eye"></i>
+                                <el-button @click="showPassword = !showPassword"><i class="fa fa-eye"></i>
                                 </el-button>
                             </div>
                         </el-input>
                     </el-form-item>
 
                     <el-form-item label="Confirm Password" prop="confirmPassword">
-                        <el-input v-model="form.confirmPassword" :type="showConfirm">
+                        <el-input v-model="form.confirmPassword" :type="showConfirm? 'text':'password'">
                             <div slot="append">
-                                <el-button @mousedown.native="showConfirm = 'text'"
-                                           @mouseup.native="showConfirm = 'password'"><i class="fa fa-eye"></i>
+                                <el-button @click="showConfirm = !showConfirm"><i class="fa fa-eye"></i>
                                 </el-button>
                             </div>
                         </el-input>
@@ -92,7 +90,7 @@
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item label="Birthdate">
+                    <el-form-item label="Birth Date">
                         <el-date-picker v-model="form.birthdate" type="date" :format="'dd-MM-yyyy'"
                                         placeholder="1-1-1990"></el-date-picker>
                     </el-form-item>
@@ -142,6 +140,8 @@
           .validator.bind(this);
       clientSignUpValidation.password[2].validator = clientSignUpValidation.password[2]
           .validator.bind(this);
+      clientSignUpValidation.birthdate[2].validator = clientSignUpValidation.birthdate[2]
+          .validator.bind(this);
       return {
         form: new Form({
           id: '',
@@ -155,8 +155,8 @@
           birthdate: '',
         }),
         rules: clientSignUpValidation,
-        showPassword: 'password',
-        showConfirm: 'password',
+        showPassword: false,
+        showConfirm: false,
         success: false,
         error: false,
         info: false,
@@ -204,6 +204,8 @@
        */
       onReset() {
         this.$refs.form.resetFields();
+        this.showPassword = false;
+        this.showConfirm = false;
       },
       /**
        * Resends email.

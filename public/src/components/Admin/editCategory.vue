@@ -3,7 +3,7 @@
 
         <!-- Errors -->
 
-        <div class="errors" v-show="generalErrors.length > 0">
+        <div class="errors" v-if="generalErrors.length > 0">
             <el-alert v-for="error in generalErrors" class="error" :title="error"
                       type="error" :key="error" show-icon></el-alert>
         </div>

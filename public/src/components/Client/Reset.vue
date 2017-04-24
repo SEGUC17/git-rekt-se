@@ -18,12 +18,12 @@
 
                     <el-alert class="alert-msg" :title="form.message" v-show="form.success" type="success"
                               show-icon></el-alert>
-                    <div class="alert-msg error" v-for="key in form.keys" v-show="form.errors.has(key)">
+                    <div class="alert-msg error" v-for="key in form.keys" v-if="form.errors.has(key)">
                         <el-alert @close="form.errors.remove(key)" type="error"
                                   :title="form.errors.getAll(key, ' | ') || '' " show-icon></el-alert>
                     </div>
 
-                    <div class="alert-msg error" v-show="form.errors.has('serverError')">
+                    <div class="alert-msg error" v-if="form.errors.has('serverError')">
                         <el-alert @close="form.errors.remove('serverError')"
                                   :title="form.errors.getAll('serverError', ' | ') || ''" type="error"
                                   show-icon></el-alert>

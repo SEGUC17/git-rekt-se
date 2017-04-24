@@ -9,10 +9,7 @@
                   type="error" show-icon></el-alert>
       </div>
     </div>
-    <div class="image-buttons">
-      <button class="button is-primary" v-if="images.length > 0" @click="addDialogue = true">Add Image</button>
-      <button class="button is-info" v-if="images.length > 0" @click="getGallery">Refresh</button>
-    </div>
+    <el-button type="primary" v-if="images.length > 0" @click="addDialogue = true">Add Image</el-button>
     <div class="columns is-multiline" v-if="images.length > 0">
       <div class="column is-4" v-for="image in images" :key="image._id">
         <div class="card">

@@ -106,6 +106,9 @@
               loader.close();
               this.success = true;
               this.signupSuccess = data.message;
+              setTimeout(() => {
+                this.$router.push('/');
+              }, 1000);
             }).catch((e) => {
               loader.close();
               this.errors = e;
