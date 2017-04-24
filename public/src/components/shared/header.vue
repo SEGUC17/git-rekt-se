@@ -61,7 +61,7 @@
             <!-- Client Account -->
             <el-dropdown v-if="isClient" @command="handleProfile" menu-align="start"
                          trigger="hover">
-              <el-button type="success">
+              <el-button type="success gr-nav-button">
                 My Account<i class="el-icon-caret-bottom el-icon--right"></i>
               </el-button>
 
