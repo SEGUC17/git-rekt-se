@@ -6,6 +6,8 @@ Git-Rekt SE Project
 
 ###### Live Demo
 
+http://54.71.121.252/
+
 ---
 
 ## Setup
@@ -23,6 +25,7 @@ Git-Rekt SE Project
     - `FB_APP_SECRET`, Facebook Application Secret.
     - `FB_CALLBACK`, Facebook Callback link `http://localhost:3000/api/v1/client/auth/fb/callback`.
     - `DEBUG_MODE`, SET to 1 to enable debugging middlewares.
+    - `ADD_DELAY`, SET to 1 to add delay to requests for testing.
 
 ---
 
