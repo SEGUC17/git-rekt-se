@@ -16,7 +16,7 @@
   import Axios from 'axios';
   import { Service } from '../../../services/EndPoints';
   import ClientAuth from '../../../services/auth/clientAuth';
-  
+
   export default {
      /**
      * Data used by this component.

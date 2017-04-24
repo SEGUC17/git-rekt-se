@@ -88,13 +88,9 @@
   import axios from 'axios';
   import Form from '../../services/Form';
   import Errors from '../../services/Errors';
-  import {
-    Client
-  } from '../../services/EndPoints';
+  import { Client } from '../../services/EndPoints';
   import clientAuth from '../../services/auth/clientAuth';
-  import {
-    clientEditInfoValidation
-  } from '../../services/validation';
+  import { clientEditInfoValidation } from '../../services/validation';
   import JWTCheck from '../../services/JWTErrors';
   
   export default {
@@ -195,10 +191,10 @@
       getClient() {
         return new Promise((resolve, reject) => {
           axios.get(Client().getInfo(clientAuth.user.userID()), {
-              headers: {
-                Authorization: clientAuth.getJWTtoken(),
-              },
-            })
+            headers: {
+              Authorization: clientAuth.getJWTtoken(),
+            },
+          })
             .then((response) => {
               this.client = response.data;
               resolve();
@@ -237,10 +233,10 @@
           if (valid) {
             this.loading = true;
             this.form.post(Client().editInfo(clientAuth.user.userID()), {
-                headers: {
-                  Authorization: clientAuth.getJWTtoken(),
-                },
-              })
+              headers: {
+                Authorization: clientAuth.getJWTtoken(),
+              },
+            })
               .then((data) => {
                 this.loading = false;
                 this.success = true;
@@ -251,11 +247,11 @@
                   clientAuth.logout((responseErrs, response) => {
                     let message;
                     EventBus.$emit('UpdateNavigation');
-                    this.loading = false
+                    this.loading = false;
                     if (responseErrs) {
                       message = responseErrs.errors[0];
                     } else {
-                      message = this.emailChanged ? "Please wait for confirmation mail to login into the system" : "Please login again";
+                      message = this.emailChanged ? 'Please wait for confirmation mail to login into the system' : 'Please login again';
                     }
   
                     this.$toast.open({

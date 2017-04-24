@@ -60,7 +60,7 @@
   * This component allows a Business to sign up to the platform.
   */
   import Form from '../../services/Form';
-  import {Business} from '../../services/EndPoints';
+  import { Business } from '../../services/EndPoints';
   import {
     unverfiedBusinessSignupValidation,
   } from '../../services/validation';

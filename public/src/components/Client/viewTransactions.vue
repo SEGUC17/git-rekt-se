@@ -59,7 +59,7 @@
   import clientAuth from '../../services/auth/clientAuth';
   import { Client } from '../../services/EndPoints';
   import JWTCheck from '../../services/JWTErrors';
-  
+
   export default {
     /**
      * Data used by this component.
@@ -90,7 +90,7 @@
         });
         axios.get(Client().getBookings, {
           headers: {
-              Authorization: clientAuth.getJWTtoken(),
+            Authorization: clientAuth.getJWTtoken(),
           },
         })
             .then((res) => {
@@ -107,7 +107,7 @@
             })
             .catch((err) => {
               loader.close();
-              if (err.response && JWTCheck(err.response.data.errors)){
+              if (err.response && JWTCheck(err.response.data.errors)) {
                 clientAuth.removeData();
                 this.$router.push('/');
                 this.$toast.open({

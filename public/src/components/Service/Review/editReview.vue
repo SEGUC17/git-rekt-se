@@ -24,7 +24,7 @@
   import { Service } from '../../../services/EndPoints';
   import { reviewRules } from '../../../services/validation';
   import ClientAuth from '../../../services/auth/clientAuth';
-  
+
   export default {
     /**
      * Data used by this component.

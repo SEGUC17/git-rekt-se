@@ -118,8 +118,8 @@
   import resend from './resend.vue';
   import commonAuth from '../../services/auth/commonAuth';
 
-  import {Client} from '../../services/EndPoints';
-  import {clientSignUpValidation} from '../../services/validation';
+  import { Client } from '../../services/EndPoints';
+  import { clientSignUpValidation } from '../../services/validation';
 
   export default {
       /**
@@ -193,9 +193,9 @@
                   this.message = data.message;
                   this.form = new Form(data);
                 }).catch(() => {
-              this.success = false;
-              this.loading = false;
-            });
+                  this.success = false;
+                  this.loading = false;
+                });
           }
         });
       },
@@ -221,9 +221,9 @@
               this.success = true;
               this.message = data.message;
             }).catch(() => {
-          this.loading = false;
-          this.success = false;
-        });
+              this.loading = false;
+              this.success = false;
+            });
       },
     },
     /**

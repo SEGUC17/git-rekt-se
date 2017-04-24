@@ -37,8 +37,8 @@
               });
               EventBus.$emit('BusinessRemoved', this.row);
             })
-            .catch((err) => {
-              const errors = err.resposne.data.errors.map((err) => {
+            .catch((error) => {
+              const errors = error.resposne.data.errors.map((err) => {
                 if (typeof err === 'string') {
                   return err;
                 }

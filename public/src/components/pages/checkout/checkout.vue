@@ -178,8 +178,8 @@
               this.active = 3;
               this.loader.close();
             }).catch(() => {
-          this.loader.close();
-        });
+              this.loader.close();
+            });
       },
     },
     /**

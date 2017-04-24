@@ -24,7 +24,7 @@
      * Declare all methods used by the component here.
      */
     methods: {
-        /** 
+        /**
          * Handle Logout.
          */
 
@@ -47,7 +47,7 @@
         }
       },
 
-        /** 
+        /**
          * Handle client logout.
          */
 

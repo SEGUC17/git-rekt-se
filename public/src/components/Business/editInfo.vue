@@ -75,13 +75,10 @@
   import Form from '../../services/Form';
   import businessAuth from '../../services/auth/businessAuth';
   import commonAuth from '../../services/auth/commonAuth';
-  import {
-    Business
-  } from '../../services/EndPoints';
-  import {
-    businessEditInfoValidation
-  } from '../../services/validation';
+  import { Business } from '../../services/EndPoints';
+  import { businessEditInfoValidation } from '../../services/validation';
   import JWTCheck from '../../services/JWTErrors';
+
   const dummyPassword = '***************';
   
   export default {
@@ -140,10 +137,10 @@
       getBusiness() {
         return new Promise((resolve, reject) => {
           axios.get(Business().getBasicInfo, {
-              headers: {
-                Authorization: businessAuth.getJWTtoken(),
-              },
-            })
+            headers: {
+              Authorization: businessAuth.getJWTtoken(),
+            },
+          })
             .then((response) => {
               this.business = response.data.business;
               this.onReset();
@@ -173,10 +170,10 @@
             this.form.confirmPassword = this.form.confirmPassword === dummyPassword ? '' : this.form.confirmPassword;
             this.loading = true;
             this.form.post(Business().editBasicInfo(businessAuth.user.userID()), {
-                headers: {
-                  Authorization: businessAuth.getJWTtoken(),
-                },
-              })
+              headers: {
+                Authorization: businessAuth.getJWTtoken(),
+              },
+            })
               .then((data) => {
                 this.success = true;
                 this.message = data.message;
@@ -185,11 +182,11 @@
                   businessAuth.logout((responseErrs, response) => {
                     let message;
                     EventBus.$emit('UpdateNavigation');
-                    this.loading = false
+                    this.loading = false;
                     if (responseErrs) {
                       message = responseErrs.errors[0];
                     } else {
-                      message = this.emailChanged ? "Please wait for confirmation mail to login into the system" : "Please login again";
+                      message = this.emailChanged ? 'Please wait for confirmation mail to login into the system' : 'Please login again';
                     }
   
                     this.$toast.open({
@@ -215,7 +212,7 @@
                         this.$toast.open({
                           text: 'Your sessions has expired. Please login.',
                           position: 'bottom',
-                          type: 'danger'
+                          type: 'danger',
                         });
                       }
                     });
@@ -229,7 +226,7 @@
                   this.$toast.open({
                     text: 'Your sessions has expired. Please login.',
                     position: 'bottom',
-                    type: 'danger'
+                    type: 'danger',
                   });
                 } else {
                   this.onReset();
@@ -283,13 +280,13 @@
           })
           .catch((err) => {
             loader.close();
-            if(err.response && JWTCheck(err.response.data.errors)) {
+            if (err.response && JWTCheck(err.response.data.errors)) {
               businessAuth.removeData();
               this.$router.push('/');
               this.$toast.open({
                 text: 'Your sessions has expired. Please login.',
                 position: 'bottom',
-                type: 'danger'
+                type: 'danger',
               });
             }
           });

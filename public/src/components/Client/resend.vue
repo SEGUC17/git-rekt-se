@@ -24,7 +24,7 @@
   * This component allows the client to resend the confirmation email.
   */
   import axios from 'axios';
-  import {Client} from '../../services/EndPoints';
+  import { Client } from '../../services/EndPoints';
 
   export default {
     /**

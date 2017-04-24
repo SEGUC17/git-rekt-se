@@ -173,10 +173,10 @@
                 this.loginSuccess = response.data.message;
                 clientAuth.storeData(response);
               }).catch((err) => {
-            this.errors = this.errors
-                .concat(err.response ? err.response.data.errors : [err.message]);
-            loader.close();
-          });
+                this.errors = this.errors
+                    .concat(err.response ? err.response.data.errors : [err.message]);
+                loader.close();
+              });
         }
       },
     },

@@ -81,15 +81,11 @@
   */
   import axios from 'axios';
   import Form from '../../services/Form';
-  import {
-    verifiedBusinessSignupRules
-  } from '../../services/validation';
-  import {
-    Visitor
-  } from '../../services/EndPoints';
+  import { verifiedBusinessSignupRules } from '../../services/validation';
+  import { Visitor } from '../../services/EndPoints';
   import businessAuth from '../../services/auth/businessAuth';
   import commonAuth from '../../services/auth/commonAuth';
-  
+
   export default {
     /**
      * Data used by this component.
@@ -100,7 +96,7 @@
      * by the server, false otherwise.
      * errors: Errors received from server.
      * success: true if Sign Up was successful, false otherwise.
-     * rules: Validation Rules used to validate the the input. 
+     * rules: Validation Rules used to validate the the input.
      */
     data() {
       verifiedBusinessSignupRules.confirmPassword[1].validator = verifiedBusinessSignupRules

@@ -61,7 +61,7 @@
             })
             .catch((err) => {
               loader.close();
-              if(JWTCheck(err)){
+              if (JWTCheck(err)) {
                 AdminAuth.removeData();
                 this.$router.push('/');
                 this.$toast.open({

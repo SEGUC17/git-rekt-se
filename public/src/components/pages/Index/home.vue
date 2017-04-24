@@ -100,7 +100,7 @@
   import card from '../../shared/gr-card.vue';
   import locs from './mainLocations';
   import priceRanges from './priceRanges';
-  import {Visitor} from '../../../services/EndPoints';
+  import { Visitor } from '../../../services/EndPoints';
 
   export default {
    /**

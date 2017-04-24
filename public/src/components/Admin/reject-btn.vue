@@ -53,11 +53,11 @@
           fullscreen: true,
         });
         axios.post(Admin().denyBusiness(this.data), null,
-            {
-              headers: {
-                Authorization: adminAuth.getJWTtoken(),
-              },
-            })
+          {
+            headers: {
+              Authorization: adminAuth.getJWTtoken(),
+            },
+          })
             .then(() => {
               this.$toast.open({
                 message: 'Request Rejected!',
@@ -69,7 +69,7 @@
             })
             .catch((err) => {
               loader.close();
-              if (JWTCheck(err)){
+              if (JWTCheck(err)) {
                 AdminAuth.removeData();
                 this.$router.push('/');
                 this.$toast.open({
@@ -82,7 +82,6 @@
                 document.body.scrollTop = 0;
                 document.documentElement.scrollTop = 0;
               }
-              
             });
       },
     },
