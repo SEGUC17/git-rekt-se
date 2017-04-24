@@ -149,22 +149,21 @@ export const clientSignUpValidation = {
     trigger: 'change',
   }],
   birthdate: [{
-    required: true,
-    message: 'Birthdate is required.',
-    trigger: 'blur',
-  }, {
     type: 'date',
     message: 'Invalid Date format.',
+    required: true,
     trigger: 'change',
   }, {
     validator(rule, value, callBack) {
-      if (this.form.birthdate.getFullYear() >= new Date().getFullYear()) {
-        callBack([new Error('Please enter a valid birthdate')]);
-      } else {
-        callBack();
+      if (this.form.birthdate) {
+        if (new Date(this.form.birthdate) >= Date.now()) {
+          callBack([new Error('Please enter a valid birthdate')]);
+        } else {
+          callBack();
+        }
       }
     },
-    trigger: ['blur', 'change'],
+    trigger: 'change',
   }],
 };
 
@@ -433,17 +432,14 @@ export const clientEditInfoValidation = {
   }, {
     validator(rule, value, callBack) {
       if (this.form.birthdate) {
-        console.log(this.form.birthdate.getFullYear());
-        console.log(new Date().getFullYear());
-        console.log(this.form.birthdate);
-        if (this.form.birthdate.getFullYear() >= new Date().getFullYear()) {
+        if (new Date(this.form.birthdate) >= Date.now()) {
           callBack([new Error('Please enter a valid birthdate')]);
         } else {
           callBack();
         }
       }
     },
-    trigger: ['blur', 'change'],
+    trigger: 'change',
   }],
   password: [{
     pattern: /^(?=.*\d).{8,15}$/,
