@@ -28,6 +28,9 @@
           </p>
           <ul class="menu-list">
             <li>
+              <router-link to="/business/manage/bookings">Bookings</router-link>
+            </li>
+            <li>
               <router-link to="/business/manage/services/create">Create</router-link>
             </li>
             <li>

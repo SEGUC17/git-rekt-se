@@ -13,17 +13,13 @@
                     <span></span>
                     <span></span>
                     <span></span>
-                </span>
+        </span>
 
         <!-- Navigation bar Right -->
         <div class="nav-right nav-menu" :class="active? 'is-active' : ''">
 
           <router-link to="/#" @click.native="active = false" class="nav-item">Home</router-link>
           <router-link to="/about" @click.native="active = false" class="nav-item">About Us
-
-          </router-link>
-          <router-link to="/categories" @click.native="active = false" class="nav-item">Categories
-
 
           </router-link>
           <router-link v-if="!isBusiness" to="/business/apply"
@@ -49,7 +45,6 @@
                             </span>
               <span>Login</span>
             </router-link>
-
 
             <!-- Business Account Management-->
             <router-link v-if="isBusiness" to="/business/manage" class="button is-success">
@@ -149,7 +144,12 @@
     margin: 10px;
   }
 
+  .nav-item .button + .button {
+    margin-left: 0.75rem;
+  }
+
   .nav {
+    height: 100%;
     border-bottom: 1px solid #eee;
   }
 

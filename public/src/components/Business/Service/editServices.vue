@@ -15,7 +15,7 @@
           </el-alert>
         </div>
 
-        <div class="title is-4">{{ service.name }}</div>
+        <div class="title is-4"><router-link :to="`/service/${service._id}`">{{ service.name }}</router-link></div>
         <p class="subtitle">{{ service.shortDescription }}</p>
 
         <!-- Service Options -->
