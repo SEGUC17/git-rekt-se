@@ -17,20 +17,41 @@
 </template>
 
 <script>
+ /**
+  * This component allows the user to edit a review.
+  */
   import Axios from 'axios';
   import { Service } from '../../../services/EndPoints';
   import { reviewRules } from '../../../services/validation';
   import ClientAuth from '../../../services/auth/clientAuth';
   
   export default {
+    /**
+     * Data used by this component.
+     * rules: Validation rules to validate the user's input.
+     * errors: Errors received from the server.
+     */
     data() {
       return {
         rules: reviewRules,
         errors: [],
       };
     },
+    /**
+     * Props used by this component.
+     * serviceID: The ID of the corresponding Service.
+     * reviewID: The ID of the review to edit.
+     * review: The Review content to edit with.
+     * visible: true if dialog is visible, false otherwise.
+     */
     props: ['serviceID', 'reviewID', 'review', 'visible'],
+    /**
+     * All Methods used by the component.
+     */
     methods: {
+      /**
+       * Edit's a review.
+       */
       editReview() {
         this.errors = [];
         this.$refs.editReview.validate((valid) => {
@@ -62,6 +83,9 @@
           }
         });
       },
+      /**
+       * Cancel, doesn't edit a review.
+       */
       cancel() {
         this.$emit('cancelEdit');
       },

@@ -10,18 +10,37 @@
 </template>
 
 <script>
+ /**
+  * This component allows the user to delete a review.
+  */
   import Axios from 'axios';
   import { Service } from '../../../services/EndPoints';
   import ClientAuth from '../../../services/auth/clientAuth';
   
   export default {
+     /**
+     * Data used by this component.
+     * errors: Errors received from the server.
+     */
     data() {
       return {
         errors: [],
       };
     },
+    /**
+     * Props used by this component.
+     * serviceID: The ID of the corresponding Service.
+     * reviewID: The ID of the review to delete.
+     * visible: true if the dialog is visible, false otherwise.
+     */
     props: ['serviceID', 'reviewID', 'visible'],
+    /**
+     * All Methods used by the component.
+     */
     methods: {
+      /**
+       * Delete the review.
+       */
       deleteReview() {
         this.errors = [];
         const loader = this.$loading({
@@ -46,6 +65,9 @@
           });
         });
       },
+      /**
+       * Cancel, doesn't delete the review.
+       */
       cancel() {
         this.$emit('cancelDelete');
       },

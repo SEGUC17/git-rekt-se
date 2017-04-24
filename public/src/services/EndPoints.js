@@ -1,5 +1,19 @@
+/**
+ * This contains some utility functions for all the API routes for the Back-End.
+ */
+
+/**
+ * The Base URL.
+ * @constant
+ * @type {string}
+ */
+
 const BASE = 'http://54.71.121.252/api/v1';
 
+/**
+ * A Function returning all routes for the Visitor.
+ * @returns {Object}
+ */
 export const Visitor = () => ({
   search: `${BASE}/visitor/search/`,
   viewService: serviceID => `${BASE}/service/${serviceID}`,
@@ -10,6 +24,10 @@ export const Visitor = () => ({
   businessCategories: `${BASE}/categories/business`,
 });
 
+/**
+ * A Function returning all routes for the Client.
+ * @returns {Object}
+ */
 export const Client = () => {
   const authBase = `${BASE}/client/auth`;
   const profileBase = `${BASE}/client/profile`;
@@ -31,6 +49,10 @@ export const Client = () => {
   };
 };
 
+/**
+ * A Function returning all routes for the Business.
+ * @returns {Object}
+ */
 export const Business = () => {
   const authBase = `${BASE}/business/auth`;
   const serviceBase = `${BASE}/business/service`;
@@ -75,6 +97,10 @@ export const Business = () => {
   };
 };
 
+/**
+ * A Function returning all routes for the Admin.
+ * @returns {Object}
+ */
 export const Admin = () => {
   const generalBase = `${BASE}/admin/general`;
   const categoryBase = `${BASE}/admin/category`;
@@ -100,6 +126,10 @@ export const Admin = () => {
   };
 };
 
+/**
+ * A Function returning all routes for the Service.
+ * @returns {Object}
+ */
 export const Service = () => {
   const serviceBase = `${BASE}/service`;
   const bookingBase = `${BASE}/service/book`;
@@ -124,6 +154,9 @@ export const Service = () => {
   };
 };
 
+/**
+ * Export all of them.
+ */
 export default {
   Client,
   Business,

@@ -1,3 +1,8 @@
+
+/**
+ * This contains the Front-End Validation Rules.
+ */
+
 /*
  * Client Side Form Validation Schemas.
  * Async-validator.
@@ -24,23 +29,28 @@ export const businessEditInfoValidation = {
       if (value === '***************') {
         callBack();
       } else if (/^(?=.*\d).{8,15}$/.test(value)) {
-        callBack();
+        this.$refs.form.validateField('confirmPassword');
       } else {
         callBack([new Error('Password must be between 8 and 15 characters and contains at least one number!')]);
       }
+      callBack();
     },
     trigger: 'blur',
   }],
   confirmPassword: [{
     validator(rule, value, callBack) {
-      if (value === '***************') {
+      if (!this.form.password) {
         callBack();
-      } else if (value.length === 0 && this.form.password.length === 0) {
-        callBack();
-      } else if (value === this.form.password) {
-        callBack();
+        return;
+      }
+      if (this.form.password.length > 0) {
+        if (this.form.password !== value) {
+          callBack([new Error('Password and password confirmation mismatch.')]);
+        } else {
+          callBack();
+        }
       } else {
-        callBack([new Error('Password and Confirm Password must match!')]);
+        callBack();
       }
     },
     trigger: 'blur',
@@ -146,8 +156,21 @@ export const clientSignUpValidation = {
     type: 'date',
     message: 'Invalid Date format.',
     trigger: 'change',
+  }, {
+    validator(rule, value, callBack) {
+      if (this.form.birthdate.getFullYear() >= new Date().getFullYear()) {
+        callBack([new Error('Please enter a valid birthdate')]);
+      } else {
+        callBack();
+      }
+    },
+    trigger: ['blur', 'change'],
   }],
 };
+
+/**
+ * Login Rules.
+ */
 export const loginRules = {
   email: [{
     required: true,
@@ -161,6 +184,9 @@ export const loginRules = {
   }],
 };
 
+/**
+ * Client Forgot Password Rules.
+ */
 export const clientForgotPassword = {
   password: [{
     required: true,
@@ -196,6 +222,10 @@ export const clientForgotPassword = {
     trigger: ['blur', 'change'],
   }],
 };
+
+/**
+ * Verified Business Sign Up Rules.
+ */
 export const verifiedBusinessSignupRules = {
   password: [{
     required: true,
@@ -262,6 +292,9 @@ export const verifiedBusinessSignupRules = {
   }],
 };
 
+/**
+ * Category Rules.
+ */
 export const categoryRules = {
   type: [{
     required: true,
@@ -273,6 +306,10 @@ export const categoryRules = {
     message: 'title is required.',
   }],
 };
+
+/**
+ * Client Forgot Password Mail Rules.
+ */
 export const clientForgotPasswordMail = {
   email: [{
     required: true,
@@ -287,6 +324,9 @@ export const clientForgotPasswordMail = {
   ],
 };
 
+/**
+ * Unverified Business SignUp Rules.
+ */
 export const businessAddCoupon = {
   code: [{
     required: true,
@@ -344,6 +384,9 @@ export const unverfiedBusinessSignupValidation = {
   }],
 };
 
+/**
+ * Client Edit Information Rules.
+ */
 export const clientEditInfoValidation = {
   email: [{
     message: 'Please Enter a valid email.',
@@ -387,9 +430,51 @@ export const clientEditInfoValidation = {
     message: 'Invalid Date format.',
     required: true,
     trigger: 'change',
+  }, {
+    validator(rule, value, callBack) {
+      if (this.form.birthdate) {
+        console.log(this.form.birthdate.getFullYear());
+        console.log(new Date().getFullYear());
+        console.log(this.form.birthdate);
+        if (this.form.birthdate.getFullYear() >= new Date().getFullYear()) {
+          callBack([new Error('Please enter a valid birthdate')]);
+        } else {
+          callBack();
+        }
+      }
+    },
+    trigger: ['blur', 'change'],
+  }],
+  password: [{
+    pattern: /^(?=.*\d).{8,15}$/,
+    message: 'Password must be 8-15 chars and contains at least one number.',
+    trigger: 'blur',
+  }, {
+    validator(rule, value, callBack) {
+      this.$refs.form.validateField('confirmPassword');
+      callBack();
+    },
+    trigger: ['blur', 'change'],
+  }],
+  confirmPassword: [{
+    validator(rule, value, callBack) {
+      if (this.form.password && this.form.confirmPassword) {
+        if (this.form.password !== value) {
+          callBack([new Error('Password and password confirmation mismatch.')]);
+        } else {
+          callBack();
+        }
+      } else {
+        callBack();
+      }
+    },
+    trigger: ['blur', 'change'],
   }],
 };
 
+/**
+ * Forgot Password Validation Rules.
+ */
 export const forgotPasswordValidation = {
   email: [{
     required: true,
@@ -402,6 +487,9 @@ export const forgotPasswordValidation = {
   }],
 };
 
+/**
+ * Business Reset Password Rules.
+ */
 export const serviceRules = {
   name: [{
     required: true,

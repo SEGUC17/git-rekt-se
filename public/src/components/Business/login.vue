@@ -17,7 +17,7 @@
             <div class="column is-half-desktop is-10-mobile is-10-tablet
                                is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop">
 
-                <div class="errors" v-show="errors.length > 0">
+                <div class="errors" v-if="errors.length > 0">
                     <el-alert v-for="error in errors" class="error" :title="error"
                               type="error" :key="error" show-icon>
                     </el-alert>
@@ -54,6 +54,9 @@
 </template>
 
 <script>
+ /**
+  * This component allows a Business to login.
+  */
   import businessAuth from '../../services/auth/businessAuth';
   import Authenticator from '../../services/auth/commonAuth';
   import Form from '../../services/Form';
@@ -61,6 +64,14 @@
   import EventBus from '../../services/EventBus';
 
   export default {
+    /**
+       * Data used by this component.
+       * form: Holds the data entered by user and sent to server.
+       * rules: Validation rules used to validate input.
+       * logged_in: true if login is successful false otherwise.
+       * loginSuccess: Message received when login is successful.
+       * errors: Errors received from server.
+       */
     data() {
       return {
         form: new Form({
@@ -73,12 +84,22 @@
         errors: [],
       };
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * If user is already authenticated, route him back.
+     */
     mounted() {
       if (Authenticator.isAuthenticated()) {
         this.$router.push('/');
       }
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+      /**
+       * Validates and Submits a form.
+       */
       submitForm(formName) {
         this.errors = [];
         this.$refs[formName].validate((valid) => {

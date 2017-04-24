@@ -45,13 +45,24 @@
 </template>
 
 <script>
+ /**
+  * This component allows a Business To View, Accept/Reject a transaction.
+  */
   import moment from 'moment';
   import axios from 'axios';
   import businessAuth from '../../services/auth/businessAuth';
   import { Business } from '../../services/EndPoints';
   import EventBus from '../../services/EventBus';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
+    /**
+     * Data used by this component.
+     * bookings: Array of business bookings.
+     * error: true if an error occured, false otherwise.
+     * success: true if a successful operation occured, false otherwise.
+     * message: A Message to display to the user.
+     */
     data() {
       return {
         bookings: [],
@@ -60,7 +71,13 @@
         message: '',
       };
     },
+    /**
+     * All Methods used by the component.
+     */
     methods: {
+      /**
+       * Get Transactions.
+       */
       getTransactions() {
         const loader = this.$loading({
           fullscreen: true,
@@ -85,11 +102,24 @@
               loader.close();
             })
             .catch((err) => {
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(', ') : err.message;
               loader.close();
+              if(err.response && JWT.checkErrors(err.reponse.data.errors)){
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.error = true;
+                this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+              }
             });
       },
+      /**
+       * Accept a transaction.
+       */
       acceptTransaction(row) {
         this.success = false;
         this.error = false;
@@ -110,11 +140,24 @@
               this.message = res.data.message;
               this.getTransactions();
             }).catch((err) => {
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(', ') : err.message;
               loader.close();
+              if(err.reponse && JWTCheck(err.response.data.errors)){
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.error = true;
+                this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+              }
             });
       },
+      /**
+       * Refund a transaction.
+       */
       refundTransaction(row) {
         this.success = false;
         this.error = false;
@@ -136,12 +179,26 @@
               this.message = res.data.message;
               this.getTransactions();
             }).catch((err) => {
-              this.error = true;
-              this.message = err.response ? err.response.data.errors.join(', ') : err.message;
               loader.close();
+              if(err.response && JWTCheck(err.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.error = true;
+                this.message = err.response ? err.response.data.errors.join(', ') : err.message;
+              }
             });
       },
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * Route back if user is not authenticated, otherwise Get All Transactions.
+     */
     mounted() {
       if (!businessAuth.isAuthenticated()) {
         this.$router.push('/404');

@@ -12,6 +12,9 @@ const expressValidator = require('express-validator');
 const validationSchemas = require('../../../../services/shared/validation');
 const mongoose = require('mongoose');
 
+/**
+ * Change Mongoose Promise Library with the default one.
+ */
 mongoose.Promise = Promise;
 
 const router = express.Router();
@@ -40,8 +43,14 @@ const upload = multer({
   storage,
 });
 
+/**
+ * Body Parser Middleware.
+ */
 router.use(bodyParser.json());
 
+/**
+ * Admin Adds Category API Route.
+ */
 router.post('/add', upload.single('icon'), AdminAuth, (req, res, next) => {
   req.checkBody(validationSchemas.adminCategoryValidation);
   req.getValidationResult()
@@ -68,6 +77,9 @@ router.post('/add', upload.single('icon'), AdminAuth, (req, res, next) => {
     });
 });
 
+/**
+ * Admin Edit Category API Route.
+ */
 router.post('/edit/:id', AdminAuth, upload.single('icon'), (req, res, next) => {
   req.checkBody(validationSchemas.adminCategoryValidation);
   req.getValidationResult()
@@ -104,6 +116,10 @@ router.post('/edit/:id', AdminAuth, upload.single('icon'), (req, res, next) => {
     });
 });
 
+/**
+ * Admin Delete Category API Route.
+ * A Soft Delete is performed.
+ */
 router.post('/delete/:id', AdminAuth, (req, res, next) => {
   const id = req.params.id;
   Category.findOne({

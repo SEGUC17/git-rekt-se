@@ -18,6 +18,9 @@ const businessValidation = require('../../../../services/shared/validation');
 const businessUtils = require('../../../../services/business/businessUtils');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
+/**
+ * Change Mongoose Promise Library with the default one.
+ */
 mongoose.Promise = Promise;
 const router = express.Router();
 

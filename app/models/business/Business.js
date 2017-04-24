@@ -95,6 +95,8 @@ businessSchema.pre('save', function preSave(done) {
 
 /**
  * Check the password.
+ * @param {String} guess - The guessed password
+ * @returns {Promise} - Resolves if no error occurs, rejects otherwise.
  */
 
 businessSchema.methods.checkPassword = function checkPassword(guess) {

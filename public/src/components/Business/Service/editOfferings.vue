@@ -165,12 +165,35 @@
 
 
 <script>
+ /**
+  * This component allows business to Edit Offerings.
+  */
   import Axios from 'axios';
   import { Business } from '../../../services/EndPoints';
   import { offeringRules } from '../../../services/validation';
   import BusinessAuth from '../../../services/auth/businessAuth';
-
+  import JWTCheck from '../../../services/JWTErrors';
+  
   export default {
+    /**
+     * Data used by this component.
+     * active: Determines which tab/component is active.
+     * serviceID: The ID of the corresponding Service.
+     * offerings: Array of Offerings.
+     * branches: Array of Branches.
+     * newOffering: Data entered by user to create an offering.
+     * generalErrors: Errors received from the server.
+     * offeringRules: Validation Rules used to validate the input.
+     * createSuccess: Message received from server when creation was successful.
+     * createErrors: Errors received from server when creating offering.
+     * editFormOffering: Data to edit an offering.
+     * editVisible: true to show the Edit component/tab, false otherwise.
+     * editSuccess: Message when Editing is successful.
+     * offeringToDelete: The Chosen offering to delete.
+     * deleteVisible: true to show Delete component/tab, false otherwise.
+     * deleteSuccess: Message to show when deletion is successful.
+     * deleteErrors: Errors received from the server when deleting.
+     */
     data() {
       return {
         active: 1,
@@ -205,6 +228,11 @@
         deleteErrors: [],
       };
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * If user is not authenticated route him back,
+     * otherwise List Offerings and Branches.
+     */
     mounted() {
       BusinessAuth.refreshAuth();
       if (!BusinessAuth.user.authenticated) {
@@ -225,11 +253,27 @@
               this.branches = response.data.branches;
             })
             .catch((err) => {
-              this.generalErrors = err.response.data.errors;
+              if(err.response && JWTCheck(err.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                   this.generalErrors = err.response.data.errors;
+                  }
             });
       }
     },
+    /**
+     * All Methods used by this component.
+     */
     methods: {
+      /**
+       * List all offerings.
+       */
       getOfferings() {
         const loader = this.$loading({
           fullscreen: true,
@@ -245,14 +289,27 @@
             })
             .catch((error) => {
               loader.close();
-              this.generalErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                return err.msg;
-              });
+              if(error.response && JWTCheck(error.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                   this.generalErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
             });
       },
+      /**
+       * Create an offering.
+       */
       createOffering() {
         this.createSuccess = '';
         this.createErrors = [];
@@ -274,16 +331,29 @@
                 })
                 .catch((error) => {
                   loader.close();
-                  this.createErrors = error.response.data.errors.map((err) => {
-                    if (typeof err === 'string') {
-                      return err;
-                    }
-                    return err.msg;
-                  });
+                  if(error.response && JWTCheck(error.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.createErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                      });
+                  }
                 });
           }
         });
       },
+      /**
+       * Edit an offering.
+       */
       editOffering() {
         this.editSuccess = '';
         this.editErrors = [];
@@ -306,16 +376,29 @@
                 })
                 .catch((error) => {
                   loader.close();
-                  this.editErrors = error.response.data.errors.map((err) => {
-                    if (typeof err === 'string') {
-                      return err;
-                    }
-                    return err.msg;
-                  });
+                  if(error.response && JWTCheck(error.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.editErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
                 });
           }
         });
       },
+      /**
+       * Delete an offering.
+       */
       deleteOffering() {
         this.deleteSuccess = '';
         this.deleteErrors = [];
@@ -335,25 +418,47 @@
             })
             .catch((error) => {
               loader.close();
-              this.deleteErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                return err.msg;
-              });
+              if(error.response && JWTCheck(error.response.data.errors)) {
+                    businessAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      text: 'Your sessions has expired. Please login.',
+                      position: 'bottom',
+                      type: 'danger'
+                    });
+                  } else {
+                    this.deleteErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
             });
       },
+      /**
+       * Reset form fields.
+       */
       resetCreate() {
         this.$refs.createOffering.resetFields();
       },
+      /**
+       * Show Edit Offering.
+       */
       showEdit(offering) {
         this.editFormOffering = this.populateFormOffering(offering);
         this.editVisible = true;
       },
+      /**
+       * Show Delete Offering.
+       */
       showDelete(offering) {
         this.offeringToDelete = offering;
         this.deleteVisible = true;
       },
+      /**
+       * Fill Form with offering data.
+       */
       populateFormOffering(offering) {
         const offeringToReturn = {};
         offeringToReturn._id = offering._id;
@@ -364,7 +469,13 @@
         return offeringToReturn;
       },
     },
+    /**
+     * Computed properties for this component.
+     */
     computed: {
+      /**
+       * The object to create an offering with.
+       */
       offeringToCreate() {
         return {
           branch: this.newOffering.branch,
@@ -374,6 +485,9 @@
           endDate: this.newOffering.dates[1],
         };
       },
+      /**
+       * The object to edit an offering with.
+       */
       offeringToEdit() {
         return {
           _id: this.editFormOffering._id,

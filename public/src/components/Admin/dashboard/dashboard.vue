@@ -51,15 +51,27 @@
 </template>
 
 <script>
+  /**
+   * This component allows the admin to navigate through
+   * Confirming a Business,
+   * Removing a Client,
+   * Editing a Category.
+   */
   import tophero from '../../shared/gr-top-hero.vue';
   import adminAuth from '../../../services/auth/adminAuth';
   import EventBus from '../../../services/EventBus';
 
   export default {
+    /**
+     * Sub-components used by this component.
+     */
     components: {
       'gr-top-hero': tophero,
     },
-
+    /**
+     * Ran when component is mounted on DOM.
+     * if admin is not authenticated redirect him back.
+     */
     mounted() {
       if (!adminAuth.isAuthenticated()) {
         this.$router.push('/404');

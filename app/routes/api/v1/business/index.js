@@ -8,6 +8,9 @@ const Strings = require('../../../../services/shared/Strings');
 const expressValidator = require('express-validator');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
+/**
+ * Change Mongoose Promise Library with the default one.
+ */
 mongoose.Promise = Promise;
 const router = express.Router();
 
@@ -19,7 +22,7 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * View business page.
+ * View Business Page API.
  */
 
 router.get('/:id', (req, res, next) => {

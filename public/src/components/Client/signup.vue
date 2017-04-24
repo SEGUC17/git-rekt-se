@@ -32,14 +32,14 @@
                 </div>
 
                 <!-- Backend Form Errors-->
-                <div class="errors" v-show="!form.errors.isEmpty()">
+                <div class="errors" v-if="!form.errors.isEmpty()">
                     <el-alert v-for="key in form.keys" v-show="form.errors.has(key)"
                               @close="form.errors.remove(key)" class="error"
                               type="error" :key="error"
                               :title="form.errors.getAll(key, ' | ') || '' " show-icon>
                     </el-alert>
 
-                    <el-alert v-show="form.errors.has('serverError')"
+                    <el-alert v-if="form.errors.has('serverError')"
                               @close="form.errors.remove('serverError')"
                               class="error"
                               :title="form.errors.getAll('serverError', ' | ') || ''" type="error"
@@ -62,20 +62,18 @@
                     </el-form-item>
 
                     <el-form-item label="Password" prop="password">
-                        <el-input v-model="form.password" :type="showPassword">
+                        <el-input v-model="form.password" :type="showPassword? 'text': 'password'">
                             <div slot="append">
-                                <el-button @mousedown.native="showPassword = 'text'"
-                                           @mouseup.native="showPassword = 'password'"><i class="fa fa-eye"></i>
+                                <el-button @click="showPassword = !showPassword"><i class="fa fa-eye"></i>
                                 </el-button>
                             </div>
                         </el-input>
                     </el-form-item>
 
                     <el-form-item label="Confirm Password" prop="confirmPassword">
-                        <el-input v-model="form.confirmPassword" :type="showConfirm">
+                        <el-input v-model="form.confirmPassword" :type="showConfirm? 'text':'password'">
                             <div slot="append">
-                                <el-button @mousedown.native="showConfirm = 'text'"
-                                           @mouseup.native="showConfirm = 'password'"><i class="fa fa-eye"></i>
+                                <el-button @click="showConfirm = !showConfirm"><i class="fa fa-eye"></i>
                                 </el-button>
                             </div>
                         </el-input>
@@ -92,7 +90,7 @@
                         </el-radio-group>
                     </el-form-item>
 
-                    <el-form-item label="Birthdate">
+                    <el-form-item label="Birth Date">
                         <el-date-picker v-model="form.birthdate" type="date" :format="'dd-MM-yyyy'"
                                         placeholder="1-1-1990"></el-date-picker>
                     </el-form-item>
@@ -113,6 +111,9 @@
 </template>
 
 <script>
+ /**
+  * This components allows the client to sign up.
+  */
   import Form from '../../services/Form';
   import resend from './resend.vue';
   import commonAuth from '../../services/auth/commonAuth';
@@ -121,10 +122,25 @@
   import {clientSignUpValidation} from '../../services/validation';
 
   export default {
+      /**
+       * Data used by the component.
+       * form: Data entered by the user and sent to the server.
+       * rules: Validation rules used to validate the data.
+       * showPassword: true to show user the password he entered, false otherwise.
+       * showConfirm: true to show user the password he entered, false otherwise.
+       * success: true if a successfull operation was executed, false otherwise.
+       * error: true if an error occured, false otherwise.
+       * info: true if an info needs to be visible to user, false otherwise.
+       * message: Messaged received from server or a message that needs to be displayed to user
+       * clientEmail: The current client's Email.
+       * loading: true if a request is sent and is being proccessed by server, false
+       */
     data() {
       clientSignUpValidation.confirmPassword[1].validator = clientSignUpValidation.confirmPassword[1]
           .validator.bind(this);
       clientSignUpValidation.password[2].validator = clientSignUpValidation.password[2]
+          .validator.bind(this);
+      clientSignUpValidation.birthdate[2].validator = clientSignUpValidation.birthdate[2]
           .validator.bind(this);
       return {
         form: new Form({
@@ -139,8 +155,8 @@
           birthdate: '',
         }),
         rules: clientSignUpValidation,
-        showPassword: 'password',
-        showConfirm: 'password',
+        showPassword: false,
+        showConfirm: false,
         success: false,
         error: false,
         info: false,
@@ -149,10 +165,19 @@
         loading: false,
       };
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+        /**
+         * Redirect to facebook sign up.
+         */
       redirectFacebook() {
         window.location.href = Client().facebookRedirect;
       },
+      /**
+       * Validates and submits the form.
+       */
       onClick() {
         this.info = false;
         this.success = false;
@@ -174,9 +199,17 @@
           }
         });
       },
+      /**
+       * Resets all fields of the form.
+       */
       onReset() {
         this.$refs.form.resetFields();
+        this.showPassword = false;
+        this.showConfirm = false;
       },
+      /**
+       * Resends email.
+       */
       resendMail() {
         this.loading = true;
         this.success = false;
@@ -193,6 +226,12 @@
         });
       },
     },
+    /**
+     * Ran when component is mounted.
+     * If user is authenticated route him back with a message,
+     * otherwise we check query parameters, whether there was an error,
+     * or a sign up with facebook was requested.
+     */
     mounted() {
       if (commonAuth.isAuthenticated()) {
         this.$router.push('/');
@@ -222,6 +261,9 @@
         this.message = 'These information where fetched from facebook, please fill the remaining fields.';
       }
     },
+    /**
+     * Sub-components used by this component.
+     */
     components: {
       resend,
     },

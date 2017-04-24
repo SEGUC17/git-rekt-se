@@ -13,17 +13,11 @@
                     <span></span>
                     <span></span>
                     <span></span>
-                </span>
+        </span>
 
         <!-- Navigation bar Right -->
         <div class="nav-right nav-menu" :class="active? 'is-active' : ''">
-
-          <router-link to="/#" @click.native="active = false" class="nav-item">Home</router-link>
           <router-link to="/about" @click.native="active = false" class="nav-item">About Us
-
-          </router-link>
-          <router-link to="/categories" @click.native="active = false" class="nav-item">Categories
-
 
           </router-link>
           <router-link v-if="!isBusiness" to="/business/apply"
@@ -50,7 +44,6 @@
               <span>Login</span>
             </router-link>
 
-
             <!-- Business Account Management-->
             <router-link v-if="isBusiness" to="/business/manage" class="button is-success">
               Manage
@@ -66,7 +59,7 @@
             <!-- Client Account -->
             <el-dropdown v-if="isClient" @command="handleProfile" menu-align="start"
                          trigger="hover">
-              <el-button type="success">
+              <el-button type="success gr-nav-button">
                 My Account<i class="el-icon-caret-bottom el-icon--right"></i>
               </el-button>
 
@@ -87,7 +80,10 @@
 </template>
 
 <script>
-
+  /**
+   * This component represents a NavBar, responsible for navigating
+   * through the website.
+   */
   import CommonAuth from '../../services/auth/commonAuth';
   import ClientAuth from '../../services/auth/clientAuth';
   import BusinessAuth from '../../services/auth/businessAuth';
@@ -96,6 +92,9 @@
   import LogoutBtn from './logout.vue';
 
   export default {
+    /**
+     * Data Used By The Component.
+     */
     data() {
       return {
         active: false,
@@ -105,10 +104,16 @@
         isAdmin: AdminAuth.isAuthenticated(),
       };
     },
+    /**
+     * Sub-components, Any components used by this component.
+     */
     components: {
       'logout-btn': LogoutBtn,
     },
-
+    /**
+     * This will run when the component is mounted on the DOM.
+     * Update `isAuthenticated` with whether client/business is authenticated.
+     */
     mounted() {
       EventBus.$on('UpdateNavigation', () => {
         this.isAuthenticated = CommonAuth.isAuthenticated();
@@ -137,7 +142,12 @@
     margin: 10px;
   }
 
+  .nav-item .button + .button {
+    margin-left: 0.75rem;
+  }
+
   .nav {
+    height: 100%;
     border-bottom: 1px solid #eee;
   }
 

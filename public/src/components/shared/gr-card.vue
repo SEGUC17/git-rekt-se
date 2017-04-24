@@ -14,7 +14,14 @@
 </template>
 
 <script>
+  /**
+   * This component represent a card with an image,
+   * and content.
+   */
   export default {
+    /**
+     * Props for the component.    
+     */
     props: {
       image: {
         type: String,

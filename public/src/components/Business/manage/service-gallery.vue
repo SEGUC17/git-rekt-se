@@ -107,12 +107,29 @@
   </div>
 </template>
 <script>
+ /**
+  * This component is for displaying the service gallery.
+  */
   import axios from 'axios';
   import { Service } from '../../../services/EndPoints';
   import businessAuth from '../../../services/auth/businessAuth';
   import Form from '../../../services/Form';
+  import JWTCheck from '../../../services/JWTErrors';
 
   export default {
+    /**
+     * Data used by this component.
+     * images: Service Images.
+     * errors: Errors received from server.
+     * addErrors: Errors received when adding images.
+     * loader: Loader Object for loading.
+     * addDialogue: true if adding an image, false otherwise.
+     * deleteDialogue: true if deleting an image, false otherwise.
+     * editDialogue: true if editing an image, false otherwise.
+     * imageToDelete: Image to delete.
+     * editForm: Data to edit image with.
+     * addForm: Data to use when adding an Image.
+     */
     data() {
       return {
         images: [],
@@ -133,27 +150,27 @@
         }),
       };
     },
-
+    /**
+     * Ran when component is mounted on DOM.
+     * Gets the service's gallery.
+     */
     mounted() {
       this.getGallery();
     },
 
     methods: {
 
-      /*
+      /**
        * Creates a new loader.
-       * */
-
+       */
       setupLoader() {
         this.loader = this.$loading({
           fullscreen: true,
         });
       },
-
-      /*
+      /**
        * Get Images in current business gallery.
-       * */
-
+       */
       getGallery() {
         this.setupLoader();
         axios.get(Service().viewGallery(this.$route.params.id), {
@@ -167,17 +184,25 @@
               this.loader.close();
             })
             .catch((err) => {
-              this.errors = err.response.data.errors;
               this.loader.close();
-              document.body.scrollTop = 0;
-              document.documentElement.scrollTop = 0;
+              if(err.response && JWTCheck(err.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.errors = err.response.data.errors;
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+              }
             });
       },
-
-      /*
+      /**
        * Add new Image form submit.
-       * */
-
+       */
       submitAddForm() {
         if (this.addForm.path) {
           if (this.isImage(this.addForm.path)) {
@@ -194,11 +219,9 @@
           this.addErrors = ['Image is required.'];
         }
       },
-
-      /*
+      /**
        * Add Image to business gallery.
-       * */
-
+       */
       addImage(data) {
         this.setupLoader();
         axios.post(Service().addImage(this.$route.params.id), data, {
@@ -218,32 +241,38 @@
               this.loader.close();
             })
             .catch((err) => {
-              this.addErrors = err.response.data.errors;
               this.loader.close();
+              if(err.response && JWTCheck(err.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.addErrors = err.response.data.errors;
+              }
             });
       },
-
-      /*
+      /**
        * Show the edit image dialog.
-       * */
-
+       */
       showDeleteDialog(imageID) {
         this.deleteDialogue = true;
         this.imageToDelete = imageID;
       },
-
-      /*
+      /**
        * Show the delete image dialog.
-       * */
+       */
       showEditDialog(image) {
         this.editDialogue = true;
         this.imageToEdit = image._id;
         this.editForm.description = image.description;
-      },
-
-      /*
+      }, 
+      /**
        * Edit image with {imageID}.
-       * */
+       */
       editImage() {
         this.setupLoader();
         axios.post(Service().editImage(this.$route.params.id, this.imageToEdit), this.editForm, {
@@ -252,6 +281,7 @@
           },
         })
             .then(() => {
+              this.loader.close();
               this.editForm.description = '';
               this.$toast.open({
                 message: 'Image Edited.',
@@ -262,15 +292,24 @@
               this.editDialogue = false;
             })
             .catch((err) => {
-              this.editDialogue = false;
-              this.errors = err.response.data.errors;
+              this.loader.close();
+              if(err.response && JWTCheck(err.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.editDialogue = false;
+                this.errors = err.response.data.errors;
+              }
             });
       },
-
-      /*
+      /**
        * Delete image with {imageID}.
-       * */
-
+       */
       deleteImage() {
         this.setupLoader();
         axios.post(Service().deleteImage(this.$route.params.id, this.imageToDelete), {}, {
@@ -279,6 +318,7 @@
           },
         })
             .then(() => {
+              this.loader.close();
               this.deleteDialogue = false;
               this.$toast.open({
                 message: 'Image Deleted.',
@@ -288,15 +328,23 @@
               this.getGallery();
             })
             .catch((err) => {
-              this.errors = err.response.data.errors;
               this.loader.close();
+              if(err.response && JWTCheck(err.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+               this.errors = err.response.data.errors;
+              }
             });
       },
-
-      /*
+      /**
        * File upload handler.
-       * */
-
+       */
       fileChanged(e) {
         const files = e.target.files || e.dataTransfer.files;
         if (files.length > 0) {
@@ -309,11 +357,9 @@
           }
         }
       },
-
-      /*
+      /**
        * Returns If the type of the file is image.
-       * */
-
+       */
       isImage(file) {
         return file.type.split('/')[0] === 'image';
       },

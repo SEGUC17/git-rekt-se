@@ -64,7 +64,7 @@ const clientSchema = Schema({
 });
 
 /**
- * Return the full name "Firstname lastname"
+ * Return the full name "firstName lastName"
  */
 
 clientSchema.virtual('fullName')
@@ -90,6 +90,8 @@ clientSchema.pre('save', function preSave(done) {
 
 /**
  * Check If {guess} matches the user password.
+ * @param {String} guess - The guessed password.
+ * @returns {Promise} - Resolves if no error occurs, rejects otherwise.
  */
 
 clientSchema.methods.checkPassword = function checkPassword(guess) {

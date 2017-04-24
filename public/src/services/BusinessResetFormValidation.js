@@ -1,6 +1,10 @@
 export default {
 
 };
+
+/**
+ * Business Reset Form Validation Rules.
+ */
 export const BusinessResetFormValidation = {
   password: [{
     required: true,

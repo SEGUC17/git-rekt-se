@@ -18,9 +18,14 @@ import TransactionsAction from '../../components/Business/manage/business-trans-
 
 import router from '../../services/routes.js';
 
+/**
+ * Allow axios to be accessed globaly.
+ */
 window.axios = axios;
 
-
+/**
+ * Register Vue Components to be accessed globaly.
+ */
 Vue.component('accept-btn', acceptbtn);
 Vue.component('reject-btn', rejectbtn);
 Vue.component('client-remove-btn', clientRemoveBtn);
@@ -31,8 +36,17 @@ Vue.component('bus-trans-actions', TransactionsAction);
 Vue.component('coupon-delete-btn', couponDeleteBtn);
 Vue.component('gr-top-hero', TopHero);
 
+/**
+ * Register Vue Filters.
+ */
+Vue.filter('appendRandom', (e) => {
+  return `${e}${Math.random() * 10000000}`;
+});
 Vue.filter('moment', date => moment(date).format('dddd MMMM Do YYYY.'));
 
+/**
+ * Register Vue Plugins.
+ */
 Vue.use(VueRouter);
 Vue.use(elementUI, {
   locale
@@ -41,11 +55,14 @@ Vue.use(Buefy, {
   defaultIconPack: 'fa',
 });
 
+/**
+ * Instantiate a Vue Instance.
+ */
 new Vue({
   el: '#root',
   router,
   components: {
     'gr-header': header,
     'gr-footer': footer,
-  }
+  },
 });

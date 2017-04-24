@@ -18,12 +18,12 @@
 
                     <el-alert class="alert-msg" :title="form.message" v-show="form.success" type="success"
                               show-icon></el-alert>
-                    <div class="alert-msg error" v-for="key in form.keys" v-show="form.errors.has(key)">
+                    <div class="alert-msg error" v-for="key in form.keys" v-if="form.errors.has(key)">
                         <el-alert @close="form.errors.remove(key)" type="error"
                                   :title="form.errors.getAll(key, ' | ') || '' " show-icon></el-alert>
                     </div>
 
-                    <div class="alert-msg error" v-show="form.errors.has('serverError')">
+                    <div class="alert-msg error" v-if="form.errors.has('serverError')">
                         <el-alert @close="form.errors.remove('serverError')"
                                   :title="form.errors.getAll('serverError', ' | ') || ''" type="error"
                                   show-icon></el-alert>
@@ -70,12 +70,25 @@
 </template>
 
 <script>
+ /**
+  * This component allows the user to reset/change his password
+  * after he had already request to do so.
+  */
   import Form from '../../services/Form';
   import { Client } from '../../services/EndPoints';
   import { clientForgotPassword } from '../../services/validation';
   import commonAuth from '../../services/auth/commonAuth';
 
   export default {
+      /**
+       * Data used by the component.
+       * form: Data entered by user and sent to the server.
+       * showPassword: true to show user the password he entered, false otherwise.
+       * showConfirm: true to show user the password he entered, false otherwise.
+       * loading: true if a request is sent and is being proccessed by server, false
+       * otherwise.
+       * rules: Validation rules used to validate the data.
+       */
     data() {
       clientForgotPassword.confirmPassword[1].validator = clientForgotPassword.confirmPassword[1]
           .validator.bind(this);
@@ -96,7 +109,13 @@
         rules: clientForgotPassword,
       };
     },
+    /**
+     * Methods used by the component.
+     */
     methods: {
+        /**
+         * Validates and Submits the Data.
+         */
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -118,7 +137,10 @@
         });
       },
     },
-
+    /**
+     * Ran when component is mounted on DOM.
+     * If user is authenticated route him back.
+     */
     mounted() {
       if (commonAuth.isAuthenticated()) {
         this.$router.push('/');

@@ -14,7 +14,9 @@ const jwtConfig = require('../../../../services/shared/jwtConfig');
 const Strings = require('../../../../services/shared/Strings');
 const errorHandler = require('../../../../services/shared/errorHandler');
 
-
+/**
+ * Change Mongoose Promise Library to the default one.
+ */
 mongoose.Promise = Promise;
 
 const router = express.Router();
@@ -22,6 +24,9 @@ const router = express.Router();
 require('dotenv')
   .config();
 
+/**
+ * Client JWT SECRET.
+ */
 const JWT_KEY = process.env.JWT_KEY_CLIENT;
 
 /**
@@ -29,10 +34,14 @@ const JWT_KEY = process.env.JWT_KEY_CLIENT;
  */
 
 router.use(bodyParser.json());
+
+/**
+ * Express Validator Middleware.
+ */
 router.use(expressValidator({}));
 
 /**
- * Client signup route.
+ * Client Signup API Route.
  */
 
 router.post('/signup', (req, res, next) => {
@@ -113,7 +122,7 @@ router.post('/confirmation/send', (req, res, next) => {
 });
 
 /**
- * Client reset password
+ * Client reset password API Route.
  */
 
 router.post('/reset', (req, res, next) => {
@@ -166,7 +175,7 @@ router.post('/reset', (req, res, next) => {
 
 
 /**
- * Confirm Email Route.
+ * Confirm Email API Route.
  */
 
 router.post('/confirmation/:token/confirm', (req, res, next) => {
@@ -216,7 +225,7 @@ router.post('/confirmation/:token/confirm', (req, res, next) => {
 });
 
 /**
- * Client Login.
+ * Client Login API Route.
  */
 
 router.post('/login', (req, res, next) => {
@@ -234,7 +243,7 @@ router.post('/login', (req, res, next) => {
 });
 
 /**
- * Client facebook login.
+ * Client facebook login API Route.
  */
 
 router.get('/fb/login', passport.authenticate('facebook_strategy', {
@@ -243,7 +252,7 @@ router.get('/fb/login', passport.authenticate('facebook_strategy', {
 }));
 
 /**
- * Client finalize facebook login.
+ * Client finalize facebook login API Route.
  */
 router.post('/fb/finalize/login', (req, res, next) => {
   const encapsulatedToken = req.body.token;
@@ -277,6 +286,9 @@ router.post('/fb/finalize/login', (req, res, next) => {
     .catch(next);
 });
 
+/**
+ * Client Forgot Password API Route.
+ */
 router.post('/forgot', (req, res, next) => {
   req.checkBody(validationSchemas.forgotPasswordValidation);
   req.getValidationResult()

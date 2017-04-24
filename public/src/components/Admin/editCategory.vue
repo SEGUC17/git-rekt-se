@@ -3,7 +3,7 @@
 
         <!-- Errors -->
 
-        <div class="errors" v-show="generalErrors.length > 0">
+        <div class="errors" v-if="generalErrors.length > 0">
             <el-alert v-for="error in generalErrors" class="error" :title="error"
                       type="error" :key="error" show-icon></el-alert>
         </div>
@@ -116,13 +116,35 @@
 </template>
 
 <script>
+ /**
+  * This component allows an Admin to Edit a Category.
+  */
   import axios from 'axios';
-  import {categoryRules} from '../../services/validation';
-  import {Admin} from '../../services/EndPoints';
+  import { categoryRules } from '../../services/validation';
+  import { Admin } from '../../services/EndPoints';
   import AdminAuth from '../../services/auth/adminAuth';
   import EventBus from '../../services/EventBus';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
+    /**
+     * Data used by this component.
+     * categories: All available categories.
+     * newCategory: Data entered by admin to create a category.
+     * generalErrors: Errors that occured.
+     * categoryRules: Validation Rules used to validate the data.
+     * createSuccess: Message displayed on success.
+     * createErrors: Errors occured during creating.
+     * categoryToEdit: Data to edit the old category.
+     * editVisible: true to show edit, false otherwise.
+     * editSuccess: Message on edit success.
+     * editErrors: Errors occured during edit.
+     * categoryToDelete: The Category chosen to be deleted.
+     * deleteVisible: true to show delete, false otherwise.
+     * deleteSuccess: Message to display after delete.
+     * deleteErrors: Errors occured during delete.
+     * addVisible: true if to show add, false otherwise.
+     */
     data() {
       return {
         categories: [],
@@ -153,7 +175,13 @@
         addVisible: false,
       };
     },
+    /**
+     * Methods used by this component.
+     */
     methods: {
+      /**
+       * Validate and create a category.
+       */
       createCategory() {
         this.createSuccess = '';
         this.createErrors = [];
@@ -176,16 +204,29 @@
                 })
                 .catch((error) => {
                   loader.close();
-                  this.createErrors = error.response.data.errors.map((err) => {
-                    if (typeof err === 'string') {
-                      return err;
-                    }
-                    return err.msg;
-                  });
+                  if (JWTCheck(error)){
+                    AdminAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      message: 'Session Expired, please login',
+                      type: 'is-danger',
+                      position: 'bottom',
+                    });
+                  } else {
+                    this.createErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
                 });
           }
         });
       },
+      /**
+       * Validate and edit a category.
+       */
       editCategory() {
         this.editSuccess = '';
         this.editErrors = [];
@@ -207,16 +248,29 @@
                 })
                 .catch((error) => {
                   loader.close();
-                  this.editErrors = error.response.data.errors.map((err) => {
-                    if (typeof err === 'string') {
-                      return err;
-                    }
-                    return err.msg;
-                  });
+                  if(JWTCheck(error)) {
+                    AdminAuth.removeData();
+                    this.$router.push('/');
+                    this.$toast.open({
+                      message: 'Session Expired, please login',
+                      type: 'is-danger',
+                      position: 'bottom',
+                    });
+                  } else {
+                    this.editErrors = error.response.data.errors.map((err) => {
+                      if (typeof err === 'string') {
+                        return err;
+                      }
+                      return err.msg;
+                    });
+                  }
                 });
           }
         });
       },
+      /**
+       * Delete a category.
+       */
       deleteCategory() {
         this.deleteSuccess = '';
         this.deleteErrors = [];
@@ -236,17 +290,33 @@
             })
             .catch((error) => {
               loader.close();
-              this.deleteErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                return err.msg;
-              });
+              if(JWTCheck(error)) {
+                AdminAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  message: 'Session Expired, please login',
+                  type: 'is-danger',
+                  position: 'bottom',
+                });
+              } else {
+                this.deleteErrors = error.response.data.errors.map((err) => {
+                  if (typeof err === 'string') {
+                    return err;
+                  }
+                  return err.msg;
+                });
+              }
             });
       },
+      /**
+       * Reset Form
+       */
       resetCreate() {
         this.$refs.createCategory.resetFields();
       },
+       /**
+       * Get a list of all available categories.
+       */
       getCategories() {
         const loader = this.$loading({
           fullscreen: true,
@@ -262,26 +332,49 @@
             })
             .catch((error) => {
               loader.close();
-              this.generalErrors = error.response.data.errors.map((err) => {
-                if (typeof err === 'string') {
-                  return err;
-                }
-                return err.msg;
-              });
+              if (JWTCheck(error)) {
+                AdminAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  message: 'Session Expired, please login',
+                  type: 'is-danger',
+                  position: 'bottom',
+                });             
+              } else {
+                this.generalErrors = error.response.data.errors.map((err) => {
+                  if (typeof err === 'string') {
+                    return err;
+                  }
+                  return err.msg;
+                });
+              }
             });
       },
+      /**
+       * Show Edit.
+       */
       showEdit(category) {
         this.categoryToEdit = Object.assign({}, category);
         this.editVisible = true;
       },
+      /**
+       * Show Add.
+       */
       showAdd() {
         this.addVisible = true;
       },
+      /**
+       * Show Delete.
+       */
       showDelete(category) {
         this.categoryToDelete = Object.assign({}, category);
         this.deleteVisible = true;
       },
     },
+    /**
+     * Ran when component is mounted on DOM.
+     * 
+     */
     mounted() {
       EventBus.$on('showEditDialog', this.showEdit);
       EventBus.$on('showDeleteDialog', this.showDelete);
@@ -296,12 +389,22 @@
             this.categories = response.data.category;
           })
           .catch((error) => {
-            this.generalErrors = error.response.data.errors.map((err) => {
-              if (typeof err === 'string') {
-                return err;
-              }
-              return err.msg;
-            });
+            if(JWTCheck(error)) {
+              AdminAuth.removeData();
+              this.$router.push('/');
+              this.$toast.open({
+                message: 'Session Expired, please login',
+                type: 'is-danger',
+                position: 'bottom',
+              });
+            } else {
+              this.generalErrors = error.response.data.errors.map((err) => {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
+            }
           });
     },
 

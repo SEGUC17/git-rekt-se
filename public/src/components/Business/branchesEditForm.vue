@@ -63,6 +63,7 @@
   import { Business, Visitor } from '../../services/EndPoints';
   import locs from '../../components/pages/Index/mainLocations';
   import businessAuth from '../../services/auth/businessAuth';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
     data() {
@@ -138,8 +139,18 @@
                 });
                 this.loader.close();
               }).catch((e) => {
-                this.errors = e.response.data.errors;
                 this.loader.close();
+                if(e.response && JWTCheck(e.response.data.errors)) {
+                  businessAuth.removeData();
+                  this.$router.push('/');
+                  this.$toast.open({
+                    text: 'Your sessions has expired. Please login.',
+                    position: 'bottom',
+                    type: 'danger'
+                  });
+                } else {
+                  this.errors = e.response.data.errors;
+                }
               });
         });
       },
@@ -166,8 +177,18 @@
             this.branchesForm.branches[idx]._id = response.data.results[0];
             this.loader.close();
           }).catch((e) => {
-            this.errors = e.response.data.errors;
             this.loader.close();
+            if(e.response && JWTCheck(e.response.data.errors)) {
+              businessAuth.removeData();
+              this.$router.push('/');
+              this.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              this.errors = e.response.data.errors;
+            }
           });
 
           this.branchesForm.branches.push({
@@ -201,9 +222,18 @@
                 this.branchesForm.branches.splice(idx, 1);
                 this.loader.close();
               }).catch((e) => {
+                if(e.response && JWTCheck(e.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
                 this.errors = e.response.data.errors;
-                this.loader.close();
-              });
+              }
+            });
         }
       },
 
@@ -227,8 +257,17 @@
               this.editSuccess = response.data.message;
               this.loader.close();
             }).catch((e) => {
-              this.loader.close();
-              this.errors = e.response.data.errors;
+              if(e.response && JWTCheck(e.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.errors = e.response.data.errors;
+              }
             });
       },
     },

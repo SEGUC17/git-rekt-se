@@ -50,14 +50,27 @@
 </template>
 
 <script>
+ /**
+  * This component is responsible for Editing the Business Info.
+  */
   import axios from 'axios';
   import Form from '../../services/Form';
   import { infoFormRules } from '../../services/validation';
   import { Visitor, Business } from '../../services/EndPoints';
   import businessAuth from '../../services/auth/businessAuth';
+  import JWTCheck from '../../services/JWTErrors';
 
   export default {
-
+    /**
+     * Data used by this component.
+     * infoForm: Holds data entered by user and sent to the server.
+     * loader: The Loader Object to display loading.
+     * categories: Array of Categories.
+     * errors: Errors received from the server.
+     * form1Rules: Validation rules used to validate the input.
+     * success: true if an operation completed successfully, false otherwise.
+     * editSuccess: Message to display user on success.
+     */
     data() {
       return {
         infoForm: new Form({
@@ -73,23 +86,26 @@
         editSuccess: '',
       };
     },
+    /**
+     * Ran when component is mounted.
+     * Loads the form and fills it with the Business Data.
+     */
     mounted() {
       this.loadFormData();
     },
+    /**
+     * All Methods used by the user.
+     */
     methods: {
-
-      /*
-       * Remove alert from errors array on close button click.
-       *  */
-
+      /**
+       * Close and removes a specific error.
+       */
       closeError(idx) {
         this.errors.splice(idx, 1);
       },
-
-      /*
+      /**
        * Load Previous business information.
-       * */
-
+       */
       loadFormData() {
         this.errors = [];
         this.loader = this.$loading({
@@ -111,18 +127,36 @@
                 .categories.map(cat => cat._id);
           }).catch((e) => {
             this.loader.close();
-            this.errors = e.response.data.errors;
+            if(e.response && JWTCheck(e.response.data.errors)) {
+              businessAuth.removeData();
+              this.$router.push('/');
+              this.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              this.errors = e.response.data.errors;
+            }
           });
         }).catch((e) => {
           this.loader.close();
-          this.errors = e.response.data.errors;
+          if(e.response && JWTCheck(e.response.data.errors)) {
+              businessAuth.removeData();
+              this.$router.push('/');
+              this.$toast.open({
+                text: 'Your sessions has expired. Please login.',
+                position: 'bottom',
+                type: 'danger'
+              });
+            } else {
+              this.errors = e.response.data.errors;
+            }
         });
       },
-
-      /*
+      /**
        * Update the business information.
-       * */
-
+       */
       submitForm(formName) {
         this.errors = [];
         this.$refs[formName].validate((valid) => {
@@ -140,7 +174,17 @@
               this.editSuccess = response.data.message;
             }).catch((e) => {
               this.loader.close();
-              this.errors = e.response.data.errors;
+              if(e.response && JWTCheck(e.response.data.errors)) {
+                businessAuth.removeData();
+                this.$router.push('/');
+                this.$toast.open({
+                  text: 'Your sessions has expired. Please login.',
+                  position: 'bottom',
+                  type: 'danger'
+                });
+              } else {
+                this.errors = e.response.data.errors;
+              }
             });
           }
         });

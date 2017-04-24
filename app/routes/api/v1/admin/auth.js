@@ -37,7 +37,7 @@ if (process.env.DEBUG_MODE) {
 }
 
 /*
- * Admin Login route.
+ * Admin Login API Route.
  */
 
 router.post('/login', (req, res, next) => {

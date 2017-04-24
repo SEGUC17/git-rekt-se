@@ -8,8 +8,6 @@
                 </div>
 
                 <div class="right-footer has-text-right column is-6">
-                    <router-link to="/privacy" class="footer-link">privacy &nbsp;</router-link>
-                    <router-link to="/terms" class="footer-link">terms &nbsp;</router-link>
                     <a href="https://github.com/SEGUC17/git-rekt-se" class="footer-link">github &nbsp;</a>
                     <a href="https://facebook.com/gitrektse" class="footer-link">facebook &nbsp;</a>
                     <a href="https://twitter.com/gitrektse" class="footer-link">twitter &nbsp;</a>
@@ -20,6 +18,9 @@
 </template>
 
 <script>
+  /**
+   * This component is represent the footer.
+   */
   export default {};
 </script>
 

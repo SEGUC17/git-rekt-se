@@ -28,6 +28,9 @@
           </p>
           <ul class="menu-list">
             <li>
+              <router-link to="/business/manage/bookings">Bookings</router-link>
+            </li>
+            <li>
               <router-link to="/business/manage/services/create">Create</router-link>
             </li>
             <li>
@@ -46,14 +49,23 @@
 </template>
 
 <script>
+ /**
+  * This component allows the business to navigate through his profile pages.
+  */
   import tophero from '../../shared/gr-top-hero.vue';
   import businessAuth from '../../../services/auth/businessAuth';
 
   export default {
+    /**
+     * Sub-components used by this component.
+     */
     components: {
       'gr-top-hero': tophero,
     },
-
+    /**
+     * Ran when component is mounted on DOM.
+     * Route user back if he/she is not authenticated.
+     */
     mounted() {
       if (!businessAuth.isAuthenticated()) {
         this.$router.push('/404');
