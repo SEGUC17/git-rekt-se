@@ -8,7 +8,7 @@
  * @type {string}
  */
 
-const BASE = 'http://54.71.121.252/api/v1';
+const BASE = 'http://localhost:3000/api/v1';
 
 /**
  * A Function returning all routes for the Visitor.

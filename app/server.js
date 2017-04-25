@@ -4,7 +4,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const http = require('http');
 const https = require('https');
 const app = require('./app');
 
@@ -19,11 +18,13 @@ const httpsPort = process.env.HTTPS_PORT;
  * Https Options
  */
 const httpsOptions = {
-  cert: fs.readFileSync(path.join(__dirname, './certs/fullchain.pem')),
-  ket: fs.readFileSync(path.join(__dirname, './certs/privkey.pem')),
+  cert: fs.readFileSync(path.join(__dirname, './certs/cert.pem')),
+  key: fs.readFileSync(path.join(__dirname, './certs/key.pem')),
 };
 
-// app.listen(port, () => console.log('Server started.\nListening on port 3000.'));
+/**
+ * Create http and https servers.
+ */
 
-http.createServer(app).listen(port);
+app.listen(port, () => console.log('Server started.\nListening on port 3000.'));
 https.createServer(httpsOptions, app).listen(httpsPort);
