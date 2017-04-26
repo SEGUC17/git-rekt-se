@@ -78,7 +78,8 @@
   import { Business } from '../../services/EndPoints';
   import { businessEditInfoValidation } from '../../services/validation';
   import JWTCheck from '../../services/JWTErrors';
-
+  import EventBus from '../../services/EventBus';
+  
   const dummyPassword = '***************';
   
   export default {

@@ -39,7 +39,6 @@
   * This component allows the client to request a password change
   * incase he forgot the old one.
   */
-  import axios from 'axios';
   import Form from '../../services/Form';
   import { Client } from '../../services/EndPoints';
   import { clientForgotPasswordMail } from '../../services/validation';

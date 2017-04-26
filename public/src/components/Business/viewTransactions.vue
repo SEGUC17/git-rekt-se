@@ -103,7 +103,7 @@
             })
             .catch((err) => {
               loader.close();
-              if (err.response && JWT.checkErrors(err.reponse.data.errors)) {
+              if (err.response && JWTCheck.checkErrors(err.reponse.data.errors)) {
                 businessAuth.removeData();
                 this.$router.push('/');
                 this.$toast.open({
