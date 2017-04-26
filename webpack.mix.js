@@ -13,6 +13,7 @@ const mix = require('laravel-mix');
 
 mix.combine(['./public/src/assets/css/normalize.css'], './public/dist/assets/css/normalize.css');
 mix.combine(['./public/src/assets/css/element-theme/index.css'], './public/dist/assets/css/element-theme/index.css');
+mix.combine(['./public/src/assets/css/buefy.css'], './public/dist/assets/css/buefy.css');
 mix.combine(['./public/src/assets/css/style.css'], './public/dist/assets/css/style.css');
 mix.sass('./public/src/assets/css/bulma.sass', './public/dist/assets/css');
 

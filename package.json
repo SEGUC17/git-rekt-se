@@ -39,7 +39,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
     "buefy": "^0.2.0",
-    "bulma": "^0.4.0",
+    "bulma": "^0.4.1",
     "dotenv": "^4.0.0",
     "element-ui": "^1.2.8",
     "eslint-config-airbnb-base": "^11.1.2",
