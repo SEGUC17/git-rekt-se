@@ -94,15 +94,13 @@
           },
         })
             .then((res) => {
-              this.bookings = res.data.bookings.map((booking) => {
-                return {
-                  name: booking._service.name,
-                  date: moment(booking.date).format('dddd MMMM Do YYYY'),
-                  location: `${booking._service.offerings[0].address},${booking._service.offerings[0].location}`,
-                  status: booking.status,
-                  amount: `${booking._transaction.amount / 100.0} EGP`,
-                };
-              });
+              this.bookings = res.data.bookings.map(booking => ({
+                name: booking._service.name,
+                date: moment(booking.date).format('dddd MMMM Do YYYY'),
+                location: `${booking._service.offerings[0].address},${booking._service.offerings[0].location}`,
+                status: booking.status,
+                amount: `${booking._transaction.amount / 100.0} EGP`,
+              }));
               loader.close();
             })
             .catch((err) => {

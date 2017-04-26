@@ -92,6 +92,7 @@
   import clientAuth from '../../services/auth/clientAuth';
   import { clientEditInfoValidation } from '../../services/validation';
   import JWTCheck from '../../services/JWTErrors';
+  import EventBus from '../../services/EventBus';
   
   export default {
     /**

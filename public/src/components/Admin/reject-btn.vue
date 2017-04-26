@@ -8,7 +8,7 @@
   */
   import axios from 'axios';
   import { Admin } from '../../services/EndPoints';
-  import adminAuth from '../../services/auth/adminAuth';
+  import AdminAuth from '../../services/auth/adminAuth';
   import EventBus from '../../services/EventBus';
   import JWTCheck from '../../services/JWTErrors';
 
@@ -55,7 +55,7 @@
         axios.post(Admin().denyBusiness(this.data), null,
           {
             headers: {
-              Authorization: adminAuth.getJWTtoken(),
+              Authorization: AdminAuth.getJWTtoken(),
             },
           })
             .then(() => {

@@ -120,13 +120,13 @@
             })
             .catch((error) => {
               loader.close();
-              if(error.response && JWTCheck(error.response.data.errors)) {
-                businessAuth.removeData();
+              if (error.response && JWTCheck(error.response.data.errors)) {
+                BusinessAuth.removeData();
                 this.$router.push('/');
                 this.$toast.open({
                   text: 'Your sessions has expired. Please login.',
                   position: 'bottom',
-                  type: 'danger'
+                  type: 'danger',
                 });
               } else {
                 this.generalErrors = error.response.data.errors.map((err) => {
@@ -169,13 +169,13 @@
             })
                 .catch((error) => {
                   loader.close();
-                 if(error.response && JWTCheck(error.response.data.errors)) {
-                    businessAuth.removeData();
+                  if (error.response && JWTCheck(error.response.data.errors)) {
+                    BusinessAuth.removeData();
                     this.$router.push('/');
                     this.$toast.open({
                       text: 'Your sessions has expired. Please login.',
                       position: 'bottom',
-                      type: 'danger'
+                      type: 'danger',
                     });
                   } else {
                     this.generalErrors = error.response.data.errors.map((err) => {
