@@ -70,7 +70,9 @@
           <el-form-item class="has-text-centered">
             <el-button type="primary" :loading="loading" icon="circle-check" @click="submitForm('form')">
               Edit
-  
+            </el-button>
+            <el-button icon="circle-cross" @click="resetForm">
+              Reset
             </el-button>
           </el-form-item>
         </el-form>
@@ -197,7 +199,7 @@
             },
           })
             .then((response) => {
-              this.client = response.data;
+              this.client = response.data.client;
               resolve();
             }).catch((err) => {
               if (err.response && JWTCheck(err.response.data.errors)) {
@@ -281,6 +283,17 @@
                   this.message = err.response ? err.response.data.errors.join(' | ') : err.message;
                 }
               });
+          }
+        });
+      },
+      /**
+       * Reset Form to its original data.
+       */
+      resetForm() {
+        // No need to bind this since we are using arrow function.
+        this.form.keys.forEach((key) => {
+          if(this.client.hasOwnProperty(key)){
+            this.form[key] = this.client[key];
           }
         });
       },

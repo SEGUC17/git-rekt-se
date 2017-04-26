@@ -398,17 +398,17 @@ export const clientEditInfoValidation = {
   }],
   firstName: [{
     message: 'First name is required.',
-    trigger: 'blur',
+    trigger: 'change',
     required: true,
   }],
   lastName: [{
     message: 'Last name is required.',
-    trigger: 'blur',
+    trigger: 'change',
     required: true,
   }],
   mobile: [{
     message: 'Mobile number is required.',
-    trigger: 'blur',
+    trigger: 'change',
     required: true,
   }, {
     pattern: /^01[0-2]{1}[0-9]{8}$/,

@@ -39,7 +39,9 @@ router.get('/:id', authMiddleWare.clientAuthMiddleware, (req, res, next) => {
         if (!client) {
           next(Strings.clientFaliure.notFound);
         } else {
-          res.json(client);
+          res.json({
+            client,
+          });
         }
       })
       .catch(next);
