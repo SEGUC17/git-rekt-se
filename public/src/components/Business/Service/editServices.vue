@@ -2,18 +2,18 @@
 <template>
   <div class="services-list">
 
+    <!-- General Errors -->
+    <div class="errors">
+      <el-alert v-for="error in generalErrors" :key="error"
+                type="error" :title="error"
+                class="error" show-icon
+                @close="generalErrors.splice(error, 1)">
+      </el-alert>
+    </div>
+
     <!-- Get services-->
     <div class="box" v-for="service in services" :key="service._id">
       <div class="content">
-
-        <!-- General Errors -->
-        <div class="errors">
-          <el-alert v-for="error in generalErrors" :key="error"
-                    type="error" :title="error"
-                    class="error" show-icon
-                    @close="generalErrors.splice(error, 1)">
-          </el-alert>
-        </div>
 
         <div class="title is-4"><router-link :to="`/service/${service._id}`">{{ service.name }}</router-link></div>
         <p class="subtitle">{{ service.shortDescription }}</p>

@@ -18,7 +18,7 @@
             <div v-if="!success" class="column is-half-desktop is-10-mobile is-10-tablet is-offset-1-mobile
                                 is-offset-1-tablet is-offset-one-quarter-desktop">
 
-                <div class="centered-fb">
+                <div class="errors centered-fb">
                     <a @click.prevent="redirectFacebook">
                         <img src="assets/imgs/fb-login.png" alt="Facebook Login" width="50%">
                     </a>
@@ -27,7 +27,7 @@
                 <hr class="client-login-form">
 
                 <!-- Info Incase signing up with facebook -->
-                <div v-show="info" class="client-login-form">
+                <div v-show="info" class="error">
                     <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
                 </div>
 
