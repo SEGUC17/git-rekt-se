@@ -27,8 +27,8 @@
                 <hr class="client-login-form">
 
                 <!-- Info Incase signing up with facebook -->
-                <div v-show="info" class="error">
-                    <el-alert @close="info = false" :title="message" type="info" show-icon></el-alert>
+                <div v-show="info" class="errors">
+                    <el-alert class="error" @close="info = false" :title="message" type="info" show-icon></el-alert>
                 </div>
 
                 <!-- Backend Form Errors-->
