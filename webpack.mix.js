@@ -21,7 +21,8 @@ mix
   .js('./public/src/services/routes.js', './public/dist/services')
   .copy('./public/src/assets/css/element-theme/fonts', './public/dist/assets/css/element-theme/fonts', false)
   .copy('./public/src/assets/imgs', './public/dist/assets/imgs', false)
-  .copy('./public/src/index.html', './public/dist');
+  .copy('./public/src/index.html', './public/dist')
+  .copy('./public/src/favicon.ico', './public/dist');
 
 
 // Full API
