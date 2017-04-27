@@ -2,7 +2,8 @@ import axios from 'axios';
 import moment from 'moment';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import locale from 'element-ui/lib/locale/lang/en'
+import lang from 'element-ui/lib/locale/lang/en';
+import locale from 'element-ui/lib/locale';
 import Buefy from 'buefy'
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
@@ -95,6 +96,8 @@ Vue.use(Scrollbar)
 Vue.use(CarouselItem)
 
 Vue.use(Loading.directive)
+
+locale.use(lang);
 
 Vue.prototype.$loading = Loading.service
 
