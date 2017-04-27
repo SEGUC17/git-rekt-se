@@ -6,7 +6,7 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --recursive test/api",
     "start": "node app/server.js",
-    "debug": "./node_modules/.bin/eslint . && nodemon app/server.js",
+    "debug": "./node_modules/.bin/eslint app && ./node_modules/.bin/eslint test && nodemon app/server.js",
     "dev": "cross-env NODE_ENV=development webpack --progress --hide-modules",
     "watch": "cross-env NODE_ENV=development webpack --watch --progress --hide-modules",
     "hot": "cross-env NODE_ENV=development webpack-dev-server --inline --hot",
