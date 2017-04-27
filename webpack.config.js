@@ -298,6 +298,8 @@ module.exports.devServer = {
 plugins.push(
     new webpack.ProvidePlugin(Mix.autoload || {}),
 
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /de|fr|hu/),
+
     new webpackPlugins.FriendlyErrorsWebpackPlugin({ clearConsole: Mix.options.clearConsole }),
 
     new webpackPlugins.StatsWriterPlugin({
