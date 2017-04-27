@@ -135,8 +135,8 @@ let rules = [
     },
 
     {
-        test: /\.html$/,
-        loaders: ['html-loader']
+         test: /\.html$/,
+         loaders: ['html-loader'],
     },
 
     {
