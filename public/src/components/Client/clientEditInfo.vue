@@ -199,7 +199,7 @@
             },
           })
             .then((response) => {
-              this.client = response.data.client;
+              this.client = response.data;
               resolve();
             }).catch((err) => {
               if (err.response && JWTCheck(err.response.data.errors)) {
