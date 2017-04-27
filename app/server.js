@@ -11,20 +11,17 @@ const port = process.env.PORT;
 const httpsPort = process.env.HTTPS_PORT;
 
 /**
- * Start server.
+ * Https Options.
  */
 
-/**
- * Https Options
- */
 const httpsOptions = {
   cert: fs.readFileSync(path.join(__dirname, './certs/cert.pem')),
   key: fs.readFileSync(path.join(__dirname, './certs/key.pem')),
 };
 
 /**
- * Create http and https servers.
+ * Start http and https servers.
  */
 
-app.listen(port, () => console.log('Server started.\nListening on port 3000.'));
+app.listen(port, () => console.log(`Server started.\nListening on ports ${port} and ${httpsPort}.`));
 https.createServer(httpsOptions, app).listen(httpsPort);
