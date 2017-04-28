@@ -2,7 +2,8 @@ import axios from 'axios';
 import moment from 'moment';
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import locale from 'element-ui/lib/locale/lang/en'
+import lang from 'element-ui/lib/locale/lang/en';
+import locale from 'element-ui/lib/locale';
 import Buefy from 'buefy'
 import header from '../../components/shared/header.vue';
 import footer from '../../components/shared/footer.vue';
@@ -14,6 +15,8 @@ import clientRemoveBtn from '../../components/Admin/remove-client-btn.vue';
 import businessRemoveBtn from '../../components/Admin/remove-business-btn.vue';
 import CategoryActions from '../../components/Admin/category-actions.vue';
 import TransactionsAction from '../../components/Business/manage/business-trans-actions.vue';
+
+import '../css/style.css';
 
 import router from '../../services/routes.js';
 
@@ -95,6 +98,8 @@ Vue.use(Scrollbar)
 Vue.use(CarouselItem)
 
 Vue.use(Loading.directive)
+
+locale.use(lang);
 
 Vue.prototype.$loading = Loading.service
 
