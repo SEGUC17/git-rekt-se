@@ -6,7 +6,7 @@ Git-Rekt SE Project
 
 ###### Live Demo
 
-http://54.71.121.252/
+https://git-rekt.me/
 
 ---
 
