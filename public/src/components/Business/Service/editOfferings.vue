@@ -105,18 +105,16 @@
               </button>
             </nav>
           </div>
+           <!-- No Offerings to edit -->
+          <div class="no-data hero" v-show="offerings.length === 0">
+            <div class="hero-body has-text-centered">
+              <el-icon name="circle-close" class="confirmation-icon icon-fail"></el-icon>
+              <p class="title is-2">This service has no offerings.</p>
+              <a class="button is-info" @click.prevent="getOfferings">Refresh</a>
+            </div>
+          </div>
         </div>
       </transition>
-
-      <!-- No Offerings to edit -->
-      <div class="no-data hero" v-show="offerings.length === 0">
-        <div class="hero-body has-text-centered">
-          <el-icon name="circle-close" class="confirmation-icon icon-fail"></el-icon>
-          <p class="title is-2">This service has no offerings.</p>
-          <a class="button is-info" @click.prevent="getOfferings">Refresh</a>
-        </div>
-      </div>
-
     </div>
 
     <!-- Edit Offering Modal -->
