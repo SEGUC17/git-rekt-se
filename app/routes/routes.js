@@ -21,12 +21,18 @@ const BusinessGalleryAPI = require('./api/v1/business/gallery');
 const VisitorSearchAPI = require('./api/v1/visitor/search');
 const ViewBussinessAPI = require('./api/v1/business/index');
 const BusinessCategoriesAPI = require('./api/v1/business/categories');
+const fbBotAPI = require('./api/Bot/index');
 
 /**
  * Configures the apps middlewares.
  * @param app - Express App
  */
 module.exports = (app) => {
+  /**
+   * Facebook Bot Routes.
+   */
+  app.use('/bot', fbBotAPI);
+
   /**
    * Visitor API Routes.
    */
