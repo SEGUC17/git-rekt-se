@@ -75,7 +75,7 @@ app.use(compression());
  * Frontend Routes.
  */
 
-app.use(express.static(path.join(__dirname, '../public/dist/assets'), { maxAge: 604800 }));
+app.use(express.static(path.join(__dirname, '../public/dist'), { maxAge: 604800 }));
 
 app.get('/*', (req, res) => res.redirect(`/#${req.originalUrl}`));
 
