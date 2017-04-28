@@ -16,6 +16,8 @@ import businessRemoveBtn from '../../components/Admin/remove-business-btn.vue';
 import CategoryActions from '../../components/Admin/category-actions.vue';
 import TransactionsAction from '../../components/Business/manage/business-trans-actions.vue';
 
+import '../css/style.css';
+
 import router from '../../services/routes.js';
 
 /**
