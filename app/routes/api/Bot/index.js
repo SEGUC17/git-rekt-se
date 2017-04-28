@@ -7,9 +7,6 @@ const router = express.Router();
 const api = apiai('d7ccf4b57f004e59967247dd5e1aee45');
 
 
-router.use(bodyParser.urlencoded({
-  extended: false,
-}));
 router.use(bodyParser.json());
 
 
@@ -28,7 +25,7 @@ function sendMessage(recipientId, message) {
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {
       access_token: process.env.PAGE_ACCESS_TOKEN ||
-       'EAAGGZAMvZC92IBAPW90lR3AvfdtSvsfCYSU2GE1dLf7RH3sBMArWq0WbMXUbvV6rMLGOeaFwtasgF0EYvx5wDXnIvHh6tyxZBVHhCtUNDuZAMrJIm1HAYvGXptPlih6ZC1DWOPMdOpcIblmsiddk4osSeWQ1hzD8ZD',
+                'EAAGGZAMvZC92IBAPW90lR3AvfdtSvsfCYSU2GE1dLf7RH3sBMArWq0WbMXUbvV6rMLGOeaFwtasgF0EYvx5wDXnIvHh6tyxZBVHhCtUNDuZAMrJIm1HAYvGXptPlih6ZC1DWOPMdOpcIblmsiddk4osSeWQ1hzD8ZD',
     },
     method: 'POST',
     json: {
@@ -51,7 +48,7 @@ function sendTyping(recipientId) {
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {
       access_token: process.env.PAGE_ACCESS_TOKEN ||
-        'EAAGGZAMvZC92IBAPW90lR3AvfdtSvsfCYSU2GE1dLf7RH3sBMArWq0WbMXUbvV6rMLGOeaFwtasgF0EYvx5wDXnIvHh6tyxZBVHhCtUNDuZAMrJIm1HAYvGXptPlih6ZC1DWOPMdOpcIblmsiddk4osSeWQ1hzD8ZD',
+                'EAAGGZAMvZC92IBAPW90lR3AvfdtSvsfCYSU2GE1dLf7RH3sBMArWq0WbMXUbvV6rMLGOeaFwtasgF0EYvx5wDXnIvHh6tyxZBVHhCtUNDuZAMrJIm1HAYvGXptPlih6ZC1DWOPMdOpcIblmsiddk4osSeWQ1hzD8ZD',
     },
     method: 'POST',
     json: {
@@ -75,7 +72,7 @@ router.post('/webhook/', (req, res) => {
   const events = req.body.entry[0].messaging;
   const event = events[0];
   if (event.message && event.message.text) {
-    // console.log(event);
+        // console.log(event);
     const senderID = event.sender.id;
     sendTyping(senderID);
 
@@ -104,3 +101,5 @@ router.post('/webhook/', (req, res) => {
   }
   res.sendStatus(200);
 });
+
+module.exports = router;
