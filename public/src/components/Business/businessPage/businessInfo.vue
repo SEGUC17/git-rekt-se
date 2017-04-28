@@ -260,15 +260,4 @@
         background: linear-gradient(to right, #ef473a, #cb2d3e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         margin-bottom: 2em;
     }
-
-    pre {
-        background: transparent;
-        font: inherit;
-        white-space:pre-wrap;
-        word-wrap:break-word;
-    }
-
-    a.box:hover, a.box:focus{
-        box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px #eee;
-    }
 </style>

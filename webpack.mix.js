@@ -11,7 +11,6 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.combine(['./public/src/assets/css/normalize.css'], './public/dist/assets/css/normalize.css');
 mix.combine(['./public/src/assets/css/element-theme/index.css'], './public/dist/assets/css/element-theme/index.css');
 mix.combine(['./public/src/assets/css/buefy.css'], './public/dist/assets/css/buefy.css');
 mix.combine(['./public/src/assets/css/style.css'], './public/dist/assets/css/style.css');
@@ -24,20 +23,6 @@ mix
   .copy('./public/src/fonts', './public/dist/fonts', false)
   .copy('./public/src/index.html', './public/dist')
   .copy('./public/src/favicon.ico', './public/dist');
-
-
-mix.webpackConfig({
-  module: {
-    rules: [{
-      test: /\.html$/,
-      loader: 'html-loader',
-      options: {
-        minimize: true,
-        removeComments: true,
-      },
-    }],
-  },
-});
 
 // Full API
 // mix.js(src, output);
