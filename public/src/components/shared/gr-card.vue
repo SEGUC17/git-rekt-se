@@ -30,9 +30,3 @@
     },
   };
 </script>
-
-<style>
-    .card {
-        margin: 1em;
-    }
-</style>
