@@ -6,13 +6,14 @@
       <div class="hero-body">
         <div class="container">
           <div class="service-categories is-spaced">
-                        <span class="search-tag tag is-dark is-small" v-for="category in categories"
-                              :key="category._id">{{ category.title }}</span>
+            <span class="search-tag tag is-dark is-small" v-for="category in categories"
+                  :key="category._id">{{ category.title }}</span>
           </div>
           <div class="title is-2 white"> {{ name }} </div>
 
           <div class="subtitle white">
             <router-link class="white" :to="`/business/${businessId}`">{{ businessName }}
+
             </router-link>
           </div>
 
@@ -22,14 +23,13 @@
           </div>
 
           <router-link :to="`${$route.params.id}/book`"
-                       class="button white is-warning is-pulled-right"
-                       style="font-size: 1.2em">
+                       class="button white is-warning is-pulled-right" style="font-size: 1.2em">
             Book Now
+
           </router-link>
         </div>
       </div>
     </div>
-
 
     <!-- Service Description -->
     <div class="columns">
@@ -52,6 +52,11 @@
 
         <!-- Offering Tab -->
         <transition name="fade">
+          <div class="no-gallery" v-show="active === 1" v-if="offerings.length === 0">
+            <h3 class="title has-text-centered">
+              No Offerings found.
+            </h3>
+          </div>
           <div class="offerings" v-show="active === 1">
             <div class="box" v-for="offering in offerings">
               <div class="content offerings">
@@ -60,25 +65,44 @@
 
                   <h6>
                     <span><i class=" icon fa fa-location-arrow"></i></span>
-                    {{ getBranchAddress(offering.branch) }}
+                    <el-tooltip content="View Map" placement="bottom">
+                      <a href="#" class="dark-link" @click.prevent="showMap(offering)">
+                        {{ getBranchAddress(offering.branch) }}
+                          </a>
+                    </el-tooltip>
+                    <el-dialog
+                            :title=getBranchAddress(offering.branch)
+                            v-model="offering.showPopover">
+                      <gmap-map
+                              :center="offering.mapLocation"
+                              :zoom="30"
+                              size="large"
+                              class="max-dialog"
+                              map-type-id="terrain"
+                              style="width: 100%; height: 20em"
+                      >
+                        <gmap-marker :position="offering.mapLocation" :clickable="true"
+                                     :draggable="false"></gmap-marker>
+                      </gmap-map>
+                    </el-dialog>
                   </h6>
-
                   <h6>
                     <span><i class=" icon fa fa-calendar"></i></span> {{ offering.startDate | moment }}
-                  </h6>
+                            </h6>
 
                   <h6>
                     <span><i class=" icon fa fa-calendar"></i></span> {{ offering.endDate | moment }}
-                  </h6>
+                            </h6>
 
                   <h6>
                     <span><i class=" icon fa fa-money"></i></span> {{ offering.price }} EGP
-                  </h6>
+                            </h6>
 
                 </div>
               </div>
             </div>
           </div>
+
         </transition>
 
         <!-- Gallery Tab -->
@@ -96,7 +120,6 @@
             </el-carousel>
           </div>
         </transition>
-
 
         <!-- Reviews Tab -->
 
@@ -190,9 +213,10 @@
     <el-dialog title="Confirm Report" v-model="reportReview" size="tiny">
       <span>Are you sure you want to report this review ?</span>
       <span slot="footer" class="dialog-footer">
-        <button class="button is-default" @click.prevent="reportReview = false">Cancel</button>
-        <button class="button is-danger" @click.prevent="sendReport">Confirm</button>
-      </span>
+                  <button class="button is-default"
+                          @click.prevent="reportReview = false">Cancel</button>
+                  <button class="button is-danger" @click.prevent="sendReport">Confirm</button>
+                </span>
     </el-dialog>
 
   </div>
@@ -200,9 +224,9 @@
 
 
 <script>
- /**
-  * This component is responsible for viewing the service's info.
-  */
+  /**
+   * This component is responsible for viewing the service's info.
+   */
   import axios from 'axios';
   import { Service, Client } from '../../services/EndPoints';
   import ClientAuth from '../../services/auth/clientAuth';
@@ -296,7 +320,7 @@
      */
     methods: {
       /**
-      * Takes the services offering anf gets the corresponding branch.
+       * Takes the services offering anf gets the corresponding branch.
        * @param {Offering} offering
        * @returns {string}
        */
@@ -307,6 +331,22 @@
         }
         return 'No Address.';
       },
+      /*
+       * Gets the geolocation of a certain address.
+       */
+      showMap(offering) {
+        offering.showPopover = true;
+        axios
+            .get(`http://maps.googleapis.com/maps/api/geocode/json?address=${offering.address}&sensor=false`)
+            .then((response) => {
+              const loc = response.data.results[0].geometry.location;
+              offering.mapLocation = {
+                lat: loc.lat,
+                lng: loc.lng,
+              };
+            });
+      },
+
       /**
        * Gets a related service.
        * @param {mongoose.ObjectId} serviceId
@@ -339,7 +379,11 @@
           });
           this.gallery = service.gallery;
           this.categories = service.categories;
-          this.offerings = service.offerings;
+          this.offerings = service.offerings.map((offering) => {
+            offering.showPopover = false;
+            offering.mapLocation = {};
+            return offering;
+          });
           this.rating = service.rating;
           this.getRelatedServices(loader);
         }).catch(() => {
@@ -510,8 +554,8 @@
   }
 
   /*
-                 Transition.
-                */
+    Transition.
+  */
 
   .fade-enter-active,
   .fade-leave-active {
@@ -532,5 +576,9 @@
 
   .el-carousel {
     background: #eee;
+  }
+
+  .el-dialog--small {
+    width: 80% !important;
   }
 </style>

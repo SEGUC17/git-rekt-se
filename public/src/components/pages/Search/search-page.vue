@@ -44,7 +44,7 @@
                     </el-form-item>
 
                     <el-form-item label="Sort By">
-                        <el-select v-model="newQuery.sort" clearable placeholder="Select">
+                        <el-select v-model="newQuery.sort" placeholder="Select">
                             <el-option v-for="item in sortOptions" :key="item.value" :label="item.label"
                                        :value="item.value">
                             </el-option>
