@@ -3,14 +3,29 @@ const axios = require('axios');
 const botErrors = require('../shared/Strings')
   .botErrors;
 
+/**
+ * Facebook EndPoint for sending messages.
+ */
 const facebookAPI = `https://graph.facebook.com/v2.6/me/messages?access_token=${process.env.PAGE_ACCESS_TOKEN}`;
 
+/**
+ * Base URL.
+ */
 const BASE = 'http://localhost:3000';
 
+/**
+ * Search API EndPoint.
+ */
 const searchAPI = `${BASE}/api/v1/visitor/search`;
 
+/**
+ * Search Page URL.
+ */
 const searchPage = `${BASE}/search`;
 
+/**
+ * Service Page Base URL.
+ */
 const servicePageBase = `${BASE}/service`;
 
 /**
