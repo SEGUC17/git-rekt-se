@@ -66,7 +66,7 @@ router.get('/:id', (req, res, next) => {
         coverImage: service.coverImage,
         description: service.description,
         branches: service.branches,
-        offerings: service.offerings,
+        offerings: service.offerings.filter(offering => !offering._deleted),
         reviews: service.reviews,
         rating: service._avgRating,
         gallery: service.gallery,

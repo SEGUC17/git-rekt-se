@@ -36,7 +36,12 @@
                     </el-form-item>
 
                     <el-form-item label="Password" prop="password">
-                        <el-input v-model="form.password" placeholder="Password" type="password"></el-input>
+                        <el-input v-model="form.password" placeholder="Password" :type="showPassword? 'text':'password'">
+                          <div slot="append">
+                                  <el-button @click="showPassword = !showPassword"><i class="fa fa-eye"></i>
+                                  </el-button>
+                          </div>
+                        </el-input>
                     </el-form-item>
 
                     <span class="help forgot-help">
@@ -82,6 +87,7 @@
         logged_in: false,
         loginSuccess: '',
         errors: [],
+        showPassword: false,
       };
     },
     /**

@@ -18,11 +18,21 @@
   
         <el-form :model="form" :rules="rules" ref="form" label-position="top">
           <el-form-item label="Password" prop="password">
-            <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
+            <el-input :type="showPassword? 'text':'password'" v-model="form.password" auto-complete="off">
+              <div slot="append">
+                <el-button @click="showPassword = !showPassword"><i class="fa fa-eye"></i>
+                </el-button>
+              </div>
+            </el-input>
           </el-form-item>
   
           <el-form-item label="Confirm Password" prop="confirmPassword">
-            <el-input type="password" v-model="form.confirmPassword" auto-complete="off"></el-input>
+            <el-input :type="showConfirm? 'text':'password'" v-model="form.confirmPassword" auto-complete="off">
+              <div slot="append">
+               <el-button @click="showConfirm = !showConfirm"><i class="fa fa-eye"></i>
+               </el-button>
+              </div>
+            </el-input>
           </el-form-item>
   
           <el-form-item>
@@ -76,6 +86,8 @@
         alert_show: false,
         error_show: false,
         btn_disable: true,
+        showPassword: false,
+        showConfirm: false,
       };
     },
     /**
