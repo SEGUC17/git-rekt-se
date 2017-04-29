@@ -71,8 +71,13 @@ router.post('/signup', (req, res, next) => {
 
   req.getValidationResult()
     .then((result) => {
-      if (result.isEmpty()) {
-        new Client(userInfo)
+      const date = new Date(Date.now());
+      date.setFullYear(date.getFullYear() - 13);
+      if (req.body.birthdate) {
+        if (new Date(req.body.birthdate) > date) {
+          next("You must be 13 years or older to register to our system'");
+        } else if (result.isEmpty()) {
+          new Client(userInfo)
           .save()
           .then(() => {
             ClientAuthenticator.generateConfirmationToken(req.body.email)
@@ -88,8 +93,9 @@ router.post('/signup', (req, res, next) => {
               .catch(e => next(e));
           })
           .catch(() => next([Strings.clientValidationErrors.userExists]));
-      } else {
-        next(result.array());
+        } else {
+          next(result.array());
+        }
       }
     });
 });
