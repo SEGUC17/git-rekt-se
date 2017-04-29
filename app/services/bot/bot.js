@@ -81,35 +81,31 @@ function Search(senderID, query) {
     .then((res) => {
       let services = res.data.results;
       if (services && services.length > 0) {
-        services = services.slice(0, 4);
-        const elements = services.map((service) => {
-          return {
-            title: service.name,
-            subtitle: service.shortDescription,
-            image_url: service.coverImage || '',
-            default_action: {
-              type: 'web_url',
-              url: `${servicePageBase}/${service._id}`,
-            },
-            buttons: [{
-              type: 'web_url',
-              url: `${servicePageBase}/${service._id}`,
-              title: 'View Service',
-            }],
-          };
-        });
+        services = services.slice(0, 10);
+        const elements = services.map(service => ({
+          title: service.name,
+          subtitle: service.shortDescription,
+          image_url: `${BASE}/${service.coverImage ? 'uploads/'`${service.coverImage}` : 'assets/imgs/service.svg'}`,
+          default_action: {
+            type: 'web_url',
+            url: `${servicePageBase}/${service._id}`,
+          },
+          buttons: [{
+            type: 'web_url',
+            url: `${servicePageBase}/${service._id}`,
+            title: 'View Service',
+          }, {
+            type: 'web_url',
+            url: `${searchPage}?${querystring.stringify(query)}`,
+            title: 'View All',
+          }],
+        }));
         const message = {
           attachment: {
             type: 'template',
             payload: {
-              template_type: 'list',
-              top_element_style: 'compact',
+              template_type: 'generic',
               elements,
-              buttons: [{
-                type: 'web_url',
-                url: `${searchPage}`,
-                title: 'View More',
-              }],
             },
           },
         };

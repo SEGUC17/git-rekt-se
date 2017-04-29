@@ -2,7 +2,7 @@
  * Constant Strings.
  */
 const locations = require('../../seed/service/locations')
-    .join(', ');
+  .join(', ');
 
 /**
  *  General Strings.
@@ -13,7 +13,7 @@ const generalErrors = {
 };
 
 const botErrors = {
-  generalError: 'An Error Occured! Please try again!',
+  generalError: 'I could not understand that! Please try again!',
 };
 
 /**
