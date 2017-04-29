@@ -170,7 +170,7 @@
             this.form.lastName = this.client.lastName;
             this.form.gender = this.client.gender;
             this.form.mobile = this.client.mobile;
-            this.form.birthdate = this.client.birthdate;
+            this.form.birthdate = new Date(this.client.birthdate);
           })
           .catch((err) => {
             loader.close();
