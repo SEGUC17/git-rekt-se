@@ -101,6 +101,7 @@ Vue.use(CarouselItem)
 Vue.use(Loading.directive)
 
 locale.use(lang);
+Vue.use(require('vue-chartist'));
 
 Vue.prototype.$loading = Loading.service
 

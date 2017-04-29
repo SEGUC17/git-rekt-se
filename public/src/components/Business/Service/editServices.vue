@@ -55,6 +55,14 @@
                   <i class="fa fa-picture-o"></i>
               </span>&nbsp;Gallery
           </button>
+
+          <button class="button is-default level-item"
+                  @click="showCharts(service)">
+              <span class="icon is-small">
+                  <i class="fa fa-bar-chart"></i>
+              </span>&nbsp;Charts
+          </button>
+
         </nav>
       </div>
     </div>
@@ -389,6 +397,13 @@
       showGallery(service) {
         this.$router.push(this.galleryURL(service));
       },
+
+      /*
+      * Get Charts page.
+      */
+      showCharts(service) {
+        this.$router.push(this.chartsURL(service));
+      },
       /**
        * Show Service deletion confirmation.
        */
@@ -407,6 +422,12 @@
        */
       galleryURL(service) {
         return `/business/manage/services/${service._id}/gallery`;
+      },
+      /**
+       * Return the url to the view business charts page.
+       */
+      chartsURL(service) {
+        return `/business/manage/services/${service._id}/charts`;
       },
       /**
        * Return the url to the edit business coupons page.
