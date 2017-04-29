@@ -79,13 +79,10 @@
                   <h4> {{ branch.location }} </h4>
                   <h6>
                     <span><i class=" icon fa fa-location-arrow"></i></span>
-                    <a href="#" class="dark-link" @click.prevent="showMap(branch)">
-                      {{ branch.address }}
-                                        </a>
                     <el-tooltip content="View Map" placement="bottom">
                       <a href="#" class="dark-link" @click.prevent="showMap(branch)">
                         {{ branch.address }}
-                                </a>
+                      </a>
                     </el-tooltip>
                     <el-dialog
                             :title=branch.address

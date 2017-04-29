@@ -52,6 +52,11 @@
 
         <!-- Offering Tab -->
         <transition name="fade">
+          <div class="no-gallery" v-show="active === 1" v-if="offerings.length === 0">
+            <h3 class="title has-text-centered">
+              No Offerings found.
+            </h3>
+          </div>
           <div class="offerings" v-show="active === 1">
             <div class="box" v-for="offering in offerings">
               <div class="content offerings">
