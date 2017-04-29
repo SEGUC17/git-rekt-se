@@ -22,6 +22,7 @@ const VisitorSearchAPI = require('./api/v1/visitor/search');
 const ViewBussinessAPI = require('./api/v1/business/index');
 const BusinessCategoriesAPI = require('./api/v1/business/categories');
 const fbBotAPI = require('./api/Bot/index');
+const topRated = require('./api/v1/visitor/topRated');
 
 /**
  * Configures the apps middlewares.
@@ -42,6 +43,7 @@ module.exports = (app) => {
   app.use('/api/v1/business/category', RelatedBusinessAPI);
   app.use('/api/v1/business', ViewBussinessAPI);
   app.use('/api/v1/categories', BusinessCategoriesAPI);
+  app.use('/api/v1/toprated', topRated);
 
   /**
    * Client API Routes.

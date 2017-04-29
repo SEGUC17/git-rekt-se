@@ -274,7 +274,7 @@
 
     @media screen and (max-width: 999px) {
         .extra-large {
-            font-size: 2.5em;
+            font-size: 3em;
         }
     }
 </style>
