@@ -125,7 +125,7 @@ Vue.component('gr-top-hero', TopHero);
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyBzlLYISGjL_ovJwAehh6ydhB56fCCpPQw',
+    key: 'AIzaSyDnSl5zZ57IpmDikKr9gLZHvzX5406ANM4',
     v: '3.26',
   },
   installComponents: true,
