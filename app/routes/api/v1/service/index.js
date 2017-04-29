@@ -1,12 +1,10 @@
 const express = require('express');
+const passport = require('passport');
+
 const Service = require('../../../../models/service/Service');
+const Statistics = require('../../../../models/service/Statistics');
 const Strings = require('../../../../services/shared/Strings');
-const Branch = require('../../../../models/service/Branch');
-const Services = require('../../../../models/service/Service');
-const Business = require('../../../../models/business/Business');
-const Review = require('../../../../models/service/Review');
-const Category = require('../../../../models/service/Category');
-const Offering = require('../../../../models/service/Offering');
+
 const errorHandler = require('../../../../services/shared/errorHandler');
 
 
@@ -60,6 +58,27 @@ router.get('/:id', (req, res, next) => {
         next(Strings.serviceFailure.serviceNotFound);
         return;
       }
+      /**
+       * Statistics tracking
+       */
+      passport.authenticate('jwt_client', (err, user) => {
+        if (!err && user) {
+          Statistics.findOne({
+            _service: req.params.id,
+          })
+          .exec()
+          .then((stats) => {
+            if (stats) {
+              stats.viewingClients.addToSet(user.id);
+              stats.save()
+              .then()
+              .catch();
+            }
+          })
+          .catch();
+        }
+      });
+
       const returnedService = {
         name: service.name,
         shortDescription: service.shortDescription,
