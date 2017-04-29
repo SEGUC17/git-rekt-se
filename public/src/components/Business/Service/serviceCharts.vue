@@ -50,7 +50,7 @@
       <div class="column is-half" v-if="active === 2">
         <div class="box">
           <chartist ratio="ct-major-second" type="Pie" :data="visitorsCharts.pie.data" :options="visitorsCharts.pie.options"></chartist>
-          <h4 class="has-text-centered">Percentage of bookings</h4>
+          <h4 class="has-text-centered">Percentage of visitors</h4>
         </div>
       </div>
   
@@ -125,7 +125,7 @@ export default {
         fullscreen: true,
       });
       axios
-        .get(Business().statistics(BusinessAuth.user.userID()), {
+        .get(Business().statistics(this.$route.params.id), {
           headers: {
             Authorization: BusinessAuth.getJWTtoken(),
           },
