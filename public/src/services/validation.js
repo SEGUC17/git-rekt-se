@@ -392,30 +392,30 @@ export const clientEditInfoValidation = {
   email: [{
     message: 'Please Enter a valid email.',
     required: true,
-    trigger: 'blur',
+    trigger: 'change',
   }, {
     type: 'email',
     message: 'Must be an email.',
-    trigger: 'blur',
+    trigger: 'change',
   }],
   firstName: [{
     message: 'First name is required.',
-    trigger: 'blur',
+    trigger: 'change',
     required: true,
   }],
   lastName: [{
     message: 'Last name is required.',
-    trigger: 'blur',
+    trigger: 'change',
     required: true,
   }],
   mobile: [{
     message: 'Mobile number is required.',
-    trigger: 'blur',
+    trigger: 'change',
     required: true,
   }, {
     pattern: /^01[0-2]{1}[0-9]{8}$/,
     message: 'Please enter a valid Egyptian mobile number.',
-    trigger: 'blur',
+    trigger: 'change',
   }],
   gender: [{
     message: 'Gender is required.',
