@@ -64,7 +64,9 @@
   */
   import axios from 'axios';
   import BusinessAuth from '../../../services/auth/businessAuth';
-  import { Business } from '../../../services/EndPoints';
+  import {
+    Business,
+    Visitor } from '../../../services/EndPoints';
   import { serviceRules } from '../../../services/validation';
   import JWTCheck from '../../../services/JWTErrors';
 
@@ -109,11 +111,7 @@
         const loader = this.$loading({
           fullscreen: true,
         });
-        axios.get(Business().listCategories, {
-          headers: {
-            Authorization: BusinessAuth.getJWTtoken(),
-          },
-        })
+        axios.get(Visitor().serviceCategories)
             .then((response) => {
               this.categories = response.data.categories;
               loader.close();

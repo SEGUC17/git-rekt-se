@@ -64,32 +64,8 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Category CRUD routes
- */
-
-/**
  * Business Create A Service API Route.
- * List all service categories
  */
-
-router.get('/category/list', businessAuthMiddleware, (req, res, next) => {
-  Category.find({
-    type: 'Service',
-    _deleted: false,
-  })
-    .exec()
-    .then((categories) => {
-      const categoryDropDown = categories.map(category => ({
-        label: category.title,
-        value: category._id,
-      }));
-      res.json({
-        categories: categoryDropDown,
-      });
-    })
-    .catch(e => next(e));
-});
-
 
 /**
  * List all services belonging to a business

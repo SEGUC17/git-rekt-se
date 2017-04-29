@@ -23,6 +23,7 @@ export const Visitor = () => ({
   locations: `${BASE}/visitor/search/locations`,
   viewBusiness: businessID => `${BASE}/business/${businessID}`,
   businessCategories: `${BASE}/categories/business`,
+  serviceCategories: `${BASE}/categories/service`,
 });
 
 /**
@@ -75,7 +76,6 @@ export const Business = () => {
     deleteBranch: (businessID, branchID) => `${businessBase}/${businessID}/delete/branch/${branchID}`,
 
     listServices: `${serviceBase}/list`,
-    listCategories: `${serviceBase}/category/list`,
     listOfferings: serviceID => `${serviceBase}/${serviceID}/offering/list`,
     listBranches: `${serviceBase}/branch/list`,
     createService: `${serviceBase}/create`,
