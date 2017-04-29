@@ -111,8 +111,6 @@ router.post('/', jwtConfig.clientAuthMiddleware, (req, res, next) => {
                         .catch(next);
                     })
                     .catch(next);
-
-                  res.json(trans);
                 });
               })
               .catch(e => next(e));
