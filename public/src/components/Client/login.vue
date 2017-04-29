@@ -1,5 +1,5 @@
 <template>
-  <div class="client-login">
+  <div class="client-login" @submit.prevent="submitForm('form')">
     <section class="client-signin-top hero is-bold">
       <div class="hero-body">
         <div class="container">
@@ -41,14 +41,19 @@
         </div>
 
         <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top"
-                 class="login-form">
+                 class="login-form" >
           <el-form-item label="Email" prop="email">
             <el-input v-model="form.email" placeholder="Email" icon="message"></el-input>
           </el-form-item>
 
           <el-form-item label="Password" prop="password">
-            <el-input v-model="form.password" placeholder="Password" type="password"
-                      icon="edit"></el-input>
+            <el-input v-model="form.password" placeholder="Password" :type="showPassword? 'text':'password'"
+                      icon="edit">
+            <div slot="append">
+                    <el-button @click="showPassword = !showPassword"><i class="fa fa-eye"></i>
+                    </el-button>
+            </div>          
+            </el-input>
           </el-form-item>
           <span class="help forgot-help">
                             <router-link to="/client/forgot"
@@ -99,6 +104,7 @@
         loginSuccess: '',
         message: '',
         errors: [],
+        showPassword: false,
       };
     },
     /**

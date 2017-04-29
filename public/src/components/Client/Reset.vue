@@ -36,23 +36,19 @@
 
                         <el-form-item label="Password" prop="password">
                             <el-input type="password" v-model="form.password"
-                                      :type="showPassword" auto-complete="off">
-                                <div slot="append">
-                                    <el-button @mousedown.native="showPassword = 'text'"
-                                               @mouseup.native="showPassword = 'password'"><i
-                                            class="fa fa-eye"></i>
-                                    </el-button>
-                                </div>
+                                      :type="showPassword? 'text':'password'" auto-complete="off">
+                            <div slot="append">
+                                <el-button @click="showPassword = !showPassword"><i class="fa fa-eye"></i>
+                                </el-button>
+                            </div>
                             </el-input>
                         </el-form-item>
 
                         <el-form-item label="Confirm Password" prop="confirmPassword">
                             <el-input type="password" v-model="form.confirmPassword"
-                                      auto-complete="off" :type="showConfirm">
+                                      auto-complete="off" :type="showConfirm? 'text':'password'">
                                 <div slot="append">
-                                    <el-button @mousedown.native="showConfirm = 'text'"
-                                               @mouseup.native="showConfirm = 'password'"><i
-                                            class="fa fa-eye"></i>
+                                    <el-button @click="showConfirm = !showConfirm"><i class="fa fa-eye"></i>
                                     </el-button>
                                 </div>
                             </el-input>
@@ -103,8 +99,8 @@
           fail: false,
           message: '',
         }),
-        showPassword: 'password',
-        showConfirm: 'password',
+        showPassword: false,
+        showConfirm: false,
         loading: false,
         rules: clientForgotPassword,
       };
