@@ -85,7 +85,7 @@ function Search(senderID, query) {
         const elements = services.map(service => ({
           title: service.name,
           subtitle: service.shortDescription,
-          image_url: `${BASE}/${service.coverImage ? 'uploads/'`${service.coverImage}` : 'assets/imgs/service.svg'}`,
+          image_url: `${BASE}/${service.coverImage ? `uploads/${service.coverImage}` : 'assets/imgs/service.svg'}`,
           default_action: {
             type: 'web_url',
             url: `${servicePageBase}/${service._id}`,
@@ -113,10 +113,16 @@ function Search(senderID, query) {
       }
     })
     .catch((err) => {
-      console.log(err);
-      sendMessage(senderID, {
-        text: botErrors.generalError,
-      });
+      console.log(err.response);
+      if (!err.response || !err.response.data) {
+        sendMessage(senderID, {
+          text: botErrors.generalError,
+        });
+      } else {
+        sendMessage(senderID, {
+          text: err.response.data.errors[0],
+        });
+      }
     });
 }
 
