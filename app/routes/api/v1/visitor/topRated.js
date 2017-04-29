@@ -22,9 +22,9 @@ router.get('/', (req, res, next) => {
       path: '_business',
       select: 'name',
     })
-    .select('name shortDescription _business coverImage')
+    .select('name shortDescription _business coverImage _avgRating')
     .sort('-_avgRating')
-    .limit(5)
+    .limit(6)
     .exec()
     .then((services) => {
       res.json({
