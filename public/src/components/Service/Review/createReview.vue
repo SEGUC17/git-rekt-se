@@ -5,7 +5,7 @@
         </el-alert>
         <h3 class="title is-4"> Leave a review... </h3>
         <hr>
-        <el-form ref="postReview" :model="review" :rules="rules" label-position="top">
+        <el-form ref="postReview" :model="review" :rules="rules" label-position="top" @keyup.enter.native="createReview">
             <el-form-item label="Rating" prop="rating" required>
                 <el-rate v-model.number="review.rating"></el-rate>
             </el-form-item>
