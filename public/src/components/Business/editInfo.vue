@@ -16,7 +16,7 @@
       </div>
     </div>
   
-    <el-form class="edit-info-form" ref="form" :model="form" :rules="rules" label-position="top">
+    <el-form class="edit-info-form" ref="form" :model="form" :rules="rules" label-position="top" @keyup.enter.native="onSubmit">
       <el-form-item label="Name" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
