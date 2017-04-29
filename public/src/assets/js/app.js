@@ -15,6 +15,7 @@ import clientRemoveBtn from '../../components/Admin/remove-client-btn.vue';
 import businessRemoveBtn from '../../components/Admin/remove-business-btn.vue';
 import CategoryActions from '../../components/Admin/category-actions.vue';
 import TransactionsAction from '../../components/Business/manage/business-trans-actions.vue';
+import * as VueGoogleMaps from 'vue2-google-maps';
 
 import '../css/style.css';
 
@@ -121,6 +122,14 @@ Vue.component('gr-top-hero', TopHero);
 Vue.component('bus-trans-actions', TransactionsAction);
 Vue.component('coupon-delete-btn', couponDeleteBtn);
 Vue.component('gr-top-hero', TopHero);
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyBzlLYISGjL_ovJwAehh6ydhB56fCCpPQw',
+    v: '3.26',
+  },
+  installComponents: true,
+});
 
 /**
  * Register Vue Filters.
