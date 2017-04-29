@@ -606,6 +606,14 @@ const relatedBusinessValidation = {
   },
 };
 
+const relatedServiceValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: visitorValidationErrors.InvalidID,
+    },
+  },
+};
+
 /**
  * Review Validation.
  */
@@ -897,6 +905,7 @@ const validation = {
   couponDeleteValidation,
   couponGetValidation,
   relatedBusinessValidation,
+  relatedServiceValidation,
 };
 
 module.exports = validation;

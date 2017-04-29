@@ -6,6 +6,7 @@ const Service = require('../../../../models/service/Service');
 const Strings = require('../../../../services/shared/Strings');
 const validationSchemas = require('../../../../services/shared/validation');
 const errorHandler = require('../../../../services/shared/errorHandler');
+const relatedServiceUtils = require('../../../../services/business/relatedServiceUtils');
 
 const router = express.Router();
 
@@ -20,45 +21,30 @@ router.use(expressValidator({}));
  * Related Services API Route.
  */
 
-router.get('/:id/:offset', (req, res, next) => {
-  req.checkParams(validationSchemas.visitorValidation);
+router.get('/related/:id', (req, res, next) => {
+  req.checkParams(validationSchemas.relatedServiceValidation);
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        const offset = req.params.offset;
-        Service.count({
-          categories: {
-            $in: [req.params.id],
-          },
-          _deleted: false,
+        Service.findOne({
+          _id: req.params.id,
         })
-          .then((cnt) => {
-            Service.find({
-              categories: {
-                $in: [req.params.id],
-              },
-              _deleted: false,
-            }, {
-              name: true,
-              shortDescription: true,
-              coverImage: true,
-              _business: true,
-            }, {
-              skip: (offset - 1) * 10,
-              limit: 10,
-            })
-              .populate({
-                path: '_business',
-                select: 'name -_id',
-              })
-              .exec()
+          .then((resultService) => {
+            relatedServiceUtils.getRelatedServices(resultService.categories, req.params.id)
               .then((services) => {
-                if (services.length === 0) {
-                  return next([Strings.visitorErrors.NoRelatedServices]);
-                }
-                return res.json({
-                  count: cnt,
-                  results: services,
+                const serviceModified = [];
+                services.forEach((service) => {
+                  service.forEach((serviceObj) => {
+                    serviceModified.push(serviceObj);
+                  });
+                });
+                const list = serviceModified.filter((service1, idx1) => {
+                  const idx2 = serviceModified.findIndex(
+                    service2 => service1._id === service2._id);
+                  return idx1 === idx2;
+                });
+                res.json({
+                  results: list,
                 });
               })
               .catch(e => next(e));
@@ -70,6 +56,7 @@ router.get('/:id/:offset', (req, res, next) => {
     })
     .catch(e => next(e));
 });
+
 
 /**
  * Error handling Middlewares
