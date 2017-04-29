@@ -13,8 +13,9 @@ const router = express.Router();
 router.use(bodyParser.json());
 
 /**
- * Top rated services API route
+ * Top rated services API route.
  */
+
 router.get('/', (req, res, next) => {
   Service.find()
     .populate({
@@ -24,19 +25,17 @@ router.get('/', (req, res, next) => {
     .select('name shortDescription _business coverImage')
     .sort('-_avgRating')
     .limit(5)
-    .exec((err, services) => {
-      if (err) {
-        next(err);
-      } else {
-        res.json({
-          results: services,
-        });
-      }
-    });
+    .exec()
+    .then((services) => {
+      res.json({
+        results: services,
+      });
+    })
+    .catch(next);
 });
 
 /**
- * Error handling Middlewares
+ * Error handling Middlewares.
  */
 
 router.use(errorHandler);
