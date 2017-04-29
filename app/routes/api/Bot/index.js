@@ -4,7 +4,7 @@ const request = require('request');
 const apiai = require('apiai');
 
 const router = express.Router();
-const api = apiai('d7ccf4b57f004e59967247dd5e1aee45');
+const api = apiai('26a7a9d2e20a4818a62095cff99e762b');
 
 
 router.use(bodyParser.json());
@@ -66,6 +66,22 @@ function sendTyping(recipientId) {
   });
 }
 
+function Search(query) {
+  request({
+    url: 'http://localhost:3000/api/v1/visitor/search/',
+    qs: query,
+    method: 'GET',
+  }, (error, response, body) => {
+    if (response) {
+      console.log(response);
+      console.log('-------');
+      console.log(body);
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error);
+    }
+  });
+}
+
 
 // handler receiving messages
 router.post('/webhook/', (req, res) => {
@@ -84,12 +100,24 @@ router.post('/webhook/', (req, res) => {
       console.log(response);
       switch (response.result.action) {
         case 'Search':
-          sendMessage(senderID, 'I will search later');
-          break;
+          {
+            const query = {
+              name: response.result.parameters.name,
+              location: response.result.parameters.location,
+              category: response.result.parameters.category,
+              min: response.result.parameters.minPrice,
+              max: response.result.parameters.maxPrice,
+            };
+            Search(query);
+            sendMessage(senderID, { text: 'I will search later' });
+            break;
+          }
         default:
-          text = response.result.fulfillment.speech;
-          sendMessage(senderID, text);
-          break;
+          {
+            text = response.result.fulfillment.speech;
+            sendMessage(senderID, { text });
+            break;
+          }
       }
     });
 
