@@ -22,6 +22,7 @@ export const Visitor = () => ({
   locations: `${BASE}/visitor/search/locations`,
   viewBusiness: businessID => `${BASE}/business/${businessID}`,
   businessCategories: `${BASE}/categories/business`,
+  relatedBusinessCategories: businessID => `${BASE}/business/category/related/${businessID}`,
 });
 
 /**
