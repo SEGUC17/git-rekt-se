@@ -10,8 +10,9 @@
             </div>
         </section>
 
-        <div class="reset-password-form columns">
-            <div class="column is-8 is-offset-2">
+        <div class="reset-password-form columns is-mobile">
+            <div class="column is-half-desktop is-10-mobile is-10-tablet
+                                 is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop">
                 <div class="error-alerts">
                     <el-alert :title="message" v-show="form.success" type="success" show-icon></el-alert>
                     <el-alert :title="error" v-show="form.fail" type="success" show-icon></el-alert>
