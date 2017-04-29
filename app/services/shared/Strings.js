@@ -12,6 +12,10 @@ const generalErrors = {
   generalError: 'An error occurred trying to handle this request.',
 };
 
+const botErrors = {
+  generalError: 'An Error Occured! Please try again!',
+};
+
 /**
  * Business Validation Errors Strings.
  */
@@ -391,6 +395,9 @@ const clientFaliure = {
 
 module.exports = {
   generalErrors,
+
+  botErrors,
+
   clientValidationErrors,
   clientSuccess,
   clientLoginMessages,
