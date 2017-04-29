@@ -42,7 +42,6 @@ router.post('/webhook', (req, res) => {
 
     let text;
     apiRequest.on('response', (response) => {
-      console.log(response);
       switch (response.result.action) {
         case 'Search':
           {
@@ -50,8 +49,8 @@ router.post('/webhook', (req, res) => {
               name: response.result.parameters.name,
               location: response.result.parameters.location,
               category: response.result.parameters.category,
-              min: response.result.parameters.minPrice,
-              max: response.result.parameters.maxPrice,
+              min: response.result.parameters.minPrice.number,
+              max: response.result.parameters.maxPrice.number,
             };
             bot.Search(senderID, query);
             break;
