@@ -54,11 +54,13 @@
                 <div class="offering">
                   <h4> {{ offering.location }} </h4>
   
-                  <h6>
+                    <h6>
                         <span><i class=" icon fa fa-location-arrow"></i></span>
-                        <a href="#" class="dark-link" @click.prevent="showMap(offering)">
-                          {{ getBranchAddress(offering.branch) }}
-                        </a>
+                        <el-tooltip content="View Map" placement="bottom">
+                          <a href="#" class="dark-link" @click.prevent="showMap(offering)">
+                            {{ getBranchAddress(offering.branch) }}
+                          </a>
+                        </el-tooltip>
                         <el-dialog
                         :title=getBranchAddress(offering.branch)
                         v-model="offering.showPopover">
