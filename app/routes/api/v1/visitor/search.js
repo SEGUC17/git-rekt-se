@@ -62,12 +62,10 @@ router.get('/', (req, res, next) => {
    * Sorting Options (1: A-Z, 2:Desc. Rating)
    */
   let sort = '';
-  if (inputQuery.sort) {
-    if (inputQuery.sort === '1') {
-      sort = 'name';
-    } else if (inputQuery.sort === '2') {
-      sort = '-_avgRating';
-    }
+  if (inputQuery.sort === '2') {
+    sort = '-_avgRating';
+  } else {
+    sort = 'name';
   }
 
   // Executing
