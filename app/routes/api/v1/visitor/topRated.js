@@ -17,7 +17,9 @@ router.use(bodyParser.json());
  */
 
 router.get('/', (req, res, next) => {
-  Service.find()
+  Service.find({
+    _deleted: false,
+  })
     .populate({
       path: '_business',
       select: 'name',
