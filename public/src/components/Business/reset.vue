@@ -100,11 +100,16 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            this.loading = true;
             this.form.post(Business().reset)
               .then((data) => {
                 this.message = data.message;
                 this.alert_show = true;
                 this.error_show = false;
+                this.loading = false;
+                setTimeout(() => {
+                    this.$router.push('/business/login');
+                }, 2000);
               })
               .catch((e) => {
                 if (e.response && JWTCheck(e.response.data.errors)) {
