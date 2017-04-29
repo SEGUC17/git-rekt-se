@@ -1,14 +1,12 @@
 <template>
-    <div class="card">
+    <div class="card is-paddingless">
         <div class="card-image" v-if="image">
-            <figure class="image is-4by3">
+            <figure class="image is-square">
                 <img :src="image" alt="Image">
             </figure>
         </div>
         <div class="card-content">
-            <div class="content">
                 <slot name="content"></slot>
-            </div>
         </div>
     </div>
 </template>
@@ -30,3 +28,15 @@
     },
   };
 </script>
+
+<style>
+.card {
+    height: 100%;
+    margin: 0.5em;
+}
+
+.card-image:hover {
+    opacity: 0.8;
+}
+
+</style>
