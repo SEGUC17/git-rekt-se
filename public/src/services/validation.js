@@ -155,9 +155,11 @@ export const clientSignUpValidation = {
     trigger: 'change',
   }, {
     validator(rule, value, callBack) {
+      const date = new Date(Date.now());
+      date.setFullYear(date.getFullYear() - 13);
       if (this.form.birthdate) {
-        if (new Date(this.form.birthdate) >= Date.now()) {
-          callBack([new Error('Please enter a valid birthdate')]);
+        if (new Date(this.form.birthdate) > date) {
+          callBack([new Error('You must be 13 years or older to register to our system')]);
         } else {
           callBack();
         }
@@ -431,9 +433,11 @@ export const clientEditInfoValidation = {
     trigger: 'change',
   }, {
     validator(rule, value, callBack) {
+      const date = new Date(Date.now());
+      date.setFullYear(date.getFullYear() - 13);
       if (this.form.birthdate) {
-        if (new Date(this.form.birthdate) >= Date.now()) {
-          callBack([new Error('Please enter a valid birthdate')]);
+        if (new Date(this.form.birthdate) > date) {
+          callBack([new Error('You must be 13 years or older to stay in our system')]);
         } else {
           callBack();
         }
