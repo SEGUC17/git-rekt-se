@@ -42,6 +42,7 @@ router.post('/webhook', (req, res) => {
 
     let text;
     apiRequest.on('response', (response) => {
+      console.log(response.result);
       switch (response.result.action) {
         case 'Search':
           {
