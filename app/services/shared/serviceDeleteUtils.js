@@ -1,6 +1,7 @@
 const Coupon = require('../../models/service/Coupon');
 const Booking = require('../../models/service/Booking');
 const Review = require('../../models/service/Review');
+const Statistics = require('../../models/service/Statistics');
 
 /**
  * Utility function for deleting service reviews
@@ -12,12 +13,14 @@ const deleteReviews = (reviewsIDs) => {
   const resultReviews = reviewsIDs.map(reviewID => new Promise((resolve, reject) => {
     Review.findOne({
       _id: reviewID,
-    }).then((review) => {
-      review._deleted = true;
-      review.save()
-        .then(resultReview => resolve(resultReview._id))
-        .catch(reject);
-    }).catch(reject);
+    })
+      .then((review) => {
+        review._deleted = true;
+        review.save()
+          .then(resultReview => resolve(resultReview._id))
+          .catch(reject);
+      })
+      .catch(reject);
   }));
   return Promise.all(resultReviews);
 };
@@ -89,9 +92,20 @@ const deleteServices = (services) => {
                     .then((bookings) => {
                       deleteBookings(bookings)
                         .then((resultBookings) => {
-                          service
-                            .save()
-                            .then(resultService => resolve(resultService._id))
+                          Statistics.findOne({
+                            _service: service._id,
+                          })
+                            .then((stats) => {
+                              stats._deleted = true;
+                              stats.save()
+                                .then((resultStats) => {
+                                  service
+                                    .save()
+                                    .then(resultService => resolve(resultService._id))
+                                    .catch(reject);
+                                })
+                                .catch(reject);
+                            })
                             .catch(reject);
                         })
                         .catch(reject);

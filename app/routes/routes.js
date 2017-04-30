@@ -23,6 +23,7 @@ const ViewBussinessAPI = require('./api/v1/business/index');
 const BusinessCategoriesAPI = require('./api/v1/business/categories');
 const fbBotAPI = require('./api/Bot/index');
 const topRated = require('./api/v1/visitor/topRated');
+const serviceStatsAPI = require('./api/v1/service/statistics');
 
 
 /**
@@ -62,6 +63,7 @@ module.exports = (app) => {
   app.use('/api/v1/business/auth', BusinessAuthAPI);
   app.use('/api/v1/business/profile', businessProfileAPI);
   app.use('/api/v1/business/info', BusinessEditInformationAPI);
+  app.use('/api/v1/business/statistics', serviceStatsAPI);
 
     /**
      * Admin API Routes.

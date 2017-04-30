@@ -3,6 +3,7 @@ const passportJWT = require('passport-jwt');
 const InvalidToken = require('../../models/shared/InvalidToken');
 const Client = require('../../models/client/Client');
 const Business = require('../../models/business/Business');
+const Statistics = require('../../models/service/Statistics');
 const Admin = require('../../models/admin/Admin');
 const Strings = require('../../services/shared/Strings');
 
@@ -58,6 +59,7 @@ const parseAuthHeader = (hdrValue) => {
  * Client Authentication Strategy.
  */
 const clientStrategy = new JWTStrategy(JWTOptionsClient, (req, payload, done) => {
+  console.log(2);
   Client.findOne({
     _id: payload.id,
     _deleted: false,
@@ -110,6 +112,31 @@ const clientAuthMiddleware = (req, res, next) => {
   })(req, res, next);
 };
 
+/**
+ * Stats Middleware.
+ */
+const statsMiddleware = (req, res, next) => {
+  passport.authenticate('jwt_client', {
+    session: false,
+  }, (err, user, info) => {
+    if (!err && user) {
+      Statistics.findOne({
+        _service: req.params.id,
+      })
+        .exec()
+        .then((stats) => {
+          if (stats) {
+            stats.viewingClients.addToSet(user.id);
+            stats.save()
+              .then()
+              .catch();
+          }
+        })
+        .catch(next);
+    }
+    return next();
+  })(req, res, next);
+};
 
 /**
  * Business Authentication Strategy.
@@ -228,5 +255,6 @@ module.exports = {
   businessStrategy,
   businessAuthMiddleware,
   adminStrategy,
+  statsMiddleware,
   adminAuthMiddleware,
 };
