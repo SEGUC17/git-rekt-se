@@ -30,6 +30,24 @@ router.get('/business', (req, res, next) => {
     .catch(e => next([e]));
 });
 
+router.get('/service', (req, res, next) => {
+  Category.find({
+    type: 'Service',
+    _deleted: false,
+  })
+    .exec()
+    .then((categories) => {
+      const categoryDropDown = categories.map(category => ({
+        label: category.title,
+        value: category._id,
+      }));
+      res.json({
+        categories: categoryDropDown,
+      });
+    })
+    .catch(e => next(e));
+});
+
 /**
  * Error handling Middlewares
  */
