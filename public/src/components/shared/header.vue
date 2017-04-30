@@ -45,8 +45,17 @@
             </router-link>
 
             <!-- Business Account Management-->
-            <router-link v-if="isBusiness" to="/business/manage" class="button is-success">
-              Manage
+               <el-dropdown v-if="isBusiness" @command="handleBusinessProfile" menu-align="start"
+                         trigger="hover">
+              <el-button type="success gr-nav-button">
+                My Account<i class="el-icon-caret-bottom el-icon--right"></i>
+              </el-button>
+
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="manage/edit/basic">Manage</el-dropdown-item>
+                <el-dropdown-item :command="businessID">My page</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
 
             </router-link>
 
@@ -102,6 +111,7 @@
         isClient: ClientAuth.isAuthenticated(),
         isBusiness: BusinessAuth.isAuthenticated(),
         isAdmin: AdminAuth.isAuthenticated(),
+        businessID: BusinessAuth.user.userID(),
       };
     },
     /**
@@ -128,6 +138,10 @@
       handleProfile(navigate) {
         this.active = false;
         this.$router.push(`/client/profile/${navigate}`);
+      },
+      handleBusinessProfile(navigate) {
+        this.active = false;
+        this.$router.push(`/business/${navigate}`);
       },
     },
   };

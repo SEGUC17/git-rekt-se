@@ -107,7 +107,8 @@ router.get('/', (req, res, next) => {
           output.results = services;
           res.json(output);
         });
-    });
+    })
+    .catch(next);
 });
 
 /**

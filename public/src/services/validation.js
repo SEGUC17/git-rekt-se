@@ -547,6 +547,14 @@ export const offeringRules = {
     },
     message: 'Please enter a valid duration for your offering',
     trigger: 'blur',
+  }, {
+    validator(rule, value, callBack) {
+      if (new Date(value[1]).getTime() < new Date().getTime()) {
+        callBack([new Error('Your end date needs to be in the future')]);
+      }
+      callBack();
+    },
+    trigger: ['blur', 'change'],
   }],
   capacity: [{
     type: 'number',
