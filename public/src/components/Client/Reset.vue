@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="login-form">
-                    <el-form :model="form" :rules="rules" ref="form">
+                    <el-form :model="form" :rules="rules" ref="form" @keyup.enter.native="submitForm('form')">
 
                         <el-form-item label="Password" prop="password">
                             <el-input type="password" v-model="form.password"

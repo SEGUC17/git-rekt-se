@@ -18,7 +18,7 @@
                     <el-alert :title="error" v-show="form.fail" type="success" show-icon></el-alert>
                 </div>
                 <div class="login-form">
-                    <el-form :model="form" ref="form" :rules="rules">
+                    <el-form :model="form" ref="form" :rules="rules" @keyup.enter.native="submitForm('form')">
                         <el-form-item prop="email" label="Email">
                             <el-input v-model="form.email" type="email" icon="message">
                             </el-input>
