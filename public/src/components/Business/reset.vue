@@ -16,7 +16,7 @@
           <el-alert @close="alert_show = false" :title="message" class="error" type="success" show-icon></el-alert>
         </div>
   
-        <el-form :model="form" :rules="rules" ref="form" label-position="top">
+        <el-form :model="form" :rules="rules" ref="form" label-position="top" @keyup.enter.native="submitForm('form')">
           <el-form-item label="Password" prop="password">
             <el-input :type="showPassword? 'text':'password'" v-model="form.password" auto-complete="off">
               <div slot="append">
