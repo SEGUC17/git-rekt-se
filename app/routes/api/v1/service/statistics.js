@@ -9,7 +9,7 @@ const BusinessAuth = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
 const Strings = require('../../../../services/shared/Strings');
 const errorHandler = require('../../../../services/shared/errorHandler');
-const getStats = require('../../../../services/business/statsUtils');
+const getStats = require('../../../../services/business/statsUtils').getStats;
 
 const router = express.Router();
 mongoose.Promise = Promise;
@@ -25,7 +25,7 @@ router.get('/:id', BusinessAuth, (req, res, next) => {
         next(Strings.statisticsMessages.noService);
         return;
       }
-      if (stats.business !== req.user.id) {
+      if (`${stats._business}` !== `${req.user.id}`) {
         next(Strings.statisticsMessages.notOwner);
         return;
       }
@@ -36,7 +36,7 @@ router.get('/:id', BusinessAuth, (req, res, next) => {
         })
           .execPopulate()
           .then((populatedStats) => {
-            const viewingStatstoReturn = getStats(populatedStats);
+            const viewingStatstoReturn = getStats(populatedStats.viewingClients);
             resolve(viewingStatstoReturn);
           })
           .catch((e) => {
@@ -47,7 +47,6 @@ router.get('/:id', BusinessAuth, (req, res, next) => {
       const bookingStats = new Promise((resolve, reject) => {
         Booking.find({
           _service: req.params.id,
-          // NOT DELETED? - ACCEPTED?
         })
         .distinct('_client')
         .populate({
