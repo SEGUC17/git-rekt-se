@@ -48,7 +48,6 @@ router.get('/:id', BusinessAuth, (req, res, next) => {
         Booking.find({
           _service: req.params.id,
         })
-        .distinct('_client')
         .populate({
           path: '_client',
           select: 'birthdate gender',
@@ -56,7 +55,13 @@ router.get('/:id', BusinessAuth, (req, res, next) => {
         .exec()
         .then((populatedBookings) => {
           const bookingClients = populatedBookings.map(booking => booking._client);
-          const bookingStatsToReturn = getStats(bookingClients);
+
+          const distinctBookinClients = bookingClients.filter((client1, idx1) => {
+            const idx2 = bookingClients.findIndex(
+              client2 => client1._id === client2._id);
+            return idx1 === idx2;
+          });
+          const bookingStatsToReturn = getStats(distinctBookinClients);
           resolve(bookingStatsToReturn);
         })
         .catch((e) => {
