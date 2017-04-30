@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const apiai = require('apiai');
 const bot = require('../../../services/bot/bot');
 const botErrors = require('../../../services/shared/Strings')
-    .botErrors;
+  .botErrors;
 
 const router = express.Router();
 
@@ -29,51 +29,53 @@ router.get('/webhook', (req, res) => {
  * Listen to Facebook Events Webhook.
  */
 router.post('/webhook', (req, res) => {
-  const events = req.body.entry[0].messaging;
-  const event = events[0];
-  if (event.message && event.message.text) {
-    const senderID = event.sender.id;
+  req.body.entry.forEach((entry) => {
+    entry.messaging.forEach((messaging) => {
+      if (messaging.message && messaging.message.text) {
+        const senderID = messaging.sender.id;
 
-    bot.sendTyping(senderID);
+        bot.sendTyping(senderID);
 
-    const apiRequest = ai.textRequest(event.message.text, {
-      sessionId: senderID,
-    });
+        const apiRequest = ai.textRequest(messaging.message.text, {
+          sessionId: senderID,
+        });
 
-    let text;
-    apiRequest.on('response', (response) => {
-      switch (response.result.action) {
-        case 'Search':
-          {
-            const query = {
-              name: response.result.parameters.name,
-              location: response.result.parameters.location,
-              category: response.result.parameters.category,
-              min: response.result.parameters.minPrice.number,
-              max: response.result.parameters.maxPrice.number,
-            };
-            bot.Search(senderID, query);
-            break;
+        let text;
+        apiRequest.on('response', (response) => {
+          switch (response.result.action) {
+            case 'Search':
+              {
+                const query = {
+                  name: response.result.parameters.name,
+                  location: response.result.parameters.location,
+                  category: response.result.parameters.category,
+                  min: response.result.parameters.minPrice.number,
+                  max: response.result.parameters.maxPrice.number,
+                };
+                bot.Search(senderID, query);
+                break;
+              }
+            default:
+              {
+                text = response.result.fulfillment.speech;
+                bot.sendMessage(senderID, {
+                  text,
+                });
+                break;
+              }
           }
-        default:
-          {
-            text = response.result.fulfillment.speech;
-            bot.sendMessage(senderID, {
-              text,
-            });
-            break;
-          }
+        });
+
+        apiRequest.on('error', () => {
+          bot.sendMessage(senderID, {
+            text: botErrors.generalError,
+          });
+        });
+
+        apiRequest.end();
       }
     });
-
-    apiRequest.on('error', () => {
-      bot.sendMessage(senderID, {
-        text: botErrors.generalError,
-      });
-    });
-
-    apiRequest.end();
-  }
+  });
   res.sendStatus(200);
 });
 
