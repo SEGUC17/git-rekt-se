@@ -3,6 +3,9 @@ const axios = require('axios');
 const botErrors = require('../shared/Strings')
   .botErrors;
 
+require('dotenv')
+  .config();
+
 /**
  * Facebook EndPoint for sending messages.
  */
@@ -11,7 +14,7 @@ const facebookAPI = `https://graph.facebook.com/v2.6/me/messages?access_token=${
 /**
  * Base URL.
  */
-const BASE = 'http://localhost:3000';
+const BASE = process.env.BOT_BASE;
 
 /**
  * Search API EndPoint.
