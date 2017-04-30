@@ -58,6 +58,10 @@ router.get('/', (req, res, next) => {
   if (inputQuery.location) {
     mongooseQuery.offerings.$elemMatch.location = inputQuery.location;
   }
+  if (inputQuery.category) {
+    mongooseQuery.categories = {
+      _id: inputQuery.category };
+  }
   /**
    * Sorting Options (1: A-Z, 2:Desc. Rating)
    */
@@ -103,7 +107,8 @@ router.get('/', (req, res, next) => {
           output.results = services;
           res.json(output);
         });
-    });
+    })
+    .catch(next);
 });
 
 /**
