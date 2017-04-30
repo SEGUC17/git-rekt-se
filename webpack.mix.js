@@ -11,18 +11,18 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.combine(['./public/src/assets/css/normalize.css'], './public/dist/assets/css/normalize.css');
 mix.combine(['./public/src/assets/css/element-theme/index.css'], './public/dist/assets/css/element-theme/index.css');
+mix.combine(['./public/src/assets/css/buefy.css'], './public/dist/assets/css/buefy.css');
 mix.combine(['./public/src/assets/css/style.css'], './public/dist/assets/css/style.css');
 mix.sass('./public/src/assets/css/bulma.sass', './public/dist/assets/css');
 
 mix
   .js('./public/src/assets/js/app.js', './public/dist/assets/js')
   .js('./public/src/services/routes.js', './public/dist/services')
-  .copy('./public/src/assets/css/element-theme/fonts', './public/dist/assets/css/element-theme/fonts', false)
   .copy('./public/src/assets/imgs', './public/dist/assets/imgs', false)
-  .copy('./public/src/index.html', './public/dist');
-
+  .copy('./public/src/fonts', './public/dist/fonts', false)
+  .copy('./public/src/index.html', './public/dist')
+  .copy('./public/src/favicon.ico', './public/dist');
 
 // Full API
 // mix.js(src, output);

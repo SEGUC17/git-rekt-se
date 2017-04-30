@@ -29,14 +29,19 @@
                 </div>
 
                 <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top"
-                    class="login-form">
+                    class="login-form" @keyup.enter.native="submitForm('form')">
 
                     <el-form-item label="Email" prop="email">
                         <el-input v-model="form.email" placeholder="Email"></el-input>
                     </el-form-item>
 
                     <el-form-item label="Password" prop="password">
-                        <el-input v-model="form.password" placeholder="Password" type="password"></el-input>
+                        <el-input v-model="form.password" placeholder="Password" :type="showPassword? 'text':'password'">
+                          <div slot="append">
+                                  <el-button @click="showPassword = !showPassword"><i class="fa fa-eye"></i>
+                                  </el-button>
+                          </div>
+                        </el-input>
                     </el-form-item>
 
                     <span class="help forgot-help">
@@ -82,6 +87,7 @@
         logged_in: false,
         loginSuccess: '',
         errors: [],
+        showPassword: false,
       };
     },
     /**

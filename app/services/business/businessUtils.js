@@ -1,4 +1,5 @@
 const Branch = require('../../models/service/Branch');
+const Business = require('../../models/business/Business');
 
 /**
  * @typedef {Object} branch
@@ -53,7 +54,29 @@ const editOfferings = (services, branchID, deleteFlag, callBack) => {
   return Promise.all(resultServices);
 };
 
+const getRelatedBusinesses = ((categories, id) => {
+  const resultBusinesses = categories.map(category => new Promise((resolve, reject) => {
+    Business.find({
+      categories: {
+        $in: [category],
+      },
+      _deleted: false,
+      _id: {
+        $ne: id,
+      },
+    }, {
+      shortDescription: true,
+      name: true,
+      _id: true,
+    }).exec().then((businesses) => {
+      resolve(businesses);
+    }).catch(reject);
+  }));
+  return Promise.all(resultBusinesses);
+});
+
 module.exports = {
   addBranches,
   editOfferings,
+  getRelatedBusinesses,
 };

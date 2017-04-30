@@ -2,7 +2,7 @@
  * Constant Strings.
  */
 const locations = require('../../seed/service/locations')
-    .join(', ');
+  .join(', ');
 
 /**
  *  General Strings.
@@ -10,6 +10,10 @@ const locations = require('../../seed/service/locations')
 const generalErrors = {
   mailerError: 'An issue occured while sending the email.',
   generalError: 'An error occurred trying to handle this request.',
+};
+
+const botErrors = {
+  generalError: 'I could not understand that! Please try again!',
 };
 
 /**
@@ -389,8 +393,20 @@ const clientFaliure = {
   notFound: 'The required client was not found.',
 };
 
+/**
+ * Statistics Strings
+ */
+
+const statisticsMessages = {
+  noService: 'This service does not exist',
+  notOwner: 'You are not the owner of this service',
+};
+
 module.exports = {
   generalErrors,
+
+  botErrors,
+
   clientValidationErrors,
   clientSuccess,
   clientLoginMessages,
@@ -424,4 +440,5 @@ module.exports = {
   searchErrors,
   couponValidationError,
   adminFailures,
+  statisticsMessages,
 };

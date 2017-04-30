@@ -8,7 +8,7 @@
  * @type {string}
  */
 
-const BASE = 'http://54.71.121.252/api/v1';
+const BASE = 'http://localhost:3000/api/v1';
 
 /**
  * A Function returning all routes for the Visitor.
@@ -16,12 +16,16 @@ const BASE = 'http://54.71.121.252/api/v1';
  */
 export const Visitor = () => ({
   search: `${BASE}/visitor/search/`,
+  topRated: `${BASE}/toprated`,
   viewService: serviceID => `${BASE}/service/${serviceID}`,
   relatedService: (serviceID, offset) => `${BASE}/service/category/${serviceID}/${offset}`,
   relatedBusiness: (businessID, offset) => `${BASE}/business/category/${businessID}/${offset}`,
   locations: `${BASE}/visitor/search/locations`,
   viewBusiness: businessID => `${BASE}/business/${businessID}`,
   businessCategories: `${BASE}/categories/business`,
+  relatedBusinessCategories: businessID => `${BASE}/business/category/related/${businessID}`,
+  relatedServiceCategories: serviceID => `${BASE}/service/category/related/${serviceID}`,
+  serviceCategories: `${BASE}/categories/service`,
 });
 
 /**
@@ -74,7 +78,6 @@ export const Business = () => {
     deleteBranch: (businessID, branchID) => `${businessBase}/${businessID}/delete/branch/${branchID}`,
 
     listServices: `${serviceBase}/list`,
-    listCategories: `${serviceBase}/category/list`,
     listOfferings: serviceID => `${serviceBase}/${serviceID}/offering/list`,
     listBranches: `${serviceBase}/branch/list`,
     createService: `${serviceBase}/create`,
@@ -94,6 +97,8 @@ export const Business = () => {
     getTransactions: `${BASE}/business/profile/transactions`,
     acceptTransaction: `${BASE}/business/profile/transactions/accept`,
     refundTransaction: `${BASE}/business/profile/transactions/reject`,
+
+    statistics: id => `${BASE}/business/statistics/${id}`,
   };
 };
 

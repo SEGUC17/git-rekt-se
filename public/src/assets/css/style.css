@@ -1,15 +1,15 @@
 #root {
-    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
-#root{
+#root {
   overflow: hidden;
 }
 
-#grcontent{
+#grcontent {
   flex: 1;
 }
 
@@ -31,36 +31,65 @@
 }
 
 .white {
-    color: #fff;
+  color: #fff;
 }
 
 .login-form {
-    margin-top: 2em;
+  margin-top: 2em;
 }
 
-.box{
-    border-radius: 0;
+.box {
+  border-radius: 0;
 }
+
+
+pre {
+  background: transparent;
+  font: inherit;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+a.box:hover,
+a.box:focus {
+  box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px #eee;
+}
+
+
 
 /*
     Errors div style.
 */
 
 .errors {
-    margin-bottom: 1.5em;
+  margin-bottom: 1.5em;
 }
 
-.modal-card-foot{
-    margin-top: 0 !important;
+.modal-card-foot {
+  margin-top: 0 !important;
 }
+
+
+
 /*
     Responsive form margin.
 */
 
-.margin-bot-1{
-    margin-bottom: 1em;
+.margin-bot-1 {
+  margin-bottom: 1em;
 }
 
-.no-data p{
-    margin-top: 0.5em;
+.no-data p {
+  margin-top: 0.5em;
+}
+
+/*
+    Carousel styling.
+*/
+
+.el-carousel__item img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: auto;
 }

@@ -30,7 +30,7 @@
                         render-html>
 
                     <b-table-column field="date" label="Date" sortable></b-table-column>
-                    <b-table-column field="name" label="Service" sortable></b-table-column>
+                    <b-table-column field="name" label="Service" :format="getServiceLink" sortable></b-table-column>
                     <b-table-column  field="location" label="Location" sortable></b-table-column>
                     <b-table-column field="status" label="Status" sortable></b-table-column>
                     <b-table-column field="amount" label="Price" sortable></b-table-column>
@@ -94,15 +94,14 @@
           },
         })
             .then((res) => {
-              this.bookings = res.data.bookings.map((booking) => {
-                return {
-                  name: booking._service.name,
-                  date: moment(booking.date).format('dddd MMMM Do YYYY'),
-                  location: `${booking._service.offerings[0].address},${booking._service.offerings[0].location}`,
-                  status: booking.status,
-                  amount: `${booking._transaction.amount / 100.0} EGP`,
-                };
-              });
+              this.bookings = res.data.bookings.map(booking => ({
+                id: booking._service._id,
+                name: booking._service.name,
+                date: moment(booking.date).format('dddd MMMM Do YYYY'),
+                location: `${booking._service.offerings[0].address},${booking._service.offerings[0].location}`,
+                status: booking.status,
+                amount: `${booking._transaction.amount / 100.0} EGP`,
+              }));
               loader.close();
             })
             .catch((err) => {
@@ -120,6 +119,14 @@
                 this.message = err.response ? err.response.data.errors.join(', ') : err.message;
               }
             });
+      },
+
+      /**
+      * Return a link to service page.
+      */
+
+      getServiceLink(value, row) {
+        return `<a class="dark-link" href="/service/${row.id}">${value}</a>`;
       },
     },
     /**

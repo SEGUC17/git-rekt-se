@@ -43,8 +43,16 @@
                         </el-select>
                     </el-form-item>
 
+                    <el-form-item label="Category">
+                        <el-select v-model="newQuery.category" filterable clearable placeholder="Select Category">
+                            <el-option v-for="category in categories" :key="category.value" :label="category.label"
+                                       :value="category.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+
                     <el-form-item label="Sort By">
-                        <el-select v-model="newQuery.sort" clearable placeholder="Select">
+                        <el-select v-model="newQuery.sort" placeholder="Select">
                             <el-option v-for="item in sortOptions" :key="item.value" :label="item.label"
                                        :value="item.value">
                             </el-option>
@@ -126,6 +134,7 @@
      * Data used by this component.
      * noResults: true if no results were found, false otherwise.
      * locationsDB: Pre-defined locations.
+     * categories: Service categories
      * count: Result count for pagination.
      * sortOptions: Sorting Options to sort the data.
      * currentQuery: Current query param.
@@ -138,6 +147,7 @@
         noResults: false,
         results: [],
         locationsDB: [],
+        categories: [],
         count: 0,
         sortOptions: [{
           value: 1,
@@ -159,6 +169,7 @@
           min: 0,
           max: 10000,
           location: (this.$route.query.location) ? this.$route.query.location : '',
+          category: (this.$route.query.category) ? this.$route.query.category : '',
           sort: (parseInt(this.$route.query.sort, 10) === 1 ||
            parseInt(this.$route.query.sort, 10) === 2) ? parseInt(this.$route.query.sort, 10) : '',
         },
@@ -173,10 +184,11 @@
     },
     /**
      * Ran when component is mounted on DOM.
-     * Get Locations and execute the required query.
+     * Get Locations, Service Categories and execute the required query.
      */
     mounted() {
       this.getLocations();
+      this.getCategories();
       this.newQuery.offset = 1;
       this.execQuery();
     },
@@ -214,6 +226,23 @@
             });
       },
       /**
+       * Gets the service categories from the server
+       */
+      getCategories() {
+        Axios.get(Visitor().serviceCategories)
+            .then((response) => {
+              this.categories = response.data.categories;
+            })
+            .catch((error) => {
+              this.generalErrors = error.response.data.errors.map((err) => {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
+            });
+      },
+      /**
        * Stringify the query. Changes the query to a URI Enconded string.
        */
       stringifyQuery(query) {
@@ -233,6 +262,9 @@
         }
         if (query.max || query.max === 0) {
           queryString += `&max=${query.max}`;
+        }
+        if (query.category) {
+          queryString += `&category=${query.category}`;
         }
         if (query.location) {
           queryString += `&location=${query.location}`;

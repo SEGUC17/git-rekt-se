@@ -10,14 +10,15 @@
             </div>
         </section>
 
-        <div class="reset-password-form columns">
-            <div class="column is-8 is-offset-2">
+        <div class="reset-password-form columns is-mobile">
+            <div class="column is-half-desktop is-10-mobile is-10-tablet
+                                 is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop">
                 <div class="error-alerts">
                     <el-alert :title="message" v-show="form.success" type="success" show-icon></el-alert>
                     <el-alert :title="error" v-show="form.fail" type="success" show-icon></el-alert>
                 </div>
                 <div class="login-form">
-                    <el-form :model="form" ref="form" :rules="rules">
+                    <el-form :model="form" ref="form" :rules="rules" @keyup.enter.native="submitForm('form')">
                         <el-form-item prop="email" label="Email">
                             <el-input v-model="form.email" type="email" icon="message">
                             </el-input>
@@ -39,7 +40,6 @@
   * This component allows the client to request a password change
   * incase he forgot the old one.
   */
-  import axios from 'axios';
   import Form from '../../services/Form';
   import { Client } from '../../services/EndPoints';
   import { clientForgotPasswordMail } from '../../services/validation';

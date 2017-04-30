@@ -16,7 +16,7 @@
       </div>
     </div>
   
-    <el-form class="edit-info-form" ref="form" :model="form" :rules="rules" label-position="top">
+    <el-form class="edit-info-form" ref="form" :model="form" :rules="rules" label-position="top" @keyup.enter.native="onSubmit">
       <el-form-item label="Name" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -78,7 +78,8 @@
   import { Business } from '../../services/EndPoints';
   import { businessEditInfoValidation } from '../../services/validation';
   import JWTCheck from '../../services/JWTErrors';
-
+  import EventBus from '../../services/EventBus';
+  
   const dummyPassword = '***************';
   
   export default {
@@ -156,7 +157,7 @@
        */
       onSubmit() {
         this.success = false;
-        if (this.form.password && this.form.confirmPassword) {
+        if (this.form.password !== dummyPassword && this.form.confirmPassword !== dummyPassword) {
           this.passwordChanged = true;
         }
         if (this.form.email !== businessAuth.user.userEmail()) {

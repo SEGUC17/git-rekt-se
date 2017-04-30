@@ -4,12 +4,12 @@ const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const helmet = require('helmet');
+const compression = require('compression');
 
 const jwtConfig = require('./services/shared/jwtConfig');
 const fbConfig = require('./services/shared/fbConfig');
 
 const app = express();
-
 /**
  * Load Enviroment variables from .env file.
  */
@@ -66,10 +66,16 @@ app.use(passport.initialize());
 require('./routes/routes')(app);
 
 /**
+ * G-Zip assets compression.
+ */
+
+app.use(compression());
+
+/**
  * Frontend Routes.
  */
 
-app.use(express.static(path.join(__dirname, '../public/dist/')));
+app.use(express.static(path.join(__dirname, '../public/dist')));
 
 app.get('/*', (req, res) => res.redirect(`/#${req.originalUrl}`));
 
