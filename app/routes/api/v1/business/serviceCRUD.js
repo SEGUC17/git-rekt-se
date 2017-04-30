@@ -243,21 +243,26 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
   req.getValidationResult()
     .then((result) => {
       if (result.isEmpty()) {
-        /**
+        const end = new Date(req.body.endDate);
+        const curTime = new Date();
+        if (end.getTime() < (curTime.getTime())) {
+          next('Your end date needs to be in the future');
+        } else {
+              /**
          * Validation passed
          */
-        const reqData = {
-          startDate: req.body.startDate,
-          endDate: req.body.endDate,
-          branch: req.body.branch,
-          price: req.body.price,
-          capacity: req.body.capacity,
-        };
+          const reqData = {
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+            branch: req.body.branch,
+            price: req.body.price,
+            capacity: req.body.capacity,
+          };
 
-        Service.findOne({
-          _id: req.params.id,
-          _deleted: false,
-        })
+          Service.findOne({
+            _id: req.params.id,
+            _deleted: false,
+          })
           .then((service) => {
             if (service) {
               if (service._business.equals(req.user._id)) {
@@ -312,6 +317,7 @@ router.post('/:id/offering/create', businessAuthMiddleware, (req, res, next) => 
             }
           })
           .catch(e => next(e));
+        }
       } else {
         next(result.array());
       }

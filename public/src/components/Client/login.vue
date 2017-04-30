@@ -41,7 +41,7 @@
         </div>
 
         <el-form :model="form" ref="form" :rules="rules" label-width="100px" label-position="top"
-                 class="login-form" >
+                 class="login-form" @keyup.enter.native="submitForm('form')">
           <el-form-item label="Email" prop="email">
             <el-input v-model="form.email" placeholder="Email" icon="message"></el-input>
           </el-form-item>
