@@ -393,6 +393,15 @@ const clientFaliure = {
   notFound: 'The required client was not found.',
 };
 
+/**
+ * Statistics Strings
+ */
+
+const statisticsMessages = {
+  noService: 'This service does not exist',
+  notOwner: 'You are not the owner of this service',
+};
+
 module.exports = {
   generalErrors,
 
@@ -431,4 +440,5 @@ module.exports = {
   searchErrors,
   couponValidationError,
   adminFailures,
+  statisticsMessages,
 };

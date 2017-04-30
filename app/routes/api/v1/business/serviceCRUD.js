@@ -11,6 +11,7 @@ const Offering = require('../../../../models/service/Offering');
 const Branch = require('../../../../models/service/Branch');
 const Category = require('../../../../models/service/Category');
 const Booking = require('../../../../models/service/Booking');
+const Statistics = require('../../../../models/service/Statistics');
 
 const businessAuthMiddleware = require('../../../../services/shared/jwtConfig')
   .businessAuthMiddleware;
@@ -64,32 +65,8 @@ router.use(bodyParser.json());
 router.use(expressValidator({}));
 
 /**
- * Category CRUD routes
- */
-
-/**
  * Business Create A Service API Route.
- * List all service categories
  */
-
-router.get('/category/list', businessAuthMiddleware, (req, res, next) => {
-  Category.find({
-    type: 'Service',
-    _deleted: false,
-  })
-    .exec()
-    .then((categories) => {
-      const categoryDropDown = categories.map(category => ({
-        label: category.title,
-        value: category._id,
-      }));
-      res.json({
-        categories: categoryDropDown,
-      });
-    })
-    .catch(e => next(e));
-});
-
 
 /**
  * List all services belonging to a business
@@ -204,9 +181,17 @@ router.post('/create', businessAuthMiddleware, upload.single('coverImage'), (req
                 coverImage: req.file ? req.file.filename : undefined,
               });
               service.save()
-                .then(() => res.json({
-                  message: Strings.serviceSuccess.serviceAdded,
-                }))
+                .then((s) => {
+                  const stats = new Statistics({
+                    _business: req.user.id,
+                    _service: s._id,
+                  });
+                  stats.save()
+                    .then(() => res.json({
+                      message: Strings.serviceSuccess.serviceAdded,
+                    }))
+                    .catch(e => next(e));
+                })
                 .catch(e => next(e));
             } else {
               next([Strings.serviceValidationCRUDErrors.invalidCategory]);
@@ -476,7 +461,7 @@ router.post('/:id1/offering/:id2/edit', businessAuthMiddleware, (req, res, next)
                         service.branches.addToSet(offeringDoc.branch);
                         service.markModified('offerings');
                         service.save()
-                          .then((s) => {
+                          .then(() => {
                             res.json({
                               message: Strings.serviceSuccess.offeringEdited,
                             });

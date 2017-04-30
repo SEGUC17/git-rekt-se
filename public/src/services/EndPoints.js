@@ -25,6 +25,7 @@ export const Visitor = () => ({
   businessCategories: `${BASE}/categories/business`,
   relatedBusinessCategories: businessID => `${BASE}/business/category/related/${businessID}`,
   relatedServiceCategories: serviceID => `${BASE}/service/category/related/${serviceID}`,
+  serviceCategories: `${BASE}/categories/service`,
 });
 
 /**
@@ -77,7 +78,6 @@ export const Business = () => {
     deleteBranch: (businessID, branchID) => `${businessBase}/${businessID}/delete/branch/${branchID}`,
 
     listServices: `${serviceBase}/list`,
-    listCategories: `${serviceBase}/category/list`,
     listOfferings: serviceID => `${serviceBase}/${serviceID}/offering/list`,
     listBranches: `${serviceBase}/branch/list`,
     createService: `${serviceBase}/create`,
@@ -97,6 +97,8 @@ export const Business = () => {
     getTransactions: `${BASE}/business/profile/transactions`,
     acceptTransaction: `${BASE}/business/profile/transactions/accept`,
     refundTransaction: `${BASE}/business/profile/transactions/reject`,
+
+    statistics: id => `${BASE}/business/statistics/${id}`,
   };
 };
 

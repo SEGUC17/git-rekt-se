@@ -365,7 +365,11 @@
         const loader = this.$loading({
           fullscreen: true,
         });
-        axios.get(Service().viewService(serviceId)).then((res) => {
+        axios.get(Service().viewService(serviceId), {
+          headers: {
+            Authorization: ClientAuth.getJWTtoken(),
+          },
+        }).then((res) => {
           const service = res.data;
           this.name = service.name;
           this.shortDescription = service.shortDescription;
