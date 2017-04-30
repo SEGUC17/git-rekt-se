@@ -229,7 +229,7 @@
    * This component is responsible for viewing the service's info.
    */
   import axios from 'axios';
-  import { Service, Client } from '../../services/EndPoints';
+  import { Service, Client, Visitor } from '../../services/EndPoints';
   import ClientAuth from '../../services/auth/clientAuth';
   import CreateReview from './Review/createReview.vue';
   import EditReview from './Review/editReview.vue';
@@ -405,7 +405,7 @@
           return;
         }
         axios
-            .get(Service().viewRelatedServices(this.categories[0]._id, 1))
+            .get(Visitor().relatedServiceCategories(this.serviceID))
             .then((res) => {
               loader.close();
               this.relatedServices = res.data.results;

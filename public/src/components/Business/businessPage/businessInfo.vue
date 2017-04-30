@@ -252,7 +252,7 @@
         });
         axios.get(Visitor().viewBusiness(id))
             .then((business) => {
-              this.id = business.data.id;
+              this.id = business.data._id;
               this.name = business.data.name;
               this.email = business.data.email;
               this.shortDescription = business.data.shortDescription;
@@ -267,11 +267,12 @@
                 return branch;
               });
               this.services = business.data.services;
-
-              axios.get(Visitor().relatedBusiness(this.categories[0]._id, 1))
+              axios.get(Visitor().relatedBusinessCategories(this.id))
                   .then((res) => {
+                    console.log(res);
                     this.loader.close();
                     this.related = res.data.results;
+                    console.log(this.related);
                     this.related = this.related
                         .filter(bus => bus._id !== this.$route.params.id);
                   })

@@ -598,6 +598,22 @@ const visitorValidation = {
   },
 };
 
+const relatedBusinessValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: visitorValidationErrors.InvalidID,
+    },
+  },
+};
+
+const relatedServiceValidation = {
+  id: {
+    isMongoId: {
+      errorMessage: visitorValidationErrors.InvalidID,
+    },
+  },
+};
+
 /**
  * Review Validation.
  */
@@ -888,6 +904,8 @@ const validation = {
   couponAddValidation,
   couponDeleteValidation,
   couponGetValidation,
+  relatedBusinessValidation,
+  relatedServiceValidation,
 };
 
 module.exports = validation;
