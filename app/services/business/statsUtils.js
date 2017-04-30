@@ -7,7 +7,7 @@ const getStats = (clients) => {
   const totalMaleCount = males.length;
 
   const females = clients.filter(client => client.gender === 'Female');
-  const totalFemaleCount = females.count;
+  const totalFemaleCount = females.length;
 
   const age13to18 = clients.filter(client =>
     (calcAge(client.birthdate) >= 13 && calcAge(client.birthdate) <= 18));

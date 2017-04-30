@@ -43,7 +43,7 @@
       <div class="column is-half" v-if="active === 2">
         <div class="box">
           <chartist ratio="ct-major-second" type="Bar" :data="visitorsCharts.bars.data" :options="visitorsCharts.bars.options"></chartist>
-          <h4 class="has-text-centered">Age</h4>
+          <h4 class="has-text-centered">Visitors Age</h4>
         </div>
       </div>
   
@@ -73,42 +73,40 @@ export default {
       bookingCharts: {
         pie: {
           data: {
-            series: [10, 0],
+            series: [5, 5],
           },
           options: {
             donut: false,
-            labelInterpolationFnc: value => `${Math.round((value / 10) * 100)}%`,
+            labelInterpolationFnc: value => `${Math.round((value / this.bookingData.totalCount) * 100)}%`,
           },
         },
         bars: {
           data: {
             labels: ['13-18', '19-30', '31-50', '51-60', '60+'],
-            series: [[1, 2, 3, 13, 5], [1, 10, 5, 2, 3]],
+            series: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
           },
           options: {
             scaleMinSpace: 15,
-            high: 30,
           },
         },
       },
       visitorsCharts: {
         pie: {
           data: {
-            series: [3, 7],
+            series: [5, 5],
           },
           options: {
             donut: false,
-            labelInterpolationFnc: value => `${Math.round((value / 10) * 100)}%`,
+            labelInterpolationFnc: value => `${Math.round((value / this.visitorsData.totalCount) * 100)}%`,
           },
         },
         bars: {
           data: {
             labels: ['13-18', '19-30', '31-50', '51-60', '60+'],
-            series: [[1, 2, 3, 13, 5], [1, 10, 5, 2, 3]],
+            series: [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0]],
           },
           options: {
             scaleMinSpace: 15,
-            high: 30,
           },
         },
       },
@@ -131,13 +129,14 @@ export default {
           },
         })
         .then((response) => {
-          this.visitorsData = response.body.viewingStats;
-          this.bookingData = response.body.bookingStats;
+          this.visitorsData = response.data.viewingStats;
+          this.bookingData = response.data.bookingStats;
           loader.close();
           this.loadCharts();
         })
         .catch((error) => {
           loader.close();
+          console.log(error);
           if (!error.response || !error.response.data.errors) {
             this.generalErrors = ['An error occurred with the server. Please try again later.'];
             return;
@@ -156,7 +155,59 @@ export default {
     */
 
     loadCharts() {
+      console.log(this.visitorsData);
+      this.visitorsCharts.pie.data.series = [this.visitorsData.totalFemaleCount,
+        this.visitorsData.totalMaleCount];
 
+      this.bookingCharts.pie.data.series = [this.bookingData.totalFemaleCount,
+        this.bookingData.totalMaleCount];
+
+      const femaleVisitors = [];
+      femaleVisitors.push(this.visitorsData.age13to18FemaleCount);
+      femaleVisitors.push(this.visitorsData.age19to24FemaleCount
+        + this.visitorsData.age25to30FemaleCount);
+      femaleVisitors.push(this.visitorsData.age31to40FemaleCount
+        + this.visitorsData.age41to50FemaleCount);
+      femaleVisitors.push(this.visitorsData.age51to60FemaleCount);
+      femaleVisitors.push(this.visitorsData.age61to74FemaleCount
+        + this.visitorsData.age75plusFemaleCount);
+
+      const maleVisitors = [];
+      maleVisitors.push(this.visitorsData.age13to18MaleCount);
+      maleVisitors.push(this.visitorsData.age19to24MaleCount
+        + this.visitorsData.age25to30MaleCount);
+      maleVisitors.push(this.visitorsData.age31to40MaleCount
+        + this.visitorsData.age41to50MaleCount);
+      maleVisitors.push(this.visitorsData.age51to60MaleCount);
+      maleVisitors.push(this.visitorsData.age61to74MaleCount
+        + this.visitorsData.age75plusMaleCount);
+      this.visitorsCharts.bars.data.series = [femaleVisitors, maleVisitors];
+
+      const femaleBookings = [];
+      const MaleBookings = [];
+
+      femaleBookings.push(this.bookingData.age13to18FemaleCount);
+      femaleBookings.push(this.bookingData.age19to24FemaleCount
+        + this.bookingData.age25to30FemaleCount);
+      femaleBookings.push(this.bookingData.age31to40FemaleCount
+        + this.bookingData.age41to50FemaleCount);
+      femaleBookings.push(this.bookingData.age51to60FemaleCount);
+      femaleBookings.push(this.bookingData.age61to74FemaleCount
+        + this.bookingData.age75plusFemaleCount);
+
+      MaleBookings.push(this.bookingData.age13to18MaleCount);
+      MaleBookings.push(this.bookingData.age19to24MaleCount
+        + this.bookingData.age25to30MaleCount);
+      MaleBookings.push(this.bookingData.age31to40MaleCount
+        + this.bookingData.age41to50MaleCount);
+      MaleBookings.push(this.bookingData.age51to60MaleCount);
+      MaleBookings.push(this.bookingData.age61to74MaleCount
+        + this.bookingData.age75plusMaleCount);
+
+      console.log(femaleBookings);
+      console.log(MaleBookings);
+
+      this.bookingCharts.bars.data.series = [femaleBookings, MaleBookings];
     },
   },
 
