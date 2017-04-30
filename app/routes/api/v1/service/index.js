@@ -6,7 +6,7 @@ const Statistics = require('../../../../models/service/Statistics');
 const Strings = require('../../../../services/shared/Strings');
 
 const errorHandler = require('../../../../services/shared/errorHandler');
-
+const jwtConfig = require('../../../../services/shared/jwtConfig');
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ const router = express.Router();
  */
 
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', jwtConfig.statsMiddleware, (req, res, next) => {
   Service.findOne({
     _id: req.params.id,
     _deleted: false,
@@ -40,9 +40,9 @@ router.get('/:id', (req, res, next) => {
       },
       options: {
         populate: {
-          path: '_client',
-          select: 'firstName lastName',
-        },
+            path: '_client',
+            select: 'firstName lastName',
+          },
       },
     },
     {
@@ -58,26 +58,6 @@ router.get('/:id', (req, res, next) => {
         next(Strings.serviceFailure.serviceNotFound);
         return;
       }
-      /**
-       * Statistics tracking
-       */
-      passport.authenticate('jwt_client', (err, user) => {
-        if (!err && user) {
-          Statistics.findOne({
-            _service: req.params.id,
-          })
-          .exec()
-          .then((stats) => {
-            if (stats) {
-              stats.viewingClients.addToSet(user.id);
-              stats.save()
-              .then()
-              .catch();
-            }
-          })
-          .catch();
-        }
-      });
 
       const returnedService = {
         name: service.name,
@@ -98,9 +78,6 @@ router.get('/:id', (req, res, next) => {
       }
 
       res.json(returnedService);
-    })
-    .catch((e) => {
-      next(e);
     });
 });
 
