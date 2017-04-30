@@ -29,7 +29,7 @@
                             <el-alert :title="signupSuccess" type="success" class="error" show-icon></el-alert>
                         </div>
 
-                        <el-form :model="form" :rules="rules2" ref="form">
+                        <el-form :model="form" :rules="rules2" ref="form" @keyup.enter.native="submitForm('form')">
                             <el-form-item label="Business name" prop="name">
                                 <el-input v-model="form.name"></el-input>
                             </el-form-item>

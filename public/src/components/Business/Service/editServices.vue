@@ -141,7 +141,8 @@
   * This component allows to Edit Services.
   */
   import axios from 'axios';
-  import { Business } from '../../../services/EndPoints';
+  import { Business,
+    Visitor } from '../../../services/EndPoints';
   import { serviceRules } from '../../../services/validation';
   import BusinessAuth from '../../../services/auth/businessAuth';
   import JWTCheck from '../../../services/JWTErrors';
@@ -201,31 +202,22 @@
        * Get the possible categories.
        */
       getCategories() {
-        axios.get(Business().listCategories, {
-          headers: {
-            Authorization: BusinessAuth.getJWTtoken(),
-          },
-        })
+        const loader = this.$loading({
+          fullscreen: true,
+        });
+        axios.get(Visitor().serviceCategories)
             .then((response) => {
               this.categories = response.data.categories;
+              loader.close();
             })
             .catch((error) => {
-              if (error.response && JWTCheck(error.response.data.errors)) {
-                BusinessAuth.removeData();
-                this.$router.push('/');
-                this.$toast.open({
-                  text: 'Your sessions has expired. Please login.',
-                  position: 'bottom',
-                  type: 'danger',
-                });
-              } else {
-                this.generalErrors = error.response.data.errors.map((err) => {
-                  if (typeof err === 'string') {
-                    return err;
-                  }
-                  return err.msg;
-                });
-              }
+              loader.close();
+              this.generalErrors = error.response.data.errors.map((err) => {
+                if (typeof err === 'string') {
+                  return err;
+                }
+                return err.msg;
+              });
             });
       },
       /**
