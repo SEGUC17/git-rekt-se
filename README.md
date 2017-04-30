@@ -4,6 +4,8 @@ Git-Rekt SE Project
 
 ## Demo
 
+<img src="http://i.imgur.com/7XFMZ9f.jpg" alt="Demo"/>
+
 ###### Live Demo
 
 https://git-rekt.me/
@@ -28,11 +30,21 @@ https://git-rekt.me/
     - `DEBUG_MODE`, SET to 1 to enable debugging middlewares.
     - `ADD_DELAY`, SET to 1 to add delay to requests for testing.
     - `BOT_BASE,FB_VERIFY_TOKEN,PAGE_ACCESS_TOKEN,API_AI_TOKEN` Tokens required for our facebook bot.
+5. Add `app/certs` folder, with your private and cert key from letsencrypt.
+6. If you are the testing team please send an email to mohamedelzarei[at]gmail.com for our actual `.env` file
+and certificates.
+
 ---
 
 ## Usage
 
 Run `npm start` to start in **production** mode, `npm run debug` to run using [nodemon](https://nodemon.io/) in debug mode.
+
+---
+
+## Bugs
+
+If you found a bug, please report it through the issues tab.
 
 ---
 
