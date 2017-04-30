@@ -21,16 +21,23 @@ const BusinessGalleryAPI = require('./api/v1/business/gallery');
 const VisitorSearchAPI = require('./api/v1/visitor/search');
 const ViewBussinessAPI = require('./api/v1/business/index');
 const BusinessCategoriesAPI = require('./api/v1/business/categories');
+const fbBotAPI = require('./api/Bot/index');
 const topRated = require('./api/v1/visitor/topRated');
+
 
 /**
  * Configures the apps middlewares.
  * @param app - Express App
  */
 module.exports = (app) => {
-  /**
-   * Visitor API Routes.
-   */
+    /**
+     * Facebook Bot Routes.
+     */
+  app.use('/bot', fbBotAPI);
+
+    /**
+     * Visitor API Routes.
+     */
   app.use('/api/v1/visitor/search', VisitorSearchAPI);
   app.use('/api/v1/service', ViewServiceAPI);
   app.use('/api/v1/service/category', RelatedServiceAPI);
@@ -39,26 +46,26 @@ module.exports = (app) => {
   app.use('/api/v1/categories', BusinessCategoriesAPI);
   app.use('/api/v1/toprated', topRated);
 
-  /**
-   * Client API Routes.
-   */
+    /**
+     * Client API Routes.
+     */
 
   app.use('/api/v1/client/auth', ClientAuthAPI);
   app.use('/api/v1/client/profile', ClientProfileAPI);
   app.use('/api/v1/client/review', ClientReviewAPI);
 
-  /**
-   * Business API Routes.
-   */
+    /**
+     * Business API Routes.
+     */
   app.use('/api/v1/business/gallery', BusinessGalleryAPI);
   app.use('/api/v1/business/service', businessServiceAPI);
   app.use('/api/v1/business/auth', BusinessAuthAPI);
   app.use('/api/v1/business/profile', businessProfileAPI);
   app.use('/api/v1/business/info', BusinessEditInformationAPI);
 
-  /**
-   * Admin API Routes.
-   */
+    /**
+     * Admin API Routes.
+     */
 
   app.use('/api/v1/admin/business', AdminBusinessAPI);
   app.use('/api/v1/admin/client', AdminClientAPI);
@@ -66,9 +73,9 @@ module.exports = (app) => {
   app.use('/api/v1/admin/general', AdminConfirmAPI);
   app.use('/api/v1/admin/category', AdminCatAPI);
 
-  /**
-   * Service API Routes.
-   */
+    /**
+     * Service API Routes.
+     */
   app.use('/api/v1/service', ReviewCRUDAPI);
   app.use('/api/v1/service', ServiceGalleryAPI);
   app.use('/api/v1/service', ViewServiceAPI);

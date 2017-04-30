@@ -2,7 +2,7 @@
  * Constant Strings.
  */
 const locations = require('../../seed/service/locations')
-    .join(', ');
+  .join(', ');
 
 /**
  *  General Strings.
@@ -10,6 +10,10 @@ const locations = require('../../seed/service/locations')
 const generalErrors = {
   mailerError: 'An issue occured while sending the email.',
   generalError: 'An error occurred trying to handle this request.',
+};
+
+const botErrors = {
+  generalError: 'I could not understand that! Please try again!',
 };
 
 /**
@@ -391,6 +395,9 @@ const clientFaliure = {
 
 module.exports = {
   generalErrors,
+
+  botErrors,
+
   clientValidationErrors,
   clientSuccess,
   clientLoginMessages,
