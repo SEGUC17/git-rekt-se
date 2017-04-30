@@ -55,7 +55,8 @@ router.get('/:id', BusinessAuth, (req, res, next) => {
         })
         .exec()
         .then((populatedBookings) => {
-          const bookingStatsToReturn = getStats(populatedBookings);
+          const bookingClients = populatedBookings.map(booking => booking._client);
+          const bookingStatsToReturn = getStats(bookingClients);
           resolve(bookingStatsToReturn);
         })
         .catch((e) => {

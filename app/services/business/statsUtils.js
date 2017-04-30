@@ -1,7 +1,6 @@
 const calcAge = require('../shared/generalUtils').calcAge;
 
-const getStats = (populatedDocs) => {
-  const clients = populatedDocs.viewingClients;
+const getStats = (clients) => {
   const totalCount = clients.length;
 
   const males = clients.filter(client => client.gender === 'Male');
