@@ -16,6 +16,7 @@ https://git-rekt.me/
 3. Create a MongoDB title `gitrekt_db`.
 4. Create `.env` file with the following constants:
     - `PORT`, The port number to run the project.
+    - `HTTPS_PORT`, The port number to run the project with SSL.
     - `JWT_KEY_CLIENT`, The secret key used to sign Client JWT Tokens.
     - `JWT_KEY_BUSSINES`, The secret key used to sign Business JWT Tokens.
     - `JWT_KEY_ADMINISTRATOR`, The secret key used to sign Admin JWT Tokens.
@@ -26,7 +27,7 @@ https://git-rekt.me/
     - `FB_CALLBACK`, Facebook Callback link `http://localhost:3000/api/v1/client/auth/fb/callback`.
     - `DEBUG_MODE`, SET to 1 to enable debugging middlewares.
     - `ADD_DELAY`, SET to 1 to add delay to requests for testing.
-
+    - `BOT_BASE,FB_VERIFY_TOKEN,PAGE_ACCESS_TOKEN,API_AI_TOKEN` Tokens required for our facebook bot.
 ---
 
 ## Usage
