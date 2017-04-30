@@ -155,9 +155,11 @@ export const clientSignUpValidation = {
     trigger: 'change',
   }, {
     validator(rule, value, callBack) {
+      const date = new Date(Date.now());
+      date.setFullYear(date.getFullYear() - 13);
       if (this.form.birthdate) {
-        if (new Date(this.form.birthdate) >= Date.now()) {
-          callBack([new Error('Please enter a valid birthdate')]);
+        if (new Date(this.form.birthdate) > date) {
+          callBack([new Error('You must be 13 years or older to register to our system')]);
         } else {
           callBack();
         }
@@ -390,30 +392,30 @@ export const clientEditInfoValidation = {
   email: [{
     message: 'Please Enter a valid email.',
     required: true,
-    trigger: 'blur',
+    trigger: 'change',
   }, {
     type: 'email',
     message: 'Must be an email.',
-    trigger: 'blur',
+    trigger: 'change',
   }],
   firstName: [{
     message: 'First name is required.',
-    trigger: 'blur',
+    trigger: 'change',
     required: true,
   }],
   lastName: [{
     message: 'Last name is required.',
-    trigger: 'blur',
+    trigger: 'change',
     required: true,
   }],
   mobile: [{
     message: 'Mobile number is required.',
-    trigger: 'blur',
+    trigger: 'change',
     required: true,
   }, {
     pattern: /^01[0-2]{1}[0-9]{8}$/,
     message: 'Please enter a valid Egyptian mobile number.',
-    trigger: 'blur',
+    trigger: 'change',
   }],
   gender: [{
     message: 'Gender is required.',
@@ -431,9 +433,11 @@ export const clientEditInfoValidation = {
     trigger: 'change',
   }, {
     validator(rule, value, callBack) {
+      const date = new Date(Date.now());
+      date.setFullYear(date.getFullYear() - 13);
       if (this.form.birthdate) {
-        if (new Date(this.form.birthdate) >= Date.now()) {
-          callBack([new Error('Please enter a valid birthdate')]);
+        if (new Date(this.form.birthdate) > date) {
+          callBack([new Error('You must be 13 years or older to stay in our system')]);
         } else {
           callBack();
         }

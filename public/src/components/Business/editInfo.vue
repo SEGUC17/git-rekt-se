@@ -157,7 +157,7 @@
        */
       onSubmit() {
         this.success = false;
-        if (this.form.password && this.form.confirmPassword) {
+        if (this.form.password !== dummyPassword && this.form.confirmPassword !== dummyPassword) {
           this.passwordChanged = true;
         }
         if (this.form.email !== businessAuth.user.userEmail()) {

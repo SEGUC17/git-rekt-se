@@ -97,9 +97,11 @@
     }
 
     .dark-link {
+        color: #333 !important;
+    }
+    .dark-link:hover {
         color: #555555 !important;
     }
-
     .service-search-result:hover {
         background-color: #fbfbfb;
     }

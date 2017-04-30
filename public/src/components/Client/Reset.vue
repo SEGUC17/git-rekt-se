@@ -12,8 +12,9 @@
             </div>
         </section>
 
-        <div class="reset-password-form columns">
-            <div class="column content is-8 is-offset-2">
+        <div class="reset-password-form columns is-mobile">
+            <div class="column is-half-desktop is-10-mobile is-10-tablet
+                                 is-offset-1-mobile is-offset-1-tablet is-offset-one-quarter-desktop">
                 <div class="alerts">
 
                     <el-alert class="alert-msg" :title="form.message" v-show="form.success" type="success"
@@ -36,23 +37,19 @@
 
                         <el-form-item label="Password" prop="password">
                             <el-input type="password" v-model="form.password"
-                                      :type="showPassword" auto-complete="off">
-                                <div slot="append">
-                                    <el-button @mousedown.native="showPassword = 'text'"
-                                               @mouseup.native="showPassword = 'password'"><i
-                                            class="fa fa-eye"></i>
-                                    </el-button>
-                                </div>
+                                      :type="showPassword? 'text':'password'" auto-complete="off">
+                            <div slot="append">
+                                <el-button @click="showPassword = !showPassword"><i class="fa fa-eye"></i>
+                                </el-button>
+                            </div>
                             </el-input>
                         </el-form-item>
 
                         <el-form-item label="Confirm Password" prop="confirmPassword">
                             <el-input type="password" v-model="form.confirmPassword"
-                                      auto-complete="off" :type="showConfirm">
+                                      auto-complete="off" :type="showConfirm? 'text':'password'">
                                 <div slot="append">
-                                    <el-button @mousedown.native="showConfirm = 'text'"
-                                               @mouseup.native="showConfirm = 'password'"><i
-                                            class="fa fa-eye"></i>
+                                    <el-button @click="showConfirm = !showConfirm"><i class="fa fa-eye"></i>
                                     </el-button>
                                 </div>
                             </el-input>
@@ -103,8 +100,8 @@
           fail: false,
           message: '',
         }),
-        showPassword: 'password',
-        showConfirm: 'password',
+        showPassword: false,
+        showConfirm: false,
         loading: false,
         rules: clientForgotPassword,
       };
