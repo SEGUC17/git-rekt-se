@@ -18,7 +18,6 @@ mongoose.Promise = Promise;
  */
 
 router.get('/', (req, res, next) => {
-  console.log(req.query);
   const inputQuery = req.query;
   const output = {};
   // Build up query

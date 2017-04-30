@@ -113,7 +113,6 @@ function Search(senderID, query) {
       }
     })
     .catch((err) => {
-      console.log(err.response);
       if (!err.response || !err.response.data) {
         sendMessage(senderID, {
           text: botErrors.generalError,
