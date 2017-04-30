@@ -82,3 +82,18 @@ a.box:focus {
 .no-data p {
   margin-top: 0.5em;
 }
+
+/*
+    Carousel styling.
+*/
+
+.el-carousel__container {
+  height: 550px!important;
+}
+
+.el-carousel__item img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: auto;
+}
