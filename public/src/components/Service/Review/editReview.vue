@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="Edit Review" v-model="visible" @close="cancel">
     <el-alert type="error" show-icon v-for="error in errors" :key="error" :title="error"></el-alert>
-    <el-form ref="editReview" :model="review" :rules="rules" label-width="120px" @keyup.enter.native="editReview">
+    <el-form ref="editReview" :model="review" :rules="rules" label-width="120px">
       <el-form-item label="Rating" prop="rating" required>
         <el-rate v-model.number="review.rating"></el-rate>
       </el-form-item>
