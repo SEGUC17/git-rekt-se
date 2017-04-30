@@ -280,8 +280,8 @@ exports.notifyBusinessOfDenial = (mail) => {
 exports.sendConfirmationMessage = (email) => {
   const mailOptions = {
     to: email,
-    from: 'gitRektMailChange@demo.com',
-    subject: 'Node.js email change',
+    from: 'mohamedelzarei@gmail.com',
+    subject: '[Git-Rekt] Email change',
     text: 'You are receiving this because you  have requested to change the email associated with your account.\n\n' +
       'If you did not request this, please contact us.\n',
   };

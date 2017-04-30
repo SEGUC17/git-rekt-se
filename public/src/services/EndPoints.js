@@ -95,6 +95,8 @@ export const Business = () => {
     getTransactions: `${BASE}/business/profile/transactions`,
     acceptTransaction: `${BASE}/business/profile/transactions/accept`,
     refundTransaction: `${BASE}/business/profile/transactions/reject`,
+
+    statistics: id => `${BASE}/business/statistics/${id}`,
   };
 };
 

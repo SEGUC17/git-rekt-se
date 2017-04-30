@@ -36,6 +36,7 @@ import editBranches from '../components/Business/branchesEditForm.vue';
 import editFullInfo from '../components/Business/infoEditForm.vue';
 import createServices from '../components/Business/Service/createServices.vue';
 import AboutUs from '../components/pages/about.vue';
+import serviceCharts from '../components/Business/Service/serviceCharts.vue';
 
 /**
  * Front-End Routes.
@@ -158,6 +159,9 @@ const routes = [{
   }, {
     path: 'services/:id/gallery',
     component: serviceGallery,
+  }, {
+    path: 'services/:id/charts',
+    component: serviceCharts,
   }, {
     path: 'bookings',
     component: businessViewTransactions,
