@@ -53,6 +53,11 @@ If you found a bug, please report it through the issues tab.
 ---
 
 ## Docs
+
+##### Project Backlog
+https://docs.google.com/spreadsheets/d/1orzeXUjwjDFbxvn4TYuPaiVZYd2Iu7tV-IH4PqYPTmU/edit?usp=sharing
+
+##### API Documentation
 API **V1** Documentation [Partial Documentation]
 [https://gitrekt-se.restlet.io/](https://gitrekt-se.restlet.io/)
 
