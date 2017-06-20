@@ -1,6 +1,10 @@
 Git-Rekt SE Project
 ============
 
+## Awards
+
+- GUC SE Course 2017 **#1** Team Overall<br />
+- GUC SE Course 2017 **#1** Team Education Theme
 
 ## Demo
 
